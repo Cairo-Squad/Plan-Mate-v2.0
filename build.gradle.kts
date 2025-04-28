@@ -14,6 +14,18 @@ dependencies {
     testImplementation(kotlin("test"))
 }
 
+kover {
+    reports {
+        verify {
+            rule {
+                bound {
+                    minValue = 80
+                }
+            }
+        }
+    }
+}
+
 tasks.test {
     useJUnitPlatform()
 }
