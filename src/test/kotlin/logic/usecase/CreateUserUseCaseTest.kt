@@ -25,7 +25,7 @@ class CreateUserUseCaseTest {
 		val user = User(name = "ahmed", password = "123456", type = UserType.ADMIN)
 		
 		// When
-		val result = createUserUseCase.createUser(user)
+		val result = createUserUseCase.createUser(user.name, user.password, user.type)
 		
 		// Then
 		assertThat(result.isSuccess).isTrue()
@@ -37,7 +37,7 @@ class CreateUserUseCaseTest {
 		val user = User(name = "", password = "123456", type = UserType.ADMIN)
 		
 		// When
-		val result = createUserUseCase.createUser(user)
+		val result = createUserUseCase.createUser(user.name, user.password, user.type)
 		
 		// Then
 		assertThat(result.isFailure).isTrue()
@@ -49,7 +49,7 @@ class CreateUserUseCaseTest {
 		val user = User(name = "ahmed", password = "", type = UserType.ADMIN)
 		
 		// When
-		val result = createUserUseCase.createUser(user)
+		val result = createUserUseCase.createUser(user.name, user.password, user.type)
 		
 		// Then
 		assertThat(result.isFailure).isTrue()
@@ -62,8 +62,12 @@ class CreateUserUseCaseTest {
 		val anotherUserWithSameName = User(id = UUID.randomUUID() , name = "ahmed", password = "password2", type = UserType.ADMIN)
 		
 		// When
-		val firstUser = createUserUseCase.createUser(user)
-		val secondUser = createUserUseCase.createUser(anotherUserWithSameName)
+		val firstUser = createUserUseCase.createUser(user.name, user.password, user.type)
+		val secondUser = createUserUseCase.createUser(
+			anotherUserWithSameName.name,
+			anotherUserWithSameName.password,
+			anotherUserWithSameName.type
+		)
 		
 		// Then
 		assertThat(firstUser.isSuccess && secondUser.isSuccess).isTrue()
