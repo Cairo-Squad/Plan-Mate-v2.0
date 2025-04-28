@@ -1,13 +1,14 @@
 package data.database
 
-class TasksCsvParser : Parser {
+import data.dto.TaskDto
 
-    override fun <T> write(entity: T) {
+class TasksCsvParser : Parser<TaskDto> {
+
+    override fun read(): TaskDto {
         TODO("Not yet implemented")
     }
 
-    override fun <T> read(): T {
+    override fun write(entity: TaskDto) {
         TODO("Not yet implemented")
     }
-
 }
