@@ -37,4 +37,32 @@ class MD5HashingImplTest {
         assertThat(result).isEmpty()
     }
 
+    @Test
+    fun `hash() should produce consistent output, when similar inputs are provided`() {
+        // Given
+        val input1 = "Cairo"
+        val input2 = "Cairo"
+
+        // When
+        val result1 = md5Hashing.hash(input1)
+        val result2 = md5Hashing.hash(input2)
+
+        // Then
+        assertThat(result1).isEqualTo(result2)
+    }
+
+    @Test
+    fun `hash() should produce different hashing, when different inputs are provided`() {
+        // Given
+        val input1 = "Cairo"
+        val input2 = "Ceiro"
+
+        // When
+        val result1 = md5Hashing.hash(input1)
+        val result2 = md5Hashing.hash(input2)
+
+        // Then
+        assertThat(result1).isNotEqualTo(result2)
+    }
+
 }
