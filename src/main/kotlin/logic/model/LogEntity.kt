@@ -8,6 +8,7 @@ import java.util.UUID
 data class LogEntity(
     val id: UUID = UUID.randomUUID(),
     val entityId: UUID,
+    val entityTitle: String,
     val entityType: EntityType,
     val dataTime: LocalDateTime,
     val userId: UUID,

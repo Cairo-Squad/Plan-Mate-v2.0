@@ -1,16 +1,16 @@
 package data.dataSource
 
-import data.database.UsersCsvParser
-import data.dto.LogEntityDto
-import data.dto.ProjectDto
-import data.dto.TaskDto
-import data.dto.UserDto
+import data.database.FileHandler
+import data.dto.*
+import java.util.UUID
 
-class DataSourceImpl(
-    private val usersCsvParser: UsersCsvParser
-
-
-): DataSource {
+class CsvDataSource(
+    private val logsCsvHandler: FileHandler<LogEntityDto>,
+    private val projectsCsvHandler: FileHandler<ProjectDto>,
+    private val statesCsvHandler: FileHandler<StateDto>,
+    private val tasksCsvHandler: FileHandler<TaskDto>,
+    private val usersCsvHandler: FileHandler<UserDto>
+) : DataSource {
     override fun getAllUsers(): List<UserDto> {
         TODO("Not yet implemented")
     }
