@@ -2,14 +2,14 @@ package data.database
 
 import data.dto.ProjectDto
 
-class ProjectsCsvParser : Parser<ProjectDto> {
-
-    override fun write(entity: ProjectDto) {
+class ProjectsCsvParser : Parser {
+    override fun <T> write(entity: T) {
         TODO("Not yet implemented")
     }
 
-    override fun read(): ProjectDto {
+    override fun <T> read(): T {
         TODO("Not yet implemented")
     }
+
 
 }

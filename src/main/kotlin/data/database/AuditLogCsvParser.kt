@@ -2,13 +2,12 @@ package data.database
 
 import data.dto.LogEntityDto
 
-class AuditLogCsvParser : Parser<LogEntityDto> {
-
-    override fun write(entity: LogEntityDto) {
+class AuditLogCsvParser : Parser {
+    override fun <T> write(entity: T) {
         TODO("Not yet implemented")
     }
 
-    override fun read(): LogEntityDto {
+    override fun <T> read(): T {
         TODO("Not yet implemented")
     }
 
