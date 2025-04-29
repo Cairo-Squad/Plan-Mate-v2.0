@@ -1,7 +1,8 @@
+package logic.usecase
+
 import io.mockk.every
 import io.mockk.mockk
 import logic.repositories.ProjectsRepository
-import logic.usecase.EditProjectDescriptionUseCase
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import java.util.UUID
