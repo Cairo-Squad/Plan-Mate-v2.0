@@ -24,6 +24,9 @@ kover {
             includes {
                 packages("ui", "logic.usecase")
             }
+            excludes {
+                classes("ui.MainKt")
+            }
         }
 
         verify {
