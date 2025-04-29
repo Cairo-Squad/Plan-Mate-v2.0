@@ -7,7 +7,7 @@ import java.util.UUID
 class GetProjectByIdUseCase(
     private val projectsRepository: ProjectsRepository
 ) {
-    fun getProjectById(projectId: UUID): Project {
-        throw NoSuchElementException("Project is not found")
+    fun getProjectById(projectId: UUID): Result<Project> {
+        return Result.failure(NoSuchElementException())
     }
 }

@@ -8,7 +8,7 @@ import java.util.UUID
 class ProjectsRepositoryImpl (
     private val dataSource: DataSource
 ): ProjectsRepository {
-    override fun getProjectById(projectId: UUID): Project? {
-        return null
+    override fun getProjectById(projectId: UUID): Result<Project> {
+        return Result.failure(NoSuchElementException())
     }
 }
