@@ -33,7 +33,6 @@ class GetProjectByIdUseCaseTest {
     @Test
     fun `should return Success with Project when repository returns project`() {
         // Given
-        val projectId = project.id
         every { projectsRepository.getProjectById(project.id) } returns Result.success(project)
 
         // When
@@ -46,7 +45,6 @@ class GetProjectByIdUseCaseTest {
     @Test
     fun `should return Failure when repository returns not found`() {
         // Given
-        val projectId = project.id
         val exception = NoSuchElementException()
         every { projectsRepository.getProjectById(project.id) } returns Result.failure(exception)
 
