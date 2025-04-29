@@ -7,7 +7,7 @@ import logic.repositories.ProjectsRepository
 class ProjectsRepositoryImpl(
     private val dataSource: DataSource
 ) : ProjectsRepository {
-    override fun getProject(): List<ProjectDto> {
+    override fun getAllProjects(): List<ProjectDto> {
         return dataSource.getAllProjects()
     }
 

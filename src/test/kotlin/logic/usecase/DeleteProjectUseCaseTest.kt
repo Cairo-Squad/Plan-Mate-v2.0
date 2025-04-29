@@ -24,12 +24,12 @@ class DeleteProjectUseCaseTest {
 
         val fakeId = UUID.randomUUID()
         //Given
-        every { projectsRepository.getProject() } returns FakeData.fakeProjects
+        every { projectsRepository.getAllProjects() } returns FakeData.fakeProjects
 
-        //When
+        //When&Then
         val result = deleteProjectUseCase.deleteProjectById(fakeId)
-        //Then
-        assertThat(result).isFalse()
+
+        assertThat(result.isFailure).isFalse()
     }
 
     @Test
@@ -37,11 +37,11 @@ class DeleteProjectUseCaseTest {
 
         val validId = UUID.randomUUID()
         //Given
-        every { projectsRepository.getProject() } returns FakeData.fakeProjects
+        every { projectsRepository.getAllProjects() } returns FakeData.fakeProjects
 
         //When
         val result = deleteProjectUseCase.deleteProjectById(validId)
         //Then
-        assertThat(result).isTrue()
+        assertThat(result.isSuccess).isTrue()
     }
 }
