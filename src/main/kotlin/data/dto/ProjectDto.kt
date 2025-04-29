@@ -6,6 +6,7 @@ data class ProjectDto(
     val id: UUID? = null,
     val title: String? = null,
     val description: String? = null,
+    val createdBy: UUID? = null,
     val tasks: List<UUID> = emptyList(),
     val stateId: UUID? = null
 )

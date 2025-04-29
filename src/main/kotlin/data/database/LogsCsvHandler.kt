@@ -1,22 +1,22 @@
 package data.database
 
-import data.dto.LogEntityDto
+import data.dto.EntityType
+import data.dto.LogDto
 
-class LogsCsvHandler : FileHandler<LogEntityDto> {
+class LogsCsvHandler(
+    filePath: String,
+    headers: List<String>
+) : CsvFileHandler<LogDto>(
+    filePath = filePath,
+    headers = headers,
+    getDtoId = { it.id }
+) {
 
-    override fun write(entity: LogEntityDto) {
-        TODO("Not yet implemented")
+    override fun fromDtoToCsvRow(entity: LogDto): String {
+        return "${entity.dateTime}"
     }
 
-    override fun read(): LogEntityDto {
-        TODO("Not yet implemented")
-    }
-
-    override fun edit(entity: LogEntityDto) {
-        TODO("Not yet implemented")
-    }
-
-    override fun delete(entity: LogEntityDto) {
-        TODO("Not yet implemented")
+    override fun fromCsvRowToDto(row: String): LogDto {
+        return LogDto(entityType = EntityType.TASK)
     }
 }

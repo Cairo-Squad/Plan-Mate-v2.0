@@ -2,10 +2,9 @@ package data.dataSource
 
 import data.database.FileHandler
 import data.dto.*
-import java.util.UUID
 
 class CsvDataSource(
-    private val logsCsvHandler: FileHandler<LogEntityDto>,
+    private val logsCsvHandler: FileHandler<LogDto>,
     private val projectsCsvHandler: FileHandler<ProjectDto>,
     private val statesCsvHandler: FileHandler<StateDto>,
     private val tasksCsvHandler: FileHandler<TaskDto>,
@@ -23,7 +22,7 @@ class CsvDataSource(
         TODO("Not yet implemented")
     }
 
-    override fun getAllAuditRecords(): List<LogEntityDto> {
+    override fun getAllAuditRecords(): List<LogDto> {
         TODO("Not yet implemented")
     }
 }

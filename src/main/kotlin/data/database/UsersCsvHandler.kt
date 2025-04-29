@@ -2,21 +2,20 @@ package data.database
 
 import data.dto.UserDto
 
-class UsersCsvHandler : FileHandler<UserDto> {
+class UsersCsvHandler(
+    filePath: String,
+    headers: List<String>
+) : CsvFileHandler<UserDto>(
+    filePath = filePath,
+    headers = headers,
+    getDtoId = { it.id }
+) {
 
-    override fun write(entity: UserDto) {
-        TODO("Not yet implemented")
+    override fun fromDtoToCsvRow(entity: UserDto): String {
+        return ""
     }
 
-    override fun read(): UserDto {
-        TODO("Not yet implemented")
-    }
-
-    override fun edit(entity: UserDto) {
-        TODO("Not yet implemented")
-    }
-
-    override fun delete(entity: UserDto) {
-        TODO("Not yet implemented")
+    override fun fromCsvRowToDto(row: String): UserDto {
+        return UserDto()
     }
 }
