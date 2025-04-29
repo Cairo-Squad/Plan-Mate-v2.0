@@ -20,10 +20,10 @@ class LoginUserUseCaseTest {
     @Test
     fun `should return true when valid username and password`() {
         //Given
-        every { authenticationRepository.getUser() } returns FakeData.mockUsers
+        val mockUsers=FakeData.mockUsers
 
         //when
-        val result = loginUserUseCase.login("nour", "123456")
+        val result = loginUserUseCase.login(mockUsers[0].name,mockUsers[0].password)
 
         //Then
         assertThat(result).isTrue()
@@ -32,10 +32,10 @@ class LoginUserUseCaseTest {
     @Test
     fun `should return false when  username valid and password is invalid`() {
         //Given
-        every { authenticationRepository.getUser() } returns FakeData.mockUsers
+        val mockUsers=FakeData.mockUsers
 
         //when
-        val result = loginUserUseCase.login("nour", "1234564")
+        val result = loginUserUseCase.login(mockUsers[0].name,mockUsers[0].password)
 
         //Then
         assertThat(result).isFalse()
@@ -44,10 +44,10 @@ class LoginUserUseCaseTest {
     @Test
     fun `should return false when  username is invalid and password is valid`() {
         //Given
-        every { authenticationRepository.getUser() } returns FakeData.mockUsers
+        val mockUsers=FakeData.mockUsers
 
         //when
-        val result = loginUserUseCase.login("ali", "123456")
+        val result = loginUserUseCase.login(mockUsers[0].name,mockUsers[0].password)
 
         //Then
         assertThat(result).isFalse()
