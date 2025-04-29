@@ -8,13 +8,11 @@ class ProjectsRepositoryImpl(
     private val dataSource: DataSource
 ) : ProjectsRepository {
 
-    override fun editProjectTitle(newTitle: String, projectId: UUID) {
-        TODO()
-    }
+    override fun editProjectTitle(newTitle: String, projectId: UUID) =
+        dataSource.editProjectTitle(newTitle, projectId)
 
-    override fun editProjectDescription(newDescription: String, projectId: UUID) {
-        TODO()
-    }
+    override fun editProjectDescription(newDescription: String, projectId: UUID) =
+        dataSource.editProjectDescription(newDescription, projectId)
 
 
 }
