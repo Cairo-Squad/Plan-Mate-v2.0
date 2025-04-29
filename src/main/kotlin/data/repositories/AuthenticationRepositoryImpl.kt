@@ -8,6 +8,7 @@ import logic.repositories.AuthenticationRepository
 class AuthenticationRepositoryImpl(
     private val dataSource: DataSource
 ) : AuthenticationRepository {
+  
     override fun getAllUser() : List<UserDto> {
         TODO("Not yet implemented")
     }
