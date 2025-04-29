@@ -1,0 +1,22 @@
+package data.repositories.mappers
+
+import data.dto.UserDto
+import logic.model.User
+
+fun UserDto.toUser(): User {
+    return User(
+        id = this.id,
+        name = this.name,
+        password = this.password,
+        type = this.type
+    )
+}
+
+fun User.toUserDto(): UserDto {
+    return UserDto(
+        id = this.id,
+        name = this.name,
+        password = this.password,
+        type = this.type
+    )
+}
