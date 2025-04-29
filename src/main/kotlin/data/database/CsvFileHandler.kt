@@ -28,7 +28,7 @@ abstract class CsvFileHandler<DTO>(
         }
     }
 
-    private fun writeAll(entities: List<DTO>) {
+    fun writeAll(entities: List<DTO>) {
         BufferedWriter(FileWriter(file, false)).use { writer ->
             writer.appendLine(headers.joinToString(","))
             entities.forEach { entity ->
