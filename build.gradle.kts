@@ -1,5 +1,6 @@
 plugins {
     kotlin("jvm") version "2.0.0"
+    id("org.jetbrains.kotlinx.kover") version "0.9.0"
 }
 
 group = "org.example"
@@ -15,6 +16,18 @@ dependencies {
     testImplementation(kotlin("test"))
     testImplementation("com.google.truth:truth:1.4.4")
     testImplementation("io.mockk:mockk:1.14.0")
+}
+
+kover {
+    reports {
+        verify {
+            rule {
+                bound {
+                    minValue = 80
+                }
+            }
+        }
+    }
 }
 
 tasks.test {
