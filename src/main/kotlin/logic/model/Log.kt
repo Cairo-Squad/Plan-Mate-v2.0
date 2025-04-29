@@ -6,7 +6,7 @@ import java.time.LocalDateTime
 import java.util.UUID
 
 data class Log(
-    val id: UUID = UUID.randomUUID(),
+    val id: UUID,
     val entityId: UUID,
     val entityTitle: String,
     val entityType: EntityType,
