@@ -2,6 +2,7 @@ package data.dataSource
 
 import data.database.FileHandler
 import data.dto.*
+import java.util.*
 
 class CsvDataSource(
     private val logsCsvHandler: FileHandler<LogDto>,
@@ -15,6 +16,14 @@ class CsvDataSource(
     }
 
     override fun getAllProjects(): List<ProjectDto> {
+        TODO("Not yet implemented")
+    }
+
+    override fun editProjectTitle(newTitle: String, projectID: UUID) {
+        TODO("Not yet implemented")
+    }
+
+    override fun editProjectDescription(newDescription: String, projectID: UUID) {
         TODO("Not yet implemented")
     }
 
