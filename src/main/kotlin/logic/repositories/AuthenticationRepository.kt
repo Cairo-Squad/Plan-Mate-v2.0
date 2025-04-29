@@ -1,7 +1,11 @@
 package logic.repositories
 
-import data.dto.UserDto
+import data.dto.User
+import data.dto.UserType
 
 interface AuthenticationRepository {
-    fun getUser() : List<UserDto>
+	fun createUser(name: String, password:String, userType: UserType)
+  fun getAllUser() : List<User>
+  fun loginUser(name: String, password: String):Booleane
+
 }
