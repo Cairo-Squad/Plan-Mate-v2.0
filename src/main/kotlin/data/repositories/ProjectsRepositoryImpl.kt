@@ -1,14 +1,10 @@
 package data.repositories
 
 import data.dataSource.DataSource
-import data.dto.ProjectDto
 import logic.repositories.ProjectsRepository
 
-class ProjectsRepositoryImpl(
+class ProjectsRepositoryImpl (
     private val dataSource: DataSource
-) : ProjectsRepository {
-    override fun getAllProjects(): List<ProjectDto> {
-        return dataSource.getAllProjects()
-    }
+): ProjectsRepository {
 
 }
