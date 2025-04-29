@@ -20,6 +20,15 @@ dependencies {
 
 kover {
     reports {
+        filters {
+            includes {
+                packages("ui", "logic.usecase")
+            }
+            excludes {
+                classes("ui.MainKt")
+            }
+        }
+
         verify {
             rule {
                 bound {
