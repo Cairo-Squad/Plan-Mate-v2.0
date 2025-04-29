@@ -2,6 +2,7 @@ package data.repositories
 
 import data.dataSource.DataSource
 import data.dto.UserDto
+import data.dto.UserType
 import logic.repositories.AuthenticationRepository
 
 class AuthenticationRepositoryImpl(
@@ -15,4 +16,8 @@ class AuthenticationRepositoryImpl(
         TODO("Not yet implemented")
     }
 
+    override fun createUser(name: String, password: String, userType: UserType) {
+        TODO("Not yet implemented")
+    }
+   
 }
