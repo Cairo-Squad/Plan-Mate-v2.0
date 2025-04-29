@@ -1,8 +1,6 @@
 package data.database
 
-interface Parser<DTO> {
-
-    fun write(entity: DTO)
-    fun read(): DTO
-
+interface Parser {
+    fun <T> write(entity: T)
+    fun <T> read(): T
 }
