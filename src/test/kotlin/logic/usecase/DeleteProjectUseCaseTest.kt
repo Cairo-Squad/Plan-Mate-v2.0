@@ -20,7 +20,7 @@ class DeleteProjectUseCaseTest {
     }
 
     @Test
-    fun `should return false when id is not found `() {
+    fun `should return failure when id is not found `() {
 
         val fakeId = UUID.randomUUID()
         //Given
@@ -29,11 +29,11 @@ class DeleteProjectUseCaseTest {
         //When&Then
         val result = deleteProjectUseCase.deleteProjectById(fakeId)
 
-        assertThat(result.isFailure).isFalse()
+        assertThat(result.isFailure).isTrue()
     }
 
     @Test
-    fun `should return true when id is found `() {
+    fun `should return success when id is found `() {
 
         val validId = UUID.randomUUID()
         //Given
