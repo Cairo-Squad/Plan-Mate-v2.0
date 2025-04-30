@@ -12,9 +12,8 @@ class TasksRepositoryImpl(
     private val dataSource: DataSource,
 ) : TasksRepository {
 
-    override fun createTask(task: Task):Result<Unit>
-    {
-         return  dataSource.createTask( task.toTaskDto())
+    override fun createTask(task: Task): Result<Unit> {
+        return dataSource.createTask(task.toTaskDto())
     }
 
 }

@@ -12,7 +12,7 @@ class CreateTaskUseCase(private val repository: TasksRepository) {
                 Result.failure(e)
             }
         } else {
-            Result.failure(IllegalArgumentException())
+            Result.failure(IllegalArgumentException("Invalid task data"))
         }
     }
 

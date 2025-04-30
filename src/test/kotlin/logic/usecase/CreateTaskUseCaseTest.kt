@@ -23,7 +23,7 @@ class CreateTaskUseCaseTest {
     }
 
     @Test
-    fun `Given valid task When creating new task Then should return success`() {
+    fun `should return success when using a valid task`() {
         //Given
         every { taskRepository.createTask(validTask()) } returns Result.success(Unit)
 
@@ -35,7 +35,7 @@ class CreateTaskUseCaseTest {
     }
 
     @Test
-    fun `Given repository failure When creating task Then should return failure`() {
+    fun `should return failure when using a invalid task`() {
         // Given
         every { taskRepository.createTask(invalidTask()) } returns Result.failure(Exception())
 
@@ -55,8 +55,9 @@ class CreateTaskUseCaseTest {
             projectId = UUID.randomUUID()
         )
     }
+
     private fun invalidTask(): Task {
-         return  Task(
+        return Task(
             id = UUID.randomUUID(),
             title = "",
             description = "This is an invalid test task",

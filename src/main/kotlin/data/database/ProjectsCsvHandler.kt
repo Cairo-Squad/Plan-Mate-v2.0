@@ -4,8 +4,7 @@ import data.database.util.CsvIndices
 import data.dto.ProjectDto
 import java.util.*
 
-class
-ProjectsCsvHandler(
+class ProjectsCsvHandler(
     filePath: String,
     headers: List<String>
 ) : CsvFileHandler<ProjectDto>(
