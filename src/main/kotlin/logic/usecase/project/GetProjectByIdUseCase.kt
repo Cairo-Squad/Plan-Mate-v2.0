@@ -8,6 +8,6 @@ class GetProjectByIdUseCase(
     private val projectsRepository: ProjectsRepository
 ) {
     fun getProjectById(projectId: UUID): Result<Project> {
-        return Result.failure(NoSuchElementException())
+        return projectsRepository.getProjectById(projectId)
     }
 }

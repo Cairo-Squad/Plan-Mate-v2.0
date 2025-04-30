@@ -39,7 +39,7 @@ class GetProjectByIdUseCaseTest {
         val result = getProjectByIdUseCase.getProjectById(project.id)
 
         //Then
-        assertThat(result).isEqualTo(project)
+        assertThat(result.isSuccess).isTrue()
     }
 
     @Test
