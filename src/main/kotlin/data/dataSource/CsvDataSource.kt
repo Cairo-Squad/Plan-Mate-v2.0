@@ -3,6 +3,7 @@ package data.dataSource
 import data.database.FileHandler
 import data.dto.*
 import java.util.*
+import data.repositories.mappers.toTaskDto
 
 class CsvDataSource(
     private val logsCsvHandler: FileHandler<LogDto>,
@@ -33,5 +34,14 @@ class CsvDataSource(
 
     override fun getTaskLogs(taskId: UUID): List<LogDto> {
         return logsCsvHandler.readAll().filter { it.entityType == EntityType.TASK && it.entityId == taskId }
+    }
+
+    override fun createTask(task: TaskDto): Result<Unit> {
+        return try {
+            tasksCsvHandler.write(task)
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
     }
 }
