@@ -15,7 +15,7 @@ class CsvDataSource(
     }
 
     override fun getAllProjects(): List<ProjectDto> {
-        TODO("Not yet implemented")
+        return emptyList()
     }
 
     override fun getAllTasks(): List<TaskDto> {
