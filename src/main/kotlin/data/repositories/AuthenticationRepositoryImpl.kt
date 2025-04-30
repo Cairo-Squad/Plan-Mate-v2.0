@@ -3,7 +3,6 @@ package data.repositories
 import data.dataSource.DataSource
 import data.dto.UserDto
 import data.dto.UserType
-import logic.model.User
 import logic.repositories.AuthenticationRepository
 import java.util.UUID
 
@@ -11,7 +10,7 @@ class AuthenticationRepositoryImpl(
 	private val dataSource: DataSource
 ) : AuthenticationRepository {
   
-    override fun getAllUser() : List<User> {
+    override fun getAllUser() : List<UserDto> {
         TODO("Not yet implemented")
     }
 
