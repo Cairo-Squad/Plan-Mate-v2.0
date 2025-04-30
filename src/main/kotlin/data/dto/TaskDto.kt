@@ -3,9 +3,9 @@ package data.dto
 import java.util.UUID
 
 data class TaskDto(
-    val id: UUID? = null,
-    val title: String? = null,
-    val description: String? = null,
-    val stateId: UUID? = null,
-    val projectId: UUID? = null
+    val id: UUID,
+    val title: String,
+    val description: String,
+    val stateId: UUID,
+    val projectId: UUID
 )

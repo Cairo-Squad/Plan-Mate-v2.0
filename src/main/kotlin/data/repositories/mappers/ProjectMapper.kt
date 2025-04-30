@@ -1,0 +1,28 @@
+package data.repositories.mappers
+
+import data.dto.ProjectDto
+import logic.model.Project
+import logic.model.State
+import logic.model.Task
+
+fun ProjectDto.toProject(projectTasks: List<Task>, projectState: State): Project {
+    return Project(
+        id = this.id,
+        title = this.title,
+        description = this.description,
+        createdBy = this.createdBy,
+        tasks = projectTasks,
+        state = projectState
+    )
+}
+
+fun Project.toProjectDto(): ProjectDto {
+    return ProjectDto(
+        id = this.id,
+        title = this.title,
+        description = this.description,
+        createdBy = this.createdBy,
+        tasks = this.tasks.map { it.id },
+        stateId = this.state.id
+    )
+}
