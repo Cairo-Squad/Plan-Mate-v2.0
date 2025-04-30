@@ -25,4 +25,14 @@ class CsvDataSource(
     override fun getAllAuditRecords(): List<LogDto> {
         TODO("Not yet implemented")
     }
+
+    override fun createProject(project: ProjectDto): Result<Unit> {
+        return try {
+            projectsCsvHandler.write(project)
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
 }
