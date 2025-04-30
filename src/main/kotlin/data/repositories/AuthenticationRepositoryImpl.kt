@@ -7,9 +7,10 @@ import data.repositories.mappers.toUser
 import logic.model.User
 import logic.repositories.AuthenticationRepository
 import java.util.*
+import java.util.UUID
 
 class AuthenticationRepositoryImpl(
-    private val dataSource: DataSource
+	private val dataSource: DataSource
 ) : AuthenticationRepository {
   
     override fun getAllUser() : List<User> {
@@ -31,4 +32,7 @@ class AuthenticationRepositoryImpl(
         TODO("Not yet implemented")
     }
    
+	override fun createUser(id: UUID, name: String, password: String, userType: UserType): UserDto {
+		return dataSource.createUser(id, name, password, userType)
+	}
 }

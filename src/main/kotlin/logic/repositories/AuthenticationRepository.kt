@@ -10,5 +10,4 @@ interface AuthenticationRepository {
     fun loginUser(name : String, password : String) : Boolean
     fun deleteUser(userId: UUID): Boolean
 
-
 }
