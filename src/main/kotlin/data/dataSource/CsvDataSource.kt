@@ -28,10 +28,10 @@ class CsvDataSource(
     }
 
     override fun createLog(log: LogDto) {
-        TODO("Not yet implemented")
+        logsCsvHandler.write(log)
     }
 
     override fun getTaskLogs(taskId: UUID): List<LogDto> {
-        TODO("Not yet implemented")
+        return logsCsvHandler.readAll().filter { it.entityType == EntityType.TASK && it.entityId == taskId }
     }
 }
