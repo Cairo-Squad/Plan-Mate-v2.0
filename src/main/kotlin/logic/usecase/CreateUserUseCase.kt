@@ -1,14 +1,25 @@
 package logic.usecase
 
 import data.dto.UserType
+import data.repositories.mappers.toUser
+import logic.exception.NameNotEmptyException
+import logic.exception.PasswordNotEmptyException
 import logic.model.User
 import logic.repositories.AuthenticationRepository
 import java.util.UUID
 
 class CreateUserUseCase(
-	val authRepo: AuthenticationRepository
+	private val authRepo: AuthenticationRepository
 ) {
-	fun createUser(id: UUID, name:String, password:String, type:UserType):Result<User> {
-		return Result.failure(IllegalArgumentException())
+	fun createUser(id: UUID, name: String, password: String, type: UserType): Result<User> {
+		if (name.isEmpty()) {
+			return Result.failure(NameNotEmptyException("Name cannot be empty"))
+		} else if (password.isEmpty()) {
+			return Result.failure(PasswordNotEmptyException("Password cannot be empty"))
+		} else {
+			val userDto = authRepo.createUser(id, name, password, type)
+			val user = userDto.toUser()
+			return Result.success(user)
+		}
 	}
 }

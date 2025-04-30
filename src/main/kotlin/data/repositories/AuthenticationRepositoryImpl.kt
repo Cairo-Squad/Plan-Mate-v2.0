@@ -4,9 +4,10 @@ import data.dataSource.DataSource
 import data.dto.UserDto
 import data.dto.UserType
 import logic.repositories.AuthenticationRepository
+import java.util.UUID
 
 class AuthenticationRepositoryImpl(
-    private val dataSource: DataSource
+	private val dataSource: DataSource
 ) : AuthenticationRepository {
   
     override fun getAllUser() : List<UserDto> {
@@ -16,9 +17,8 @@ class AuthenticationRepositoryImpl(
     override fun loginUser(name : String, password : String) : Boolean {
         TODO("Not yet implemented")
     }
-
-    override fun createUser(name: String, password: String, userType: UserType) {
-        TODO("Not yet implemented")
-    }
    
+	override fun createUser(id: UUID, name: String, password: String, userType: UserType): UserDto {
+		return dataSource.createUser(id, name, password, userType)
+	}
 }
