@@ -44,4 +44,8 @@ class CsvDataSource(
     override fun getAllAuditRecords(): List<LogDto> {
         TODO("Not yet implemented")
     }
+
+    override fun editUser(user: UserDto) {
+        usersCsvHandler.edit(user)
+    }
 }

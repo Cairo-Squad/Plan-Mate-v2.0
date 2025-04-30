@@ -33,6 +33,8 @@ class AuthenticationRepositoryImpl(
     }
 
     override fun editUser(userId: UUID): Boolean {
+        val userDto = dataSource.getAllUsers().find { it.id == userId } ?: throw IllegalStateException()
+        dataSource.editUser(userDto)
         return true
     }
 }
