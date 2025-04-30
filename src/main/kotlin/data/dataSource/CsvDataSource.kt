@@ -2,6 +2,7 @@ package data.dataSource
 
 import data.database.FileHandler
 import data.dto.*
+import java.util.*
 import data.repositories.mappers.toTaskDto
 
 class CsvDataSource(
@@ -25,6 +26,14 @@ class CsvDataSource(
 
     override fun getAllAuditRecords(): List<LogDto> {
         TODO("Not yet implemented")
+    }
+
+    override fun recordLog(log: LogDto) {
+        logsCsvHandler.write(log)
+    }
+
+    override fun getTaskLogs(taskId: UUID): List<LogDto> {
+        return logsCsvHandler.readAll().filter { it.entityType == EntityType.TASK && it.entityId == taskId }
     }
 
     override fun createTask(task: TaskDto): Result<Unit> {
