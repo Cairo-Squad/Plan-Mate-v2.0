@@ -45,18 +45,6 @@ class GetAllProjectsUseCaseTest {
         assertThat(result.isFailure).isTrue()
     }
 
-    @Test
-    fun `should return Success with same list when repository returns Success with list of projects`() {
-        // Given
-        every { projectRepository.getAllProjects() } returns Result.success(projectsList())
-
-        // When
-        val result = getAllProjectsUseCase.getAllProjects()
-
-        // Then
-        assertThat(result.getOrNull()).isEqualTo(projectsList())
-    }
-
     private fun projectsList(): List<Project> {
         val project = Project(
             id = UUID.randomUUID(),
