@@ -44,4 +44,8 @@ class CsvDataSource(
             Result.failure(e)
         }
     }
+
+    override fun deleteTask(task: TaskDto) {
+        tasksCsvHandler.delete(task)
+    }
 }
