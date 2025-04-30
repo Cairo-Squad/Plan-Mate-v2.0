@@ -11,7 +11,8 @@ class CsvDataSource(
     private val usersCsvHandler: FileHandler<UserDto>
 ) : DataSource {
     override fun getAllUsers(): List<UserDto> {
-        TODO("Not yet implemented")
+       val users= usersCsvHandler.readAll()
+        return users
     }
 
     override fun getAllProjects(): List<ProjectDto> {
