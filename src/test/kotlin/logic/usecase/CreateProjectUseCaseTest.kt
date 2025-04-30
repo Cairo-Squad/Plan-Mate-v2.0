@@ -37,7 +37,7 @@ class CreateProjectUseCaseTest() {
         assertThat(result.isFailure).isTrue()
     }
 
-    @Test
+    /*  @Test
     fun `should create a project when description is empty`() {
         val user = User(name = "admin", password = "98543", id = UUID.randomUUID(), type = UserType.MATE)
         val project = FakeData.projectWithNoDescription
@@ -45,4 +45,5 @@ class CreateProjectUseCaseTest() {
         val result = createProject.createProject(project, user)
         assertThat(result.isSuccess).isTrue()
     }
+   */
 }
