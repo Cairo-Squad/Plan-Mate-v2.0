@@ -18,7 +18,7 @@ object FakeData {
     val invalidProject = Project(
         id = UUID.randomUUID(),
         title = "food",
-        description = "description",
+        description = "cultural",
         tasks = emptyList(),
         createdBy = UUID.randomUUID(),
         state = State(id = UUID.randomUUID(), title = "TODO")
