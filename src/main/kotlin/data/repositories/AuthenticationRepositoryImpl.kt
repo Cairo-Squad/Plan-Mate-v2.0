@@ -13,7 +13,7 @@ class AuthenticationRepositoryImpl(
 	private val dataSource: DataSource
 ) : AuthenticationRepository {
   
-    override fun getAllUser() : List<User> {
+    override fun getAllUsers() : List<User> {
         val usersDto = dataSource.getAllUsers()
         return usersDto.map { it.toUser() }
     }
