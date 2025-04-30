@@ -22,6 +22,7 @@ class DeleteUserUseCaseTest {
     fun `should return true when userid exist`() {
         // Given
         val mockUsers=FakeData.mockUsers
+        every { authenticationRepository.deleteUser(mockUsers[0].id) } returns true
 
         // When
         val result = deleteUserUseCase.deleteUser(mockUsers[0].id)
@@ -34,6 +35,7 @@ class DeleteUserUseCaseTest {
     fun `should return false when userid not exist`() {
         // Given
         val notExistUserId = UUID.randomUUID()
+        every { authenticationRepository.deleteUser(notExistUserId) } returns false
 
         // When
         val result = deleteUserUseCase.deleteUser(notExistUserId)
