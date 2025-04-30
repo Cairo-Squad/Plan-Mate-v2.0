@@ -3,11 +3,13 @@ package data.repositories
 import data.dataSource.DataSource
 import data.dto.UserDto
 import data.dto.UserType
+import data.hashing.Hashing
 import logic.repositories.AuthenticationRepository
 import java.util.UUID
 
 class AuthenticationRepositoryImpl(
-	private val dataSource: DataSource
+	private val dataSource: DataSource,
+	private val passwordConverter: Hashing
 ) : AuthenticationRepository {
   
     override fun getAllUser() : List<UserDto> {
@@ -19,6 +21,7 @@ class AuthenticationRepositoryImpl(
     }
    
 	override fun createUser(id: UUID, name: String, password: String, userType: UserType): UserDto {
-		return dataSource.createUser(id, name, password, userType)
+		val hashedPassword = passwordConverter.hash(password)
+		return dataSource.createUser(id, name, hashedPassword, userType)
 	}
 }
