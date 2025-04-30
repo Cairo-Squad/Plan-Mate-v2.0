@@ -25,4 +25,8 @@ class CsvDataSource(
     override fun getAllAuditRecords(): List<LogDto> {
         TODO("Not yet implemented")
     }
+
+    override fun addProjectLog(logDto: LogDto) {
+        logsCsvHandler.write(logDto)
+    }
 }
