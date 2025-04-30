@@ -9,7 +9,7 @@ import logic.repositories.TasksRepository
 import data.repositories.mappers.toTaskDto
 
 class TasksRepositoryImpl(
-    private val dataSource: DataSource,
+    private val dataSource: DataSource
 ) : TasksRepository {
 
     override fun createTask(task: Task): Result<Unit> {
