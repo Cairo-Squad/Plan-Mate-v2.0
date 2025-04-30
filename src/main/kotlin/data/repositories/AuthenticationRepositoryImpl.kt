@@ -31,4 +31,8 @@ class AuthenticationRepositoryImpl(
         val hashedPassword = passwordConverter.hashPassword(password)
         return dataSource.createUser(id, name, hashedPassword, userType)
     }
+
+    override fun editUser(userId: UUID): Boolean {
+        return true
+    }
 }
