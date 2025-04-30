@@ -3,6 +3,7 @@ package data.hashing
 import com.google.common.truth.Truth.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 
 class MD5HashingImplTest {
 
@@ -30,11 +31,10 @@ class MD5HashingImplTest {
         // Given
         val input = ""
 
-        // When
-        val result = md5Hashing.hash(input)
-
-        // Then
-        assertThat(result).isEmpty()
+        // When & Then
+        assertThrows<IllegalStateException> {
+            md5Hashing.hash(input)
+        }
     }
 
     @Test
