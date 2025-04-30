@@ -1,6 +1,7 @@
 package data.repositories
 
 import data.dataSource.DataSource
+import data.repositories.mappers.toProjectDto
 import logic.model.Project
 import logic.repositories.ProjectsRepository
 
@@ -9,7 +10,7 @@ class ProjectsRepositoryImpl(
 ) : ProjectsRepository {
 
     override fun editProject(newProject: Project) {
-        dataSource.editProject(newProject)
+        dataSource.editProject(newProject.toProjectDto())
     }
 
 

@@ -13,5 +13,5 @@ interface DataSource {
 
 
     fun getAllProjects(): List<ProjectDto>
-    fun editProject(newProject: Project)
+    fun editProject(newProject: ProjectDto)
 }

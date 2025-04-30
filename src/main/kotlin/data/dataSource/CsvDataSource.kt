@@ -20,8 +20,8 @@ class CsvDataSource(
         TODO("Not yet implemented")
     }
 
-    override fun editProject(newProject: Project) {
-        projectsCsvHandler.edit(newProject.toProjectDto())
+    override fun editProject(newProject: ProjectDto) {
+        projectsCsvHandler.edit(newProject)
     }
 
 
