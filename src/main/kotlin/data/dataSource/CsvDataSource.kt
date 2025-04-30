@@ -24,8 +24,14 @@ class CsvDataSource(
     }
     
     override fun getAllUsers(): List<UserDto> {
-        TODO("Not yet implemented")
+        val users= usersCsvHandler.readAll()
+        return users
     }
+
+    override fun deleteUser(user:UserDto) {
+        usersCsvHandler.delete(user)
+    }
+
 
     override fun getAllProjects(): List<ProjectDto> {
         TODO("Not yet implemented")
