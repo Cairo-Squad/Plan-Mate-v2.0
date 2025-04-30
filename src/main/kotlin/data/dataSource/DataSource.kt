@@ -10,4 +10,5 @@ interface DataSource {
     fun getAllProjects(): List<ProjectDto>
     fun getAllTasks(): List<TaskDto>
     fun getAllAuditRecords(): List<LogDto>
+    fun createProject(project: ProjectDto):Result<Unit>
 }
