@@ -2,6 +2,7 @@ package data.dataSource
 
 import data.database.FileHandler
 import data.dto.*
+import data.repositories.mappers.toTaskDto
 
 class CsvDataSource(
     private val logsCsvHandler: FileHandler<LogDto>,
@@ -24,5 +25,14 @@ class CsvDataSource(
 
     override fun getAllAuditRecords(): List<LogDto> {
         TODO("Not yet implemented")
+    }
+
+    override fun createTask(task: TaskDto): Result<Unit> {
+        return try {
+            tasksCsvHandler.write(task)
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
     }
 }
