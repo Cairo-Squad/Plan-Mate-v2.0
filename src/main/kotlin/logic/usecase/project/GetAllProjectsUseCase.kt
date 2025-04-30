@@ -7,6 +7,6 @@ class GetAllProjectsUseCase(
     private val projectsRepository: ProjectsRepository
 ) {
     fun getAllProjects(): Result<List<Project>> {
-        return Result.failure(NoSuchElementException())
+        return projectsRepository.getAllProjects()
     }
 }
