@@ -12,11 +12,11 @@ import kotlin.test.assertEquals
 class EditProjectDescriptionTest {
 
     private val projectsRepository = mockk<ProjectsRepository>()
-    private lateinit var editProjectDescription: EditProjectDescriptionUseCase
+    private lateinit var editProjectDescription: EditProjectUseCase
 
     @BeforeEach
     fun setup() {
-        editProjectDescription = EditProjectDescriptionUseCase(projectsRepository)
+        editProjectDescription = EditProjectUseCase(projectsRepository)
     }
 
     @Test
@@ -25,7 +25,7 @@ class EditProjectDescriptionTest {
         val newDescription = "This is new Description"
         val prjectID = UUID.randomUUID()
         //When
-        val result = editProjectDescription.editProjectDescription(newDescription, prjectID)
+        val result = editProjectDescription.editProject(newDescription, prjectID)
         //Then
         assertEquals(expected = Result.success(Unit), actual = result)
     }
@@ -36,7 +36,7 @@ class EditProjectDescriptionTest {
         val newDescription = ""
         val prjectID = UUID.randomUUID()
         //When
-        val result = editProjectDescription.editProjectDescription(newDescription, prjectID)
+        val result = editProjectDescription.editProject(newDescription, prjectID)
         //Then
         assertEquals(expected = Result.success(Unit), actual = result)
     }
@@ -48,7 +48,7 @@ class EditProjectDescriptionTest {
         val projectId = UUID.randomUUID()
         every { projectsRepository.editProjectTitle(any(), any()) } throws IOException("")
         //When
-        val result = editProjectDescription.editProjectDescription(newDescription, projectId)
+        val result = editProjectDescription.editProject(newDescription, projectId)
         //Then
         assertEquals(
             expected = Result.failure(
@@ -65,7 +65,7 @@ class EditProjectDescriptionTest {
         val prjectID = UUID.randomUUID()
         every { projectsRepository.editProjectDescription(newDescription, prjectID) } throws Exception()
         //When
-        val result = editProjectDescription.editProjectDescription(newDescription, prjectID)
+        val result = editProjectDescription.editProject(newDescription, prjectID)
         //Then
         assertEquals(expected = Result.failure(Exception()), actual = result)
     }

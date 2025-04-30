@@ -13,20 +13,6 @@ class ProjectsCsvHandler(
     getDtoId = { it.id }
 ) {
 
-    private fun updateProjectTitle(projectId: UUID, newTitle: String) {
-        val allProjects = readAll().map { project ->
-            if (project.id == projectId) project.copy(title = newTitle) else project
-        }
-        writeAll(allProjects)
-    }
-
-    private fun updateProjectDescription(projectId: UUID, newDescription: String) {
-        val allProjects = readAll().map { project ->
-            if (project.id == projectId) project.copy(description = newDescription) else project
-        }
-        writeAll(allProjects)
-    }
-
     override fun fromDtoToCsvRow(entity: ProjectDto): String {
         val rowStringBuilder = StringBuilder()
         rowStringBuilder.append("${entity.id}")
@@ -48,13 +34,5 @@ class ProjectsCsvHandler(
             tasks = projectData[CsvIndices.PROJECT_TASKS].split("||").map { UUID.fromString(it) },
             stateId = UUID.fromString(projectData[CsvIndices.PROJECT_STATE_ID])
         )
-    }
-
-    override fun updateValue(id: UUID, newValue: String, type: AttributeToBeChanged) {
-        when (type) {
-            AttributeToBeChanged.TITLE -> updateProjectTitle(id, newValue)
-            AttributeToBeChanged.DESCRIPTION -> updateProjectDescription(id, newValue)
-            else -> throw IllegalArgumentException("only allowed to update project title and description")
-        }
     }
 }

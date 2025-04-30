@@ -37,7 +37,7 @@ abstract class CsvFileHandler<DTO>(
         }
     }
 
-    override fun readAll(): List<DTO> {
+    fun readAll(): List<DTO> {
         return file.readLines()
             .asSequence()
             .drop(1)

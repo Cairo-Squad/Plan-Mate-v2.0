@@ -1,10 +1,8 @@
 package di
 
-import logic.usecase.EditProjectDescriptionUseCase
-import logic.usecase.EditProjectTitleUseCase
+import logic.usecase.EditProjectUseCase
 import org.koin.dsl.module
 
 val useCase = module {
-    single { EditProjectTitleUseCase(get()) }
-    single { EditProjectDescriptionUseCase(get()) }
+    single { EditProjectUseCase(get()) }
 }

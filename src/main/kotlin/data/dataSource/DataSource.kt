@@ -1,10 +1,10 @@
 package data.dataSource
 
-import data.dto.UserDto
+import data.dto.LogDto
 import data.dto.ProjectDto
 import data.dto.TaskDto
-import data.dto.LogDto
-import java.util.UUID
+import data.dto.UserDto
+import logic.model.Project
 
 interface DataSource {
     fun getAllUsers(): List<UserDto>
@@ -13,6 +13,5 @@ interface DataSource {
 
 
     fun getAllProjects(): List<ProjectDto>
-    fun editProjectTitle(newTitle: String, projectID: UUID)
-    fun editProjectDescription(newDescription: String, projectID: UUID)
+    fun editProject(newProject: Project)
 }

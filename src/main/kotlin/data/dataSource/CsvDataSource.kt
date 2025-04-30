@@ -1,10 +1,9 @@
 package data.dataSource
 
-import data.database.AttributeToBeChanged
 import data.database.FileHandler
-import data.database.ProjectsCsvHandler
 import data.dto.*
-import java.util.*
+import data.repositories.mappers.toProjectDto
+import logic.model.Project
 
 class CsvDataSource(
     private val logsCsvHandler: FileHandler<LogDto>,
@@ -21,13 +20,10 @@ class CsvDataSource(
         TODO("Not yet implemented")
     }
 
-    override fun editProjectTitle(newTitle: String, projectID: UUID) {
-        projectsCsvHandler.updateValue(id = projectID, newValue = newTitle, AttributeToBeChanged.TITLE)
+    override fun editProject(newProject: Project) {
+        projectsCsvHandler.edit(newProject.toProjectDto())
     }
 
-    override fun editProjectDescription(newDescription: String, projectID: UUID) {
-        projectsCsvHandler.updateValue(id = projectID, newValue = newDescription, AttributeToBeChanged.DESCRIPTION)
-    }
 
     override fun getAllTasks(): List<TaskDto> {
         TODO("Not yet implemented")

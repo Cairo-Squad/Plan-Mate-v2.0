@@ -1,9 +1,8 @@
 package logic.repositories
 
-import java.util.*
+import logic.model.Project
 
 interface ProjectsRepository {
 
-    fun editProjectTitle(newTitle: String, projectId: UUID)
-    fun editProjectDescription(newDescription: String , projectId: UUID)
+    fun editProject(newProject: Project)
 }
