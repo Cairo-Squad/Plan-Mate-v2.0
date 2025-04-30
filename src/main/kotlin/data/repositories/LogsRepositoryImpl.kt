@@ -10,13 +10,11 @@ import java.util.*
 class LogsRepositoryImpl(
     private val dataSource: DataSource
 ) : LogsRepository {
-    override fun createLog(log: Log) {
-        val logDto = log.toLogDto()
-        dataSource.createLog(logDto)
+    override fun recordLog(log: Log) {
+        dataSource.recordLog(log.toLogDto())
     }
 
     override fun getTaskLogs(taskId: UUID): List<Log> {
-        val taskLogsDto = dataSource.getTaskLogs(taskId)
-        return taskLogsDto.map { it.toLog() }
+        return dataSource.getTaskLogs(taskId).map { it.toLog() }
     }
 }

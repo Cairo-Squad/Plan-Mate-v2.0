@@ -28,7 +28,7 @@ class CsvDataSource(
         TODO("Not yet implemented")
     }
 
-    override fun createLog(log: LogDto) {
+    override fun recordLog(log: LogDto) {
         logsCsvHandler.write(log)
     }
 

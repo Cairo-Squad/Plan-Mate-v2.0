@@ -14,7 +14,7 @@ interface DataSource {
     fun createTask(task: TaskDto): Result<Unit>
 
     // region Logs
-    fun createLog(log: LogDto)
+    fun recordLog(log: LogDto)
     fun getTaskLogs(taskId: UUID): List<LogDto>
     // endregion
 }

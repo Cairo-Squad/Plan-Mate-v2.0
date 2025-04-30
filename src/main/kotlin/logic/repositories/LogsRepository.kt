@@ -4,6 +4,6 @@ import logic.model.Log
 import java.util.*
 
 interface LogsRepository {
-    fun createLog(log: Log)
+    fun recordLog(log: Log)
     fun getTaskLogs(taskId: UUID): List<Log>
 }
