@@ -1,5 +1,5 @@
 package data.hashing
 
-interface MD5Hashing {
+interface Hashing {
     fun hash(input:String):String
 }

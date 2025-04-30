@@ -7,11 +7,11 @@ import org.junit.jupiter.api.assertThrows
 
 class MD5HashingImplTest {
 
-    lateinit var md5Hashing: MD5Hashing
+    lateinit var hashing: Hashing
 
     @BeforeEach
     fun setUp() {
-        md5Hashing = MD5HashingImpl()
+        hashing = MD5HashingImpl()
     }
 
     @Test
@@ -20,7 +20,7 @@ class MD5HashingImplTest {
         val input = "Mohamed123"
 
         // When
-        val result = md5Hashing.hash(input)
+        val result = hashing.hash(input)
 
         // Then
         assertThat(result.length).isEqualTo(32)
@@ -33,7 +33,7 @@ class MD5HashingImplTest {
 
         // When & Then
         assertThrows<IllegalStateException> {
-            md5Hashing.hash(input)
+            hashing.hash(input)
         }
     }
 
@@ -44,8 +44,8 @@ class MD5HashingImplTest {
         val input2 = "Cairo"
 
         // When
-        val result1 = md5Hashing.hash(input1)
-        val result2 = md5Hashing.hash(input2)
+        val result1 = hashing.hash(input1)
+        val result2 = hashing.hash(input2)
 
         // Then
         assertThat(result1).isEqualTo(result2)
@@ -58,8 +58,8 @@ class MD5HashingImplTest {
         val input2 = "Ceiro"
 
         // When
-        val result1 = md5Hashing.hash(input1)
-        val result2 = md5Hashing.hash(input2)
+        val result1 = hashing.hash(input1)
+        val result2 = hashing.hash(input2)
 
         // Then
         assertThat(result1).isNotEqualTo(result2)
