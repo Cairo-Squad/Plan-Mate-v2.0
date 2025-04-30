@@ -8,6 +8,10 @@ class GetTaskLogsUseCase(
     private val logsRepository: LogsRepository
 ) {
     fun execute(taskId: UUID): List<Log> {
-        return emptyList()
+        try {
+            return logsRepository.getTaskLogs(taskId)
+        } catch (exception: Exception) {
+            throw Exception("An error happened! Please try again.")
+        }
     }
 }
