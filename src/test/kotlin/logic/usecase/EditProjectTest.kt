@@ -22,16 +22,20 @@ class EditProjectTest {
 
     @Test
     fun `Given valid newDescription,When updating database,Then returns success result`() {
+        //Give
+        val newProject = getNewProject()
         //When
-        val result = editProjectDescription.editProject(getNewProject())
+        val result = editProjectDescription.editProject(newProject)
         //Then
         assertEquals(expected = Result.success(Unit), actual = result)
     }
 
     @Test
     fun `Given empty description,When updating database,Then returns success result`() {
+        //Give
+        val newProject = getNewProject()
         //When
-        val result = editProjectDescription.editProject(getNewProject().copy(description = ""))
+        val result = editProjectDescription.editProject(newProject.copy(description = ""))
         //Then
         assertEquals(expected = Result.success(Unit), actual = result)
     }
@@ -39,17 +43,21 @@ class EditProjectTest {
 
     @Test
     fun `Given new project, When updating database but exception is thrown, Then returns failure with cause`() {
+        //Give
+        val newProject = getNewProject()
         every { projectsRepository.editProject(any()) } throws Exception()
         //When
-        val result = editProjectDescription.editProject(getNewProject())
+        val result = editProjectDescription.editProject(newProject)
         //Then
         assertEquals(expected = Result.failure(Exception()), actual = result)
     }
 
     @Test
     fun `Given new project with empty title, When validating, Then returns failure with cause`() {
+        //Give
+        val newProject = getNewProject()
         //When
-        val result = editProjectDescription.editProject(getNewProject())
+        val result = editProjectDescription.editProject(newProject)
         //Then
         assertEquals(expected = Result.failure(IllegalArgumentException()), actual = result)
     }
