@@ -9,8 +9,8 @@ class EditUserUseCase(
     private val repository: AuthenticationRepository
 ) {
     fun editUser(user: User): Boolean {
-        if (user.name == "") throw IllegalArgumentException("Can't put the name empty")
-        if (user.password == "") throw IllegalArgumentException("Can't put the password empty")
+        if (user.name.isBlank()) throw IllegalArgumentException("Can't put the name empty")
+        if (user.password.isBlank()) throw IllegalArgumentException("Can't put the password empty")
 
         return repository.editUser(userId = user.id)
 
