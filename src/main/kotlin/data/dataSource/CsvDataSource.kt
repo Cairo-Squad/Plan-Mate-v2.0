@@ -2,7 +2,7 @@ package data.dataSource
 
 import data.database.FileHandler
 import data.dto.*
-import java.util.*
+import java.util.UUID
 
 class CsvDataSource(
     private val logsCsvHandler: FileHandler<LogDto>,
@@ -19,8 +19,21 @@ class CsvDataSource(
         TODO("Not yet implemented")
     }
 
+    override fun getProjectById(projectId: UUID): ProjectDto {
+       return projectsCsvHandler.readAll()
+           .first { projectDto -> projectDto.id == projectId}
+    }
+
     override fun getAllTasks(): List<TaskDto> {
         TODO("Not yet implemented")
+    }
+
+    override fun getTasksByProjectId(projectId: UUID): List<TaskDto> {
+        return tasksCsvHandler.readAll().filter { it.projectId == projectId }
+    }
+
+    override fun getAllStates(): List<StateDto> {
+        return statesCsvHandler.readAll()
     }
 
     override fun getAllAuditRecords(): List<LogDto> {
