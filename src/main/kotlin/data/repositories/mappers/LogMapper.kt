@@ -16,7 +16,7 @@ fun LogDto.toLog(): Log{
 	)
 }
 
-fun Log.toLogDto(userAction: UserAction): LogDto{
+fun Log.toLogDto(): LogDto{
 	return LogDto(
 		id = this.id,
 		entityId = this.entityId,

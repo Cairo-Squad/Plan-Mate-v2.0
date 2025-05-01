@@ -15,6 +15,7 @@ interface DataSource {
     fun getAllStates(): List<StateDto>
 
     fun getAllAuditRecords(): List<LogDto>
+    fun addProjectLog(logDto: LogDto)
     fun getProjectLog(projectId: UUID): List<LogDto>
     fun createProject(project: ProjectDto):Result<Unit>
     fun deleteProjectById(project: ProjectDto): Result<Unit>

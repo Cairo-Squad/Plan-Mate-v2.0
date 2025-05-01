@@ -41,6 +41,10 @@ class CsvDataSource(
         TODO("Not yet implemented")
     }
 
+    override fun addProjectLog(logDto: LogDto) {
+        logsCsvHandler.write(logDto)
+    }
+
     override fun deleteProjectById(project: ProjectDto): Result<Unit> {
         return try {
             projectsCsvHandler.delete(project)
