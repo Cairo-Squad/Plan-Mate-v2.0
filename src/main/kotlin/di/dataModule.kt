@@ -10,6 +10,5 @@ import data.dto.ProjectDto
 import org.koin.dsl.module
 
 val dataModule = module {
-    single<FileHandler<ProjectDto>> { ProjectsCsvHandler(PROJECTS_CSV_FILE_PATH, PROJECTS_CSV_FILE_HEADERS) }
     single<DataSource> { CsvDataSource(get(),get(),get(),get(),get()) }
 }

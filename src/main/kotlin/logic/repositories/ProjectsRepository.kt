@@ -1,10 +1,8 @@
 package logic.repositories
 
 import logic.model.Project
-
-import logic.model.Project
 import logic.model.User
-import java.util.UUID
+import java.util.*
 
 interface ProjectsRepository {
 

@@ -22,6 +22,5 @@ interface DataSource {
     fun createProject(project: ProjectDto):Result<Unit>
 
 
-    fun getAllProjects(): List<ProjectDto>
     fun editProject(newProject: ProjectDto)
 }

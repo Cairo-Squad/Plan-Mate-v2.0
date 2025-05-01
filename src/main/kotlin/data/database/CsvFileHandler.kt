@@ -28,7 +28,7 @@ abstract class CsvFileHandler<DTO>(
         }
     }
 
-    fun writeAll(entities: List<DTO>) {
+    private fun writeAll(entities: List<DTO>) {
         BufferedWriter(FileWriter(file, false)).use { writer ->
             writer.appendLine(headers.joinToString(","))
             entities.forEach { entity ->
@@ -37,7 +37,7 @@ abstract class CsvFileHandler<DTO>(
         }
     }
 
-    fun readAll(): List<DTO> {
+    override fun readAll(): List<DTO> {
         return file.readLines()
             .asSequence()
             .drop(1)
