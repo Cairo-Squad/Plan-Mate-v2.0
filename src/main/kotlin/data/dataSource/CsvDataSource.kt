@@ -33,16 +33,25 @@ class CsvDataSource(
         TODO("Not yet implemented")
     }
 
-    override fun getTasksByProjectId(projectId: UUID): List<TaskDto> {
-        return tasksCsvHandler.readAll().filter { it.projectId == projectId }
-    }
-
     override fun getAllStates(): List<StateDto> {
         return statesCsvHandler.readAll()
     }
 
     override fun getAllAuditRecords(): List<LogDto> {
         TODO("Not yet implemented")
+    }
+
+    override fun deleteProjectById(project: ProjectDto): Result<Unit> {
+        return try {
+            projectsCsvHandler.delete(project)
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    override fun getTasksByProjectId(projectId: UUID): List<TaskDto> {
+        return tasksCsvHandler.readAll().filter { it.id == projectId }
     }
 
     override fun getProjectLog(projectId: UUID): List<LogDto> {
