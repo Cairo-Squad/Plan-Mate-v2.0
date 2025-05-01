@@ -1,11 +1,6 @@
 package data.database
 
-import logic.exception.DtoNotFoundException
-import logic.exception.UserNotChangedException
-import logic.exceptions.EntityNotFoundException
-import logic.exceptions.CsvReadException
-import logic.exception.CsvWriteException
-import logic.exception.UnknownException
+import logic.exception.*
 import java.io.BufferedWriter
 import java.io.File
 import java.io.FileWriter
