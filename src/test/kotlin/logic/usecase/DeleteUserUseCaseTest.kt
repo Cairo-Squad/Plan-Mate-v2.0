@@ -6,6 +6,7 @@ import io.mockk.mockk
 import logic.repositories.AuthenticationRepository
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import java.util.*
 
 class DeleteUserUseCaseTest {
@@ -43,4 +44,19 @@ class DeleteUserUseCaseTest {
         // Then
         assertThat(result).isFalse()
     }
+    @Test
+    fun `should throw exception when authenticationRepository throws error during delete`() {
+        // Given
+        val mockUsers = FakeData.mockUsers
+        every { authenticationRepository.deleteUser(any()) } throws RuntimeException("error when delete in database")
+
+        // When
+        val exception = assertThrows<Exception> {
+            deleteUserUseCase.deleteUser(mockUsers[0].id)
+        }
+
+        // Then
+        assertThat(exception).hasMessageThat().isEqualTo("error  during delete")
+    }
+
 }
