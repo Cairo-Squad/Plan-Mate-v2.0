@@ -1,12 +1,14 @@
 package di
 
+import org.koin.dsl.module
 import logic.usecase.CreateProjectUseCase
 import logic.usecase.DeleteProjectUseCase
-import org.koin.dsl.module
+import logic.usecase.EditProjectUseCase
+import logic.usecase.project.GetAllProjectsUseCase
 import logic.usecase.project.GetProjectByIdUseCase
 
-
 val useCasesModule = module {
+    single { EditProjectUseCase(get()) }
     single { CreateProjectUseCase(repository = get()) }
     single { GetProjectByIdUseCase(projectsRepository = get()) }
     single { DeleteProjectUseCase(projectsRepository = get()) }

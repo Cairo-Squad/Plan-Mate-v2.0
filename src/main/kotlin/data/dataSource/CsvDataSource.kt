@@ -24,6 +24,11 @@ class CsvDataSource(
            .first { projectDto -> projectDto.id == projectId}
     }
 
+    override fun editProject(newProject: ProjectDto) {
+        projectsCsvHandler.edit(newProject)
+    }
+
+
     override fun getAllTasks(): List<TaskDto> {
         TODO("Not yet implemented")
     }

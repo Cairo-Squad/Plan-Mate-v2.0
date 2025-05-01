@@ -12,6 +12,7 @@ class ProjectsCsvHandler(
     headers = headers,
     getDtoId = { it.id }
 ) {
+
     override fun fromDtoToCsvRow(entity: ProjectDto): String {
         val rowStringBuilder = StringBuilder()
         rowStringBuilder.append("${entity.id}")
@@ -22,7 +23,7 @@ class ProjectsCsvHandler(
         rowStringBuilder.append(",${entity.stateId}}")
         return rowStringBuilder.toString()
     }
-    
+
     override fun fromCsvRowToDto(row: String): ProjectDto {
         val projectData = row.split(",")
         return ProjectDto(

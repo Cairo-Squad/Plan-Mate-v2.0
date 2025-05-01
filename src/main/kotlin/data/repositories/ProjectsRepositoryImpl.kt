@@ -2,16 +2,15 @@ package data.repositories
 
 import data.dataSource.DataSource
 import data.repositories.mappers.toProject
+import data.repositories.mappers.toProjectDto
 import data.repositories.mappers.toState
 import data.repositories.mappers.toTask
+import logic.repositories.ProjectsRepository
 import logic.model.Project
 import logic.model.State
 import logic.model.Task
-import java.util.UUID
-import data.repositories.mappers.toProjectDto
 import logic.model.User
-
-import logic.repositories.ProjectsRepository
+import java.util.UUID
 
 class ProjectsRepositoryImpl(
     private val dataSource: DataSource
@@ -35,6 +34,7 @@ class ProjectsRepositoryImpl(
             return Result.failure(exception)
         }
     }
+
     override fun getAllProjects(): Result<List<Project>> {
         val projects = dataSource.getAllProjects().map { projectDto ->
             val state = getState(projectDto.stateId)
@@ -53,12 +53,16 @@ class ProjectsRepositoryImpl(
         return Result.success(Unit)
     }
 
+    override fun editProject(newProject: Project) {
+        dataSource.editProject(newProject.toProjectDto())
+    }
+
+
     private fun getState(stateId: UUID): State {
         return dataSource.getAllStates()
             .first { it.id == stateId }
             .toState()
     }
-
 
     private fun getProjectState(stateId: UUID): State {
         return dataSource.getAllStates().first { it.id == stateId }.toState()
@@ -66,7 +70,6 @@ class ProjectsRepositoryImpl(
 
     private fun getTasksForProject(projectId: UUID): List<Task> {
         return dataSource.getTasksByProjectId(projectId)
-            .map { it.toTask(projectState = getProjectState(it.stateId)) }
+            .map { it.toTask(projectState = getState(it.stateId)) }
     }
-
 }

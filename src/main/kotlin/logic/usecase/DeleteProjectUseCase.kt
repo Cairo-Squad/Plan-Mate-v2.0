@@ -1,7 +1,7 @@
 package logic.usecase
 
 import logic.repositories.ProjectsRepository
-import java.util.*
+import java.util.UUID
 import kotlin.NoSuchElementException
 
 class DeleteProjectUseCase(
