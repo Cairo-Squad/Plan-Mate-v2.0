@@ -9,8 +9,9 @@ import logic.repositories.TasksRepository
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import java.util.*
+import kotlin.NoSuchElementException
 
-class GetTaskByIdUseCaseTest {
+class GetTaskBytIdUseCaseTest {
     lateinit var getTaskByIdUseCase: GetTaskBytIdUseCase
     lateinit var taskRepository: TasksRepository
 
@@ -26,24 +27,37 @@ class GetTaskByIdUseCaseTest {
         every { taskRepository.getTaskById(validTask().id) } returns validTask()
 
         // When
-        val actualTask = getTaskByIdUseCase.getTaskById(validTask().id)
+        val actualResult = getTaskByIdUseCase.getTaskById(validTask().id)
 
         // Then
-        assertThat(actualTask).isEqualTo(validTask())
+        assertThat(actualResult).isEqualTo(validTask())
     }
 
     @Test
     fun `should throw exception when task does not exist`() {
         // Given
-        val taskId = UUID.randomUUID()
-        every { taskRepository.getTaskById(taskId) } throws NoSuchElementException("Task not found")
+        every { taskRepository.getTaskById(taskId = UUID.randomUUID()) } throws NoSuchElementException("Task not found")
 
         // When & Then
         val exception = org.junit.jupiter.api.assertThrows<NoSuchElementException> {
-            getTaskByIdUseCase.getTaskById(taskId)
+            getTaskByIdUseCase.getTaskById(UUID.randomUUID())
         }
 
         assertThat(exception.message).isEqualTo("Task not found")
+    }
+
+    @Test
+    fun `should handle repository failure gracefully`() {
+        // Given
+        val taskId = UUID.randomUUID()
+        every { taskRepository.getTaskById(taskId) } throws RuntimeException("Unexpected error")
+
+        // When & Then
+        val exception = org.junit.jupiter.api.assertThrows<RuntimeException> {
+            getTaskByIdUseCase.getTaskById(taskId)
+        }
+
+        assertThat(exception.message).isEqualTo("Unexpected error")
     }
 
     private fun validTask(): Task {
