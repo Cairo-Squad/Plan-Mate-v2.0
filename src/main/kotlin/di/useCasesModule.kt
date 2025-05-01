@@ -5,4 +5,5 @@ import org.koin.dsl.module
 
 val useCasesModule = module {
     single { GetProjectByIdUseCase(projectsRepository = get()) }
+    single { GetAllProjectsUseCase(projectsRepository = get()) }
 }

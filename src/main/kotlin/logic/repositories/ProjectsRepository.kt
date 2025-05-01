@@ -5,4 +5,5 @@ import java.util.UUID
 
 interface ProjectsRepository {
     fun getProjectById(projectId: UUID): Result<Project>
+    fun getAllProjects(): Result<List<Project>>
 }

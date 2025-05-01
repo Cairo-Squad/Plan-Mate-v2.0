@@ -8,7 +8,6 @@ import logic.model.Project
 import logic.model.State
 import logic.model.Task
 import logic.repositories.ProjectsRepository
-import java.util.*
 
 class ProjectsRepositoryImpl(
     private val dataSource: DataSource
@@ -28,6 +27,17 @@ class ProjectsRepositoryImpl(
         } catch (exception: Exception){
             return Result.failure(exception)
         }
+    }
+    override fun getAllProjects(): Result<List<Project>> {
+        val projects = dataSource.getAllProjects().map { projectDto ->
+            val state = getState(projectDto.stateId)
+            val tasks = getTasksForProject(projectDto.id)
+            projectDto.toProject(
+                projectState = state,
+                projectTasks = tasks
+            )
+        }
+        return Result.success(projects)
     }
 
     private fun getState(stateId: UUID): State {

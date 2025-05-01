@@ -16,7 +16,7 @@ class CsvDataSource(
     }
 
     override fun getAllProjects(): List<ProjectDto> {
-        TODO("Not yet implemented")
+        return projectsCsvHandler.readAll()
     }
 
     override fun getProjectById(projectId: UUID): ProjectDto {
