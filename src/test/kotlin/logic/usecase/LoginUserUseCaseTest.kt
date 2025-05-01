@@ -6,6 +6,7 @@ import logic.usecase.FakeData
 import logic.usecase.LoginUserUseCase
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 
 class LoginUserUseCaseTest {
     private lateinit var authenticationRepository : AuthenticationRepository
@@ -21,6 +22,7 @@ class LoginUserUseCaseTest {
     fun `should return true when valid username and password`() {
         //Given
         val mockUsers=FakeData.mockUsers
+        every { authenticationRepository.getAllUsers() } returns FakeData.mockUsers
 
         //when
         val result = loginUserUseCase.login(mockUsers[0].name,mockUsers[0].password)
@@ -33,9 +35,10 @@ class LoginUserUseCaseTest {
     fun `should return false when  username valid and password is invalid`() {
         //Given
         val mockUsers=FakeData.mockUsers
+        every { authenticationRepository.getAllUsers() } returns FakeData.mockUsers
 
         //when
-        val result = loginUserUseCase.login(mockUsers[0].name,mockUsers[0].password)
+        val result = loginUserUseCase.login(mockUsers[0].name,"123456789")
 
         //Then
         assertThat(result).isFalse()
@@ -45,11 +48,22 @@ class LoginUserUseCaseTest {
     fun `should return false when  username is invalid and password is valid`() {
         //Given
         val mockUsers=FakeData.mockUsers
+        every { authenticationRepository.getAllUsers() } returns FakeData.mockUsers
 
         //when
-        val result = loginUserUseCase.login(mockUsers[0].name,mockUsers[0].password)
+        val result = loginUserUseCase.login("ali",mockUsers[0].password)
 
         //Then
         assertThat(result).isFalse()
+    }
+    @Test
+    fun `should throw exception when repository throws error`() {
+        every { authenticationRepository.getAllUsers() } throws RuntimeException("during get data error")
+
+        val exception = assertThrows<Exception> {
+            loginUserUseCase.login("nour", "12345")
+        }
+
+        assertThat(exception).hasMessageThat().isEqualTo("error  during login")
     }
 }
