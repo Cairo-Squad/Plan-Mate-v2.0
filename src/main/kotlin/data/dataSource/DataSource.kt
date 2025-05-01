@@ -4,8 +4,8 @@ import data.dto.UserDto
 import data.dto.ProjectDto
 import data.dto.TaskDto
 import data.dto.LogDto
-import data.dto.StateDto
 import java.util.UUID
+import data.dto.StateDto
 
 interface DataSource {
     fun getAllUsers(): List<UserDto>
@@ -17,4 +17,5 @@ interface DataSource {
     fun getAllStates(): List<StateDto>
 
     fun getAllAuditRecords(): List<LogDto>
+    fun getProjectLog(projectId: UUID): List<LogDto>
 }

@@ -39,4 +39,9 @@ class CsvDataSource(
     override fun getAllAuditRecords(): List<LogDto> {
         TODO("Not yet implemented")
     }
+
+    override fun getProjectLog(projectId: UUID): List<LogDto> {
+        return logsCsvHandler.readAll()
+            .filter { it.entityType == EntityType.PROJECT && it.entityId == projectId }
+    }
 }
