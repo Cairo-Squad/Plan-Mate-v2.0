@@ -8,6 +8,9 @@ import logic.model.Project
 import logic.model.State
 import logic.model.Task
 import java.util.UUID
+import data.repositories.mappers.toProjectDto
+import logic.model.User
+
 import logic.repositories.ProjectsRepository
 
 class ProjectsRepositoryImpl(
@@ -44,14 +47,26 @@ class ProjectsRepositoryImpl(
         return Result.success(projects)
     }
 
+    override fun deleteProject(projectId: UUID): Result<Unit> {
+        val projectsDao = dataSource.getAllProjects().find { it.id == projectId } ?: return Result.failure(Exception())
+        dataSource.deleteProjectById(projectsDao)
+        return Result.success(Unit)
+    }
+
     private fun getState(stateId: UUID): State {
         return dataSource.getAllStates()
             .first { it.id == stateId }
             .toState()
     }
 
+
+    private fun getProjectState(stateId: UUID): State {
+        return dataSource.getAllStates().first { it.id == stateId }.toState()
+    }
+
     private fun getTasksForProject(projectId: UUID): List<Task> {
         return dataSource.getTasksByProjectId(projectId)
-            .map { it.toTask(projectState = getState(it.stateId)) }
+            .map { it.toTask(projectState = getProjectState(it.stateId)) }
     }
+
 }
