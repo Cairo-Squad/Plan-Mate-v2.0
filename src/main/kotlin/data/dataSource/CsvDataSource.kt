@@ -2,10 +2,7 @@ package data.dataSource
 
 import data.database.FileHandler
 import data.dto.*
-import java.util.*
-import data.repositories.mappers.toTaskDto
-import data.repositories.mappers.toTask
-import java.util.UUID
+import kotlin.uuid.Uuid
 
 class CsvDataSource(
     private val logsCsvHandler: FileHandler<LogDto>,
@@ -46,16 +43,15 @@ class CsvDataSource(
             Result.failure(e)
         }
     }
+    override fun getTaskById(taskID: UUID): TaskDto {
 
-    override fun getTaskById(taskID: UUID):TaskDto {
-
-            val task = tasksCsvHandler.readAll().find { it.id == taskID }
-             return task!!
+        val task = tasksCsvHandler.readAll().find { it.id == taskID }
+        return task!!
 
     }
 
     override fun getStateById(stateId: UUID): StateDto {
         val stateDto = statesCsvHandler.readAll().find { it.id == stateId }
-            return stateDto!!
+        return stateDto!!
     }
 }
