@@ -1,7 +1,5 @@
 package data.database
 
-import logic.exception.DtoNotFoundException
-import logic.exception.UserNotChangedException
 import java.io.BufferedWriter
 import java.io.File
 import java.io.FileWriter
@@ -53,7 +51,7 @@ abstract class CsvFileHandler<DTO>(
         val allEntities = readAll()
 
         val index = allEntities.indexOfFirst { getDtoId(it) == entityId }
-        if (index == -1) throw DtoNotFoundException()
+        if (index == -1) throw Exception("Not found Dto")
 
         val updatedEntities = allEntities.toMutableList().apply {
             this[index] = entity
