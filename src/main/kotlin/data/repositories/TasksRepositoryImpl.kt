@@ -1,12 +1,13 @@
 package data.repositories
 
 import data.dataSource.DataSource
-import data.database.ProjectsCsvHandler
-import data.database.TasksCsvHandler
-import data.dto.TaskDto
+import data.dto.StateDto
+import data.repositories.mappers.toState
+import data.repositories.mappers.toTask
+import data.repositories.mappers.toTaskDto
 import logic.model.Task
 import logic.repositories.TasksRepository
-import data.repositories.mappers.toTaskDto
+import java.util.UUID
 
 class TasksRepositoryImpl(
     private val dataSource: DataSource
@@ -16,4 +17,14 @@ class TasksRepositoryImpl(
         return dataSource.createTask(task.toTaskDto())
     }
 
+    override fun getTaskById(taskID: UUID): Task {
+
+        val taskDto = dataSource.getTaskById(taskID)
+        val taskState = getStateById(taskDto.stateId)
+        return taskDto.toTask(taskState.toState())
+    }
+
+    private fun getStateById(stateId: UUID): StateDto {
+        return dataSource.getStateById(stateId)
+    }
 }
