@@ -18,4 +18,5 @@ interface DataSource {
 
     fun getAllAuditRecords(): List<LogDto>
     fun getProjectLog(projectId: UUID): List<LogDto>
+    fun createProject(project: ProjectDto):Result<Unit>
 }

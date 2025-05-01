@@ -7,11 +7,15 @@ import data.repositories.mappers.toTask
 import logic.model.Project
 import logic.model.State
 import logic.model.Task
+import java.util.UUID
 import logic.repositories.ProjectsRepository
 
 class ProjectsRepositoryImpl(
     private val dataSource: DataSource
 ) : ProjectsRepository {
+    override fun createProject(project: Project,user: User): Result<Unit> {
+        return dataSource.createProject(project.toProjectDto())
+    }
     override fun getProjectById(projectId: UUID): Result<Project> {
         return try {
             val projectDto = dataSource.getProjectById(projectId)

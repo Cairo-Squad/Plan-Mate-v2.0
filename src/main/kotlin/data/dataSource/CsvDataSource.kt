@@ -2,7 +2,6 @@ package data.dataSource
 
 import data.database.FileHandler
 import data.dto.*
-import java.util.UUID
 
 class CsvDataSource(
     private val logsCsvHandler: FileHandler<LogDto>,
@@ -44,4 +43,13 @@ class CsvDataSource(
         return logsCsvHandler.readAll()
             .filter { it.entityType == EntityType.PROJECT && it.entityId == projectId }
     }
+    override fun createProject(project: ProjectDto): Result<Unit> {
+        return try {
+            projectsCsvHandler.write(project)
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
 }
