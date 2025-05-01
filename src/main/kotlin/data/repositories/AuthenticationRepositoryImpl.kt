@@ -7,7 +7,6 @@ import data.hashing.PasswordHasher
 import data.repositories.mappers.toUser
 import logic.model.User
 import logic.repositories.AuthenticationRepository
-import java.util.*
 import java.util.UUID
 
 class AuthenticationRepositoryImpl(
