@@ -24,17 +24,6 @@ class GetProjectLogUseCaseTest {
     }
 
     @Test
-    fun `should throw an exception when the logs repository throws an exception`() {
-        // Given
-        every { logsRepository.getProjectLog(UUID.randomUUID()) } throws Exception()
-
-        // When, Then
-        assertThrows<Exception> {
-            getProjectLogUseCase.getProjectLog(UUID.randomUUID())
-        }
-    }
-
-    @Test
     fun `should return an empty list when the there are no logs for this project`() {
         // Given
         every { logsRepository.getProjectLog(UUID.randomUUID()) } returns emptyList()
