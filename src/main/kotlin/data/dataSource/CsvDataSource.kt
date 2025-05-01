@@ -11,8 +11,29 @@ class CsvDataSource(
     private val tasksCsvHandler: FileHandler<TaskDto>,
     private val usersCsvHandler: FileHandler<UserDto>
 ) : DataSource {
+    override fun createUser(id: UUID, name: String, password: String, type: UserType): UserDto {
+        val userDto = UserDto(
+            id = UUID.randomUUID(),
+            name = name,
+            password = password,
+            type = type
+        )
+
+        usersCsvHandler.write(userDto)
+        return userDto
+    }
+
     override fun getAllUsers(): List<UserDto> {
-        TODO("Not yet implemented")
+       val users= usersCsvHandler.readAll()
+        return users
+    }
+
+    override fun editUser(user: UserDto) {
+        return usersCsvHandler.edit(user)
+    }
+
+    override fun deleteUser(user:UserDto) {
+        usersCsvHandler.delete(user)
     }
 
     override fun createProject(project: ProjectDto): Result<Unit> {
