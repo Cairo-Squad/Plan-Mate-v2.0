@@ -16,7 +16,7 @@ class TasksRepositoryImpl(
     override fun getTaskById(taskID: UUID): Task {
 
         val taskDto = dataSource.getTaskById(taskID)
-        val taskState = getStateById(taskDto.stateId)
+        val taskState = dataSource.getStateById(taskDto.stateId)
         return taskDto.toTask(taskState.toState())
     }
 
@@ -28,7 +28,5 @@ class TasksRepositoryImpl(
         dataSource.deleteTask(task.toTaskDto())
     }
 
-    private fun getStateById(stateId: UUID): StateDto {
-        return dataSource.getStateById(stateId)
-    }
+
 }
