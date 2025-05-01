@@ -10,9 +10,20 @@ import java.util.*
 interface DataSource {
     fun createUser(id: UUID, name:String, password:String, type:UserType): UserDto
     fun getAllUsers(): List<UserDto>
+    fun editUser(user: UserDto)
     fun deleteUser(user:UserDto)
     fun getAllProjects(): List<ProjectDto>
     fun getAllTasks(): List<TaskDto>
     fun getAllAuditRecords(): List<LogDto>
-    fun editUser(user: UserDto)
+    fun createTask(task: TaskDto): Result<Unit>
+    fun editTask(task: TaskDto)
+    fun deleteTask(task: TaskDto)
+
+    // region Logs
+    fun recordLog(log: LogDto)
+    fun getTaskLogs(taskId: UUID): List<LogDto>
+
+    // endregion
+    fun getTaskById(taskID: UUID): TaskDto
+    fun getStateById(stateId: UUID): StateDto
 }
