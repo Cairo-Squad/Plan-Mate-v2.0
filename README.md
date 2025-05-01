@@ -1,10 +1,11 @@
-PlanMate - Task Management CLI Application 📝🛠️
+# PlanMate - Task Management CLI Application 📝🛠️
 > A test-driven, layered architecture task management system built in Kotlin following SOLID principles. 🔥
 
 ✨ Overview
 PlanMate is a command-line task management application designed to help teams stay organized! It supports Admins and Mates , dynamic task states, and a powerful audit system  to track changes.
 
 🔥 Features
+
 ✅ User Management
 
 Supports Admins & Mates 
@@ -40,9 +41,10 @@ Example log:
 👤 User 'abc' changed task 'XYZ-001' from 'InProgress' to 'InDevReview' at 2025/05/24 8:00 PM.
 ⚡ Technical Architecture
 🛠️ Layered Architecture
+
 PlanMate follows a simple, uni-directional dependency rule 🔄:
 
-💾 Data ➡ ⚡ Logic ➡ 🖥️ UI
+Data ➡  Logic ➡ UI
 💾 data → Handles CSV-based storage for users, projects, tasks 
 
 ⚡ logic → Contains business logic (repositories, authentication, task management) 
