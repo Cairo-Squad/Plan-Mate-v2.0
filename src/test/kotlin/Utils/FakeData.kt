@@ -1,25 +1,26 @@
 package Utils
 
-import data.dto.ProjectDto
+import logic.model.Project
+import logic.model.State
 import java.util.*
 
 object FakeData {
     val fakeProjects = listOf(
-        ProjectDto(
+        Project(
             id = UUID.randomUUID(),
             title = "transaction",
             description = "financial",
             tasks = emptyList(),
             createdBy = UUID.randomUUID(),
-            stateId = UUID.randomUUID()
+            state = State(id = UUID.randomUUID(), title = "ToDo")
 
-        ), ProjectDto(
+        ), Project(
             id = UUID.randomUUID(),
             title = "food",
             description = "cultural",
             tasks = emptyList(),
             createdBy = UUID.randomUUID(),
-            stateId = UUID.randomUUID()
+            state = State(id = UUID.randomUUID(), title = "Done")
         )
     )
 

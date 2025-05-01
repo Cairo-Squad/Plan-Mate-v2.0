@@ -1,9 +1,6 @@
 package data.dataSource
 
-import data.dto.UserDto
-import data.dto.ProjectDto
-import data.dto.TaskDto
-import data.dto.LogDto
+import data.dto.*
 import java.util.UUID
 
 interface DataSource {
@@ -11,4 +8,6 @@ interface DataSource {
     fun getAllProjects(): List<ProjectDto>
     fun getAllTasks(): List<TaskDto>
     fun getAllAuditRecords(): List<LogDto>
+    fun deleteProjectById(project: ProjectDto):Result<Unit>
+    fun getAllStates():List<StateDto>
 }

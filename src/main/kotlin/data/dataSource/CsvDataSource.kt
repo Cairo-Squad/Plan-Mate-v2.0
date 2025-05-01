@@ -25,5 +25,16 @@ class CsvDataSource(
     override fun getAllAuditRecords(): List<LogDto> {
         TODO("Not yet implemented")
     }
+    override fun deleteProjectById(project: ProjectDto):Result<Unit>{
+        return try {
+            projectsCsvHandler.delete(project)
+            Result.success(Unit)
+        }catch (e:Exception){
+            Result.failure(e)
+        }
+    }
 
+    override fun getAllStates(): List<StateDto> {
+        return statesCsvHandler.readAll()
+    }
 }
