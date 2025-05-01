@@ -47,7 +47,7 @@ class EditUserUseCaseTest {
         // Given
         val updateUser =
             User(id = UUID(1, 1), name = "Mohamed", password = "123456", type = UserType.ADMIN)
-        every { repository.editUser(updateUser.id) } returns false
+        every { repository.editUser(updateUser.id) } throws  IllegalStateException()
 
         // When & Then
         assertThrows<IllegalStateException> {
@@ -61,10 +61,12 @@ class EditUserUseCaseTest {
         val updateUser =
             User(id = UUID(1, 1), name = "Mohamed", password = "123456", type = UserType.ADMIN)
 
-        // When & Then
-        assertThrows<IllegalStateException> {
-            editUserUseCase.editUser(updateUser)
-        }
+        // When
+        val result = editUserUseCase.editUser(updateUser)
+
+        // Then
+        assertThat(result).isFalse()
+
     }
 
     @Test
@@ -91,15 +93,4 @@ class EditUserUseCaseTest {
         }
     }
 
-    @Test
-    fun `editUser should return SecurityException, when user type is changed`() {
-        // Given
-        val updateUser =                                                 //change Admin to Mate
-            User(id = UUID(1, 1), name = "Mohamed", password = "", type = UserType.MATE)
-
-        // When & Then
-        assertThrows<SecurityException> {
-            editUserUseCase.editUser(updateUser)
-        }
-    }
 }

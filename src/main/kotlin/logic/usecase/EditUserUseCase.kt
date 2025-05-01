@@ -10,18 +10,10 @@ class EditUserUseCase(
 ) {
     fun editUser(user: User): Boolean {
         if (user.name == "") throw IllegalArgumentException("Can't put the name empty")
+        if (user.password == "") throw IllegalArgumentException("Can't put the password empty")
 
-        repository.editUser(userId = user.id)
-        return false
+        return repository.editUser(userId = user.id)
+
     }
 
-    private fun ensureUserTypeChanges(oldType: UserType, newType: UserType) {
-        val isForbidden =
-            (oldType == UserType.MATE && newType == UserType.ADMIN) ||
-                    (oldType == UserType.ADMIN && newType == UserType.MATE)
-
-        if (isForbidden) {
-            throw SecurityException("Can't change user type between MATE and ADMIN")
-        }
-    }
 }

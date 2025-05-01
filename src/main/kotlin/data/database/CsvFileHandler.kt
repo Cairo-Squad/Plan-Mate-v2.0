@@ -46,11 +46,20 @@ abstract class CsvFileHandler<DTO>(
             .toList()
     }
 
-    override fun edit(entity: DTO) {
-        val allEntities = readAll().map { currentEntity ->
-            if (getDtoId(currentEntity) == getDtoId(entity)) entity else currentEntity
-        }
-        writeAll(allEntities)
+    override fun edit(entity: DTO): Boolean {
+        val entityId = getDtoId(entity) ?: false
+
+        return readAll()
+            .map { currentEntity ->
+                if (getDtoId(currentEntity) == entityId && currentEntity != entity) entity
+                else currentEntity
+            }
+            .let { updatedEntities ->
+                if (updatedEntities != readAll()) {
+                    writeAll(updatedEntities)
+                    true
+                } else false
+            }
     }
 
     override fun delete(entity: DTO) {
