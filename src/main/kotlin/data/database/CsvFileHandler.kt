@@ -1,8 +1,13 @@
 package data.database
 
+import logic.exceptions.CsvReadException
+import logic.exceptions.CsvWriteException
+import logic.exceptions.EntityNotFoundException
+import logic.exceptions.UnknownException
 import java.io.BufferedWriter
 import java.io.File
 import java.io.FileWriter
+import java.io.IOException
 import java.util.*
 
 abstract class CsvFileHandler<DTO>(
@@ -37,14 +42,6 @@ abstract class CsvFileHandler<DTO>(
         }
     }
 
-    override fun readAll(): List<DTO> {
-        return file.readLines()
-            .asSequence()
-            .drop(1)
-            .filter { it.isNotBlank() }
-            .map { fromCsvRowToDto(it) }
-            .toList()
-    }
 
     override fun edit(entity: DTO) {
         val allEntities = readAll().map { currentEntity ->
@@ -53,12 +50,38 @@ abstract class CsvFileHandler<DTO>(
         writeAll(allEntities)
     }
 
-    override fun delete(entity: DTO) {
-        val allEntities = readAll().filter { currentEntity ->
-            getDtoId(currentEntity) != getDtoId(entity)
+    override fun readAll(): List<DTO> {
+        return try {
+            file.readLines()
+                .asSequence()
+                .drop(1)
+                .filter { it.isNotBlank() }
+                .map { fromCsvRowToDto(it) }
+                .toList()
+        } catch (e: IOException) {
+            throw CsvReadException()
+        } catch (e: Exception) {
+            throw UnknownException()
         }
-        writeAll(allEntities)
     }
+
+    override fun delete(entity: DTO) {
+        try {
+            val allEntities = readAll()
+            if (allEntities.none { getDtoId(it) == getDtoId(entity) }) {
+                throw EntityNotFoundException()
+            }
+            val updatedEntities = allEntities.filter { getDtoId(it) != getDtoId(entity) }
+            writeAll(updatedEntities)
+        } catch (e: EntityNotFoundException) {
+            println("Error: ${e.message}")
+        } catch (e: IOException) {
+            throw CsvWriteException()
+        } catch (e: Exception) {
+            throw UnknownException()
+        }
+    }
+
 
     abstract fun fromDtoToCsvRow(entity: DTO): String
 

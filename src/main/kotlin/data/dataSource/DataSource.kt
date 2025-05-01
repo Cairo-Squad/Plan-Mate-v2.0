@@ -1,10 +1,11 @@
 package data.dataSource
 
+import data.dto.*
+import java.util.UUID
 import data.dto.UserDto
 import data.dto.ProjectDto
 import data.dto.TaskDto
 import data.dto.LogDto
-import java.util.UUID
 
 interface DataSource {
     fun getAllUsers(): List<UserDto>
@@ -17,5 +18,8 @@ interface DataSource {
     // region Logs
     fun recordLog(log: LogDto)
     fun getTaskLogs(taskId: UUID): List<LogDto>
+
     // endregion
+    fun getTaskById(taskID: UUID): TaskDto
+    fun getStateById(stateId: UUID): StateDto
 }
