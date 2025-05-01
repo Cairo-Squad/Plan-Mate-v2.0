@@ -2,6 +2,7 @@ package data.dataSource
 
 import data.database.FileHandler
 import data.dto.*
+import java.util.*
 
 class CsvDataSource(
     private val logsCsvHandler: FileHandler<LogDto>,
@@ -10,9 +11,27 @@ class CsvDataSource(
     private val tasksCsvHandler: FileHandler<TaskDto>,
     private val usersCsvHandler: FileHandler<UserDto>
 ) : DataSource {
-    override fun getAllUsers(): List<UserDto> {
-        TODO("Not yet implemented")
+    override fun createUser(id: UUID, name: String, password: String, type: UserType): UserDto {
+        val userDto = UserDto(
+            id = UUID.randomUUID(),
+            name = name,
+            password = password,
+            type = type
+        )
+        
+        usersCsvHandler.write(userDto)
+        return userDto
     }
+    
+    override fun getAllUsers(): List<UserDto> {
+       val users= usersCsvHandler.readAll()
+        return users
+    }
+
+    override fun deleteUser(user:UserDto) {
+        usersCsvHandler.delete(user)
+    }
+
 
     override fun getAllProjects(): List<ProjectDto> {
         TODO("Not yet implemented")
@@ -24,5 +43,9 @@ class CsvDataSource(
 
     override fun getAllAuditRecords(): List<LogDto> {
         TODO("Not yet implemented")
+    }
+
+    override fun editUser(user: UserDto) {
+        return usersCsvHandler.edit(user)
     }
 }
