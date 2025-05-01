@@ -1,7 +1,6 @@
 package data.repositories
 
 import data.dataSource.DataSource
-import data.dto.StateDto
 import data.repositories.mappers.toState
 import data.repositories.mappers.toTask
 import data.repositories.mappers.toTaskDto
@@ -22,6 +21,9 @@ class TasksRepositoryImpl(
 
     override fun createTask(task: Task): Result<Unit> {
         return dataSource.createTask(task.toTaskDto())
+    }
+
+    override fun editTask(task: Task) {
     }
 
     override fun deleteTask(task: Task) {
