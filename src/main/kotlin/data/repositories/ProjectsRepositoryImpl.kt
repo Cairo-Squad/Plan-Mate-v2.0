@@ -8,11 +8,26 @@ import logic.model.Project
 import logic.model.State
 import logic.model.Task
 import logic.repositories.ProjectsRepository
-import java.util.UUID
 
 class ProjectsRepositoryImpl(
     private val dataSource: DataSource
 ) : ProjectsRepository {
+    override fun getProjectById(projectId: UUID): Result<Project> {
+        return try {
+            val projectDto = dataSource.getProjectById(projectId)
+
+            Result.success(
+                projectDto.toProject(
+                    projectState = getState(projectDto.stateId),
+                    projectTasks = getTasksForProject(projectId),
+                )
+            )
+        } catch (exception: NoSuchElementException){
+            return Result.failure(exception)
+        } catch (exception: Exception){
+            return Result.failure(exception)
+        }
+    }
     override fun getAllProjects(): Result<List<Project>> {
         val projects = dataSource.getAllProjects().map { projectDto ->
             val state = getState(projectDto.stateId)

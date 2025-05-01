@@ -19,6 +19,11 @@ class CsvDataSource(
         return projectsCsvHandler.readAll()
     }
 
+    override fun getProjectById(projectId: UUID): ProjectDto {
+       return projectsCsvHandler.readAll()
+           .first { projectDto -> projectDto.id == projectId}
+    }
+
     override fun getAllTasks(): List<TaskDto> {
         TODO("Not yet implemented")
     }
@@ -33,5 +38,10 @@ class CsvDataSource(
 
     override fun getAllAuditRecords(): List<LogDto> {
         TODO("Not yet implemented")
+    }
+
+    override fun getProjectLog(projectId: UUID): List<LogDto> {
+        return logsCsvHandler.readAll()
+            .filter { it.entityType == EntityType.PROJECT && it.entityId == projectId }
     }
 }
