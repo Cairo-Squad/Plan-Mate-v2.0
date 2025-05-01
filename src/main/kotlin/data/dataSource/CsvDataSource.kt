@@ -2,7 +2,8 @@ package data.dataSource
 
 import data.database.FileHandler
 import data.dto.*
-import kotlin.uuid.Uuid
+import java.util.*
+import data.repositories.mappers.toTaskDto
 
 class CsvDataSource(
     private val logsCsvHandler: FileHandler<LogDto>,
@@ -42,6 +43,10 @@ class CsvDataSource(
         } catch (e: Exception) {
             Result.failure(e)
         }
+    }
+
+    override fun deleteTask(task: TaskDto) {
+        tasksCsvHandler.delete(task)
     }
     override fun getTaskById(taskID: UUID): TaskDto {
 

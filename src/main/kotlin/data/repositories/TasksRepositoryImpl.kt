@@ -17,6 +17,9 @@ class TasksRepositoryImpl(
         return dataSource.createTask(task.toTaskDto())
     }
 
+    override fun deleteTask(task: Task) {
+        dataSource.deleteTask(task.toTaskDto())
+    }
     override fun getTaskById(taskID: UUID): Task {
 
         val taskDto = dataSource.getTaskById(taskID)
