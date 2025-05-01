@@ -17,9 +17,13 @@ class CreateUserUseCase(
 		} else if (password.isEmpty()) {
 			return Result.failure(PasswordNotEmptyException("Password cannot be empty"))
 		} else {
-			val userDto = authRepo.createUser(id, name, password, type)
-			val user = userDto.toUser()
-			return Result.success(user)
+			try {
+				val userDto = authRepo.createUser(id, name, password, type)
+				val user = userDto.toUser()
+				return Result.success(user)
+			}catch (e:Exception){
+				return Result.failure(e)
+			}
 		}
 	}
 }
