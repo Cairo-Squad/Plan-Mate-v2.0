@@ -22,7 +22,7 @@ class DeleteUserUseCaseTest {
     @Test
     fun `should return true when userid exist`() {
         // Given
-        val mockUsers=FakeData.mockUsers
+        val mockUsers = FakeData.mockUsers
         every { authenticationRepository.deleteUser(mockUsers[0].id) } returns true
 
         // When
@@ -44,6 +44,7 @@ class DeleteUserUseCaseTest {
         // Then
         assertThat(result).isFalse()
     }
+
     @Test
     fun `should throw exception when authenticationRepository throws error during delete`() {
         // Given
