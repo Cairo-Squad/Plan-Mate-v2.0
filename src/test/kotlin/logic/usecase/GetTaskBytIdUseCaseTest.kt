@@ -23,25 +23,26 @@ class GetTaskByIdUseCaseTest {
 
     @Test
     fun `should return task when it exists`() {
+        val expectedTask = validTask()
         // Given
-        every { taskRepository.getTaskById(validTask().id) } returns validTask()
+        every { taskRepository.getTaskById(expectedTask.id) } returns expectedTask
 
         // When
-        val actualResult = getTaskByIdUseCase.getTaskById(validTask().id)
+        val actualResult = getTaskByIdUseCase.getTaskById(expectedTask.id)
 
         // Then
-        assertThat(actualResult).isEqualTo(validTask())
+        assertThat(actualResult).isEqualTo(expectedTask)
     }
 
     @Test
     fun `should throw exception when task does not exist`() {
         // Given
-
-        every { taskRepository.getTaskById(taskId = UUID.randomUUID()) } throws NoSuchElementException("Task not found")
+        val taskId = UUID.randomUUID()
+        every { taskRepository.getTaskById(taskId) } throws NoSuchElementException("Task not found")
 
         // When & Then
         val exception = org.junit.jupiter.api.assertThrows<NoSuchElementException> {
-            getTaskByIdUseCase.getTaskById(UUID.randomUUID())
+            getTaskByIdUseCase.getTaskById(taskId)
         }
 
         assertThat(exception.message).isEqualTo("Task not found")
