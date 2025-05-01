@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test
 import java.util.*
 import kotlin.NoSuchElementException
 
-class GetTaskBytIdUseCaseTest {
+class GetTaskByIdUseCaseTest {
     lateinit var getTaskByIdUseCase: GetTaskBytIdUseCase
     lateinit var taskRepository: TasksRepository
 
@@ -36,6 +36,7 @@ class GetTaskBytIdUseCaseTest {
     @Test
     fun `should throw exception when task does not exist`() {
         // Given
+
         every { taskRepository.getTaskById(taskId = UUID.randomUUID()) } throws NoSuchElementException("Task not found")
 
         // When & Then

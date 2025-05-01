@@ -18,7 +18,8 @@ interface DataSource {
     // region Logs
     fun recordLog(log: LogDto)
     fun getTaskLogs(taskId: UUID): List<LogDto>
+
     // endregion
-    fun getTaskById(taskID:UUID):TaskDto
-    fun getStateById(stateId:UUID): StateDto
+    fun getTaskById(taskID: UUID): TaskDto
+    fun getStateById(stateId: UUID): StateDto
 }
