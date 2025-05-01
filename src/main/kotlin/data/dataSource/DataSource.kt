@@ -6,6 +6,7 @@ import data.dto.StateDto
 import data.dto.*
 
 interface DataSource {
+    fun editUser(user: UserDto)
     fun createUser(id: UUID, name:String, password:String, type:UserType): UserDto
     fun getAllUsers(): List<UserDto>
 
@@ -23,5 +24,15 @@ interface DataSource {
     fun getAllAuditRecords(): List<LogDto>
     fun addProjectLog(logDto: LogDto)
     fun getProjectLog(projectId: UUID): List<LogDto>
-    fun editUser(user: UserDto)
+
+    fun createTask(task: TaskDto): Result<Unit>
+    fun editTask(task: TaskDto)
+    fun deleteTask(task: TaskDto)
+
+    // region Logs
+    fun recordLog(log: LogDto)
+    fun getTaskLogs(taskId: UUID): List<LogDto>
+    // endregion
+    fun getTaskById(taskID: UUID): TaskDto
+    fun getStateById(stateId: UUID): StateDto
 }

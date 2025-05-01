@@ -1,8 +1,6 @@
 package logic.exception
 
-class NameNotEmptyException(name:String): Exception(name)
-
-class PasswordNotEmptyException(name:String): Exception(name)
+import java.io.IOException
 
 class UnknownException() : Exception("Unknown exception has occurred")
 
@@ -12,7 +10,9 @@ class EmptyNameException : Exception("Name cannot be empty")
 
 class EmptyPasswordException : Exception("Password cannot be empty")
 
-class UserNotChangedException : Exception("Updated user matches the original user")
-
 class DtoNotFoundException : Exception("Not Found DTO")
+
+class EntityNotFoundException() : Exception("Entity not found.")
+
+class CsvReadException() : IOException("Failed to read from this CSV file")
 

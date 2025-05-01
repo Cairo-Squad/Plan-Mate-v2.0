@@ -17,4 +17,12 @@ class LogsRepositoryImpl(
     override fun getProjectLog(projectId: UUID): List<Log> {
         return dataSource.getProjectLog(projectId).map { it.toLog() }
     }
+
+    override fun recordLog(log: Log) {
+        dataSource.recordLog(log.toLogDto())
+    }
+
+    override fun getTaskLogs(taskId: UUID): List<Log> {
+        return dataSource.getTaskLogs(taskId).map { it.toLog() }
+    }
 }
