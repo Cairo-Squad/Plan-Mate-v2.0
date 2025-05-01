@@ -8,6 +8,10 @@ class GetProjectLogUseCase(
     private val logsRepository: LogsRepository
 ){
     fun getProjectLog(projectId: UUID): List<Log>{
-        return emptyList()
+        try {
+            return logsRepository.getProjectLog(projectId)
+        } catch (exception: Exception) {
+            throw Exception("An error happened! Please try again.")
+        }
     }
 }
