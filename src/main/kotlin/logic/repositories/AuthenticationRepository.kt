@@ -9,5 +9,5 @@ interface AuthenticationRepository {
     fun createUser(id : UUID, name : String, password : String, userType : UserType) : UserDto
     fun getAllUsers() : List<User>
     fun deleteUser(userId : UUID) : Boolean
-    fun editUser(userId: UUID) : Boolean
+    fun editUser(user: User)
 }

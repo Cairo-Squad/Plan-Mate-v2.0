@@ -1,5 +1,7 @@
 package data.database
 
+import logic.exception.DtoNotFoundException
+import logic.exception.UserNotChangedException
 import logic.exception.CsvWriteException
 import logic.exception.UnknownException
 import java.io.BufferedWriter
@@ -11,7 +13,7 @@ import java.util.*
 abstract class CsvFileHandler<DTO>(
     filePath: String,
     private val headers: List<String>,
-    private val getDtoId: (DTO) -> UUID?
+    private val getDtoId: (DTO) -> UUID
 ) : FileHandler<DTO> {
 
     private val file: File = File(filePath)
@@ -62,10 +64,16 @@ abstract class CsvFileHandler<DTO>(
     }
 
     override fun edit(entity: DTO) {
-        val allEntities = readAll().map { currentEntity ->
-            if (getDtoId(currentEntity) == getDtoId(entity)) entity else currentEntity
+        val entityId = getDtoId(entity)
+        val allEntities = readAll()
+
+        val index = allEntities.indexOfFirst { getDtoId(it) == entityId }
+        if (index == -1) throw DtoNotFoundException()
+
+        val updatedEntities = allEntities.toMutableList().apply {
+            this[index] = entity
         }
-        writeAll(allEntities)
+        writeAll(updatedEntities)
     }
 
     override fun delete(entity: DTO) {

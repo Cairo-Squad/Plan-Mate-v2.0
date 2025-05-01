@@ -6,6 +6,10 @@ import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
+import logic.exception.DtoNotFoundException
+import logic.exception.EmptyNameException
+import logic.exception.EmptyPasswordException
+import logic.exception.UserNotChangedException
 import logic.model.User
 import org.junit.jupiter.api.assertThrows
 import logic.repositories.AuthenticationRepository
@@ -33,73 +37,60 @@ class EditUserUseCaseTest {
         // Given
         val updateUser =
             User(id = UUID(1, 1), name = "Mohamed", password = "123456", type = UserType.ADMIN)
-        every { repository.editUser(updateUser.id) } returns true
+        val originalUser =
+            User(id = UUID(1, 1), name = "Ahmed", password = "123456", type = UserType.ADMIN)
+
 
         // When
-        editUserUseCase.editUser(updateUser)
+        editUserUseCase.editUser(updateUser, originalUser)
 
         // Then
-        verify(exactly = 1) { repository.editUser(updateUser.id) }
+        verify(exactly = 1) { editUserUseCase.editUser(updateUser, originalUser) }
     }
 
     @Test
-    fun `editUser should return IllegalStateException, when user id is not found`() {
+    fun `editUser should return DtoNotFoundException, when user is not found`() {
         // Given
-        val updateUser =
-            User(id = UUID(1, 1), name = "Mohamed", password = "123456", type = UserType.ADMIN)
-        every { repository.editUser(updateUser.id) } returns false
-
-        // When & Then
-        assertThrows<IllegalStateException> {
-            editUserUseCase.editUser(updateUser)
-        }
-    }
-
-    @Test
-    fun `editUser should return IllegalStateException, when user object is not changed`() {
-        // Given
-        val updateUser =
+        val updatedUser =
+            User(id = UUID(2, 2), name = "Mohamed", password = "123456", type = UserType.ADMIN)
+        val originalUser =
             User(id = UUID(1, 1), name = "Mohamed", password = "123456", type = UserType.ADMIN)
 
+        every { repository.editUser(updatedUser) } throws DtoNotFoundException()
+
         // When & Then
-        assertThrows<IllegalStateException> {
-            editUserUseCase.editUser(updateUser)
+        assertThrows<DtoNotFoundException> {
+            editUserUseCase.editUser(updatedUser, originalUser)
         }
     }
 
-    @Test
-    fun `editUser should return IllegalArgumentException, when user name is empty`() {
-        // Given
-        val updateUser =
-            User(id = UUID(1, 1), name = "", password = "123456", type = UserType.ADMIN)
 
-        // When & Then
-        assertThrows<IllegalArgumentException> {
-            editUserUseCase.editUser(updateUser)
-        }
-    }
+         @Test
+         fun `editUser should return EmptyNameException, when user name is empty`() {
+             // Given
+             val updatedUser =
+                 User(id = UUID(1, 1), name = "", password = "123456", type = UserType.ADMIN)
+             val originalUser =
+                 User(id = UUID(1, 1), name = "Mohamed", password = "123456", type = UserType.ADMIN)
 
-    @Test
-    fun `editUser should return IllegalArgumentException, when user password is empty`() {
-        // Given
-        val updateUser =
-            User(id = UUID(1, 1), name = "Mohamed", password = "", type = UserType.ADMIN)
+             // When & Then
+             assertThrows<EmptyNameException> {
+                 editUserUseCase.editUser(updatedUser, originalUser)
+             }
+         }
 
-        // When & Then
-        assertThrows<IllegalArgumentException> {
-            editUserUseCase.editUser(updateUser)
-        }
-    }
+         @Test
+         fun `editUser should return IllegalArgumentException, when user password is empty`() {
+             // Given
+             val updatedUser =
+                 User(id = UUID(1, 1), name = "Mohamed", password = "", type = UserType.ADMIN)
+             val originalUser =
+                 User(id = UUID(1, 1), name = "Mohamed", password = "123456", type = UserType.ADMIN)
 
-    @Test
-    fun `editUser should return SecurityException, when user type is changed`() {
-        // Given
-        val updateUser =                                                 //change Admin to Mate
-            User(id = UUID(1, 1), name = "Mohamed", password = "", type = UserType.MATE)
+             // When & Then
+             assertThrows<EmptyPasswordException> {
+                 editUserUseCase.editUser(updatedUser, originalUser)
+             }
+         }
 
-        // When & Then
-        assertThrows<SecurityException> {
-            editUserUseCase.editUser(updateUser)
-        }
-    }
 }
