@@ -16,6 +16,7 @@ interface DataSource {
     fun getAllTasks(): List<TaskDto>
     fun getAllAuditRecords(): List<LogDto>
     fun createTask(task: TaskDto): Result<Unit>
+    fun editTask(task: TaskDto)
     fun deleteTask(task: TaskDto)
 
     // region Logs

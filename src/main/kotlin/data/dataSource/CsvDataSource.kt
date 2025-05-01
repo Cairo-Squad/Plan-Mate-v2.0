@@ -62,6 +62,10 @@ class CsvDataSource(
         }
     }
 
+    override fun editTask(task: TaskDto) {
+        tasksCsvHandler.edit(task)
+    }
+
     override fun deleteTask(task: TaskDto) {
         tasksCsvHandler.delete(task)
     }

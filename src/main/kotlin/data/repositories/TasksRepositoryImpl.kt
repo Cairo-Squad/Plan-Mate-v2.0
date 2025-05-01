@@ -24,6 +24,7 @@ class TasksRepositoryImpl(
     }
 
     override fun editTask(task: Task) {
+        dataSource.editTask(task.toTaskDto())
     }
 
     override fun deleteTask(task: Task) {
