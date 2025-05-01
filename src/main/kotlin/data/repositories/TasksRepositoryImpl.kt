@@ -16,4 +16,7 @@ class TasksRepositoryImpl(
         return dataSource.createTask(task.toTaskDto())
     }
 
+    override fun deleteTask(task: Task) {
+        dataSource.deleteTask(task.toTaskDto())
+    }
 }
