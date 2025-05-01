@@ -5,7 +5,10 @@ import java.util.*
 
 class DeleteUserUseCase(private val authenticationRepository : AuthenticationRepository) {
     fun deleteUser(userId : UUID) : Boolean {
-        val isDeleted=authenticationRepository.deleteUser(userId)
-        return isDeleted
+        try {
+            return authenticationRepository.deleteUser(userId)
+        } catch (e : Exception) {
+            throw Exception("error  during delete")
+        }
     }
 }

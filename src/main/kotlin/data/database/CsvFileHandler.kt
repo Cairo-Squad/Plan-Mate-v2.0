@@ -2,9 +2,12 @@ package data.database
 
 import logic.exception.DtoNotFoundException
 import logic.exception.UserNotChangedException
+import logic.exception.CsvWriteException
+import logic.exception.UnknownException
 import java.io.BufferedWriter
 import java.io.File
 import java.io.FileWriter
+import java.io.IOException
 import java.util.*
 
 abstract class CsvFileHandler<DTO>(
@@ -24,18 +27,30 @@ abstract class CsvFileHandler<DTO>(
     }
 
     override fun write(entity: DTO) {
-        val newRow = fromDtoToCsvRow(entity)
-        BufferedWriter(FileWriter(file, true)).use { writer ->
-            writer.appendLine(newRow)
+        try {
+            val newRow = fromDtoToCsvRow(entity)
+            BufferedWriter(FileWriter(file, true)).use { writer ->
+                writer.appendLine(newRow)
+            }
+        } catch (e: IOException) {
+            throw CsvWriteException()
+        } catch (e: Exception) {
+            throw UnknownException()
         }
     }
 
     private fun writeAll(entities: List<DTO>) {
-        BufferedWriter(FileWriter(file, false)).use { writer ->
-            writer.appendLine(headers.joinToString(","))
-            entities.forEach { entity ->
-                writer.appendLine(fromDtoToCsvRow(entity))
+        try {
+            BufferedWriter(FileWriter(file, false)).use { writer ->
+                writer.appendLine(headers.joinToString(","))
+                entities.forEach { entity ->
+                    writer.appendLine(fromDtoToCsvRow(entity))
+                }
             }
+        } catch (e: IOException) {
+            throw CsvWriteException()
+        } catch (e: Exception) {
+            throw UnknownException()
         }
     }
 
