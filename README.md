@@ -5,35 +5,35 @@ PlanMate - Task Management CLI Application 📝🛠️
 PlanMate is a command-line task management application designed to help teams stay organized! It supports Admins and Mates , dynamic task states, and a powerful audit system  to track changes.
 
 🔥 Features
-✅ User Management 👤🔐
+✅ User Management
 
-Supports Admins & Mates 🤝
+Supports Admins & Mates 
 
-Passwords are securely hashed (No plain text!) 🔒
+Passwords are securely hashed (No plain text!) 
 
-Admins can create new Mate users 🆕
+Admins can create new Mate users 
 
-✅ Project & Task Management 🛠️📝
+✅ Project & Task Management 
 
-Admins can create, edit, delete projects & states ✨
+Admins can create, edit, delete projects & states 
 
-Mates can create, edit, delete tasks within a project ✅
+Mates can create, edit, delete tasks within a project 
 
-Each project has its own set of tasks 🗂️
+Each project has its own set of tasks 
 
-✅ Dynamic Task States 🚦
+✅ Dynamic Task States 
 
-States (e.g., TODO, In Progress, Done) are editable 🛠️
+States (e.g., TODO, In Progress, Done) are editable 
 
-Admins can modify states per project ✍️
+Admins can modify states per project 
 
-✅ Task Display & Swimlanes UI 📊🖥️
+✅ Task Display & Swimlanes UI 
 
-Users can view tasks visually inside the console 👀
+Users can view tasks visually inside the console 
 
-✅ Audit System 🔍📜
+✅ Audit System 
 
-Tracks who modified tasks/projects, when, and what changed 🕵️‍♂️
+Tracks who modified tasks/projects, when, and what changed 🕵️‍♂
 
 Example log:
 
@@ -43,35 +43,28 @@ Example log:
 PlanMate follows a simple, uni-directional dependency rule 🔄:
 
 💾 Data ➡ ⚡ Logic ➡ 🖥️ UI
-💾 data → Handles CSV-based storage for users, projects, tasks 📂
+💾 data → Handles CSV-based storage for users, projects, tasks 
 
-⚡ logic → Contains business logic (repositories, authentication, task management) ⚙️
+⚡ logic → Contains business logic (repositories, authentication, task management) 
 
-🖥️ ui → Manages command-line interactions 🖥️
+🖥️ ui → Manages command-line interactions 
 
 🗂️ Data Storage
-PlanMate uses multiple CSV files for data persistence 📑
+PlanMate uses multiple CSV files for data persistence 
 
-Dependency Inversion ensures easy future storage replacements 🔄
+Dependency Inversion ensures easy future storage replacements 
 
 🛠️ Repositories
-AuthenticationRepository → Manages users & authentication 🔐
+AuthenticationRepository → Manages users & authentication 
 
-ProjectsRepository → Handles project creation & editing ✏️
+ProjectsRepository → Handles project creation & editing 
 
-TasksRepository → Manages task lifecycle ✅
+TasksRepository → Manages task lifecycle 
 
 🧩 Dependency Injection
-PlanMate uses Koin 🏗️ for DI to simplify object creation and dependencies 🔧
+PlanMate uses Koin  for DI to simplify object creation and dependencies 
 
 🧪 Test-Driven Development (TDD)
-The system follows TDD ⚡ ensuring 100% test coverage 🔬
+The system follows TDD  ensuring 100% test coverage 
 
-Every feature is tested first before implementation 🚀
-
-bash
-./gradlew test
-3️⃣ Start the CLI application 🖥️
-
-bash
-./gradlew run
+Every feature is tested first before implementation .
