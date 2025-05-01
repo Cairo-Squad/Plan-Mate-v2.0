@@ -5,6 +5,6 @@ import logic.model.Project
 import java.util.UUID
 
 interface ProjectsRepository {
-    fun getAllProjects(): List<Project>
-    fun deleteProject(projectId: UUID):Result<Unit>
+    fun getAllProjects(): Result<List<Project>>
+    fun deleteProject(projectId: UUID): Result<Unit>
 }
