@@ -1,6 +1,6 @@
-package logic.usecase
+package logic.usecase.project
 
-import Utils.FakeData
+import util.FakeData
 import com.google.common.truth.Truth.assertThat
 import io.mockk.every
 import io.mockk.mockk

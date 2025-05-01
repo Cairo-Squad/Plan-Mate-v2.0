@@ -1,4 +1,4 @@
-package logic.usecase
+package logic.usecase.project
 
 import com.google.common.truth.Truth.assertThat
 import io.mockk.every
@@ -6,10 +6,9 @@ import io.mockk.mockk
 import logic.repositories.ProjectsRepository
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import utils.FakeData
-import utils.FakeData.invalidUser
-import utils.FakeData.validUser
-import java.lang.Exception
+import util.FakeData
+import util.FakeData.invalidUser
+import util.FakeData.validUser
 
 class CreateProjectUseCaseTest() {
     private lateinit var projectRepository: ProjectsRepository
@@ -72,5 +71,4 @@ class CreateProjectUseCaseTest() {
         //Then
         assertThat(result.isFailure).isTrue()
     }
-
 }
