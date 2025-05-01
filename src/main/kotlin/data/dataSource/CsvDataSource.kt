@@ -19,9 +19,9 @@ class CsvDataSource(
         TODO("Not yet implemented")
     }
 
-    override fun getProjectById(projectId: UUID): ProjectDto? {
+    override fun getProjectById(projectId: UUID): ProjectDto {
        return projectsCsvHandler.readAll()
-           .firstOrNull { projectDto -> projectDto.id == projectId}
+           .first { projectDto -> projectDto.id == projectId}
     }
 
     override fun getAllTasks(): List<TaskDto> {

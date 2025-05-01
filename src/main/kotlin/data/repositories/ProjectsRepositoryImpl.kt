@@ -14,15 +14,20 @@ class ProjectsRepositoryImpl(
     private val dataSource: DataSource
 ) : ProjectsRepository {
     override fun getProjectById(projectId: UUID): Result<Project> {
-        val projectDto = dataSource.getProjectById(projectId)
-            ?: return Result.failure(NoSuchElementException("Project not found"))
+        return try {
+            val projectDto = dataSource.getProjectById(projectId)
 
-        return Result.success(
-            projectDto.toProject(
-                projectState = getState(projectDto.stateId),
-                projectTasks = getTasksForProject(projectId),
+            Result.success(
+                projectDto.toProject(
+                    projectState = getState(projectDto.stateId),
+                    projectTasks = getTasksForProject(projectId),
+                )
             )
-        )
+        } catch (exception: NoSuchElementException){
+            return Result.failure(exception)
+        } catch (exception: Exception){
+            return Result.failure(exception)
+        }
     }
 
     private fun getState(stateId: UUID): State {

@@ -10,7 +10,7 @@ import java.util.UUID
 interface DataSource {
     fun getAllUsers(): List<UserDto>
     fun getAllProjects(): List<ProjectDto>
-    fun getProjectById(projectId: UUID): ProjectDto?
+    fun getProjectById(projectId: UUID): ProjectDto
 
     fun getTasksByProjectId(projectId: UUID): List<TaskDto>
     fun getAllTasks(): List<TaskDto>
