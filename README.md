@@ -69,14 +69,6 @@ The system follows TDD ⚡ ensuring 100% test coverage 🔬
 
 Every feature is tested first before implementation 🚀
 
-🚀 How to Run PlanMate
-1️⃣ Clone the repository 🛠️
-
-bash
-git clone https://github.com/your-org/PlanMate.git
-cd PlanMate
-2️⃣ Run tests before execution 🧪
-
 bash
 ./gradlew test
 3️⃣ Start the CLI application 🖥️
