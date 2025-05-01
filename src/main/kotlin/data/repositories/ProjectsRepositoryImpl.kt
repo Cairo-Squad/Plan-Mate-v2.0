@@ -66,6 +66,6 @@ class ProjectsRepositoryImpl(
 
     private fun getTasksForProject(projectId: UUID): List<Task> {
         return dataSource.getTasksByProjectId(projectId)
-            .map { it.toTask(projectState = getState(it.stateId)) }
+            .map { it.toTask(taskState = getState(it.stateId)) }
     }
 }
