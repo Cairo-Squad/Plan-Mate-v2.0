@@ -1,6 +1,5 @@
 package logic.usecase
 
-import data.dto.UserType
 import logic.model.User
 import logic.repositories.AuthenticationRepository
 import java.lang.IllegalArgumentException
@@ -8,12 +7,19 @@ import java.lang.IllegalArgumentException
 class EditUserUseCase(
     private val repository: AuthenticationRepository
 ) {
-    fun editUser(user: User): Boolean {
-        if (user.name.isBlank()) throw IllegalArgumentException("Can't put the name empty")
-        if (user.password.isBlank()) throw IllegalArgumentException("Can't put the password empty")
+    fun editUser(newUser: User, oldUser: User) {
+        validateUserInputs(
+            newUser = newUser,
+            oldUser = oldUser
+        )
+        repository.editUser(user = newUser)
+    }
 
-        return repository.editUser(userId = user.id)
-
+    private fun validateUserInputs(newUser: User, oldUser: User) {
+        if (newUser == oldUser)
+            throw IllegalStateException("user is not changed")
+        if (newUser.name.isBlank()) throw IllegalArgumentException("Can't put the name empty")
+        if (newUser.password.isBlank()) throw IllegalArgumentException("Can't put the password empty")
     }
 
 }

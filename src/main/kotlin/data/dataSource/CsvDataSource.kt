@@ -45,7 +45,7 @@ class CsvDataSource(
         TODO("Not yet implemented")
     }
 
-    override fun editUser(user: UserDto):Boolean {
+    override fun editUser(user: UserDto) {
         return usersCsvHandler.edit(user)
     }
 }

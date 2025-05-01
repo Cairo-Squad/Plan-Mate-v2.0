@@ -14,5 +14,5 @@ interface DataSource {
     fun getAllProjects(): List<ProjectDto>
     fun getAllTasks(): List<TaskDto>
     fun getAllAuditRecords(): List<LogDto>
-    fun editUser(user: UserDto):Boolean
+    fun editUser(user: UserDto)
 }

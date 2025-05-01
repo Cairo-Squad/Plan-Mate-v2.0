@@ -3,6 +3,6 @@ package data.database
 interface FileHandler<DTO> {
     fun write(entity: DTO)
     fun readAll(): List<DTO>
-    fun edit(entity: DTO):Boolean
+    fun edit(entity: DTO)
     fun delete(entity: DTO)
 }

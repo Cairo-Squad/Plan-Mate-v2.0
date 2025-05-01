@@ -8,7 +8,7 @@ import java.util.*
 abstract class CsvFileHandler<DTO>(
     filePath: String,
     private val headers: List<String>,
-    private val getDtoId: (DTO) -> UUID?
+    private val getDtoId: (DTO) -> UUID
 ) : FileHandler<DTO> {
 
     private val file: File = File(filePath)
@@ -46,20 +46,17 @@ abstract class CsvFileHandler<DTO>(
             .toList()
     }
 
-    override fun edit(entity: DTO): Boolean {
-        val entityId = getDtoId(entity) ?: false
+    override fun edit(entity: DTO) {
+        val entityId = getDtoId(entity)
+        val allEntities = readAll()
 
-        return readAll()
-            .map { currentEntity ->
-                if (getDtoId(currentEntity) == entityId && currentEntity != entity) entity
-                else currentEntity
-            }
-            .let { updatedEntities ->
-                if (updatedEntities != readAll()) {
-                    writeAll(updatedEntities)
-                    true
-                } else false
-            }
+        val index = allEntities.indexOfFirst { getDtoId(it) == entityId }
+        if (index == -1) throw Exception("Not found Dto")
+
+        val updatedEntities = allEntities.toMutableList().apply {
+            this[index] = entity
+        }
+        writeAll(updatedEntities)
     }
 
     override fun delete(entity: DTO) {
