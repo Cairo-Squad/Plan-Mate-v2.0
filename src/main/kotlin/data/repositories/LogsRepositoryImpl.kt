@@ -10,6 +10,14 @@ import java.util.*
 class LogsRepositoryImpl(
     private val dataSource: DataSource
 ) : LogsRepository {
+    override fun addProjectLog(log: Log) {
+        dataSource.addProjectLog(log.toLogDto())
+    }
+
+    override fun getProjectLog(projectId: UUID): List<Log> {
+        return dataSource.getProjectLog(projectId).map { it.toLog() }
+    }
+
     override fun recordLog(log: Log) {
         dataSource.recordLog(log.toLogDto())
     }

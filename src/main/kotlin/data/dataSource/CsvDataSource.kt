@@ -28,17 +28,51 @@ class CsvDataSource(
         return users
     }
 
+    override fun editUser(user: UserDto) {
+        return usersCsvHandler.edit(user)
+    }
+
     override fun deleteUser(user:UserDto) {
         usersCsvHandler.delete(user)
     }
 
-
-    override fun getAllProjects(): List<ProjectDto> {
-        TODO("Not yet implemented")
+    override fun createProject(project: ProjectDto): Result<Unit> {
+        return try {
+            projectsCsvHandler.write(project)
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
     }
 
-    override fun getAllTasks(): List<TaskDto> {
-        TODO("Not yet implemented")
+    override fun editProject(newProject: ProjectDto) {
+        projectsCsvHandler.edit(newProject)
+    }
+
+    override fun deleteProjectById(project: ProjectDto): Result<Unit> {
+        return try {
+            projectsCsvHandler.delete(project)
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    override fun getProjectById(projectId: UUID): ProjectDto {
+        return projectsCsvHandler.readAll()
+            .first { projectDto -> projectDto.id == projectId }
+    }
+
+    override fun getAllProjects(): List<ProjectDto> {
+        return projectsCsvHandler.readAll()
+    }
+
+    override fun getTasksByProjectId(projectId: UUID): List<TaskDto> {
+        return tasksCsvHandler.readAll().filter { it.id == projectId }
+    }
+
+    override fun getAllStates(): List<StateDto> {
+        return statesCsvHandler.readAll()
     }
 
     override fun getAllAuditRecords(): List<LogDto> {
@@ -81,7 +115,12 @@ class CsvDataSource(
         return stateDto!!
     }
 
-    override fun editUser(user: UserDto) {
-        return usersCsvHandler.edit(user)
+    override fun addProjectLog(logDto: LogDto) {
+        logsCsvHandler.write(logDto)
+    }
+
+    override fun getProjectLog(projectId: UUID): List<LogDto> {
+        return logsCsvHandler.readAll()
+            .filter { it.entityType == EntityType.PROJECT && it.entityId == projectId }
     }
 }
