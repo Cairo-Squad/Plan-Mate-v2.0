@@ -13,3 +13,5 @@ class EmptyNameException : Exception("Name cannot be empty")
 class EmptyPasswordException : Exception("Password cannot be empty")
 
 class UserNotChangedException : Exception("Updated user matches the original user")
+
+class DtoNotFoundException : Exception("Not Found DTO")
