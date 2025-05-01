@@ -15,7 +15,6 @@ interface DataSource {
     fun getAllProjects(): List<ProjectDto>
 
     fun getTasksByProjectId(projectId: UUID): List<TaskDto>
-    fun getAllTasks(): List<TaskDto>
 
     fun getAllStates(): List<StateDto>
 

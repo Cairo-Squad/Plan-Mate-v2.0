@@ -50,10 +50,6 @@ class CsvDataSource(
         return tasksCsvHandler.readAll().filter { it.id == projectId }
     }
 
-    override fun getAllTasks(): List<TaskDto> {
-        TODO("Not yet implemented")
-    }
-
     override fun getAllStates(): List<StateDto> {
         return statesCsvHandler.readAll()
     }
