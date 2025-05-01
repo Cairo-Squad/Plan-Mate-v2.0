@@ -6,8 +6,8 @@ import java.util.UUID
 
 class GetProjectLogUseCase(
     private val logsRepository: LogsRepository
-){
-    fun getProjectLog(projectId: UUID): List<Log>{
+) {
+    fun getProjectLog(projectId: UUID): List<Log> {
         try {
             return logsRepository.getProjectLog(projectId)
         } catch (exception: Exception) {

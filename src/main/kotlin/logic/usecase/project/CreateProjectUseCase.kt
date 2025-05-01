@@ -1,4 +1,4 @@
-package logic.usecase
+package logic.usecase.project
 
 import data.dto.UserType
 import logic.model.Project
@@ -6,12 +6,12 @@ import logic.model.User
 import logic.repositories.ProjectsRepository
 
 class CreateProjectUseCase(
-    private val repository: ProjectsRepository
+    private val projectRepository: ProjectsRepository
 ) {
     fun createProject(project: Project, user: User): Result<Unit> {
         return if (isValidProjectCreation(project, user)) {
             try {
-                repository.createProject(project, user)
+                projectRepository.createProject(project, user)
             } catch (e: Exception) {
                 Result.failure(e)
             }
