@@ -28,15 +28,15 @@ class CsvDataSource(
         TODO("Not yet implemented")
     }
 
-    override fun getTaskById(taskID: UUID):TaskDto {
+    override fun getTaskById(taskID: UUID): TaskDto {
 
-            val task = tasksCsvHandler.readAll().find { it.id == taskID }
-             return task!!
+        val task = tasksCsvHandler.readAll().find { it.id == taskID }
+        return task!!
 
     }
 
     override fun getStateById(stateId: UUID): StateDto {
         val stateDto = statesCsvHandler.readAll().find { it.id == stateId }
-            return stateDto!!
+        return stateDto!!
     }
 }
