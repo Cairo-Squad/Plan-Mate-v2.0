@@ -2,6 +2,9 @@ package logic.usecase.project
 
 import io.mockk.every
 import io.mockk.mockk
+import logic.exception.CsvWriteException
+import logic.exception.EmptyNameException
+import logic.exception.UnknownException
 import logic.model.Project
 import logic.model.State
 import logic.repositories.ProjectsRepository
@@ -44,24 +47,38 @@ class EditProjectTest {
 
 
     @Test
-    fun `Given new project, When updating database but exception is thrown, Then returns failure with cause`() {
+    fun `Given new project, When updating database but write exception is thrown, Then returns failure with cause`() {
         //Give
         val newProject = getNewProject()
-        every { projectsRepository.editProject(any()) } throws Exception()
+        every { projectsRepository.editProject(any()) } throws CsvWriteException()
         //When
         val result = editProjectDescription.editProject(newProject)
         //Then
-        assertEquals(expected = Result.failure(Exception()), actual = result)
+        val failure = Result.failure<Any>(CsvWriteException())
+        assertEquals(expected = failure.exceptionOrNull()!!::class, actual = result.exceptionOrNull()!!::class)
+    }
+
+    @Test
+    fun `Given new project, When updating database but unKnown exception is thrown, Then returns failure with cause`() {
+        //Give
+        val newProject = getNewProject()
+        every { projectsRepository.editProject(any()) } throws UnknownException()
+        //When
+        val result = editProjectDescription.editProject(newProject)
+        //Then
+        val expected = Result.failure<Any>(UnknownException())
+        assertEquals(expected = expected.exceptionOrNull()!!::class, actual = result.exceptionOrNull()!!::class)
     }
 
     @Test
     fun `Given new project with empty title, When validating, Then returns failure with cause`() {
         //Give
-        val newProject = getNewProject()
+        val newProject = getNewProject().copy(title = "   ")
         //When
         val result = editProjectDescription.editProject(newProject)
         //Then
-        assertEquals(expected = Result.failure(IllegalArgumentException()), actual = result)
+        val expected = Result.failure<Unit>(EmptyNameException())
+        assertEquals(expected = expected.exceptionOrNull()!!::class, actual = result.exceptionOrNull()!!::class)
     }
 
     private fun getNewProject() = Project(
