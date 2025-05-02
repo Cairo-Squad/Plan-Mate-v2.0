@@ -4,7 +4,6 @@ package data.dataSource
 import java.util.UUID
 import data.dto.StateDto
 import data.dto.*
-import logic.model.Task
 
 interface DataSource {
     fun editUser(user: UserDto)
