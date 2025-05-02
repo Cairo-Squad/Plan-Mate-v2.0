@@ -18,7 +18,7 @@ class AdminManagementView(
     private val inputHandler: InputHandler,
     private val outputFormatter: OutputFormatter
 ) {
-    fun showAdminMenu(adminUser: User) {
+    fun showAdminMenu() {
         while (true) {
             outputFormatter.printHeader("Admin Menu")
             outputFormatter.printMenu(
@@ -32,7 +32,7 @@ class AdminManagementView(
 
             when (inputHandler.promptForIntChoice("Select an option: ", 1..4)) {
                 1 -> projectManagementView.showProjectMenu()
-                2 -> showUserManagementMenu(adminUser)
+                2 -> showUserManagementMenu()
                 3 -> auditMenuView.showAuditMenu()
                 4 -> {
                     outputFormatter.printSuccess("Logged out successfully!")
@@ -42,7 +42,7 @@ class AdminManagementView(
         }
     }
 
-    private fun showUserManagementMenu(adminUser: User) {
+    private fun showUserManagementMenu() {
         while (true) {
             outputFormatter.printHeader("User Management")
             outputFormatter.printMenu(
@@ -57,7 +57,7 @@ class AdminManagementView(
 
             when (inputHandler.promptForIntChoice("Select an option: ", 1..5)) {
                 1 -> listAllUsers()
-                2 -> createNewUser(adminUser)
+                2 -> createNewUser()
                 3 -> editUser()
                 4 -> deleteUser()
                 5 -> return
@@ -79,7 +79,7 @@ class AdminManagementView(
         inputHandler.waitForEnter()
     }
 
-    private fun createNewUser(adminUser: User) {
+    private fun createNewUser() {
         val username = inputHandler.promptForInput("Enter username: ")
         val password = inputHandler.promptForPassword("Enter password: ")
         val userType = UserType.MATE

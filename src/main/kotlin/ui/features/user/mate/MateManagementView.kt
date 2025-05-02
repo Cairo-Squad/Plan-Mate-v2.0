@@ -9,11 +9,10 @@ class MateManagementView(
     private val taskManagementView: TaskManagementView,
     private val outputFormatter: OutputFormatter
 ) {
-    fun showMateMenu(user: User) {
+    fun showMateMenu() {
         while (true) {
             outputFormatter.printHeader("Mate Menu")
-            taskManagementView.showTaskMenu(user)
-
+            taskManagementView.showTaskMenu()
         }
     }
 }

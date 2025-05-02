@@ -14,7 +14,7 @@ class TaskManagementView(
     private val inputHandler: InputHandler,
     private val outputFormatter: OutputFormatter
 ) {
-    fun showTaskMenu(user: User) {
+    fun showTaskMenu() {
         while (true) {
             outputFormatter.printHeader("Task Management")
             outputFormatter.printMenu(listOf(
