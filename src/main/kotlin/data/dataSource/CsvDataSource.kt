@@ -118,7 +118,14 @@ class CsvDataSource(
         val stateDto = statesCsvHandler.readAll().find { it.id == stateId }
         return stateDto!!
     }
-
+    
+    override fun createState(state: StateDto, userDto: UserDto): Boolean {
+        if (userDto.type != UserType.ADMIN) return false
+        
+        statesCsvHandler.write(state)
+        return true
+    }
+    
     override fun addProjectLog(logDto: LogDto) {
         logsCsvHandler.write(logDto)
     }
