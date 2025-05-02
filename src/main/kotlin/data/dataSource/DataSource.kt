@@ -8,7 +8,7 @@ import logic.model.Task
 
 interface DataSource {
     fun editUser(user: UserDto)
-    fun createUser( name:String, password:String, type:UserType): UserDto
+    fun createUser(id: UUID, name:String, password:String, type:UserType): UserDto
     fun getAllUsers(): List<UserDto>
 
     fun createProject(project: ProjectDto):Result<Unit>
@@ -20,7 +20,6 @@ interface DataSource {
 
 
     fun getAllStates(): List<StateDto>
-    fun getStateById(stateId: UUID): StateDto
 
     fun getTasksByProjectId(projectId: UUID): List<TaskDto>
     fun createTask(task: TaskDto): Result<Unit>
@@ -36,6 +35,10 @@ interface DataSource {
     fun getProjectLog(projectId: UUID): List<LogDto>
     fun getTaskLogs(taskId: UUID): List<LogDto>
     // endregion
+    fun getStateById(stateId: UUID): StateDto
+
+    fun createState(state: StateDto, userDto: UserDto): Boolean
+    fun editState(state: StateDto)
 
 
 }

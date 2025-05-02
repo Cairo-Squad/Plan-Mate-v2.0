@@ -15,4 +15,5 @@ class DtoNotFoundException : Exception("Not Found DTO")
 class EntityNotFoundException() : Exception("Entity not found.")
 
 class CsvReadException() : IOException("Failed to read from this CSV file")
+class EntityNotChangedException() : Exception("Entity not changed")
 

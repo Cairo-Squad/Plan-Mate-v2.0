@@ -1,6 +1,7 @@
 package logic.repositories
 
 import logic.model.Project
+import logic.model.State
 import logic.model.User
 import java.util.*
 
