@@ -11,68 +11,67 @@ import org.junit.jupiter.api.Test
 import java.util.*
 
 class CreateUserUseCaseTest {
-	private lateinit var repository: AuthenticationRepository
-	private lateinit var createUserUseCase: CreateUserUseCase
-	
-	@BeforeEach
-	fun setup() {
-		repository = mockk(relaxed = true)
-		createUserUseCase = CreateUserUseCase(repository)
-	}
-	
-	@Test
-	fun `should success registration when all inputs are valid`() {
-		// Given
-		val user = User(id = UUID.randomUUID(), name = "ahmed", password = "123456", type = UserType.ADMIN)
-		
-		// When
-		val result = createUserUseCase.createUser(user.id, user.name, user.password, user.type)
-		
-		// Then
-		assertThat(result.isSuccess).isTrue()
-	}
-	
-	@Test
-	fun `should fail registration when name is empty`() {
-		// Given
-		val user = User(id = UUID.randomUUID(), name = "", password = "123456", type = UserType.ADMIN)
-		
-		// When
-		val result = createUserUseCase.createUser(user.id, user.name, user.password, user.type)
-		
-		// Then
-		assertThat(result.isFailure).isTrue()
-	}
-	
-	@Test
-	fun `should fail registration when password is empty`() {
-		// Given
-		val user = User(id = UUID.randomUUID(), name = "ahmed", password = "", type = UserType.ADMIN)
-		
-		// When
-		val result = createUserUseCase.createUser(user.id, user.name, user.password, user.type)
-		
-		// Then
-		assertThat(result.isFailure).isTrue()
-	}
-	
-	@Test
-	fun `should success registration when duplication name but different id`() {
-		// Given
-		val user = User(id = UUID.randomUUID(), name = "ahmed", password = "password1", type = UserType.ADMIN)
-		val anotherUserWithSameName =
-			User(id = UUID.randomUUID(), name = "ahmed", password = "password2", type = UserType.ADMIN)
-		
-		// When
-		val firstUser = createUserUseCase.createUser(user.id, user.name, user.password, user.type)
-		val secondUser = createUserUseCase.createUser(
-			anotherUserWithSameName.id,
-			anotherUserWithSameName.name,
-			anotherUserWithSameName.password,
-			anotherUserWithSameName.type
-		)
-		
-		// Then
-		assertThat(firstUser.isSuccess && secondUser.isSuccess).isTrue()
-	}
+    private lateinit var repository: AuthenticationRepository
+    private lateinit var createUserUseCase: CreateUserUseCase
+
+    @BeforeEach
+    fun setup() {
+        repository = mockk(relaxed = true)
+        createUserUseCase = CreateUserUseCase(repository)
+    }
+
+    @Test
+    fun `should success registration when all inputs are valid`() {
+        // Given
+        val user = User(id = UUID.randomUUID(), name = "ahmed", password = "123456", type = UserType.ADMIN)
+
+        // When
+        val result = createUserUseCase.createUser(user.name, user.password, user.type)
+
+        // Then
+        assertThat(result.isSuccess).isTrue()
+    }
+
+    @Test
+    fun `should fail registration when name is empty`() {
+        // Given
+        val user = User(id = UUID.randomUUID(), name = "", password = "123456", type = UserType.ADMIN)
+
+        // When
+        val result = createUserUseCase.createUser(user.name, user.password, user.type)
+
+        // Then
+        assertThat(result.isFailure).isTrue()
+    }
+
+    @Test
+    fun `should fail registration when password is empty`() {
+        // Given
+        val user = User(id = UUID.randomUUID(), name = "ahmed", password = "", type = UserType.ADMIN)
+
+        // When
+        val result = createUserUseCase.createUser(user.name, user.password, user.type)
+
+        // Then
+        assertThat(result.isFailure).isTrue()
+    }
+
+    @Test
+    fun `should success registration when duplication name but different id`() {
+        // Given
+        val user = User(id = UUID.randomUUID(), name = "ahmed", password = "password1", type = UserType.ADMIN)
+        val anotherUserWithSameName =
+            User(id = UUID.randomUUID(), name = "ahmed", password = "password2", type = UserType.ADMIN)
+
+        // When
+        val firstUser = createUserUseCase.createUser(user.name, user.password, user.type)
+        val secondUser = createUserUseCase.createUser(
+            anotherUserWithSameName.name,
+            anotherUserWithSameName.password,
+            anotherUserWithSameName.type
+        )
+
+        // Then
+        assertThat(firstUser.isSuccess && secondUser.isSuccess).isTrue()
+    }
 }

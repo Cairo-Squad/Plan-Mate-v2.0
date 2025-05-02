@@ -11,7 +11,7 @@ class CsvDataSource(
     private val tasksCsvHandler: FileHandler<TaskDto>,
     private val usersCsvHandler: FileHandler<UserDto>
 ) : DataSource {
-    override fun createUser( name: String, password: String, type: UserType): UserDto {
+    override fun createUser(id: UUID, name: String, password: String, type: UserType): UserDto {
         val userDto = UserDto(
             id = UUID.randomUUID(),
             name = name,
@@ -24,7 +24,7 @@ class CsvDataSource(
     }
 
     override fun getAllUsers(): List<UserDto> {
-       val users= usersCsvHandler.readAll()
+        val users = usersCsvHandler.readAll()
         return users
     }
 
@@ -36,7 +36,7 @@ class CsvDataSource(
         return statesCsvHandler.edit(state)
     }
 
-    override fun deleteUser(user:UserDto) {
+    override fun deleteUser(user: UserDto) {
         usersCsvHandler.delete(user)
     }
 
@@ -107,6 +107,7 @@ class CsvDataSource(
     override fun deleteTask(task: TaskDto) {
         tasksCsvHandler.delete(task)
     }
+
     override fun getTaskById(taskID: UUID): TaskDto {
 
         val task = tasksCsvHandler.readAll().find { it.id == taskID }
@@ -118,14 +119,14 @@ class CsvDataSource(
         val stateDto = statesCsvHandler.readAll().find { it.id == stateId }
         return stateDto!!
     }
-    
+
     override fun createState(state: StateDto, userDto: UserDto): Boolean {
         if (userDto.type != UserType.ADMIN) return false
-        
+
         statesCsvHandler.write(state)
         return true
     }
-    
+
     override fun addProjectLog(logDto: LogDto) {
         logsCsvHandler.write(logDto)
     }
