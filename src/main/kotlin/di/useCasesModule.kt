@@ -1,12 +1,10 @@
 package di
 
-import logic.usecase.Log.GetTaskLogsUseCase
+import logic.usecase.Log.*
 import logic.usecase.project.*
+import logic.usecase.state.*
 import logic.usecase.task.*
-import logic.usecase.user.CreateUserUseCase
-import logic.usecase.user.EditUserUseCase
-import logic.usecase.task.GetAllTasksByProjectIdUseCase
-import logic.usecase.user.LoginUserUseCase
+import logic.usecase.user.*
 import org.koin.dsl.module
 
 val useCasesModule = module {
@@ -25,14 +23,18 @@ val useCasesModule = module {
     single { GetTaskBytIdUseCase(get()) }
     single { GetAllTasksByProjectIdUseCase(get()) }
 
-    // single { GetAllProjectsUseCase(projectsRepository = get()) }
+    // Logs
     single { GetTaskLogsUseCase(get()) }
+    single { GetProjectLogUseCase(get()) }
 
     //user
     single { CreateUserUseCase(get()) }
     single { EditUserUseCase(get()) }
     single { LoginUserUseCase(get()) }
+    single { DeleteUserUseCase(get()) }
+    single { GetAllUsersUseCase(get()) }
 
-
-
+    // States
+    single { GetAllStatesUseCase(get()) }
+    single { CreateStateUseCase(get()) }
 }
