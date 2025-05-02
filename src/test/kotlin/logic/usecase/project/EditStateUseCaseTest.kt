@@ -7,6 +7,7 @@ import logic.exception.DtoNotFoundException
 import logic.exception.EmptyNameException
 import logic.model.State
 import logic.repositories.ProjectsRepository
+import logic.usecase.EditStateUseCase
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows

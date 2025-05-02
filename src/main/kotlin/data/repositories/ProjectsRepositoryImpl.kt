@@ -82,8 +82,4 @@ class ProjectsRepositoryImpl(
         return dataSource.getTasksByProjectId(projectId)
             .map { it.toTask(taskState = getState(it.stateId)) }
     }
-
-    override fun editState(state: State) {
-        dataSource.editState(state.toStateDto())
-    }
 }

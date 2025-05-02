@@ -1,12 +1,12 @@
-package logic.usecase.project
+package logic.usecase
 
 import logic.exception.EmptyNameException
 import logic.exception.EntityNotChangedException
 import logic.model.State
-import logic.repositories.ProjectsRepository
+import logic.repositories.StatesRepository
 
 class EditStateUseCase(
-    private val repository: ProjectsRepository
+    private val repository: StatesRepository
 ) {
     fun editState(newState: State, oldState: State) {
         validateUserInputs(
