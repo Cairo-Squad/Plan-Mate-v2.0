@@ -6,6 +6,7 @@ import io.mockk.mockk
 import logic.model.State
 import logic.model.Task
 import logic.repositories.TasksRepository
+import logic.usecase.task.GetTaskBytIdUseCase
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import java.util.*

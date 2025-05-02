@@ -5,6 +5,7 @@ import data.dto.UserType
 import io.mockk.mockk
 import logic.model.User
 import logic.repositories.AuthenticationRepository
+import logic.usecase.user.CreateUserUseCase
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import java.util.*

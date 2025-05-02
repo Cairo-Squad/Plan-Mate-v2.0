@@ -4,6 +4,7 @@ import io.mockk.*
 import logic.model.State
 import logic.model.Task
 import logic.repositories.TasksRepository
+import logic.usecase.task.EditTaskUseCase
 import org.junit.jupiter.api.BeforeEach
 import java.util.*
 import kotlin.test.Test

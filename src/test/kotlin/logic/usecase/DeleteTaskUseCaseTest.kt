@@ -6,6 +6,7 @@ import io.mockk.verify
 import logic.model.State
 import logic.model.Task
 import logic.repositories.TasksRepository
+import logic.usecase.task.DeleteTaskUseCase
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.assertThrows
 import java.util.*
