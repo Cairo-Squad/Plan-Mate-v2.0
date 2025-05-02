@@ -1,36 +1,32 @@
 package ui.utils
 
-import UserManagementView
-import ui.features.log.LogMangementView
-import ui.features.project.ProjectManagementView
-import ui.features.task.TaskManagementView
+import ui.features.auth.LoginView
+import ui.features.auth.UserSession
+import ui.features.user.UserManagementView
 
-
-class
-CLIMenu(
-
+class CLIMenu(
+    private val loginView: LoginView,
+    private val userManagementView: UserManagementView,
     private val outputFormatter: OutputFormatter
 ) {
-    /**
-     * Starts the application's main menu
-     */
     fun start() {
         displayWelcomeMessage()
-        //current user
-        //userManagementView.showUserMenu()
+        while (UserSession.getUser() == null) {
+            loginView.showLoginScreen()
+        }
+        userManagementView.showUserMenu()
     }
 
-    /**
-     * Displays the welcome banner
-     */
     private fun displayWelcomeMessage() {
         outputFormatter.printHeader("Welcome to PlanMate Task Management System")
-        println("""
+        println(
+            """
             A lightweight task management application for teams
             Version 1.0.0
             
             --------------------------------------------------------
             
-        """.trimIndent())
+        """.trimIndent()
+        )
     }
 }
