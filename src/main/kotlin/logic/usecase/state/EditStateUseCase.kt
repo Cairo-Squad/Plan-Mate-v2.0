@@ -1,4 +1,4 @@
-package logic.usecase
+package logic.usecase.state
 
 import logic.exception.EmptyNameException
 import logic.exception.EntityNotChangedException

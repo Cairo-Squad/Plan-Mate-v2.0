@@ -1,4 +1,4 @@
-package logic.usecase
+package logic.usecase.state
 
 import data.repositories.mappers.toStateDto
 import data.repositories.mappers.toUserDto
