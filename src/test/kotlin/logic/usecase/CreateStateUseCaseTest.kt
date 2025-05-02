@@ -24,25 +24,31 @@ class CreateStateUseCaseTest {
 	
 	@Test
 	fun `should return true when admin user creates state`() {
+		// Given
 		val state = State(UUID.randomUUID(), "Test State")
 		val user = User(UUID.randomUUID(), "admin", "pw", UserType.ADMIN)
 		
 		every { statesRepository.createState(any(), any()) } returns true
 		
+		// When
 		val result = createStateUseCase.createState(state, user)
 		
+		// Then
 		assertTrue(result)
 	}
 	
 	@Test
 	fun `should return false when mate user tries to create state`() {
+		// Given
 		val state = State(UUID.randomUUID(), "Test State")
 		val user = User(UUID.randomUUID(), "mateUser", "pw", UserType.MATE)
 		
 		every { statesRepository.createState(any(), any()) } returns false
 		
+		// When
 		val result = createStateUseCase.createState(state, user)
 		
+		// Then
 		assertFalse(result)
 	}
 }
