@@ -11,5 +11,4 @@ interface ProjectsRepository {
     fun deleteProject(projectId: UUID): Result<Unit>
     fun getProjectById(projectId: UUID): Result<Project>
     fun getAllProjects(): Result<List<Project>>
-    fun editState(state: State)
 }
