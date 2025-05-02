@@ -7,12 +7,13 @@ import io.mockk.verify
 import logic.exception.DtoNotFoundException
 import logic.exception.EmptyNameException
 import logic.exception.EmptyPasswordException
+import logic.exception.EntityNotChangedException
 import logic.model.User
 import logic.repositories.AuthenticationRepository
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import java.util.*
+import java.util.UUID
 
 class EditUserUseCaseTest {
 
@@ -58,33 +59,46 @@ class EditUserUseCaseTest {
         }
     }
 
-
     @Test
-    fun `editUser should return EmptyNameException, when user name is empty`() {
+    fun `editUser should return EntityNotChangedException, when user is not changed`() {
         // Given
         val updatedUser =
-            User(id = UUID(1, 1), name = "", password = "123456", type = UserType.ADMIN)
+            User(id = UUID(1, 1), name = "Mohamed", password = "123456", type = UserType.ADMIN)
         val originalUser =
             User(id = UUID(1, 1), name = "Mohamed", password = "123456", type = UserType.ADMIN)
 
         // When & Then
-        assertThrows<EmptyNameException> {
+        assertThrows<EntityNotChangedException> {
             editUserUseCase.editUser(updatedUser, originalUser)
         }
-    }
 
-    @Test
-    fun `editUser should return IllegalArgumentException, when user password is empty`() {
-        // Given
-        val updatedUser =
-            User(id = UUID(1, 1), name = "Mohamed", password = "", type = UserType.ADMIN)
-        val originalUser =
-            User(id = UUID(1, 1), name = "Mohamed", password = "123456", type = UserType.ADMIN)
+        @Test
+        fun `editUser should return EmptyNameException, when user name is empty`() {
+            // Given
+            val updatedUser =
+                User(id = UUID(1, 1), name = "", password = "123456", type = UserType.ADMIN)
+            val originalUser =
+                User(id = UUID(1, 1), name = "Mohamed", password = "123456", type = UserType.ADMIN)
 
-        // When & Then
-        assertThrows<EmptyPasswordException> {
-            editUserUseCase.editUser(updatedUser, originalUser)
+            // When & Then
+            assertThrows<EmptyNameException> {
+                editUserUseCase.editUser(updatedUser, originalUser)
+            }
         }
-    }
 
+        @Test
+        fun `editUser should return EmptyPasswordException, when user password is empty`() {
+            // Given
+            val updatedUser =
+                User(id = UUID(1, 1), name = "Mohamed", password = "", type = UserType.ADMIN)
+            val originalUser =
+                User(id = UUID(1, 1), name = "Mohamed", password = "123456", type = UserType.ADMIN)
+
+            // When & Then
+            assertThrows<EmptyPasswordException> {
+                editUserUseCase.editUser(updatedUser, originalUser)
+            }
+        }
+
+    }
 }
