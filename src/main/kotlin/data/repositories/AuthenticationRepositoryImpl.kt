@@ -27,9 +27,9 @@ class AuthenticationRepositoryImpl(
         return true
     }
 
-    override fun createUser(id : UUID, name : String, password : String, userType : UserType) : UserDto {
+    override fun createUser( name : String, password : String, userType : UserType) : UserDto {
         val hashedPassword = passwordConverter.hashPassword(password)
-        return dataSource.createUser(id, name, hashedPassword, userType)
+        return dataSource.createUser( name, hashedPassword, userType)
     }
 
     override fun editUser(user: User) {

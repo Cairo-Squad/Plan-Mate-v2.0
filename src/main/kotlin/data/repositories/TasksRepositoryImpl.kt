@@ -27,6 +27,13 @@ class TasksRepositoryImpl(
         dataSource.editTask(task.toTaskDto())
     }
 
+    override fun getAllTasksByProjectId(projectId: UUID): List<Task> {
+        return dataSource.getTasksByProjectId(projectId).map { taskDto ->
+            val taskState = dataSource.getStateById(taskDto.stateId)
+            taskDto.toTask(taskState.toState())
+        }
+    }
+
     override fun deleteTask(task: Task) {
         dataSource.deleteTask(task.toTaskDto())
     }

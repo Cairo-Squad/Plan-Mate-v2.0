@@ -7,9 +7,9 @@ import io.mockk.every
 import io.mockk.mockk
 import logic.model.Log
 import logic.repositories.LogsRepository
+import logic.usecase.Log.GetProjectLogUseCase
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 import java.time.LocalDateTime
 import java.util.UUID
 

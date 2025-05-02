@@ -1,4 +1,4 @@
-package logic.usecase.task
+package logic.usecase.Log
 
 import logic.model.Log
 import logic.repositories.LogsRepository

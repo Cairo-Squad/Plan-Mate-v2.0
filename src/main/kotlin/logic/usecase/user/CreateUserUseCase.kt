@@ -9,16 +9,16 @@ import logic.repositories.AuthenticationRepository
 import java.util.UUID
 
 class CreateUserUseCase(
-    private val authRepo: AuthenticationRepository
+    private val authRepository: AuthenticationRepository
 ) {
-    fun createUser(id: UUID, name: String, password: String, type: UserType): Result<User> {
+    fun createUser(name: String, password: String, type: UserType): Result<User> {
         if (name.isEmpty()) {
             return Result.failure(EmptyNameException())
         } else if (password.isEmpty()) {
             return Result.failure(EmptyPasswordException())
         } else {
             try {
-                val userDto = authRepo.createUser(id, name, password, type)
+                val userDto = authRepository.createUser( name, password, type)
                 val user = userDto.toUser()
                 return Result.success(user)
             } catch (e: Exception) {

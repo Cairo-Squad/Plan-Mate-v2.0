@@ -11,7 +11,7 @@ class CsvDataSource(
     private val tasksCsvHandler: FileHandler<TaskDto>,
     private val usersCsvHandler: FileHandler<UserDto>
 ) : DataSource {
-    override fun createUser(id: UUID, name: String, password: String, type: UserType): UserDto {
+    override fun createUser( name: String, password: String, type: UserType): UserDto {
         val userDto = UserDto(
             id = UUID.randomUUID(),
             name = name,
