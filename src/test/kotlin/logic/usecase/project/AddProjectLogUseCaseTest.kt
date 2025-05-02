@@ -1,4 +1,4 @@
-package logic.usecase
+package logic.usecase.project
 
 import data.dto.EntityType
 import data.dto.UserAction
@@ -6,7 +6,6 @@ import io.mockk.every
 import io.mockk.mockk
 import logic.model.Log
 import logic.repositories.LogsRepository
-import logic.usecase.project.AddProjectLogUseCase
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import java.time.LocalDateTime
@@ -52,6 +51,4 @@ class AddProjectLogUseCaseTest {
         userId = UUID.randomUUID(),
         userAction = UserAction.EditProjectTitle("Old name")
     )
-
-
 }

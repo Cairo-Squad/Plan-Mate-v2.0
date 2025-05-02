@@ -1,4 +1,4 @@
-package logic.usecase
+package logic.usecase.project
 
 import logic.repositories.ProjectsRepository
 import java.util.UUID

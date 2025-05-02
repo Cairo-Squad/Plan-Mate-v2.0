@@ -1,5 +1,7 @@
 package di
 
+import data.dataSource.CsvDataSource
+import data.dataSource.DataSource
 import data.database.FileHandler
 import data.database.ProjectsCsvHandler
 import data.database.StatesCsvHandler
@@ -12,25 +14,24 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 val appModule = module {
-
     single<FileHandler<ProjectDto>>(named("projectsHandler")) {
         ProjectsCsvHandler(
             filePath = CsvConstants.PROJECTS_CSV_FILE_PATH,
             headers = CsvConstants.PROJECTS_CSV_FILE_HEADERS
         )
     }
-
-    single<FileHandler<StateDto>>(named("statesHandler")) {
-        StatesCsvHandler(
-            filePath = "state.csv",
-            headers = listOf("id", "title")
-        )
-    }
-
     single<FileHandler<TaskDto>>(named("tasksHandler")) {
         TasksCsvHandler(
-            filePath = "task.csv",
-            headers = listOf("id", "title", "description", "stateId", "projectId")
+            filePath = CsvConstants.TASKS_CSV_FILE_PATH,
+            headers = CsvConstants.TASKS_CSV_FILE_HEADERS
         )
     }
+    single<FileHandler<StateDto>>(named("statesHandler")) {
+        StatesCsvHandler(
+            filePath = CsvConstants.STATES_CSV_FILE_PATH,
+            headers = CsvConstants.STATES_CSV_FILE_HEADERS
+        )
+    }
+
+    single<DataSource> { CsvDataSource(get(), get(), get(), get(), get()) }
 }

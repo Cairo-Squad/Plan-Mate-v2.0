@@ -1,15 +1,15 @@
-package logic.usecase.project
+package logic.usecase
 
 import logic.model.Log
 import logic.repositories.LogsRepository
 import java.util.UUID
 
-class GetProjectLogUseCase(
+class GetTaskLogsUseCase(
     private val logsRepository: LogsRepository
 ) {
-    fun getProjectLog(projectId: UUID): List<Log> {
+    fun execute(taskId: UUID): List<Log> {
         try {
-            return logsRepository.getProjectLog(projectId)
+            return logsRepository.getTaskLogs(taskId)
         } catch (exception: Exception) {
             throw Exception("An error happened! Please try again.")
         }

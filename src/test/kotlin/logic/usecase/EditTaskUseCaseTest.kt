@@ -1,0 +1,69 @@
+package logic.usecase
+
+import io.mockk.*
+import logic.model.State
+import logic.model.Task
+import logic.repositories.TasksRepository
+import org.junit.jupiter.api.BeforeEach
+import java.util.*
+import kotlin.test.Test
+import kotlin.test.assertFailsWith
+
+
+class EditTaskUseCaseTest {
+
+    private lateinit var tasksRepository: TasksRepository
+    private lateinit var editTaskUseCase: EditTaskUseCase
+
+    @BeforeEach
+    fun setup() {
+        tasksRepository = mockk(relaxed = true)
+        editTaskUseCase = EditTaskUseCase(tasksRepository)
+    }
+
+    @Test
+    fun `should throw exception when new task is the same as old task`() {
+        val task = getValidTask()
+        assertFailsWith<IllegalStateException> {
+            editTaskUseCase(newTask = task, oldTask = task)
+        }
+    }
+
+    @Test
+    fun `should throw exception when title is blank`() {
+        val oldTask = getValidTask()
+        val newTask = oldTask.copy(title = "  ")
+        assertFailsWith<IllegalArgumentException> {
+            editTaskUseCase(newTask = newTask, oldTask = oldTask)
+        }
+    }
+
+    @Test
+    fun `should throw exception when description is blank`() {
+        val oldTask = getValidTask()
+        val newTask = oldTask.copy(description = "")
+        assertFailsWith<IllegalArgumentException> {
+            editTaskUseCase(newTask = newTask, oldTask = oldTask)
+        }
+    }
+
+    @Test
+    fun `should call editTask on repository if input is valid and changed`() {
+        val oldTask = getValidTask()
+        val newTask = oldTask.copy(title = "Updated Title")
+
+        editTaskUseCase(newTask = newTask, oldTask = oldTask)
+
+        verify { tasksRepository.editTask(newTask) }
+    }
+
+    private fun getValidTask(): Task {
+        return Task(
+            id = UUID.randomUUID(),
+            title = "Title",
+            description = "Description",
+            state = State(id = UUID.randomUUID(), title = "To Do"),
+            projectId = UUID.randomUUID()
+        )
+    }
+}
