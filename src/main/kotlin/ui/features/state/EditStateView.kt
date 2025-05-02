@@ -1,7 +1,7 @@
 package ui.features.state
 
 import logic.model.State
-import logic.usecase.EditStateUseCase
+import logic.usecase.state.EditStateUseCase
 import ui.utils.InputHandler
 import ui.utils.OutputFormatter
 
