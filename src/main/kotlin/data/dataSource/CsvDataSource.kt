@@ -32,6 +32,10 @@ class CsvDataSource(
         return usersCsvHandler.edit(user)
     }
 
+    override fun editState(state: StateDto) {
+        return statesCsvHandler.edit(state)
+    }
+
     override fun deleteUser(user:UserDto) {
         usersCsvHandler.delete(user)
     }
