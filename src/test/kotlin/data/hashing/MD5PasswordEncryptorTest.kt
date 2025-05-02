@@ -5,13 +5,13 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
-class MD5PasswordHasherImplTest {
+class MD5PasswordEncryptorTest {
 
-    lateinit var hashing: PasswordHasher
+    lateinit var hashing: PasswordEncryptor
 
     @BeforeEach
     fun setUp() {
-        hashing = MD5PasswordHasherImpl()
+        hashing = MD5PasswordEncryptor()
     }
 
     @Test
