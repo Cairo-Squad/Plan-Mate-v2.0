@@ -1,20 +1,15 @@
 package ui
 
-import di.appModule
-import di.repositoryModule
-import di.useCasesModule
+import di.*
 import org.koin.core.context.GlobalContext.startKoin
 import org.koin.java.KoinJavaComponent.getKoin
 import ui.utils.CLIMenu
 
-
 fun main() {
-
-
     startKoin {
-        modules(listOf(appModule, repositoryModule, useCasesModule))
+        modules(listOf(uiModule, repositoryModule, useCasesModule, dataSourceModule))
     }
 
-    val cliMenu :CLIMenu=getKoin().get()
+    val cliMenu: CLIMenu = getKoin().get()
     cliMenu.start()
 }

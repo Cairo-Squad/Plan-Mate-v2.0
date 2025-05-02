@@ -4,39 +4,53 @@ import data.dataSource.CsvDataSource
 import data.dataSource.DataSource
 import data.database.*
 import data.database.util.CsvConstants
-import data.dto.ProjectDto
-import data.dto.StateDto
-import data.dto.TaskDto
-import data.dto.UserDto
-import logic.model.User
+import data.dto.*
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
-val appModule = module {
+val dataSourceModule = module {
     single<FileHandler<ProjectDto>>(named("projectsHandler")) {
         ProjectsCsvHandler(
             filePath = CsvConstants.PROJECTS_CSV_FILE_PATH,
             headers = CsvConstants.PROJECTS_CSV_FILE_HEADERS
         )
     }
+
     single<FileHandler<TaskDto>>(named("tasksHandler")) {
         TasksCsvHandler(
             filePath = CsvConstants.TASKS_CSV_FILE_PATH,
             headers = CsvConstants.TASKS_CSV_FILE_HEADERS
         )
     }
+
     single<FileHandler<StateDto>>(named("statesHandler")) {
         StatesCsvHandler(
             filePath = CsvConstants.STATES_CSV_FILE_PATH,
             headers = CsvConstants.STATES_CSV_FILE_HEADERS
         )
     }
+
     single<FileHandler<UserDto>>(named("userHandler")) {
         UsersCsvHandler(
-            filePath = CsvConstants.PROJECTS_CSV_FILE_PATH,
-            headers = CsvConstants.PROJECTS_CSV_FILE_HEADERS
+            filePath = CsvConstants.USERS_CSV_FILE_PATH,
+            headers = CsvConstants.USERS_CSV_FILE_HEADERS
         )
     }
 
-    single<DataSource> { CsvDataSource(get(), get(), get(), get(), get()) }
+    single<FileHandler<LogDto>>(named("logHandler")) {
+        LogsCsvHandler(
+            filePath = CsvConstants.LOGS_CSV_FILE_PATH,
+            headers = CsvConstants.LOGS_CSV_FILE_HEADERS
+        )
+    }
+
+    single<DataSource> {
+        CsvDataSource(
+            logsCsvHandler = get(named("logHandler")),
+            projectsCsvHandler = get(named("projectsHandler")),
+            statesCsvHandler = get(named("statesHandler")),
+            tasksCsvHandler = get(named("tasksHandler")),
+            usersCsvHandler = get(named("userHandler")),
+        )
+    }
 }

@@ -8,33 +8,38 @@ import logic.usecase.user.*
 import org.koin.dsl.module
 
 val useCasesModule = module {
-    //project
+    // region Projects
     single { CreateProjectUseCase(projectRepository = get()) }
     single { EditProjectUseCase(get()) }
     single { DeleteProjectUseCase(projectsRepository = get()) }
     single { GetProjectByIdUseCase(projectsRepository = get()) }
     single { GetAllProjectsUseCase(projectsRepository = get()) }
     single { AddProjectLogUseCase(get()) }
+    // endregion
 
-    //task
+    // region Tasks
     single { CreateTaskUseCase(get()) }
     single { EditTaskUseCase(get()) }
     single { DeleteTaskUseCase(get()) }
     single { GetTaskBytIdUseCase(get()) }
     single { GetAllTasksByProjectIdUseCase(get()) }
+    // endregion
 
-    // Logs
+    // region Logs
     single { GetTaskLogsUseCase(get()) }
     single { GetProjectLogUseCase(get()) }
+    // endregion
 
-    //user
+    // region Users
     single { CreateUserUseCase(get()) }
     single { EditUserUseCase(get()) }
     single { LoginUserUseCase(get()) }
     single { DeleteUserUseCase(get()) }
     single { GetAllUsersUseCase(get()) }
+    // endregion
 
-    // States
+    // region States
     single { GetAllStatesUseCase(get()) }
     single { CreateStateUseCase(get()) }
+    // endregion
 }
