@@ -9,6 +9,6 @@ class StatesRepositoryImpl(
     private val dataSource: DataSource
 ) : StatesRepository {
     override fun createState(state: StateDto, userDto: UserDto): Boolean {
-       return false
+        return dataSource.createState(state, userDto)
     }
 }

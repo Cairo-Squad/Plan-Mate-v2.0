@@ -116,7 +116,10 @@ class CsvDataSource(
     }
     
     override fun createState(state: StateDto, userDto: UserDto): Boolean {
-        return false
+        if (userDto.type != UserType.ADMIN) return false
+        
+        statesCsvHandler.write(state)
+        return true
     }
     
     override fun addProjectLog(logDto: LogDto) {
