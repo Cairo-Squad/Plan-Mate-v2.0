@@ -2,14 +2,13 @@ package di
 
 import data.dataSource.CsvDataSource
 import data.dataSource.DataSource
-import data.database.FileHandler
-import data.database.ProjectsCsvHandler
-import data.database.StatesCsvHandler
-import data.database.TasksCsvHandler
+import data.database.*
 import data.database.util.CsvConstants
 import data.dto.ProjectDto
 import data.dto.StateDto
 import data.dto.TaskDto
+import data.dto.UserDto
+import logic.model.User
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
@@ -30,6 +29,12 @@ val appModule = module {
         StatesCsvHandler(
             filePath = CsvConstants.STATES_CSV_FILE_PATH,
             headers = CsvConstants.STATES_CSV_FILE_HEADERS
+        )
+    }
+    single<FileHandler<UserDto>>(named("userHandler")) {
+        UsersCsvHandler(
+            filePath = CsvConstants.PROJECTS_CSV_FILE_PATH,
+            headers = CsvConstants.PROJECTS_CSV_FILE_HEADERS
         )
     }
 
