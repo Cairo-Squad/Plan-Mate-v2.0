@@ -42,7 +42,7 @@ val uiModule = module {
     }
 
     single {
-        ProjectCreateView(get(), get(), get(), get(), get())
+        ProjectCreateView(get(), get(), get())
     }
 
     single {
@@ -80,7 +80,7 @@ val uiModule = module {
     single { UserManagementView(get(), get()) }
 
     single {
-        LoginView(get(), get(), get())
+        LoginFeatureUI(get(), get(), get())
     }
 
     single { CLIMenu(get(), get(), get()) }
