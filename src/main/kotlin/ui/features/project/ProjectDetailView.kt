@@ -1,28 +1,41 @@
 package ui.features.project
 
-import logic.usecase.project.GetProjectByIdUseCase
+import logic.usecase.project.GetAllProjectsUseCase
 import ui.utils.InputHandler
 import ui.utils.OutputFormatter
-import java.util.UUID
 
 class ProjectDetailView(
-    private val getProjectByIdUseCase: GetProjectByIdUseCase,
+    private val getAllProjectsUseCase: GetAllProjectsUseCase,
     private val inputHandler: InputHandler,
     private val outputFormatter: OutputFormatter
 ) {
     fun viewProjectDetails() {
         outputFormatter.printHeader("Project Details")
-            //iterate over all projects
 
-        val projectId = UUID.fromString(inputHandler.promptForInput("Enter Project ID to view details: "))
-        val project = getProjectByIdUseCase.getProjectById(projectId).getOrElse {
-            outputFormatter.printError("Project not found!")
+
+        val projects = getAllProjectsUseCase.getAllProjects().getOrElse {
+            outputFormatter.printError("Failed to retrieve projects.")
             return
         }
 
-        outputFormatter.printInfo("Project ID: ${project.id}")
-        outputFormatter.printInfo("Title: ${project.title}")
-        outputFormatter.printInfo("Description: ${project.description}")
+        if (projects.isEmpty()) {
+            outputFormatter.printError("No projects available to view.")
+            return
+        }
+
+        outputFormatter.printHeader("Available Projects:")
+        projects.forEachIndexed { index, project ->
+            outputFormatter.printInfo("${index + 1}. ${project.title} (ID: ${project.id})")
+        }
+
+
+        val projectIndex = inputHandler.promptForIntChoice("Select the project number to view details: ", 1..projects.size)
+        val selectedProject = projects[projectIndex - 1]
+
+        outputFormatter.printHeader("Project Information")
+        outputFormatter.printInfo("Project ID: ${selectedProject.id}")
+        outputFormatter.printInfo("Title: ${selectedProject.title}")
+        outputFormatter.printInfo("Description: ${selectedProject.description}")
 
         inputHandler.waitForEnter()
     }

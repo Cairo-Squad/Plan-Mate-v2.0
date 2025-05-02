@@ -10,7 +10,7 @@ class TaskManagementView(
     private val creationView:CreateTaskView,
     private val editView:EditTaskView,
     private val deletionView: DeleteTaskView,
-    private val swimlanesView: SwimlanesView,
+ //   private val swimlanesView: SwimlanesView,
     private val inputHandler: InputHandler,
     private val outputFormatter: OutputFormatter
 ) {
@@ -26,7 +26,7 @@ class TaskManagementView(
             ))
 
             when (inputHandler.promptForIntChoice("Select an option: ", 1..6)) {
-                1 -> swimlanesView.display(user)
+              //  1 -> swimlanesView.display(user)
                 2 -> creationView.createTask()
                 3 -> editView.editTask()
                 4 -> deletionView.deleteTask()
