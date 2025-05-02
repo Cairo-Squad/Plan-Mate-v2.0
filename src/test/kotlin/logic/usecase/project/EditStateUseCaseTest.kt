@@ -37,7 +37,7 @@ class EditStateUseCaseTest {
     }
 
     @Test
-    fun `editState should return DtoNotFoundException, when user is not found`() {
+    fun `editState should return DtoNotFoundException, when state is not found`() {
         // Given
         val updatedState = State(id = UUID(2, 2), title = "In Progress")
         val originalState = State(id = UUID(1, 1), title = "Done")
@@ -50,7 +50,7 @@ class EditStateUseCaseTest {
     }
 
     @Test
-    fun `editState should return EmptyNameException, when user title is empty`() {
+    fun `editState should return EmptyNameException, when state title is empty`() {
         // Given
         val updatedUser = State(id = UUID(1, 1), title = "")
         val originalUser = State(id = UUID(1,1), title = "In Progress")
