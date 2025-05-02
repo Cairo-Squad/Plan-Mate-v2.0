@@ -2,7 +2,7 @@ package ui.features.state
 
 import data.dto.UserType
 import logic.model.State
-import logic.usecase.CreateStateUseCase
+import logic.usecase.state.CreateStateUseCase
 import ui.CurrentUser
 import ui.utils.InputHandler
 import ui.utils.OutputFormatter
