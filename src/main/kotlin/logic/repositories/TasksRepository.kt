@@ -9,5 +9,4 @@ interface TasksRepository {
     fun getAllTasksByProjectId(projectId: UUID): List<Task>
     fun deleteTask(task: Task)
     fun createTask(task: Task): Result<Unit>
-
 }

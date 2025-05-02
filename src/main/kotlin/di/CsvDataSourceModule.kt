@@ -1,7 +1,7 @@
 package di
 
 import data.dataSource.CsvDataSource
-import data.dataSource.DataSource
+import data.repositories.DataSource
 import data.database.*
 import data.database.util.CsvConstants
 import data.dto.*

@@ -1,6 +1,5 @@
 package data.repositories
 
-import data.dataSource.DataSource
 import data.dto.UserDto
 import data.dto.UserType
 import data.hashing.PasswordEncryptor
@@ -11,27 +10,27 @@ import logic.repositories.AuthenticationRepository
 import java.util.UUID
 
 class AuthenticationRepositoryImpl(
-    private val dataSource: DataSource,
+    private val csvDataSource: DataSource,
     private val passwordEncryptor: PasswordEncryptor
 ) : AuthenticationRepository {
 
     override fun getAllUsers(): List<User> {
-        val usersDto = dataSource.getAllUsers()
+        val usersDto = csvDataSource.getAllUsers()
         return usersDto.map { it.toUser() }
     }
 
     override fun deleteUser(userId: UUID): Boolean {
-        val userDto = dataSource.getAllUsers().find { it.id == userId } ?: return false
-        dataSource.deleteUser(userDto)
+        val userDto = csvDataSource.getAllUsers().find { it.id == userId } ?: return false
+        csvDataSource.deleteUser(userDto)
         return true
     }
 
     override fun createUser(id: UUID, name: String, password: String, userType: UserType): UserDto {
         val hashedPassword = passwordEncryptor.hashPassword(password)
-        return dataSource.createUser(id, name, hashedPassword, userType)
+        return csvDataSource.createUser(id, name, hashedPassword, userType)
     }
 
     override fun editUser(user: User) {
-        return dataSource.editUser(user.toUserDto())
+        return csvDataSource.editUser(user.toUserDto())
     }
 }
