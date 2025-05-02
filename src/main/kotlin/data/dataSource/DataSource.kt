@@ -35,4 +35,5 @@ interface DataSource {
     // endregion
     fun getTaskById(taskID: UUID): TaskDto
     fun getStateById(stateId: UUID): StateDto
+    fun editState(state: StateDto)
 }
