@@ -4,7 +4,6 @@ package data.dataSource
 import java.util.UUID
 import data.dto.StateDto
 import data.dto.*
-import logic.model.Task
 
 interface DataSource {
     fun editUser(user: UserDto)
@@ -18,24 +17,25 @@ interface DataSource {
     fun deleteUser(user:UserDto)
     fun getAllProjects(): List<ProjectDto>
 
+    fun getTasksByProjectId(projectId: UUID): List<TaskDto>
 
     fun getAllStates(): List<StateDto>
-    fun getStateById(stateId: UUID): StateDto
 
-    fun getTasksByProjectId(projectId: UUID): List<TaskDto>
+    fun getAllAuditRecords(): List<LogDto>
+    fun addProjectLog(logDto: LogDto)
+    fun getProjectLog(projectId: UUID): List<LogDto>
+
     fun createTask(task: TaskDto): Result<Unit>
     fun editTask(task: TaskDto)
     fun deleteTask(task: TaskDto)
-    fun getTaskById(taskID: UUID): TaskDto
-
 
     // region Logs
     fun recordLog(log: LogDto)
-    fun addProjectLog(logDto: LogDto)
-    fun getAllAuditRecords(): List<LogDto>
-    fun getProjectLog(projectId: UUID): List<LogDto>
     fun getTaskLogs(taskId: UUID): List<LogDto>
     // endregion
+    fun getTaskById(taskID: UUID): TaskDto
+    fun getStateById(stateId: UUID): StateDto
 
-
+    fun createState(state: StateDto, userDto: UserDto): Boolean
+    fun editState(state: StateDto)
 }

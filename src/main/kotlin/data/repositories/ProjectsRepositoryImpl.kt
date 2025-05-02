@@ -1,9 +1,20 @@
 package data.repositories
 
+import data.dataSource.CsvDataSource
 import data.dataSource.DataSource
+import data.database.LogsCsvHandler
+import data.database.ProjectsCsvHandler
+import data.database.StatesCsvHandler
+import data.database.TasksCsvHandler
+import data.database.UsersCsvHandler
+import data.dto.ProjectDto
+import data.dto.StateDto
+import data.dto.UserDto
+import data.dto.UserType
 import data.repositories.mappers.toProject
 import data.repositories.mappers.toProjectDto
 import data.repositories.mappers.toState
+import data.repositories.mappers.toStateDto
 import data.repositories.mappers.toTask
 import logic.model.Project
 import logic.model.State
@@ -24,7 +35,10 @@ class ProjectsRepositoryImpl(
     }
 
     override fun deleteProject(projectId: UUID): Result<Unit> {
-        val projectsDao = dataSource.getAllProjects().find { it.id == projectId } ?: return Result.failure(Exception())
+        val projectsDao =
+            dataSource.getAllProjects().find { it.id == projectId } ?: return Result.failure(
+                Exception()
+            )
         dataSource.deleteProjectById(projectsDao)
         return Result.success(Unit)
     }
