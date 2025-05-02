@@ -1,28 +1,38 @@
 package data.repositories.mappers
 
-import data.dto.LogDto
-import logic.model.Log
+import data.dto.ProjectLogDto
+import data.dto.TaskLogDto
+import logic.model.ProjectLog
+import logic.model.TaskLog
 
-fun LogDto.toLog(): Log {
-    return Log(
-        id = this.id,
-        entityId = this.entityId,
-        entityTitle = this.entityTitle,
-        entityType = this.entityType,
-        dateTime = this.dateTime,
+fun TaskLogDto.toTaskLog(): TaskLog {
+    return TaskLog(
+        taskId = this.taskId,
         userId = this.userId,
-        userAction = this.userAction
+        action = this.action,
+        time = this.time
+    )}
+fun TaskLog.toTaskLogDto(): TaskLogDto {
+    return TaskLogDto(
+        taskId = this.taskId,
+        userId = this.userId,
+        action = this.action,
+        time = this.time
+    )}
+
+fun ProjectLogDto.toProjectLog(): ProjectLog {
+    return ProjectLog(
+        projectId = this.projectId,
+        userId = this.userId,
+        action = this.action,
+        time = this.time,
     )
 }
-
-fun Log.toLogDto(): LogDto {
-    return LogDto(
-        id = this.id,
-        entityId = this.entityId,
-        entityTitle = this.entityTitle,
-        entityType = this.entityType,
-        dateTime = this.dateTime,
+fun ProjectLog.toProjectLogDto(): ProjectLogDto {
+    return ProjectLogDto(
+        projectId = this.projectId,
         userId = this.userId,
-        userAction = this.userAction,
+        action = this.action,
+        time = this.time,
     )
 }
