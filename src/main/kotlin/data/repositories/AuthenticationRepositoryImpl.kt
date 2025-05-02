@@ -17,7 +17,6 @@ class AuthenticationRepositoryImpl(
 
     override fun getAllUsers(): List<User> {
         val usersDto = dataSource.getAllUsers()
-        println("users DTOs: $usersDto")
         return usersDto.map { it.toUser() }
     }
 
