@@ -4,6 +4,7 @@ import logic.usecase.user.LoginUserUseCase
 import ui.utils.InputHandler
 import ui.utils.OutputFormatter
 import logic.model.User
+import ui.features.auth.UserSession
 
 class LoginView(
     private val loginUserUseCase: LoginUserUseCase,
@@ -18,13 +19,13 @@ class LoginView(
 
         return try {
             val user = loginUserUseCase.login(username, password)
+            UserSession.setUser(user)
 
             outputFormatter.printSuccess("Login successful! Welcome, ${user.name}")
-                //store user data
-            user  // Return the authenticated user
+            user
         } catch (e: Exception) {
             outputFormatter.printError("Authentication failed: ${e.message}")
-            null // Return null if authentication fails
+            null
         }
     }
 }
