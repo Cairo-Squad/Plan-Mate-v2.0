@@ -1,20 +1,17 @@
 package di
 
-import data.repositories.LogsRepositoryImpl
-import data.repositories.ProjectsRepositoryImpl
-import data.repositories.StatesRepositoryImpl
-import data.repositories.TasksRepositoryImpl
-import logic.repositories.LogsRepository
-import logic.repositories.ProjectsRepository
-import logic.repositories.StatesRepository
-import logic.repositories.TasksRepository
+import data.hashing.MD5PasswordEncryptor
+import data.hashing.PasswordEncryptor
+import data.repositories.*
+import logic.repositories.*
 import org.koin.dsl.module
 
 val repositoryModule = module {
-    single<ProjectsRepository> { ProjectsRepositoryImpl(dataSource = get()) }
-    single<TasksRepository> { TasksRepositoryImpl(dataSource = get()) }
-    single<StatesRepository> {StatesRepositoryImpl(dataSource = get()) }
-    single<LogsRepository> { LogsRepositoryImpl(dataSource = get()) }
-    single<ProjectsRepository> {ProjectsRepositoryImpl(dataSource = get()) }
+    single<ProjectsRepository> { ProjectsRepositoryImpl(get()) }
+    single<TasksRepository> { TasksRepositoryImpl(get()) }
+    single<StatesRepository> { StatesRepositoryImpl(get()) }
+    single<LogsRepository> { LogsRepositoryImpl(get()) }
+    single<AuthenticationRepository> { AuthenticationRepositoryImpl(get(), get()) }
 
+    single<PasswordEncryptor> { MD5PasswordEncryptor() }
 }
