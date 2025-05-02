@@ -10,6 +10,10 @@ class CreateStateUseCase(
 	private val stateRepo: StatesRepository
 ) {
 	fun createState(state: State, user: User): Boolean {
-		return stateRepo.createState(state.toStateDto(), user.toUserDto())
+		return try {
+			stateRepo.createState(state.toStateDto(), user.toUserDto())
+		} catch (e: Exception) {
+			return false
+		}
 	}
 }
