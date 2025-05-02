@@ -1,6 +1,5 @@
 package ui.features.project
 
-import logic.model.User
 import ui.features.log.ProjectLogView
 import ui.utils.InputHandler
 import ui.utils.OutputFormatter
@@ -22,21 +21,19 @@ class ProjectManagementView(
                     "1. Create Project",
                     "2. Edit Project",
                     "3. Delete Project",
-                    "4. View Project Details",
-                    "5. View Project Logs",
-                    "6. View All Projects",
-                    "7. Exit"
+                    "4. View Project Logs",
+                    "5. View All Projects",
+                    "6. Exit"
                 )
             )
 
-            when (inputHandler.promptForIntChoice("Select an option: ", 1..7)) {
-              //  1 -> projectCreateView.createProject()
+            when (inputHandler.promptForIntChoice("Select an option: ", 1..6)) {
+                1 -> projectCreateView.createProject()
                 2 -> projectEditView.editProject()
                 3 -> projectDeleteView.deleteProject()
-                4 -> projectDetailView.viewProjectDetails()
-                5 -> projectLogView.viewProjectLogs()
-                6 -> projectDeleteView.deleteProject()
-                7 -> return
+                4 -> projectLogView.viewProjectLogs()
+                5 -> projectDetailView.viewProjectDetails()
+                6 -> return
             }
         }
     }
