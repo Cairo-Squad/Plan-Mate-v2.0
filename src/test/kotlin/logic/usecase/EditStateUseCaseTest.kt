@@ -1,4 +1,4 @@
-package logic.usecase.project
+package logic.usecase
 
 import io.mockk.every
 import io.mockk.mockk
@@ -7,6 +7,7 @@ import logic.exception.DtoNotFoundException
 import logic.exception.EmptyNameException
 import logic.model.State
 import logic.repositories.ProjectsRepository
+import logic.repositories.StatesRepository
 import logic.usecase.EditStateUseCase
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -15,7 +16,7 @@ import java.util.UUID
 
 class EditStateUseCaseTest {
 
-    lateinit var repository: ProjectsRepository
+    lateinit var repository: StatesRepository
     lateinit var editStateUseCase: EditStateUseCase
 
     @BeforeEach
