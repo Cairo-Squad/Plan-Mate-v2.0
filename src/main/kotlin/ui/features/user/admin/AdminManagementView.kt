@@ -1,12 +1,14 @@
 package ui.features.user.admin
 
-import logic.model.User
 import data.dto.UserType
+import logic.usecase.user.CreateUserUseCase
+import logic.usecase.user.DeleteUserUseCase
+import logic.usecase.user.EditUserUseCase
+import logic.usecase.user.GetAllUsersUseCase
+import ui.features.log.LogMangementView
+import ui.features.project.ProjectManagementView
 import ui.utils.InputHandler
 import ui.utils.OutputFormatter
-import logic.usecase.user.*
-import ui.features.project.ProjectManagementView
-import ui.features.log.LogMangementView
 
 class AdminManagementView(
     private val createUserUseCase: CreateUserUseCase,
@@ -16,7 +18,7 @@ class AdminManagementView(
     private val projectManagementView: ProjectManagementView,
     private val auditMenuView: LogMangementView,
     private val inputHandler: InputHandler,
-    private val outputFormatter: OutputFormatter
+    private val outputFormatter: OutputFormatter,
 ) {
     fun showAdminMenu() {
         while (true) {
@@ -93,36 +95,49 @@ class AdminManagementView(
 
         inputHandler.waitForEnter()
     }
-
+    
     private fun editUser() {
-        val username = inputHandler.promptForInput("Enter username to edit: ")
-
-        val users = getAllUsersUseCase.execute().getOrElse {
-            outputFormatter.printError("Failed to retrieve users.")
-            return
+        getAllUsersUseCase.execute().onSuccess { users ->
+            users.forEachIndexed { index, user ->
+                outputFormatter.printInfo("${index + 1}. ${user.name} (ID: ${user.id})")
+            }
+            
+            val selectedUser = inputHandler.promptForIntChoice(
+                "Select the number of user you want to modify: ",
+                1..users.size
+            ) - 1
+            
+            
+            val newName = inputHandler.promptForPassword("Enter new Name (leave empty to keep current): ")
+                .takeIf { it.isNotBlank() } ?: users[selectedUser].name
+            
+            val newPassword = inputHandler.promptForPassword("Enter new password (leave empty to keep current): ")
+                .takeIf { it.isNotBlank() } ?: users[selectedUser].password
+            
+            val updatedUser = users[selectedUser].copy(name = newName , password = newPassword)
+            
+            editUserUseCase.editUser(updatedUser, users[selectedUser])
+            
+            inputHandler.waitForEnter()
         }
-
-        val currentUser = users.find { it.name == username } ?: run {
-            outputFormatter.printError("User not found!")
-            return
-        }
-
-        val newPassword = inputHandler.promptForPassword("Enter new password (leave empty to keep current): ")
-            .takeIf { it.isNotBlank() } ?: currentUser.password
-
-        val updatedUser = currentUser.copy(password = newPassword)
-
-        val result = editUserUseCase.editUser(updatedUser, currentUser)
-
-        inputHandler.waitForEnter()
     }
 
     private fun deleteUser() {
-        val username = inputHandler.promptForInput("Enter username to delete: ")
-
-        val users = getAllUsersUseCase.execute().getOrElse {
-            outputFormatter.printError("Failed to retrieve users.")
-            return
+        
+        getAllUsersUseCase.execute().onSuccess { users ->
+            users.forEachIndexed { index, user ->
+                outputFormatter.printInfo("${index + 1}. ${user.name} (ID: ${user.id})")
+            }
+            
+            val selectedUser = inputHandler.promptForIntChoice(
+                "Select the number of user you want to delete: ",
+                1..users.size
+            ) - 1
+            
+            
+            deleteUserUseCase.deleteUser(users[selectedUser].id)
+            
+            inputHandler.waitForEnter()
         }
     }
 }
