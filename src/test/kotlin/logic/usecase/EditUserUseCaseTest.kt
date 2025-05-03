@@ -10,6 +10,7 @@ import logic.exception.EmptyPasswordException
 import logic.exception.EntityNotChangedException
 import logic.model.User
 import logic.repositories.AuthenticationRepository
+import logic.usecase.user.EditUserUseCase
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows

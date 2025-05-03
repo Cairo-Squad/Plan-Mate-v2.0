@@ -6,6 +6,7 @@ import io.mockk.mockk
 import logic.model.State
 import logic.model.User
 import logic.repositories.StatesRepository
+import logic.usecase.state.CreateStateUseCase
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test

@@ -2,6 +2,7 @@ package data.dataSource
 
 import data.database.FileHandler
 import data.dto.*
+import data.repositories.DataSource
 import java.util.*
 
 class CsvDataSource(
@@ -24,7 +25,7 @@ class CsvDataSource(
     }
 
     override fun getAllUsers(): List<UserDto> {
-       val users= usersCsvHandler.readAll()
+        val users = usersCsvHandler.readAll()
         return users
     }
 
@@ -36,7 +37,7 @@ class CsvDataSource(
         return statesCsvHandler.edit(state)
     }
 
-    override fun deleteUser(user:UserDto) {
+    override fun deleteUser(user: UserDto) {
         usersCsvHandler.delete(user)
     }
 
@@ -72,7 +73,7 @@ class CsvDataSource(
     }
 
     override fun getTasksByProjectId(projectId: UUID): List<TaskDto> {
-        return tasksCsvHandler.readAll().filter { it.id == projectId }
+        return tasksCsvHandler.readAll().filter { it.projectId == projectId }
     }
 
     override fun getAllStates(): List<StateDto> {
@@ -107,6 +108,7 @@ class CsvDataSource(
     override fun deleteTask(task: TaskDto) {
         tasksCsvHandler.delete(task)
     }
+
     override fun getTaskById(taskID: UUID): TaskDto {
 
         val task = tasksCsvHandler.readAll().find { it.id == taskID }
@@ -118,14 +120,12 @@ class CsvDataSource(
         val stateDto = statesCsvHandler.readAll().find { it.id == stateId }
         return stateDto!!
     }
-    
+
     override fun createState(state: StateDto, userDto: UserDto): Boolean {
-        if (userDto.type != UserType.ADMIN) return false
-        
         statesCsvHandler.write(state)
         return true
     }
-    
+
     override fun addProjectLog(logDto: LogDto) {
         logsCsvHandler.write(logDto)
     }

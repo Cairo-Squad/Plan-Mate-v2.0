@@ -1,0 +1,89 @@
+package di
+
+import org.koin.dsl.module
+import ui.features.auth.*
+import ui.features.log.*
+import ui.features.project.*
+import ui.features.task.*
+import ui.features.user.*
+import ui.features.user.admin.AdminManagementView
+import ui.features.user.mate.MateManagementView
+import ui.utils.CLIMenu
+import ui.utils.InputHandler
+import ui.utils.OutputFormatter
+
+val uiModule = module {
+    single {
+        ProjectEditView(get(), get(), get(), get())
+    }
+
+    single {
+        ProjectDeleteView(get(), get(), get(), get())
+    }
+
+    single {
+        ProjectDetailView(get(), get(), get())
+    }
+
+    single {
+        ProjectLogView(get(), get(), get(), get())
+    }
+
+    single {
+        TaskLogView(get(), get(), get(), get(), get())
+    }
+
+    single {
+        InputHandler()
+    }
+
+    single {
+        OutputFormatter()
+    }
+
+    single {
+        ProjectCreateView(get(), get(), get(), get() ,get())
+    }
+
+    single {
+        ProjectManagementView(get(), get(), get(), get(), get(), get(), get())
+    }
+
+    single {
+        AdminManagementView(get(), get(), get(), get(), get(), get(), get(), get())
+    }
+
+    single {
+        LogMangementView(get(), get(), get(), get())
+    }
+
+    single {
+        MateManagementView(get(), get())
+    }
+
+    single {
+        CreateTaskView(get(), get(), get() ,get(), get(), get())
+    }
+
+    single {
+        DeleteTaskView(get(), get(), get(), get() ,get())
+    }
+
+    single {
+        EditTaskView(get(), get(), get(), get(), get() ,get())
+    }
+
+    single {
+        TaskManagementView(get(), get(), get(), get(), get(),get())
+    }
+
+    single { UserManagementView(get(), get()) }
+
+    single {
+        LoginFeatureUI(get(), get(), get())
+    }
+
+    single { CLIMenu(get(), get(), get()) }
+    
+    single { SwimlanesView(get(), get(),get(),get()) }
+}

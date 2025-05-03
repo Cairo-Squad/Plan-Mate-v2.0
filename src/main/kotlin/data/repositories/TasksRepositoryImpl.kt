@@ -1,6 +1,5 @@
 package data.repositories
 
-import data.dataSource.DataSource
 import data.repositories.mappers.toState
 import data.repositories.mappers.toTask
 import data.repositories.mappers.toTaskDto
@@ -9,27 +8,31 @@ import logic.repositories.TasksRepository
 import java.util.UUID
 
 class TasksRepositoryImpl(
-    private val dataSource: DataSource
+    private val csvDataSource: DataSource
 ) : TasksRepository {
 
-    override fun getTaskById(taskID: UUID): Task {
-
-        val taskDto = dataSource.getTaskById(taskID)
-        val taskState = dataSource.getStateById(taskDto.stateId)
+    override fun getTaskById(taskId: UUID): Task {
+        val taskDto = csvDataSource.getTaskById(taskId)
+        val taskState = csvDataSource.getStateById(taskDto.stateId)
         return taskDto.toTask(taskState.toState())
     }
 
     override fun createTask(task: Task): Result<Unit> {
-        return dataSource.createTask(task.toTaskDto())
+        return csvDataSource.createTask(task.toTaskDto())
     }
 
     override fun editTask(task: Task) {
-        dataSource.editTask(task.toTaskDto())
+        csvDataSource.editTask(task.toTaskDto())
+    }
+
+    override fun getAllTasksByProjectId(projectId: UUID): List<Task> {
+        return csvDataSource.getTasksByProjectId(projectId).map { taskDto ->
+            val taskState = csvDataSource.getStateById(taskDto.stateId)
+            taskDto.toTask(taskState.toState())
+        }
     }
 
     override fun deleteTask(task: Task) {
-        dataSource.deleteTask(task.toTaskDto())
+        csvDataSource.deleteTask(task.toTaskDto())
     }
-
-
 }

@@ -6,9 +6,8 @@ import io.mockk.verify
 import logic.exception.DtoNotFoundException
 import logic.exception.EmptyNameException
 import logic.model.State
-import logic.repositories.ProjectsRepository
 import logic.repositories.StatesRepository
-import logic.usecase.EditStateUseCase
+import logic.usecase.state.EditStateUseCase
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -16,8 +15,8 @@ import java.util.UUID
 
 class EditStateUseCaseTest {
 
-    lateinit var repository: StatesRepository
-    lateinit var editStateUseCase: EditStateUseCase
+    private lateinit var repository: StatesRepository
+    private lateinit var editStateUseCase: EditStateUseCase
 
     @BeforeEach
     fun setup() {
@@ -55,7 +54,7 @@ class EditStateUseCaseTest {
     fun `editState should return EmptyNameException, when state title is empty`() {
         // Given
         val updatedUser = State(id = UUID(1, 1), title = "")
-        val originalUser = State(id = UUID(1,1), title = "In Progress")
+        val originalUser = State(id = UUID(1, 1), title = "In Progress")
         // When & Then
         assertThrows<EmptyNameException> {
             editStateUseCase.editState(updatedUser, originalUser)

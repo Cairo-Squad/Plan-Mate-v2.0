@@ -1,12 +1,11 @@
 package logic.usecase
 
-import data.dto.TaskDto
 import io.mockk.every
 import io.mockk.mockk
-import io.mockk.verify
 import logic.model.State
 import logic.model.Task
 import logic.repositories.TasksRepository
+import logic.usecase.task.CreateTaskUseCase
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
