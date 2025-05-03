@@ -4,6 +4,8 @@ import data.dto.EntityType
 import data.dto.UserAction
 import io.mockk.every
 import io.mockk.mockk
+import logic.exception.CsvWriteException
+import logic.exception.UnknownException
 import logic.model.Log
 import logic.repositories.LogsRepository
 import org.junit.jupiter.api.BeforeEach
@@ -34,12 +36,25 @@ class AddProjectLogUseCaseTest {
     @Test
     fun `Given a project log,When adding to database,Then return failure`() {
         //Given
-        every { logsRepository.addProjectLog(any()) } throws Exception()
+        every { logsRepository.addProjectLog(any()) } throws CsvWriteException()
         val projectLog = createLog()
         //When
         val result = addProjectLogUseCase.addProjectLog(projectLog)
         //Then
-        assertEquals(expected = Result.failure(Exception()), actual = result)
+        val expected = Result.failure<Exception>(CsvWriteException())
+        assertEquals(expected = expected.exceptionOrNull()!!::class, actual = result.exceptionOrNull()!!::class)
+    }
+
+    @Test
+    fun `Given a project log,When adding to database,Then return  unKnown failure`() {
+        //Given
+        every { logsRepository.addProjectLog(any()) } throws UnknownException()
+        val projectLog = createLog()
+        //When
+        val result = addProjectLogUseCase.addProjectLog(projectLog)
+        //Then
+        val expected = Result.failure<Exception>(UnknownException())
+        assertEquals(expected = expected.exceptionOrNull()!!::class, actual = result.exceptionOrNull()!!::class)
     }
 
     private fun createLog() = Log(
