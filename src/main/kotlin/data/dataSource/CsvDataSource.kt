@@ -73,7 +73,7 @@ class CsvDataSource(
     }
 
     override fun getTasksByProjectId(projectId: UUID): List<TaskDto> {
-        return tasksCsvHandler.readAll().filter { it.id == projectId }
+        return tasksCsvHandler.readAll().filter { it.projectId == projectId }
     }
 
     override fun getAllStates(): List<StateDto> {
@@ -122,8 +122,6 @@ class CsvDataSource(
     }
 
     override fun createState(state: StateDto, userDto: UserDto): Boolean {
-        if (userDto.type != UserType.ADMIN) return false
-
         statesCsvHandler.write(state)
         return true
     }
