@@ -1,4 +1,5 @@
 import com.google.common.truth.Truth.assertThat
+import data.hashing.PasswordEncryptor
 import io.mockk.every
 import io.mockk.mockk
 import logic.repositories.AuthenticationRepository
@@ -11,25 +12,26 @@ import org.junit.jupiter.api.assertThrows
 class LoginUserUseCaseTest {
     private lateinit var authenticationRepository : AuthenticationRepository
     private lateinit var loginUserUseCase : LoginUserUseCase
-
+    private lateinit var passwordEncryptor: PasswordEncryptor
     @BeforeEach
     fun setUp() {
         authenticationRepository = mockk(relaxed = true)
-        loginUserUseCase = LoginUserUseCase(authenticationRepository)
-    }
+        passwordEncryptor = mockk(relaxed = true)
+        loginUserUseCase = LoginUserUseCase(authenticationRepository,passwordEncryptor)
 
-    // TODO: Refactor these!!!
-    /*@Test
+    }
+    @Test
     fun `should return true when valid username and password`() {
         //Given
         val mockUsers = FakeData.mockUsers
         every { authenticationRepository.getAllUsers() } returns FakeData.mockUsers
+        every { passwordEncryptor.hashPassword(mockUsers[0].password) } returns mockUsers[0].password
 
         //when
         val result = loginUserUseCase.login(mockUsers[0].name, mockUsers[0].password)
 
         //Then
-        assertThat(result).isTrue()
+        assertThat(result).isEqualTo(FakeData.mockUsers[0])
     }
 
     @Test
@@ -37,12 +39,14 @@ class LoginUserUseCaseTest {
         //Given
         val mockUsers = FakeData.mockUsers
         every { authenticationRepository.getAllUsers() } returns FakeData.mockUsers
+        every { passwordEncryptor.hashPassword("123456789") } returns "123456789"
 
         //when
-        val result = loginUserUseCase.login(mockUsers[0].name, "123456789")
-
+        val exception = assertThrows<Exception> {
+            loginUserUseCase.login(mockUsers[0].name, "123456789")
+        }
         //Then
-        assertThat(result).isFalse()
+        assertThat(exception).hasMessageThat().contains("Invalid username or password")
     }
 
     @Test
@@ -50,25 +54,25 @@ class LoginUserUseCaseTest {
         //Given
         val mockUsers = FakeData.mockUsers
         every { authenticationRepository.getAllUsers() } returns FakeData.mockUsers
+        every { passwordEncryptor.hashPassword(mockUsers[0].password) } returns mockUsers[0].password
 
         //when
-        val result = loginUserUseCase.login("ali", mockUsers[0].password)
+        val exception = assertThrows<Exception> {
+            loginUserUseCase.login("ali", mockUsers[0].password)
+        }
 
         //Then
-        assertThat(result).isFalse()
-    }*/
+        assertThat(exception).hasMessageThat().contains("Invalid username or password")
+    }
 
     @Test
     fun `should throw exception when repository throws error`() {
         //Given
         every { authenticationRepository.getAllUsers() } throws RuntimeException("during get data error")
 
-        //when
-        val exception = assertThrows<Exception> {
+        //when&thenn
+       assertThrows<Exception> {
             loginUserUseCase.login("nour", "12345")
         }
-
-        //Then
-        assertThat(exception).hasMessageThat().isEqualTo("error  during login")
     }
 }
