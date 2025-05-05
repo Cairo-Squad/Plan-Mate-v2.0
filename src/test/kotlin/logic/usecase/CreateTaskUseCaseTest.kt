@@ -5,6 +5,7 @@ import io.mockk.mockk
 import logic.model.State
 import logic.model.Task
 import logic.repositories.TasksRepository
+import logic.usecase.Log.AddLogUseCase
 import logic.usecase.task.CreateTaskUseCase
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
@@ -14,11 +15,13 @@ import java.util.*
 class CreateTaskUseCaseTest {
     lateinit var createTaskUseCase: CreateTaskUseCase
     lateinit var taskRepository: TasksRepository
+    lateinit var  addLogUseCase: AddLogUseCase
 
     @BeforeEach
     fun setup() {
         taskRepository = mockk(relaxed = true)
-        createTaskUseCase = CreateTaskUseCase(taskRepository)
+        addLogUseCase=mockk(relaxed =true )
+        createTaskUseCase = CreateTaskUseCase(taskRepository,addLogUseCase)
     }
 
     @Test

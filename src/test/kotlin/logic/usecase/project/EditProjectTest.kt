@@ -8,6 +8,7 @@ import logic.exception.UnknownException
 import logic.model.Project
 import logic.model.State
 import logic.repositories.ProjectsRepository
+import logic.usecase.Log.AddLogUseCase
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import java.util.*
@@ -17,10 +18,12 @@ class EditProjectTest {
 
     private val projectsRepository = mockk<ProjectsRepository>(relaxed = true)
     private lateinit var editProjectDescription: EditProjectUseCase
+    private lateinit var addLogUseCase: AddLogUseCase
 
     @BeforeEach
     fun setup() {
-        editProjectDescription = EditProjectUseCase(projectsRepository)
+        addLogUseCase=mockk(relaxed = true)
+        editProjectDescription = EditProjectUseCase(projectsRepository,addLogUseCase)
     }
 
     @Test

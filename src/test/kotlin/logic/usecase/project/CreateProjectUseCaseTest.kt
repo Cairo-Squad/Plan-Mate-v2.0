@@ -4,6 +4,7 @@ import com.google.common.truth.Truth.assertThat
 import io.mockk.every
 import io.mockk.mockk
 import logic.repositories.ProjectsRepository
+import logic.usecase.Log.AddLogUseCase
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import util.FakeData
@@ -13,11 +14,13 @@ import util.FakeData.validUser
 class CreateProjectUseCaseTest() {
     private lateinit var projectRepository: ProjectsRepository
     private lateinit var createProject: CreateProjectUseCase
+    private lateinit var recordLog: AddLogUseCase
 
     @BeforeEach
     fun setUp() {
         projectRepository = mockk(relaxed = true)
-        createProject = CreateProjectUseCase(projectRepository)
+        recordLog = mockk(relaxed = true)
+        createProject = CreateProjectUseCase(projectRepository ,recordLog)
     }
 
     @Test

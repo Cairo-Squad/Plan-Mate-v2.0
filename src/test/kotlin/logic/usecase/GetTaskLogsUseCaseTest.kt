@@ -69,7 +69,11 @@ class GetTaskLogsUseCaseTest {
                 entityType = EntityType.TASK,
                 dateTime = LocalDateTime.now(),
                 userId = UUID.randomUUID(),
-                userAction = UserAction.DeleteProject
+                userAction = UserAction.CreateTask(
+                    taskName = "Task 1",
+                    taskId = UUID.randomUUID(),
+                    projectId = UUID.randomUUID()
+                )
             )
         )
     }

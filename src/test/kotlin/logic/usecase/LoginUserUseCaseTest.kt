@@ -1,4 +1,5 @@
 import com.google.common.truth.Truth.assertThat
+import data.hashing.PasswordEncryptor
 import io.mockk.every
 import io.mockk.mockk
 import logic.repositories.AuthenticationRepository
@@ -11,11 +12,13 @@ import org.junit.jupiter.api.assertThrows
 class LoginUserUseCaseTest {
     private lateinit var authenticationRepository : AuthenticationRepository
     private lateinit var loginUserUseCase : LoginUserUseCase
+    private lateinit var passwordEncryptor: PasswordEncryptor
 
     @BeforeEach
     fun setUp() {
         authenticationRepository = mockk(relaxed = true)
-        loginUserUseCase = LoginUserUseCase(authenticationRepository)
+        passwordEncryptor = mockk(relaxed = true)
+        loginUserUseCase = LoginUserUseCase(authenticationRepository ,  passwordEncryptor)
     }
 
     // TODO: Refactor these!!!

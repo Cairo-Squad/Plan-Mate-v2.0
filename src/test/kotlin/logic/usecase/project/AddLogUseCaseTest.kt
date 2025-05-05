@@ -8,19 +8,20 @@ import logic.exception.CsvWriteException
 import logic.exception.UnknownException
 import logic.model.Log
 import logic.repositories.LogsRepository
+import logic.usecase.Log.AddLogUseCase
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import java.time.LocalDateTime
 import java.util.*
 import kotlin.test.assertEquals
 
-class AddProjectLogUseCaseTest {
+class AddLogUseCaseTest {
     private val logsRepository = mockk<LogsRepository>(relaxed = true)
-    private lateinit var addProjectLogUseCase: AddProjectLogUseCase
+    private lateinit var addLogUseCase: AddLogUseCase
 
     @BeforeEach
     fun setup() {
-        addProjectLogUseCase = AddProjectLogUseCase(logsRepository)
+        addLogUseCase = AddLogUseCase(logsRepository)
     }
 
     @Test
@@ -28,7 +29,7 @@ class AddProjectLogUseCaseTest {
         //Given
         val projectLog = createLog()
         //When
-        val result = addProjectLogUseCase.addProjectLog(projectLog)
+        val result = addLogUseCase.recordLog(projectLog)
         //Then
         assertEquals(expected = Result.success(Unit), actual = result)
     }
@@ -36,10 +37,10 @@ class AddProjectLogUseCaseTest {
     @Test
     fun `Given a project log,When adding to database,Then return failure`() {
         //Given
-        every { logsRepository.addProjectLog(any()) } throws CsvWriteException()
+        every { logsRepository.recordLog(any()) } throws CsvWriteException()
         val projectLog = createLog()
         //When
-        val result = addProjectLogUseCase.addProjectLog(projectLog)
+        val result = addLogUseCase.recordLog(projectLog)
         //Then
         val expected = Result.failure<Exception>(CsvWriteException())
         assertEquals(expected = expected.exceptionOrNull()!!::class, actual = result.exceptionOrNull()!!::class)
@@ -48,10 +49,10 @@ class AddProjectLogUseCaseTest {
     @Test
     fun `Given a project log,When adding to database,Then return  unKnown failure`() {
         //Given
-        every { logsRepository.addProjectLog(any()) } throws UnknownException()
+        every { logsRepository.recordLog(any()) } throws UnknownException()
         val projectLog = createLog()
         //When
-        val result = addProjectLogUseCase.addProjectLog(projectLog)
+        val result = addLogUseCase.recordLog(projectLog)
         //Then
         val expected = Result.failure<Exception>(UnknownException())
         assertEquals(expected = expected.exceptionOrNull()!!::class, actual = result.exceptionOrNull()!!::class)
@@ -64,6 +65,6 @@ class AddProjectLogUseCaseTest {
         entityType = EntityType.PROJECT,
         dateTime = LocalDateTime.now(),
         userId = UUID.randomUUID(),
-        userAction = UserAction.EditProjectTitle("Old name")
+        userAction = UserAction.EditProjectTitle(oldName = "Old name", newName = "New name")
     )
 }
