@@ -27,10 +27,6 @@ class MongoDataSource(
 		TODO("Not yet implemented")
 	}
 	
-	override fun editState(state: StateDto) {
-		TODO("Not yet implemented")
-	}
-	
 	override fun deleteUser(user: UserDto) {
 		TODO("Not yet implemented")
 	}
@@ -62,7 +58,20 @@ class MongoDataSource(
 	}
 	
 	override fun getAllStates(): List<StateDto> {
-		TODO("Not yet implemented")
+		return statesHandler.readAll()
+	}
+
+	override fun getStateById(stateId: UUID): StateDto {
+		return statesHandler.read(stateId)
+	}
+
+	override fun createState(state: StateDto): Boolean {
+		statesHandler.write(state)
+		return true
+	}
+
+	override fun editState(state: StateDto) {
+		statesHandler.edit(state)
 	}
 	
 	override fun getAllAuditRecords(): List<LogDto> {
@@ -90,14 +99,6 @@ class MongoDataSource(
 	}
 	
 	override fun getTaskById(taskID: UUID): TaskDto {
-		TODO("Not yet implemented")
-	}
-	
-	override fun getStateById(stateId: UUID): StateDto {
-		TODO("Not yet implemented")
-	}
-	
-	override fun createState(state: StateDto, userDto: UserDto): Boolean {
 		TODO("Not yet implemented")
 	}
 	

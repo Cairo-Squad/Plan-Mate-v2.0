@@ -11,8 +11,8 @@ class StatesRepositoryImpl(
     private val dataSource: DataSource
 ) : StatesRepository {
 
-    override fun createState(state: StateDto, userDto: UserDto): Boolean {
-        return dataSource.createState(state, userDto)
+    override fun createState(state: StateDto): Boolean {
+        return dataSource.createState(state)
     }
 
     override fun editState(state: State) {

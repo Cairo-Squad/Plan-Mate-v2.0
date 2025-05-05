@@ -39,7 +39,7 @@ class CreateTaskView(
 			val selectedProject = projects[projectIndex]
 			
 			val taskState = State(UUID.randomUUID(), "TODO")
-			createStateUseCase.createState(taskState, UserSession.getUser()!!)
+			createStateUseCase.createState(taskState)
 			
 			val task = Task(
 				id = UUID.randomUUID(),
