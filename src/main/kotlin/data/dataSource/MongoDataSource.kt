@@ -36,63 +36,77 @@ class MongoDataSource(
 	}
 	
 	override fun createProject(project: ProjectDto): Result<Unit> {
-		TODO("Not yet implemented")
+		projectsHandler.write(project)
+		return Result.success(Unit)
 	}
 	
 	override fun editProject(newProject: ProjectDto) {
-		TODO("Not yet implemented")
+		projectsHandler.edit(newProject)
 	}
 	
 	override fun deleteProjectById(project: ProjectDto): Result<Unit> {
-		TODO("Not yet implemented")
+		projectsHandler.delete(project)
+		return Result.success(Unit)
 	}
 	
 	override fun getProjectById(projectId: UUID): ProjectDto {
-		TODO("Not yet implemented")
+		return projectsHandler.read(projectId)
 	}
 	
 	override fun getAllProjects(): List<ProjectDto> {
-		TODO("Not yet implemented")	}
+		return projectsHandler.readAll()
+	}
 	
 	override fun getTasksByProjectId(projectId: UUID): List<TaskDto> {
-		TODO("Not yet implemented")	}
+		TODO("Not yet implemented")
+	}
 	
 	override fun getAllStates(): List<StateDto> {
-		TODO("Not yet implemented")	}
+		TODO("Not yet implemented")
+	}
 	
 	override fun getAllAuditRecords(): List<LogDto> {
-		TODO("Not yet implemented")	}
+		return logsHandler.readAll()
+	}
 	
 	override fun recordLog(log: LogDto) {
-		TODO("Not yet implemented")	}
+		logsHandler.write(log)
+	}
 	
 	override fun getTaskLogs(taskId: UUID): List<LogDto> {
-		TODO("Not yet implemented")	}
+		return logsHandler.readAll().filter { it.entityType == EntityType.TASK && it.entityId == taskId }
+	}
 	
 	override fun createTask(task: TaskDto): Result<Unit> {
 		TODO("Not yet implemented")
 	}
 	
 	override fun editTask(task: TaskDto) {
-		TODO("Not yet implemented")	}
+		TODO("Not yet implemented")
+	}
 	
 	override fun deleteTask(task: TaskDto) {
-		TODO("Not yet implemented")	}
+		TODO("Not yet implemented")
+	}
 	
 	override fun getTaskById(taskID: UUID): TaskDto {
-		TODO("Not yet implemented")	}
+		TODO("Not yet implemented")
+	}
 	
 	override fun getStateById(stateId: UUID): StateDto {
-		TODO("Not yet implemented")	}
+		TODO("Not yet implemented")
+	}
 	
 	override fun createState(state: StateDto, userDto: UserDto): Boolean {
 		TODO("Not yet implemented")
 	}
 	
 	override fun addProjectLog(logDto: LogDto) {
-		TODO("Not yet implemented")	}
+		logsHandler.write(logDto)
+	}
 	
 	override fun getProjectLog(projectId: UUID): List<LogDto> {
-		TODO("Not yet implemented")
+		return logsHandler.readAll()
+			.filter { it.entityType == EntityType.PROJECT && it.entityId == projectId }
 	}
 }
