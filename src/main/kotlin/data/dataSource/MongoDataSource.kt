@@ -52,9 +52,26 @@ class MongoDataSource(
 	override fun getAllProjects(): List<ProjectDto> {
 		return projectsHandler.readAll()
 	}
-	
+
 	override fun getTasksByProjectId(projectId: UUID): List<TaskDto> {
-		TODO("Not yet implemented")
+		return tasksHandler.readAll().filter { it.id == projectId }
+	}
+
+	override fun createTask(task: TaskDto): Result<Unit> {
+		tasksHandler.write(task)
+		return Result.success(Unit)
+	}
+
+	override fun editTask(task: TaskDto) {
+		tasksHandler.edit(task)
+	}
+
+	override fun deleteTask(task: TaskDto) {
+		tasksHandler.delete(task)
+	}
+
+	override fun getTaskById(taskID: UUID): TaskDto {
+		return tasksHandler.read(taskID)
 	}
 	
 	override fun getAllStates(): List<StateDto> {
@@ -84,22 +101,6 @@ class MongoDataSource(
 	
 	override fun getTaskLogs(taskId: UUID): List<LogDto> {
 		return logsHandler.readAll().filter { it.entityType == EntityType.TASK && it.entityId == taskId }
-	}
-	
-	override fun createTask(task: TaskDto): Result<Unit> {
-		TODO("Not yet implemented")
-	}
-	
-	override fun editTask(task: TaskDto) {
-		TODO("Not yet implemented")
-	}
-	
-	override fun deleteTask(task: TaskDto) {
-		TODO("Not yet implemented")
-	}
-	
-	override fun getTaskById(taskID: UUID): TaskDto {
-		TODO("Not yet implemented")
 	}
 	
 	override fun addProjectLog(logDto: LogDto) {
