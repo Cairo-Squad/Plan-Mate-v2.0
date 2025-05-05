@@ -5,12 +5,13 @@ import com.mongodb.MongoClientSettings
 import com.mongodb.client.MongoClient
 import com.mongodb.client.MongoClients
 import com.mongodb.client.MongoDatabase
+import data.database.util.MongoConstants
 
 object MongoDBConnection {
 	private var mongoClient: MongoClient? = null
-	private const val DATABASE_NAME = "project_management"
+	private const val DATABASE_NAME = MongoConstants.DATABASE_NAME
 	
-	fun getDatabase(connectionString: String = "mongodb://localhost:27017"): MongoDatabase {
+	fun getDatabase(connectionString: String = MongoConstants.MONGO_DB_CONNECT_STRING): MongoDatabase {
 		if (mongoClient == null) {
 			val settings = MongoClientSettings.builder()
 				.applyConnectionString(ConnectionString(connectionString))
