@@ -13,8 +13,8 @@ import java.util.*
 import kotlin.NoSuchElementException
 
 class GetTaskByIdUseCaseTest {
-    lateinit var getTaskByIdUseCase: GetTaskBytIdUseCase
-    lateinit var taskRepository: TasksRepository
+    private lateinit var getTaskByIdUseCase: GetTaskBytIdUseCase
+    private lateinit var taskRepository: TasksRepository
 
     @BeforeEach
     fun setup() {
