@@ -24,7 +24,7 @@ class GetAllProjectsUseCaseTest {
     }
 
     @Test
-    fun `should return all projects when repository returns Success`() {
+    fun `should return all projects when repository returns all projects`() {
         // Given
         val list = projectsList()
         every { projectRepository.getAllProjects() } returns list

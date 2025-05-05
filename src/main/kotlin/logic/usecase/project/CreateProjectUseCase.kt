@@ -11,11 +11,11 @@ class CreateProjectUseCase(
     private val projectRepository: ProjectsRepository,
 ) {
     fun createProject(project: Project, user: User) {
-        isValidProjectCreation(project, user)
+        validateProjectCreation(project, user)
         projectRepository.createProject(project, user)
     }
 
-    private fun isValidProjectCreation(project: Project, user: User) {
+    private fun validateProjectCreation(project: Project, user: User) {
         if (user.type != UserType.ADMIN) throw InvalidUserException()
         if (project.title.isBlank()) throw EmptyTitleException()
     }

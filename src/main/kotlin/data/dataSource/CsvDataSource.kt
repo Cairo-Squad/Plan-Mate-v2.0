@@ -43,7 +43,6 @@ class CsvDataSource(
 
     override fun createProject(project: ProjectDto) {
             projectsCsvHandler.write(project)
-
     }
 
     override fun editProject(newProject: ProjectDto) {
@@ -85,7 +84,6 @@ class CsvDataSource(
 
     override fun createTask(task: TaskDto) {
             tasksCsvHandler.write(task)
-
     }
 
     override fun editTask(task: TaskDto) {
