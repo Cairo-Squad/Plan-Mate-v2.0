@@ -14,25 +14,29 @@ class MongoDataSource(
 	private val statesHandler = StatesMongoHandlerImpl(database)
 	private val tasksHandler = TasksMongoHandlerImpl(database)
 	private val usersHandler = UsersMongoHandlerImpl(database)
-	
-	override fun createUser(id: UUID, name: String, password: String, type: UserType): UserDto {
-		TODO("Not yet implemented")
-	}
-	
+
 	override fun getAllUsers(): List<UserDto> {
-		TODO("Not yet implemented")
+		return usersHandler.readAll()
 	}
-	
+
+	override fun createUser(id: UUID, name: String, password: String, type: UserType): UserDto {
+		val userDto = UserDto(
+			id = UUID.randomUUID(),
+			name = name,
+			password = password,
+			type = type
+		)
+
+		usersHandler.write(userDto)
+		return userDto
+	}
+
 	override fun editUser(user: UserDto) {
-		TODO("Not yet implemented")
-	}
-	
-	override fun editState(state: StateDto) {
-		TODO("Not yet implemented")
+		usersHandler.edit(user)
 	}
 	
 	override fun deleteUser(user: UserDto) {
-		TODO("Not yet implemented")
+		usersHandler.delete(user)
 	}
 	
 	override fun createProject(project: ProjectDto): Result<Unit> {
@@ -56,13 +60,43 @@ class MongoDataSource(
 	override fun getAllProjects(): List<ProjectDto> {
 		return projectsHandler.readAll()
 	}
-	
+
 	override fun getTasksByProjectId(projectId: UUID): List<TaskDto> {
-		TODO("Not yet implemented")
+		return tasksHandler.readAll().filter { it.id == projectId }
+	}
+
+	override fun createTask(task: TaskDto): Result<Unit> {
+		tasksHandler.write(task)
+		return Result.success(Unit)
+	}
+
+	override fun editTask(task: TaskDto) {
+		tasksHandler.edit(task)
+	}
+
+	override fun deleteTask(task: TaskDto) {
+		tasksHandler.delete(task)
+	}
+
+	override fun getTaskById(taskID: UUID): TaskDto {
+		return tasksHandler.read(taskID)
 	}
 	
 	override fun getAllStates(): List<StateDto> {
-		TODO("Not yet implemented")
+		return statesHandler.readAll()
+	}
+
+	override fun getStateById(stateId: UUID): StateDto {
+		return statesHandler.read(stateId)
+	}
+
+	override fun createState(state: StateDto): Boolean {
+		statesHandler.write(state)
+		return true
+	}
+
+	override fun editState(state: StateDto) {
+		statesHandler.edit(state)
 	}
 	
 	override fun getAllAuditRecords(): List<LogDto> {
@@ -75,30 +109,6 @@ class MongoDataSource(
 	
 	override fun getTaskLogs(taskId: UUID): List<LogDto> {
 		return logsHandler.readAll().filter { it.entityType == EntityType.TASK && it.entityId == taskId }
-	}
-	
-	override fun createTask(task: TaskDto): Result<Unit> {
-		TODO("Not yet implemented")
-	}
-	
-	override fun editTask(task: TaskDto) {
-		TODO("Not yet implemented")
-	}
-	
-	override fun deleteTask(task: TaskDto) {
-		TODO("Not yet implemented")
-	}
-	
-	override fun getTaskById(taskID: UUID): TaskDto {
-		TODO("Not yet implemented")
-	}
-	
-	override fun getStateById(stateId: UUID): StateDto {
-		TODO("Not yet implemented")
-	}
-	
-	override fun createState(state: StateDto, userDto: UserDto): Boolean {
-		TODO("Not yet implemented")
 	}
 	
 	override fun addProjectLog(logDto: LogDto) {
