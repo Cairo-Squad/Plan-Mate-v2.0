@@ -14,21 +14,29 @@ class MongoDataSource(
 	private val statesHandler = StatesMongoHandlerImpl(database)
 	private val tasksHandler = TasksMongoHandlerImpl(database)
 	private val usersHandler = UsersMongoHandlerImpl(database)
-	
-	override fun createUser(id: UUID, name: String, password: String, type: UserType): UserDto {
-		TODO("Not yet implemented")
-	}
-	
+
 	override fun getAllUsers(): List<UserDto> {
-		TODO("Not yet implemented")
+		return usersHandler.readAll()
 	}
-	
+
+	override fun createUser(id: UUID, name: String, password: String, type: UserType): UserDto {
+		val userDto = UserDto(
+			id = UUID.randomUUID(),
+			name = name,
+			password = password,
+			type = type
+		)
+
+		usersHandler.write(userDto)
+		return userDto
+	}
+
 	override fun editUser(user: UserDto) {
-		TODO("Not yet implemented")
+		usersHandler.edit(user)
 	}
 	
 	override fun deleteUser(user: UserDto) {
-		TODO("Not yet implemented")
+		usersHandler.delete(user)
 	}
 	
 	override fun createProject(project: ProjectDto): Result<Unit> {
