@@ -7,6 +7,10 @@ import ui.features.project.*
 import ui.features.task.*
 import ui.features.user.*
 import ui.features.user.admin.AdminManagementView
+import ui.features.user.admin.CreateNewUserView
+import ui.features.user.admin.DeleteUserView
+import ui.features.user.admin.EditUserView
+import ui.features.user.admin.ListAllUsersView
 import ui.features.user.mate.MateManagementView
 import ui.utils.CLIMenu
 import ui.utils.InputHandler
@@ -14,7 +18,7 @@ import ui.utils.OutputFormatter
 
 val uiModule = module {
     single {
-        ProjectEditView(get(), get(), get(), get())
+        ProjectEditView(get(), get(), get(), get() ,get())
     }
 
     single {
@@ -54,7 +58,7 @@ val uiModule = module {
     }
 
     single {
-        LogMangementView(get(), get(), get(), get())
+        LogManagementView(get(), get(), get(), get())
     }
 
     single {
@@ -74,16 +78,26 @@ val uiModule = module {
     }
 
     single {
-        TaskManagementView(get(), get(), get(), get(), get(),get())
+        TaskManagementView(get(), get(), get(), get(), get(),get(),get())
     }
 
     single { UserManagementView(get(), get()) }
 
     single {
-        LoginFeatureUI(get(), get(), get())
+        LoginManagementView(get(), get(), get(),get())
     }
 
     single { CLIMenu(get(), get(), get()) }
     
     single { SwimlanesView(get(), get(),get(),get()) }
+
+    single { CreateNewUserView(get() , get() , get()) }
+
+    single{ EditUserView(get() , get() , get() ,get()) }
+
+    single{ DeleteUserView(get() , get() ,get() ,get()) }
+
+    single {
+        ListAllUsersView(get(), get(), get())
+    }
 }
