@@ -4,6 +4,7 @@ import data.repositories.mappers.toStateDto
 import data.repositories.mappers.toUserDto
 import logic.model.State
 import logic.model.User
+import logic.repositories.LogsRepository
 import logic.repositories.StatesRepository
 
 class CreateStateUseCase(

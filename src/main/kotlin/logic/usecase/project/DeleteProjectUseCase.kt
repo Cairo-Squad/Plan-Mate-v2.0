@@ -6,6 +6,7 @@ import kotlin.NoSuchElementException
 
 class DeleteProjectUseCase(
     private val projectsRepository: ProjectsRepository
+
 ) {
     fun deleteProjectById(projectId: UUID): Result<Unit> {
         projectsRepository.deleteProject(projectId).onSuccess {

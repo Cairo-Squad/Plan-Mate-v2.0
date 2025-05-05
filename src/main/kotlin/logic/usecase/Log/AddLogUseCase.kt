@@ -1,14 +1,14 @@
-package logic.usecase.project
+package logic.usecase.Log
 
 import logic.model.Log
 import logic.repositories.LogsRepository
 
-class AddProjectLogUseCase(
+class AddLogUseCase(
     private val logsRepository: LogsRepository
 ) {
-    fun addProjectLog(log: Log): Result<Unit> {
+    fun recordLog(log: Log): Result<Unit> {
         return try {
-            logsRepository.addProjectLog(log)
+            logsRepository.recordLog(log)
             Result.success(Unit)
         } catch (e: Exception) {
             Result.failure(e)
