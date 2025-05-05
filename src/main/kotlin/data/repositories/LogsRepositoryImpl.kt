@@ -8,21 +8,21 @@ import java.util.*
 
 class LogsRepositoryImpl(
     private val csvDataSource: DataSource
-) : LogsRepository {
+) : LogsRepository, BaseRepository() {
 
     override fun addProjectLog(log: Log) {
-        csvDataSource.addProjectLog(log.toLogDto())
+        tryToExecute { csvDataSource.addProjectLog(log.toLogDto()) }
     }
 
     override fun getProjectLog(projectId: UUID): List<Log> {
-        return csvDataSource.getProjectLog(projectId).map { it.toLog() }
+        return tryToExecute { csvDataSource.getProjectLog(projectId).map { it.toLog() } }
     }
 
-    override fun recordLog(log: Log) {
-        csvDataSource.recordLog(log.toLogDto())
+    override fun addTaskLog(log: Log) {
+        tryToExecute { csvDataSource.recordLog(log.toLogDto()) }
     }
 
     override fun getTaskLogs(taskId: UUID): List<Log> {
-        return csvDataSource.getTaskLogs(taskId).map { it.toLog() }
+        return tryToExecute { csvDataSource.getTaskLogs(taskId).map { it.toLog() } }
     }
 }
