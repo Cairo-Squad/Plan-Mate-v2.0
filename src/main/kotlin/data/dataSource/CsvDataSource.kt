@@ -41,26 +41,17 @@ class CsvDataSource(
         usersCsvHandler.delete(user)
     }
 
-    override fun createProject(project: ProjectDto): Result<Unit> {
-        return try {
+    override fun createProject(project: ProjectDto) {
             projectsCsvHandler.write(project)
-            Result.success(Unit)
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
+
     }
 
     override fun editProject(newProject: ProjectDto) {
         projectsCsvHandler.edit(newProject)
     }
 
-    override fun deleteProjectById(project: ProjectDto): Result<Unit> {
-        return try {
-            projectsCsvHandler.delete(project)
-            Result.success(Unit)
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
+    override fun deleteProjectById(project: ProjectDto) {
+        projectsCsvHandler.delete(project)
     }
 
     override fun getProjectById(projectId: UUID): ProjectDto {
@@ -92,13 +83,9 @@ class CsvDataSource(
         return logsCsvHandler.readAll().filter { it.entityType == EntityType.TASK && it.entityId == taskId }
     }
 
-    override fun createTask(task: TaskDto): Result<Unit> {
-        return try {
+    override fun createTask(task: TaskDto) {
             tasksCsvHandler.write(task)
-            Result.success(Unit)
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
+
     }
 
     override fun editTask(task: TaskDto) {

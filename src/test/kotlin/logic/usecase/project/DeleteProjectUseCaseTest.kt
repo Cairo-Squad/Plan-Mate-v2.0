@@ -8,7 +8,6 @@ import logic.repositories.ProjectsRepository
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import java.util.*
-import kotlin.NoSuchElementException
 
 class DeleteProjectUseCaseTest {
     private lateinit var projectsRepository: ProjectsRepository
@@ -21,26 +20,24 @@ class DeleteProjectUseCaseTest {
     }
 
     @Test
-    fun `should return failure when id is not found `() {
+    fun `should return false when id is not found `() {
         //Given
         val fakeId = UUID.randomUUID()
-        every { projectsRepository.deleteProject(fakeId) } returns Result.failure(NoSuchElementException())
-
+        every { projectsRepository.deleteProject(fakeId) } returns false
         //When
         val result = deleteProjectUseCase.deleteProjectById(fakeId)
         //Then
-        assertThat(result.isFailure).isTrue()
+        assertThat(result).isFalse()
     }
 
     @Test
-    fun `should return success when id is found `() {
+    fun `should return true when id is found `() {
         //Given
         val validId = FakeData.fakeProjects[0].id
-        every { projectsRepository.deleteProject(validId) } returns Result.success(Unit)
-
+        every { projectsRepository.deleteProject(validId) } returns true
         //When
         val result = deleteProjectUseCase.deleteProjectById(validId)
         //Then
-        assertThat(result.isSuccess).isTrue()
+        assertThat(result).isTrue()
     }
 }

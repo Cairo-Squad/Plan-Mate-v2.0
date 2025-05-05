@@ -11,18 +11,26 @@ class LogsRepositoryImpl(
 ) : LogsRepository {
 
     override fun addProjectLog(log: Log) {
-        csvDataSource.addProjectLog(log.toLogDto())
+        tryToExecute { csvDataSource.addProjectLog(log.toLogDto()) }
     }
 
     override fun getProjectLog(projectId: UUID): List<Log> {
-        return csvDataSource.getProjectLog(projectId).map { it.toLog() }
+        return tryToExecute { csvDataSource.getProjectLog(projectId).map { it.toLog() } }
     }
 
     override fun recordLog(log: Log) {
-        csvDataSource.recordLog(log.toLogDto())
+        tryToExecute { csvDataSource.recordLog(log.toLogDto()) }
     }
 
     override fun getTaskLogs(taskId: UUID): List<Log> {
-        return csvDataSource.getTaskLogs(taskId).map { it.toLog() }
+        return tryToExecute { csvDataSource.getTaskLogs(taskId).map { it.toLog() } }
+    }
+
+    private fun <T> tryToExecute(function: () -> T): T {
+        return try {
+            function()
+        } catch (e: Exception) {
+            throw e
+        }
     }
 }

@@ -16,14 +16,14 @@ interface DataSource {
     // region Projects
     fun getAllProjects(): List<ProjectDto>
     fun getProjectById(projectId: UUID): ProjectDto
-    fun createProject(project: ProjectDto): Result<Unit>
+    fun createProject(project: ProjectDto)
     fun editProject(newProject: ProjectDto)
-    fun deleteProjectById(project: ProjectDto): Result<Unit>
+    fun deleteProjectById(project: ProjectDto)
     // endregion
 
     // region Tasks
     fun getTasksByProjectId(projectId: UUID): List<TaskDto>
-    fun createTask(task: TaskDto): Result<Unit>
+    fun createTask(task: TaskDto)
     fun editTask(task: TaskDto)
     fun deleteTask(task: TaskDto)
     fun getTaskById(taskID: UUID): TaskDto

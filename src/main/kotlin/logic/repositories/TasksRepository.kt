@@ -8,5 +8,5 @@ interface TasksRepository {
     fun editTask(task: Task)
     fun getAllTasksByProjectId(projectId: UUID): List<Task>
     fun deleteTask(task: Task)
-    fun createTask(task: Task): Result<Unit>
+    fun createTask(task: Task)
 }

@@ -1,74 +1,70 @@
 package logic.usecase.project
 
-import com.google.common.truth.Truth.assertThat
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.verify
+import logic.exception.EmptyTitleException
+import logic.exception.InvalidUserException
 import logic.repositories.ProjectsRepository
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import util.FakeData
 import util.FakeData.invalidUser
 import util.FakeData.validUser
 
-class CreateProjectUseCaseTest() {
+class CreateProjectUseCaseTest {
     private lateinit var projectRepository: ProjectsRepository
-    private lateinit var createProject: CreateProjectUseCase
+    private lateinit var createProjectUseCase: CreateProjectUseCase
 
     @BeforeEach
     fun setUp() {
         projectRepository = mockk(relaxed = true)
-        createProject = CreateProjectUseCase(projectRepository)
+        createProjectUseCase = CreateProjectUseCase(projectRepository)
     }
 
     @Test
     fun `should successfully create a project when user type is admin`() {
         //Given
         val project = FakeData.validProject
-        every { projectRepository.createProject(project, validUser) } returns Result.success(Unit)
-
         //When
-        val result = createProject.createProject(project, validUser)
-
+        createProjectUseCase.createProject(project, validUser)
         //Then
-        assertThat(result.isSuccess).isTrue()
+        verify(exactly = 1) {
+            createProjectUseCase.createProject(project, validUser)
+        }
     }
 
     @Test
     fun `should not create a project when user type is mate`() {
         //Given
         val project = FakeData.validProject
-        every { projectRepository.createProject(project, invalidUser) } returns Result.failure(Exception())
-
-        //When
-        val result = createProject.createProject(project, invalidUser)
-
-        //Then
-        assertThat(result.isFailure).isTrue()
+        every { (projectRepository).createProject(project, invalidUser) } throws InvalidUserException()
+        //When && Then
+        assertThrows<InvalidUserException> {
+            createProjectUseCase.createProject(project, invalidUser)
+        }
     }
 
     @Test
-    fun `should create a project when description is empty`() {
+    fun `should create a project successfully when description is empty`() {
         //Given
         val project = FakeData.projectWithNoDescription
-        every { projectRepository.createProject(project, validUser) } returns Result.success(Unit)
-
         //When
-        val result = createProject.createProject(project, validUser)
-
+        createProjectUseCase.createProject(project, validUser)
         //Then
-        assertThat(result.isSuccess).isTrue()
+        verify(exactly = 1) {
+            createProjectUseCase.createProject(project, validUser)
+        }
     }
 
     @Test
-    fun `should not create a project when project title is blank`() {
+    fun `should throw exception when project title is blank`() {
         //Given
         val project = FakeData.projectWithNoTitle
-        every { projectRepository.createProject(project, validUser) } returns Result.failure(Exception())
-
-        //When
-        val result = createProject.createProject(project, validUser)
-
-        //Then
-        assertThat(result.isFailure).isTrue()
+        //When && Then
+        assertThrows<EmptyTitleException> {
+            createProjectUseCase.createProject(project, validUser)
+        }
     }
 }
