@@ -5,7 +5,6 @@ import logic.exception.EmptyPasswordException
 import logic.exception.EntityNotChangedException
 import logic.model.User
 import logic.repositories.AuthenticationRepository
-import java.lang.IllegalArgumentException
 
 class EditUserUseCase(
     private val repository: AuthenticationRepository
@@ -24,5 +23,4 @@ class EditUserUseCase(
         if (newUser.name.isBlank()) throw EmptyNameException()
         if (newUser.password.isBlank()) throw EmptyPasswordException()
     }
-
 }
