@@ -35,7 +35,7 @@ class CreateTaskView(
 				outputFormatter.printInfo("${index + 1}. ${project.title} (ID: ${project.id})")
 			}
 			
-			val projectIndex = inputHandler.promptForIntChoice("Select the number of project: ", 1..projects.size) - 1
+			val projectIndex = inputHandler.promptForIntChoice("Select the number of project that you want to add task to : ", 1..projects.size) - 1
 			val selectedProject = projects[projectIndex]
 			
 			val taskState = State(UUID.randomUUID(), "TODO")
