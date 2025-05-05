@@ -10,9 +10,6 @@ class LogsRepositoryImpl(
     private val csvDataSource: DataSource
 ) : LogsRepository {
 
-    override fun addProjectLog(log: Log) {
-        csvDataSource.addProjectLog(log.toLogDto())
-    }
 
     override fun getProjectLog(projectId: UUID): List<Log> {
         return csvDataSource.getProjectLog(projectId).map { it.toLog() }

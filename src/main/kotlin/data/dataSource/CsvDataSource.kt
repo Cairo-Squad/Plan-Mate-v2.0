@@ -126,9 +126,6 @@ class CsvDataSource(
         return true
     }
 
-    override fun addProjectLog(logDto: LogDto) {
-        logsCsvHandler.write(logDto)
-    }
 
     override fun getProjectLog(projectId: UUID): List<LogDto> {
         return logsCsvHandler.readAll()
