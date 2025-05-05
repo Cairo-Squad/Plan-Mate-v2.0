@@ -1,7 +1,7 @@
 package data.database.util
 
 object MongoConstants {
-	const val MONGO_DB_CONNECT_STRING = "mongodb://localhost:27017"
+	const val MONGO_DB_CONNECT_STRING = "mongodb+srv://ahmbdelkhalek:UufV0Zf4KpU9uFE7@planmate.ubgejn9.mongodb.net/?retryWrites=true&w=majority&appName=planMate"
 	const val DATABASE_NAME = "plan_mate_management"
 	
 	const val ID = "_id"
