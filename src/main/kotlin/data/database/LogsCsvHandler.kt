@@ -62,33 +62,32 @@ class LogsCsvHandler(
         return when {
             this.startsWith(UserActionConstants.DELETE_PROJECT) -> {
                 if (actionParts.size < 2) {
-                    throw CsvParseException("Invalid DeleteProject format: $this")
+                    throw CsvParseException()
                 }
                 try {
                     UserAction.DeleteProject(UUID.fromString(actionParts[1]))
                 } catch (e: Exception) {
-                    throw CsvParseException("Invalid UUID in DeleteProject: ${actionParts[1]}")
+                    throw CsvParseException()
                 }
             }
 
             this.startsWith(UserActionConstants.EDIT_PROJECT_TITLE) -> {
                 if (actionParts.size < 3) {
-                    throw CsvParseException("Invalid EditProjectTitle format: $this")
+                    throw CsvParseException()
                 }
                 UserAction.EditProjectTitle(actionParts[1], actionParts[2])
             }
 
             this.startsWith(UserActionConstants.CREATE_PROJECT) -> {
                 if (actionParts.size < 2) {
-                    throw CsvParseException("Invalid CreateProject format: $this")
+                    throw CsvParseException()
                 }
-                // Note: The implementation you provided expected 2 parameters but in parseToString there's only 1
-                // Adapting to handle both formats:
+
                 if (actionParts.size >= 3) {
                     try {
                         UserAction.CreateProject(actionParts[1], UUID.fromString(actionParts[2]))
                     } catch (e: Exception) {
-                        throw CsvParseException("Invalid UUID in CreateProject: ${actionParts[2]}")
+                        throw CsvParseException()
                     }
                 } else {
                     UserAction.CreateProject(actionParts[1], UUID.randomUUID()) // Using random UUID as fallback
@@ -97,7 +96,7 @@ class LogsCsvHandler(
 
             this.startsWith(UserActionConstants.CREATE_TASK) -> {
                 if (actionParts.size < 4) {
-                    throw CsvParseException("Invalid CreateTask format: $this")
+                    throw CsvParseException()
                 }
                 try {
                     UserAction.CreateTask(
@@ -106,33 +105,33 @@ class LogsCsvHandler(
                         UUID.fromString(actionParts[3])
                     )
                 } catch (e: Exception) {
-                    throw CsvParseException("Invalid UUID in CreateTask: $this")
+                    throw CsvParseException()
                 }
             }
 
             this.startsWith(UserActionConstants.EDIT_PROJECT) -> {
                 if (actionParts.size < 3) {
-                    throw CsvParseException("Invalid EditProject format: $this")
+                    throw CsvParseException()
                 }
                 try {
                     UserAction.EditProject(UUID.fromString(actionParts[1]), actionParts[2])
                 } catch (e: Exception) {
-                    throw CsvParseException("Invalid UUID in EditProject: ${actionParts[1]}")
+                    throw CsvParseException()
                 }
             }
 
             this.startsWith(UserActionConstants.EDIT_TASK) -> {
                 if (actionParts.size < 3) {
-                    throw CsvParseException("Invalid EditTask format: $this")
+                    throw CsvParseException()
                 }
                 try {
                     UserAction.EditTask(UUID.fromString(actionParts[1]), actionParts[2])
                 } catch (e: Exception) {
-                    throw CsvParseException("Invalid UUID in EditTask: ${actionParts[1]}")
+                    throw CsvParseException()
                 }
             }
 
-            else -> throw CsvParseException("Unknown action type: $this")
+            else -> throw CsvParseException()
         }
     }
 }

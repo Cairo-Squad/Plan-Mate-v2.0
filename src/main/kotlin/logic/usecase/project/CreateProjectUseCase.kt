@@ -31,7 +31,7 @@ class CreateProjectUseCase(
                     userAction = UserAction.CreateProject(project.title, project.id)
                 )
 
-                addLogUseCase.recordLog(log)
+                addLogUseCase.addLog(log)
                 Result.success(Unit)
             } catch (e: Exception) {
                 Result.failure(e)

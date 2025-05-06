@@ -15,7 +15,7 @@ class LogsRepositoryImpl(
         return csvDataSource.getProjectLogs(projectId).map { it.toLog() }
     }
 
-    override fun recordLog(log: Log) {
+    override fun addLog(log: Log) {
         csvDataSource.recordLog(log.toLogDto())
     }
 

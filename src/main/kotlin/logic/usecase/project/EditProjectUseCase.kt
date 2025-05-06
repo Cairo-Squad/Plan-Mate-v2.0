@@ -32,7 +32,7 @@ class EditProjectUseCase(
                 userAction = UserAction.EditProject(newProject.id, "Updated project details")
             )
 
-            addLogUseCase.recordLog(log)
+            addLogUseCase.addLog(log)
             Result.success(Unit)
         } catch (exception: EmptyNameException) {
             Result.failure(exception)

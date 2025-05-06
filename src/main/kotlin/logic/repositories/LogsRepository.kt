@@ -5,6 +5,6 @@ import java.util.UUID
 
 interface LogsRepository {
     fun getProjectLogs(projectId: UUID): List<Log>
-    fun recordLog(log: Log)
+    fun addLog(log: Log)
     fun getTaskLogs(taskId: UUID): List<Log>
 }

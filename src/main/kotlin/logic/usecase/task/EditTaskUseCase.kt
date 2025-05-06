@@ -37,7 +37,7 @@ class EditTaskUseCase(
                     "$field changed from '${values.first}' to '${values.second}'"
                 )
             )
-            addLogUseCase.recordLog(log)
+            addLogUseCase.addLog(log)
         }
 
         return Result.success(Unit)

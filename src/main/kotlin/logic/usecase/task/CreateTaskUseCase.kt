@@ -30,7 +30,7 @@ class CreateTaskUseCase(
                 )
 
 
-                addLogUseCase.recordLog(log)
+                addLogUseCase.addLog(log)
 
                 Result.success(Unit)
             } catch (e: IllegalArgumentException) {
