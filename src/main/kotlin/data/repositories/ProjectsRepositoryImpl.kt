@@ -40,11 +40,9 @@ class ProjectsRepositoryImpl(
 
     override fun getAllProjects(): List<Project> {
         return dataSource.getAllProjects().map { projectDto ->
-            val state = getState(projectDto.stateId)
-            val tasks = getTasksForProject(projectDto.id)
             projectDto.toProject(
-                projectState = state,
-                projectTasks = tasks
+                projectState = getState(projectDto.stateId),
+                projectTasks = getTasksForProject(projectDto.id)
             )
         }
     }
