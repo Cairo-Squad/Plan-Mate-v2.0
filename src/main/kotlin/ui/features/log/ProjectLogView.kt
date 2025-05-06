@@ -36,7 +36,7 @@ class ProjectLogView(
         val projectIndex = inputHandler.promptForIntChoice("🔹 Select a project to view logs:", 1..projects.size) - 1
         val selectedProject = projects[projectIndex]
 
-        val logs = getProjectLogUseCase.getProjectLog(selectedProject.id)
+        val logs = getProjectLogUseCase.getProjectLogs(selectedProject.id)
 
         if (logs.isEmpty()) {
             outputFormatter.printWarning("⚠️ No logs found for project '${selectedProject.title}'.")

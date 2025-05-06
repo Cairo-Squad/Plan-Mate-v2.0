@@ -127,7 +127,7 @@ class CsvDataSource(
     }
 
 
-    override fun getProjectLog(projectId: UUID): List<LogDto> {
+    override fun getProjectLogs(projectId: UUID): List<LogDto> {
         return logsCsvHandler.readAll()
             .filter { it.entityType == EntityType.PROJECT && it.entityId == projectId }
     }

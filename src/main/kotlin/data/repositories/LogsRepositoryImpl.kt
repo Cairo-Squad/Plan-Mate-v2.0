@@ -11,8 +11,8 @@ class LogsRepositoryImpl(
 ) : LogsRepository {
 
 
-    override fun getProjectLog(projectId: UUID): List<Log> {
-        return csvDataSource.getProjectLog(projectId).map { it.toLog() }
+    override fun getProjectLogs(projectId: UUID): List<Log> {
+        return csvDataSource.getProjectLogs(projectId).map { it.toLog() }
     }
 
     override fun recordLog(log: Log) {
