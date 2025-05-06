@@ -39,18 +39,16 @@ class MongoDataSource(
 		usersHandler.delete(user)
 	}
 	
-	override fun createProject(project: ProjectDto): Result<Unit> {
+	override fun createProject(project: ProjectDto) {
 		projectsHandler.write(project)
-		return Result.success(Unit)
 	}
 	
 	override fun editProject(newProject: ProjectDto) {
 		projectsHandler.edit(newProject)
 	}
 	
-	override fun deleteProjectById(project: ProjectDto): Result<Unit> {
+	override fun deleteProjectById(project: ProjectDto) {
 		projectsHandler.delete(project)
-		return Result.success(Unit)
 	}
 	
 	override fun getProjectById(projectId: UUID): ProjectDto {
@@ -65,9 +63,8 @@ class MongoDataSource(
 		return tasksHandler.readAll().filter { it.id == projectId }
 	}
 
-	override fun createTask(task: TaskDto): Result<Unit> {
+	override fun createTask(task: TaskDto) {
 		tasksHandler.write(task)
-		return Result.success(Unit)
 	}
 
 	override fun editTask(task: TaskDto) {
