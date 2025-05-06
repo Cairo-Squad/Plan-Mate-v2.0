@@ -7,19 +7,22 @@ import logic.repositories.LogsRepository
 import java.util.*
 
 class LogsRepositoryImpl(
-    private val csvDataSource: DataSource
+    private val dataSource: DataSource
 ) : LogsRepository {
 
-
-    override fun getProjectLogs(projectId: UUID): List<Log> {
-        return csvDataSource.getProjectLogs(projectId).map { it.toLog() }
+    override fun addProjectLog(log: Log) {
+        dataSource.addProjectLog(log.toLogDto())
     }
 
-    override fun addLog(log: Log) {
-        csvDataSource.recordLog(log.toLogDto())
+    override fun getProjectLog(projectId: UUID): List<Log> {
+        return dataSource.getProjectLog(projectId).map { it.toLog() }
+    }
+
+    override fun recordLog(log: Log) {
+        dataSource.recordLog(log.toLogDto())
     }
 
     override fun getTaskLogs(taskId: UUID): List<Log> {
-        return csvDataSource.getTaskLogs(taskId).map { it.toLog() }
+        return dataSource.getTaskLogs(taskId).map { it.toLog() }
     }
 }

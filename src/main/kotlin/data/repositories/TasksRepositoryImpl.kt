@@ -8,31 +8,31 @@ import logic.repositories.TasksRepository
 import java.util.UUID
 
 class TasksRepositoryImpl(
-    private val csvDataSource: DataSource
+    private val dataSource: DataSource
 ) : TasksRepository {
 
     override fun getTaskById(taskId: UUID): Task {
-        val taskDto = csvDataSource.getTaskById(taskId)
-        val taskState = csvDataSource.getStateById(taskDto.stateId)
+        val taskDto = dataSource.getTaskById(taskId)
+        val taskState = dataSource.getStateById(taskDto.stateId)
         return taskDto.toTask(taskState.toState())
     }
 
     override fun createTask(task: Task): Result<Unit> {
-        return csvDataSource.createTask(task.toTaskDto())
+        return dataSource.createTask(task.toTaskDto())
     }
 
     override fun editTask(task: Task) {
-        csvDataSource.editTask(task.toTaskDto())
+        dataSource.editTask(task.toTaskDto())
     }
 
     override fun getAllTasksByProjectId(projectId: UUID): List<Task> {
-        return csvDataSource.getTasksByProjectId(projectId).map { taskDto ->
-            val taskState = csvDataSource.getStateById(taskDto.stateId)
+        return dataSource.getTasksByProjectId(projectId).map { taskDto ->
+            val taskState = dataSource.getStateById(taskDto.stateId)
             taskDto.toTask(taskState.toState())
         }
     }
 
     override fun deleteTask(task: Task) {
-        csvDataSource.deleteTask(task.toTaskDto())
+        dataSource.deleteTask(task.toTaskDto())
     }
 }

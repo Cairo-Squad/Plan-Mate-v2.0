@@ -39,7 +39,7 @@ interface DataSource {
     // region States
     fun getAllStates(): List<StateDto>
     fun getStateById(stateId: UUID): StateDto
-    fun createState(state: StateDto, userDto: UserDto): Boolean
+    fun createState(state: StateDto): Boolean
     fun editState(state: StateDto)
     // endregion
 }

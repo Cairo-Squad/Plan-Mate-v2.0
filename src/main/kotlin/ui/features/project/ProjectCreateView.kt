@@ -15,7 +15,7 @@ class ProjectCreateView(
 	private val inputHandler: InputHandler,
 	private val outputFormatter: OutputFormatter,
 	private val createStateUseCase: CreateStateUseCase,
-	private val createTaskUseCase: CreateTaskUseCase
+    private val createTaskUseCase: CreateTaskUseCase
 ) {
 	fun createProject() {
 		outputFormatter.printHeader(
@@ -38,11 +38,11 @@ class ProjectCreateView(
 		val stateTitle = inputHandler.promptForInput("📊 Enter initial project state: ")
 		val projectID = UUID.randomUUID()
 		val projectState = State(UUID.randomUUID(), stateTitle)
-
-		createStateUseCase.createState(projectState, currentUser)
-
-		val addTasks = inputHandler.promptForYesNo("➕ Do you want to add tasks to this project?")
-		val tasks = mutableListOf<Task>()
+		
+		createStateUseCase.createState(projectState)
+  
+		val addTasks = inputHandler.promptForYesNo("Do you want to add tasks to this project?")
+        val tasks = mutableListOf<Task>()
 
 		if (addTasks) {
 			while (true) {

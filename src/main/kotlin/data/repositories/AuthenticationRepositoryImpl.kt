@@ -10,27 +10,27 @@ import logic.repositories.AuthenticationRepository
 import java.util.UUID
 
 class AuthenticationRepositoryImpl(
-    private val csvDataSource: DataSource,
+    private val dataSource: DataSource,
     private val passwordEncryptor: PasswordEncryptor
 ) : AuthenticationRepository {
 
     override fun getAllUsers(): List<User> {
-        val usersDto = csvDataSource.getAllUsers()
+        val usersDto = dataSource.getAllUsers()
         return usersDto.map { it.toUser() }
     }
 
     override fun deleteUser(userId: UUID): Boolean {
-        val userDto = csvDataSource.getAllUsers().find { it.id == userId } ?: return false
-        csvDataSource.deleteUser(userDto)
+        val userDto = dataSource.getAllUsers().find { it.id == userId } ?: return false
+        dataSource.deleteUser(userDto)
         return true
     }
 
     override fun createUser(id: UUID, name: String, password: String, userType: UserType): UserDto {
         val hashedPassword = passwordEncryptor.hashPassword(password)
-        return csvDataSource.createUser(id, name, hashedPassword, userType)
+        return dataSource.createUser(id, name, hashedPassword, userType)
     }
 
     override fun editUser(user: User) {
-        return csvDataSource.editUser(user.toUserDto())
+        return dataSource.editUser(user.toUserDto())
     }
 }
