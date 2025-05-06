@@ -69,10 +69,6 @@ class CsvDataSource(
         return statesCsvHandler.readAll()
     }
 
-    override fun getAllAuditRecords(): List<LogDto> {
-        TODO("Not yet implemented")
-    }
-
     override fun recordLog(log: LogDto) {
         logsCsvHandler.write(log)
     }
