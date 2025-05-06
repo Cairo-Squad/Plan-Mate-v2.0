@@ -77,7 +77,7 @@ abstract class MongoDBHandlerImpl<DTO>(
 		}
 	}
 	
-	override fun read(id: UUID): DTO {
+	override fun readByEntityId(id: UUID): DTO {
 		try {
 			val document = collection.find(Filters.eq("_id", id.toString())).first()
 				?: throw DtoNotFoundException()

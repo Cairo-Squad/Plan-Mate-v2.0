@@ -7,5 +7,5 @@ interface MongoDBHandler<DTO> {
 	fun edit(entity: DTO)
 	fun delete(entity: DTO)
 	fun readAll():List<DTO>
-	fun read(id:UUID):DTO
+	fun readByEntityId(id:UUID):DTO
 }

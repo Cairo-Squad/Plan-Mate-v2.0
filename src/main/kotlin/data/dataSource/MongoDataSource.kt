@@ -54,7 +54,7 @@ class MongoDataSource(
 	}
 	
 	override fun getProjectById(projectId: UUID): ProjectDto {
-		return projectsHandler.read(projectId)
+		return projectsHandler.readByEntityId(projectId)
 	}
 	
 	override fun getAllProjects(): List<ProjectDto> {
@@ -79,7 +79,7 @@ class MongoDataSource(
 	}
 
 	override fun getTaskById(taskID: UUID): TaskDto {
-		return tasksHandler.read(taskID)
+		return tasksHandler.readByEntityId(taskID)
 	}
 	
 	override fun getAllStates(): List<StateDto> {
@@ -87,7 +87,7 @@ class MongoDataSource(
 	}
 
 	override fun getStateById(stateId: UUID): StateDto {
-		return statesHandler.read(stateId)
+		return statesHandler.readByEntityId(stateId)
 	}
 
 	override fun createState(state: StateDto): Boolean {
