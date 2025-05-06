@@ -10,6 +10,7 @@ import logic.usecase.state.CreateStateUseCase
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import java.util.*
 
 class CreateStateUseCaseTest {
@@ -51,5 +52,16 @@ class CreateStateUseCaseTest {
 		
 		// Then
 		assertFalse(result)
+	}
+
+	@Test
+	fun `should throw Exception when repository throws exception`() {
+		// Given
+		val state = State(UUID.randomUUID(), "Test State")
+		val user = User(UUID.randomUUID(), "mateUser", "pw", UserType.MATE)
+		every { statesRepository.createState(any(), any()) } throws Exception()
+
+		// When & Then
+		assertThrows<Exception> { createStateUseCase.createState(state, user) }
 	}
 }

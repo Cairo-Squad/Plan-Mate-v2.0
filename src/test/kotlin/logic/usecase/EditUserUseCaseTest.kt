@@ -72,34 +72,33 @@ class EditUserUseCaseTest {
         assertThrows<EntityNotChangedException> {
             editUserUseCase.editUser(updatedUser, originalUser)
         }
+    }
 
-        @Test
-        fun `editUser should return EmptyNameException, when user name is empty`() {
-            // Given
-            val updatedUser =
-                User(id = UUID(1, 1), name = "", password = "123456", type = UserType.ADMIN)
-            val originalUser =
-                User(id = UUID(1, 1), name = "Mohamed", password = "123456", type = UserType.ADMIN)
+    @Test
+    fun `editUser should return EmptyNameException, when user name is empty`() {
+        // Given
+        val updatedUser =
+            User(id = UUID(1, 1), name = "", password = "123456", type = UserType.ADMIN)
+        val originalUser =
+            User(id = UUID(1, 1), name = "Mohamed", password = "123456", type = UserType.ADMIN)
 
-            // When & Then
-            assertThrows<EmptyNameException> {
-                editUserUseCase.editUser(updatedUser, originalUser)
-            }
+        // When & Then
+        assertThrows<EmptyNameException> {
+            editUserUseCase.editUser(updatedUser, originalUser)
         }
+    }
 
-        @Test
-        fun `editUser should return EmptyPasswordException, when user password is empty`() {
-            // Given
-            val updatedUser =
-                User(id = UUID(1, 1), name = "Mohamed", password = "", type = UserType.ADMIN)
-            val originalUser =
-                User(id = UUID(1, 1), name = "Mohamed", password = "123456", type = UserType.ADMIN)
+    @Test
+    fun `editUser should return EmptyPasswordException, when user password is empty`() {
+        // Given
+        val updatedUser =
+            User(id = UUID(1, 1), name = "Mohamed", password = "", type = UserType.ADMIN)
+        val originalUser =
+            User(id = UUID(1, 1), name = "Mohamed", password = "123456", type = UserType.ADMIN)
 
-            // When & Then
-            assertThrows<EmptyPasswordException> {
-                editUserUseCase.editUser(updatedUser, originalUser)
-            }
+        // When & Then
+        assertThrows<EmptyPasswordException> {
+            editUserUseCase.editUser(updatedUser, originalUser)
         }
-
     }
 }

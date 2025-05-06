@@ -7,13 +7,9 @@ import logic.model.User
 import logic.repositories.StatesRepository
 
 class CreateStateUseCase(
-	private val stateRepo: StatesRepository
+    private val stateRepo: StatesRepository
 ) {
-	fun createState(state: State, user: User): Boolean {
-		return try {
-			stateRepo.createState(state.toStateDto(), user.toUserDto())
-		} catch (e: Exception) {
-			return false
-		}
-	}
+    fun createState(state: State, user: User): Boolean {
+        return stateRepo.createState(state.toStateDto(), user.toUserDto())
+    }
 }
