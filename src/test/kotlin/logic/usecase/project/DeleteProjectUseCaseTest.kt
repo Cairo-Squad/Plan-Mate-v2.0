@@ -1,11 +1,10 @@
 package logic.usecase.project
 
 import util.FakeData
-import com.google.common.truth.Truth.assertThat
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
-import logic.exception.projectNotFoundException
+import logic.exception.ProjectNotFoundException
 import logic.repositories.ProjectsRepository
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -26,9 +25,9 @@ class DeleteProjectUseCaseTest {
     fun `should throw exception when id is not found `() {
         //Given
         val fakeId = UUID.randomUUID()
-        every { projectsRepository.deleteProject(any()) } throws projectNotFoundException()
+        every { projectsRepository.deleteProject(any()) } throws ProjectNotFoundException()
         //When & Then
-        assertThrows<projectNotFoundException>
+        assertThrows<ProjectNotFoundException>
         { deleteProjectUseCase.deleteProjectById(fakeId) }
     }
 

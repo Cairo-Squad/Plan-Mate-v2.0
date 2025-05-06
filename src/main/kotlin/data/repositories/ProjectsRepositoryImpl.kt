@@ -4,7 +4,7 @@ import data.repositories.mappers.toProject
 import data.repositories.mappers.toProjectDto
 import data.repositories.mappers.toState
 import data.repositories.mappers.toTask
-import logic.exception.projectNotFoundException
+import logic.exception.ProjectNotFoundException
 import logic.model.Project
 import logic.model.State
 import logic.model.Task
@@ -26,7 +26,7 @@ class ProjectsRepositoryImpl(
 
     override fun deleteProject(projectId: UUID) {
         val projectsDao = dataSource.getAllProjects()
-            .find { it.id == projectId } ?: throw projectNotFoundException()
+            .find { it.id == projectId } ?: throw ProjectNotFoundException()
         return dataSource.deleteProjectById(projectsDao)
     }
 
