@@ -1,4 +1,5 @@
 import com.google.common.truth.Truth.assertThat
+import data.hashing.PasswordEncryptor
 import io.mockk.every
 import io.mockk.mockk
 import logic.repositories.AuthenticationRepository
