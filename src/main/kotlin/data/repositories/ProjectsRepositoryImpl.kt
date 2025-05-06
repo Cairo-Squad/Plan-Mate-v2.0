@@ -13,25 +13,25 @@ import logic.repositories.ProjectsRepository
 import java.util.*
 
 class ProjectsRepositoryImpl(
-    private val csvDataSource: DataSource
+    private val dataSource: DataSource
 ) : ProjectsRepository {
 
     override fun createProject(project: Project, user: User) {
-        return csvDataSource.createProject(project.toProjectDto())
+        return dataSource.createProject(project.toProjectDto())
     }
 
     override fun editProject(newProject: Project) {
-        return csvDataSource.editProject(newProject.toProjectDto())
+        return dataSource.editProject(newProject.toProjectDto())
     }
 
     override fun deleteProject(projectId: UUID) {
-        val projectsDao = csvDataSource.getAllProjects()
+        val projectsDao = dataSource.getAllProjects()
             .find { it.id == projectId } ?: throw projectNotFoundException()
-        return csvDataSource.deleteProjectById(projectsDao)
+        return dataSource.deleteProjectById(projectsDao)
     }
 
     override fun getProjectById(projectId: UUID): Project {
-        val projectDto = csvDataSource.getProjectById(projectId)
+        val projectDto = dataSource.getProjectById(projectId)
         return projectDto.toProject(
             projectState = getState(projectDto.stateId),
             projectTasks = getTasksForProject(projectId),
@@ -39,7 +39,7 @@ class ProjectsRepositoryImpl(
     }
 
     override fun getAllProjects(): List<Project> {
-        return csvDataSource.getAllProjects().map { projectDto ->
+        return dataSource.getAllProjects().map { projectDto ->
             val state = getState(projectDto.stateId)
             val tasks = getTasksForProject(projectDto.id)
             projectDto.toProject(
@@ -50,13 +50,13 @@ class ProjectsRepositoryImpl(
     }
 
     private fun getState(stateId: UUID): State {
-        return csvDataSource.getAllStates()
+        return dataSource.getAllStates()
             .first { it.id == stateId }
             .toState()
     }
 
     private fun getTasksForProject(projectId: UUID): List<Task> {
-        return csvDataSource.getTasksByProjectId(projectId)
+        return dataSource.getTasksByProjectId(projectId)
             .map { it.toTask(taskState = getState(it.stateId)) }
     }
 }

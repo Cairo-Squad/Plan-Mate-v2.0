@@ -30,10 +30,10 @@ class CreateStateUseCaseTest {
 		val state = State(UUID.randomUUID(), "Test State")
 		val user = User(UUID.randomUUID(), "admin", "pw", UserType.ADMIN)
 		
-		every { statesRepository.createState(any(), any()) } returns true
+		every { statesRepository.createState(any()) } returns true
 		
 		// When
-		val result = createStateUseCase.createState(state, user)
+		val result = createStateUseCase.createState(state)
 		
 		// Then
 		assertTrue(result)
@@ -45,10 +45,10 @@ class CreateStateUseCaseTest {
 		val state = State(UUID.randomUUID(), "Test State")
 		val user = User(UUID.randomUUID(), "mateUser", "pw", UserType.MATE)
 		
-		every { statesRepository.createState(any(), any()) } returns false
+		every { statesRepository.createState(any()) } returns false
 		
 		// When
-		val result = createStateUseCase.createState(state, user)
+		val result = createStateUseCase.createState(state)
 		
 		// Then
 		assertFalse(result)

@@ -103,7 +103,7 @@ class CsvDataSource(
         return stateDto!!
     }
 
-    override fun createState(state: StateDto, userDto: UserDto): Boolean {
+    override fun createState(state: StateDto): Boolean {
         statesCsvHandler.write(state)
         return true
     }

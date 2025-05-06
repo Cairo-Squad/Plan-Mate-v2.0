@@ -8,18 +8,18 @@ import logic.model.State
 import logic.repositories.StatesRepository
 
 class StatesRepositoryImpl(
-    private val csvDataSource: DataSource
+    private val dataSource: DataSource
 ) : StatesRepository {
 
     override fun createState(state: StateDto, userDto: UserDto): Boolean {
-        return csvDataSource.createState(state, userDto)
+        return dataSource.createState(state, userDto)
     }
 
     override fun editState(state: State) {
-        return csvDataSource.editState(state.toStateDto())
+        return dataSource.editState(state.toStateDto())
     }
 
     override fun getAllStates(): List<State> {
-        return csvDataSource.getAllStates().map { it.toState() }
+        return dataSource.getAllStates().map { it.toState() }
     }
 }

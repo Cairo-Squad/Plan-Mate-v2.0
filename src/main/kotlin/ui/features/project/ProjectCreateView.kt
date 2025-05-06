@@ -35,7 +35,7 @@ class ProjectCreateView(
 		val projectID = UUID.randomUUID()
 		val projectState = State(UUID.randomUUID(), stateTitle)
 		
-		createStateUseCase.createState(projectState, UserSession.getUser()!!)
+		createStateUseCase.createState(projectState)
   
 		val addTasks = inputHandler.promptForYesNo("Do you want to add tasks to this project?")
         val tasks = mutableListOf<Task>()

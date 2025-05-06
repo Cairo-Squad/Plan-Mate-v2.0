@@ -7,7 +7,7 @@ import ui.utils.CLIMenu
 
 fun main() {
     startKoin {
-        modules(listOf(uiModule, repositoryModule, useCasesModule, dataSourceModule))
+        modules(listOf(uiModule, repositoryModule, useCasesModule, mongoDataSourceModule))
     }
 
     val cliMenu: CLIMenu = getKoin().get()
