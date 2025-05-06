@@ -6,14 +6,9 @@ import logic.repositories.ProjectsRepository
 
 class EditProjectUseCase(private val projectsRepository: ProjectsRepository) {
 
-    fun editProject(newProject: Project): Result<Unit> {
-        return try {
+    fun editProject(newProject: Project){
             validateNewProject(newProject)
             projectsRepository.editProject(newProject)
-            Result.success(Unit)
-        } catch (exception: Exception) {
-            Result.failure(exception)
-        }
     }
 
     private fun validateNewProject(newProject:Project) {

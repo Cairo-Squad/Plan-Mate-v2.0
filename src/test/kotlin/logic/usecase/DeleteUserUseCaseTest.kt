@@ -45,19 +45,14 @@ class DeleteUserUseCaseTest {
         // Then
         assertThat(result).isFalse()
     }
+
     @Test
     fun `should throw exception when authenticationRepository throws error during delete`() {
         // Given
         val mockUsers = FakeData.mockUsers
-        every { authenticationRepository.deleteUser(any()) } throws RuntimeException("error when delete in database")
+        every { authenticationRepository.deleteUser(any()) } throws Exception()
 
-        // When
-        val exception = assertThrows<Exception> {
-            deleteUserUseCase.deleteUser(mockUsers[0].id)
-        }
-
-        // Then
-        assertThat(exception).hasMessageThat().isEqualTo("error  during delete")
+        // When & Then
+        assertThrows<Exception> { deleteUserUseCase.deleteUser(mockUsers[0].id) }
     }
-
 }

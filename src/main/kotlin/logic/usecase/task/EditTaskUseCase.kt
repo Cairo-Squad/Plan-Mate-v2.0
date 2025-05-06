@@ -6,7 +6,7 @@ import logic.repositories.TasksRepository
 class EditTaskUseCase(
     private val repository: TasksRepository
 ) {
-    operator fun invoke(newTask: Task, oldTask: Task) {
+    fun editTask(newTask: Task, oldTask: Task) {
         validateUserInputs(
             newTask = newTask,
             oldTask = oldTask
@@ -25,7 +25,5 @@ class EditTaskUseCase(
         if (newTask.description.isBlank()) {
             throw IllegalArgumentException("Description must not be empty")
         }
-
     }
-
 }

@@ -1,6 +1,5 @@
 package logic.usecase.project
 
-import com.google.common.truth.Truth.assertThat
 import io.mockk.every
 import io.mockk.mockk
 import logic.model.Project
@@ -8,7 +7,10 @@ import logic.model.State
 import logic.repositories.ProjectsRepository
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import java.util.*
+import kotlin.NoSuchElementException
+import kotlin.test.assertEquals
 
 class GetAllProjectsUseCaseTest {
 
@@ -22,27 +24,25 @@ class GetAllProjectsUseCaseTest {
     }
 
     @Test
-    fun `should return Success when repository returns Success`() {
+    fun `should return all projects when repository returns all projects`() {
         // Given
-        every { projectRepository.getAllProjects() } returns Result.success(projectsList())
+        val list = projectsList()
+        every { projectRepository.getAllProjects() } returns list
 
         // When
         val result = getAllProjectsUseCase.getAllProjects()
 
         // Then
-        assertThat(result.isSuccess).isTrue()
+        assertEquals(list, result)
     }
 
     @Test
-    fun `should return Failure when repository returns Failure`() {
+    fun `should throw exception when repository returns Failure`() {
         // Given
-        every { projectRepository.getAllProjects() } returns Result.failure(NoSuchElementException())
+        every { projectRepository.getAllProjects() } throws NoSuchElementException()
 
-        // When
-        val result = getAllProjectsUseCase.getAllProjects()
-
-        // Then
-        assertThat(result.isFailure).isTrue()
+        // When & Then
+        assertThrows<NoSuchElementException> { getAllProjectsUseCase.getAllProjects() }
     }
 
     private fun projectsList(): List<Project> {

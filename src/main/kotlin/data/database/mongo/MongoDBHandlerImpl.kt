@@ -3,9 +3,9 @@ package data.database.mongo
 import com.mongodb.client.MongoCollection
 import com.mongodb.client.MongoDatabase
 import com.mongodb.client.model.Filters
-import logic.exception.CsvWriteException
 import logic.exception.DtoNotFoundException
 import logic.exception.EntityNotFoundException
+import logic.exception.WriteException
 import org.bson.Document
 import java.util.*
 
@@ -34,7 +34,7 @@ abstract class MongoDBHandlerImpl<DTO>(
 			val document = convertDtoToDocument(entity)
 			collection.insertOne(document)
 		} catch (e: Exception) {
-			throw CsvWriteException()
+			throw WriteException()
 		}
 	}
 	
@@ -49,7 +49,7 @@ abstract class MongoDBHandlerImpl<DTO>(
 		} catch (e: DtoNotFoundException) {
 			throw e
 		} catch (e: Exception) {
-			throw CsvWriteException()
+			throw WriteException()
 		}
 	}
 	
@@ -63,7 +63,7 @@ abstract class MongoDBHandlerImpl<DTO>(
 		} catch (e: EntityNotFoundException) {
 			throw e
 		} catch (e: Exception) {
-			throw CsvWriteException()
+			throw WriteException()
 		}
 	}
 	
@@ -73,7 +73,7 @@ abstract class MongoDBHandlerImpl<DTO>(
 				.map { convertDocumentToDto(it) }
 				.toList()
 		} catch (e: Exception) {
-			throw CsvWriteException()
+			throw WriteException()
 		}
 	}
 	
@@ -85,7 +85,7 @@ abstract class MongoDBHandlerImpl<DTO>(
 		} catch (e: DtoNotFoundException) {
 			throw e
 		} catch (e: Exception) {
-			throw CsvWriteException()
+			throw WriteException()
 		}
 	}
 	

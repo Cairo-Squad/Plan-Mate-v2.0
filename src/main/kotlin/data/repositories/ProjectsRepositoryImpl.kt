@@ -4,6 +4,7 @@ import data.repositories.mappers.toProject
 import data.repositories.mappers.toProjectDto
 import data.repositories.mappers.toState
 import data.repositories.mappers.toTask
+import logic.exception.ProjectNotFoundException
 import logic.model.Project
 import logic.model.State
 import logic.model.Task
@@ -15,50 +16,35 @@ class ProjectsRepositoryImpl(
     private val dataSource: DataSource
 ) : ProjectsRepository {
 
-    override fun createProject(project: Project, user: User): Result<Unit> {
+    override fun createProject(project: Project, user: User) {
         return dataSource.createProject(project.toProjectDto())
     }
 
     override fun editProject(newProject: Project) {
-        dataSource.editProject(newProject.toProjectDto())
+        return dataSource.editProject(newProject.toProjectDto())
     }
 
-    override fun deleteProject(projectId: UUID): Result<Unit> {
-        val projectsDao =
-            dataSource.getAllProjects().find { it.id == projectId } ?: return Result.failure(
-                Exception()
-            )
-        dataSource.deleteProjectById(projectsDao)
-        return Result.success(Unit)
+    override fun deleteProject(projectId: UUID) {
+        val projectsDao = dataSource.getAllProjects()
+            .find { it.id == projectId } ?: throw ProjectNotFoundException()
+        return dataSource.deleteProjectById(projectsDao)
     }
 
-    override fun getProjectById(projectId: UUID): Result<Project> {
-        return try {
-            val projectDto = dataSource.getProjectById(projectId)
-
-            Result.success(
-                projectDto.toProject(
-                    projectState = getState(projectDto.stateId),
-                    projectTasks = getTasksForProject(projectId),
-                )
-            )
-        } catch (exception: NoSuchElementException) {
-            return Result.failure(exception)
-        } catch (exception: Exception) {
-            return Result.failure(exception)
-        }
+    override fun getProjectById(projectId: UUID): Project {
+        val projectDto = dataSource.getProjectById(projectId)
+        return projectDto.toProject(
+            projectState = getState(projectDto.stateId),
+            projectTasks = getTasksForProject(projectId),
+        )
     }
 
-    override fun getAllProjects(): Result<List<Project>> {
-        val projects = dataSource.getAllProjects().map { projectDto ->
-            val state = getState(projectDto.stateId)
-            val tasks = getTasksForProject(projectDto.id)
+    override fun getAllProjects(): List<Project> {
+        return dataSource.getAllProjects().map { projectDto ->
             projectDto.toProject(
-                projectState = state,
-                projectTasks = tasks
+                projectState = getState(projectDto.stateId),
+                projectTasks = getTasksForProject(projectDto.id)
             )
         }
-        return Result.success(projects)
     }
 
     private fun getState(stateId: UUID): State {

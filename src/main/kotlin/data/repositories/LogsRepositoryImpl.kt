@@ -18,7 +18,7 @@ class LogsRepositoryImpl(
         return dataSource.getProjectLog(projectId).map { it.toLog() }
     }
 
-    override fun recordLog(log: Log) {
+    override fun addTaskLog(log: Log) {
         dataSource.recordLog(log.toLogDto())
     }
 
