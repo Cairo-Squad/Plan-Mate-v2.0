@@ -62,7 +62,7 @@ class MongoDataSource(
 	}
 
 	override fun getTasksByProjectId(projectId: UUID): List<TaskDto> {
-		return tasksHandler.readAll().filter { it.id == projectId }
+		return tasksHandler.readAll().filter { it.projectId == projectId }
 	}
 
 	override fun createTask(task: TaskDto): Result<Unit> {
@@ -110,12 +110,8 @@ class MongoDataSource(
 	override fun getTaskLogs(taskId: UUID): List<LogDto> {
 		return logsHandler.readAll().filter { it.entityType == EntityType.TASK && it.entityId == taskId }
 	}
-	
-	override fun addProjectLog(logDto: LogDto) {
-		logsHandler.write(logDto)
-	}
-	
-	override fun getProjectLog(projectId: UUID): List<LogDto> {
+
+	override fun getProjectLogs(projectId: UUID): List<LogDto> {
 		return logsHandler.readAll()
 			.filter { it.entityType == EntityType.PROJECT && it.entityId == projectId }
 	}
