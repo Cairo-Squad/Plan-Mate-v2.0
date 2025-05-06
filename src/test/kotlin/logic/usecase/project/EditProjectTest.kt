@@ -2,7 +2,8 @@ package logic.usecase.project
 
 import io.mockk.every
 import io.mockk.mockk
-import logic.exception.CsvWriteException
+import io.mockk.verify
+import logic.exception.WriteException
 import logic.exception.EmptyNameException
 import logic.exception.UnknownException
 import logic.model.Project
@@ -11,8 +12,8 @@ import logic.repositories.ProjectsRepository
 import logic.usecase.Log.AddLogUseCase
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import java.util.*
-import kotlin.test.assertEquals
 
 class EditProjectTest {
 
@@ -27,61 +28,56 @@ class EditProjectTest {
     }
 
     @Test
-    fun `Given valid newDescription,When updating database,Then returns success result`() {
-        //Give
+    fun `should successfully edit project when valid new description is given`() {
+        //Given
         val newProject = getNewProject()
-        every { projectsRepository.editProject(any()) } returns Unit
+
         //When
-        val result = editProjectDescription.editProject(newProject)
+        editProjectDescription.editProject(newProject)
+
         //Then
-        assertEquals(expected = Result.success(Unit), actual = result)
+        verify { projectsRepository.editProject(any()) }
     }
 
     @Test
-    fun `Given empty description,When updating database,Then returns success result`() {
-        //Give
+    fun `should successfully edit project when empty description is given`() {
+        //Given
         val newProject = getNewProject()
-        every { projectsRepository.editProject(any()) } returns Unit
-        //When
-        val result = editProjectDescription.editProject(newProject.copy(description = ""))
-        //Then
-        assertEquals(expected = Result.success(Unit), actual = result)
-    }
 
-
-    @Test
-    fun `Given new project, When updating database but write exception is thrown, Then returns failure with cause`() {
-        //Give
-        val newProject = getNewProject()
-        every { projectsRepository.editProject(any()) } throws CsvWriteException()
         //When
-        val result = editProjectDescription.editProject(newProject)
+        editProjectDescription.editProject(newProject.copy(description = ""))
+
         //Then
-        val failure = Result.failure<Any>(CsvWriteException())
-        assertEquals(expected = failure.exceptionOrNull()!!::class, actual = result.exceptionOrNull()!!::class)
+        verify { projectsRepository.editProject(any()) }
     }
 
     @Test
-    fun `Given new project, When updating database but unKnown exception is thrown, Then returns failure with cause`() {
-        //Give
+    fun `should throw exception when database throws write exception `() {
+        //Given
+        val newProject = getNewProject()
+        every { projectsRepository.editProject(any()) } throws WriteException()
+
+        //When & Then
+        assertThrows<WriteException> { editProjectDescription.editProject(newProject) }
+    }
+
+    @Test
+    fun `should throw exception when database throws unknown exception`() {
+        //Given
         val newProject = getNewProject()
         every { projectsRepository.editProject(any()) } throws UnknownException()
-        //When
-        val result = editProjectDescription.editProject(newProject)
-        //Then
-        val expected = Result.failure<Any>(UnknownException())
-        assertEquals(expected = expected.exceptionOrNull()!!::class, actual = result.exceptionOrNull()!!::class)
+
+        //When & Then
+        assertThrows<UnknownException> { editProjectDescription.editProject(newProject) }
     }
 
     @Test
-    fun `Given new project with empty title, When validating, Then returns failure with cause`() {
-        //Give
+    fun `should throw empty name exception when editing project with empty title`() {
+        //Given
         val newProject = getNewProject().copy(title = "   ")
-        //When
-        val result = editProjectDescription.editProject(newProject)
-        //Then
-        val expected = Result.failure<Unit>(EmptyNameException())
-        assertEquals(expected = expected.exceptionOrNull()!!::class, actual = result.exceptionOrNull()!!::class)
+
+        //When & Then
+        assertThrows<EmptyNameException> { editProjectDescription.editProject(newProject) }
     }
 
     private fun getNewProject() = Project(
@@ -92,6 +88,4 @@ class EditProjectTest {
         tasks = emptyList(),
         state = State(id = UUID.randomUUID(), title = "TODO")
     )
-
-
 }

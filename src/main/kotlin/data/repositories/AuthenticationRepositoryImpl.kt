@@ -5,6 +5,7 @@ import data.dto.UserType
 import data.hashing.PasswordEncryptor
 import data.repositories.mappers.toUser
 import data.repositories.mappers.toUserDto
+import logic.exception.UserNotFoundException
 import logic.model.User
 import logic.repositories.AuthenticationRepository
 import java.util.UUID
@@ -20,7 +21,8 @@ class AuthenticationRepositoryImpl(
     }
 
     override fun deleteUser(userId: UUID): Boolean {
-        val userDto = dataSource.getAllUsers().find { it.id == userId } ?: return false
+        val userDto = dataSource.getAllUsers()
+            .find { it.id == userId } ?: throw UserNotFoundException()
         dataSource.deleteUser(userDto)
         return true
     }

@@ -28,16 +28,16 @@ class DeleteTaskUseCaseTest {
         // Given
         every { tasksRepository.deleteTask(any()) } throws Exception()
 
-        // When, Then
+        // When & Then
         assertThrows<Exception> {
-            deleteTaskUseCase.execute(getTask())
+            deleteTaskUseCase.deleteTask(getTask())
         }
     }
 
     @Test
     fun `should call deleteTask on the tasks repository`() {
         // When
-        deleteTaskUseCase.execute(getTask())
+        deleteTaskUseCase.deleteTask(getTask())
 
         // Then
         verify { tasksRepository.deleteTask(any()) }

@@ -2,16 +2,12 @@ package logic.usecase.project
 
 import logic.repositories.ProjectsRepository
 import java.util.UUID
-import kotlin.NoSuchElementException
 
 class DeleteProjectUseCase(
     private val projectsRepository: ProjectsRepository
 
 ) {
-    fun deleteProjectById(projectId: UUID): Result<Unit> {
-        projectsRepository.deleteProject(projectId).onSuccess {
-            return Result.success(Unit)
-        }
-        return Result.failure(NoSuchElementException())
+    fun deleteProjectById(projectId: UUID) {
+        return projectsRepository.deleteProject(projectId)
     }
 }

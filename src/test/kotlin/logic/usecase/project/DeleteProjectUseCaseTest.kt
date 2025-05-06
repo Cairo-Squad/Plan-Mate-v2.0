@@ -1,14 +1,15 @@
 package logic.usecase.project
 
 import util.FakeData
-import com.google.common.truth.Truth.assertThat
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.verify
+import logic.exception.ProjectNotFoundException
 import logic.repositories.ProjectsRepository
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import java.util.*
-import kotlin.NoSuchElementException
 
 class DeleteProjectUseCaseTest {
     private lateinit var projectsRepository: ProjectsRepository
@@ -21,26 +22,22 @@ class DeleteProjectUseCaseTest {
     }
 
     @Test
-    fun `should return failure when id is not found `() {
+    fun `should throw exception when id is not found `() {
         //Given
         val fakeId = UUID.randomUUID()
-        every { projectsRepository.deleteProject(fakeId) } returns Result.failure(NoSuchElementException())
-
-        //When
-        val result = deleteProjectUseCase.deleteProjectById(fakeId)
-        //Then
-        assertThat(result.isFailure).isTrue()
+        every { projectsRepository.deleteProject(any()) } throws ProjectNotFoundException()
+        //When & Then
+        assertThrows<ProjectNotFoundException>
+        { deleteProjectUseCase.deleteProjectById(fakeId) }
     }
 
     @Test
-    fun `should return success when id is found `() {
+    fun `should delete successfully when id is found `() {
         //Given
         val validId = FakeData.fakeProjects[0].id
-        every { projectsRepository.deleteProject(validId) } returns Result.success(Unit)
-
         //When
-        val result = deleteProjectUseCase.deleteProjectById(validId)
+        deleteProjectUseCase.deleteProjectById(validId)
         //Then
-        assertThat(result.isSuccess).isTrue()
+        verify { projectsRepository.deleteProject(validId) }
     }
 }

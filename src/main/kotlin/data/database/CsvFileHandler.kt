@@ -30,7 +30,7 @@ abstract class CsvFileHandler<DTO>(
                 writer.appendLine(newRow)
             }
         } catch (e: IOException) {
-            throw CsvWriteException()
+            throw WriteException()
         } catch (e: Exception) {
             throw UnknownException()
         }
@@ -45,7 +45,7 @@ abstract class CsvFileHandler<DTO>(
                 }
             }
         } catch (e: IOException) {
-            throw CsvWriteException()
+            throw WriteException()
         } catch (e: Exception) {
             throw UnknownException()
         }
@@ -74,7 +74,7 @@ abstract class CsvFileHandler<DTO>(
                 .map { fromCsvRowToDto(it) }
                 .toList()
         } catch (e: IOException) {
-            throw CsvReadException()
+            throw ReadException()
         } catch (e: Exception) {
             throw UnknownException()
         }
@@ -91,7 +91,7 @@ abstract class CsvFileHandler<DTO>(
         } catch (e: EntityNotFoundException) {
             println("Error: ${e.message}")
         } catch (e: IOException) {
-            throw CsvWriteException()
+            throw WriteException()
         } catch (e: Exception) {
             throw UnknownException()
         }

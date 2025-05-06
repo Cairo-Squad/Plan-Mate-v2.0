@@ -19,7 +19,6 @@ class CsvDataSource(
             password = password,
             type = type
         )
-
         usersCsvHandler.write(userDto)
         return userDto
     }
@@ -41,26 +40,16 @@ class CsvDataSource(
         usersCsvHandler.delete(user)
     }
 
-    override fun createProject(project: ProjectDto): Result<Unit> {
-        return try {
-            projectsCsvHandler.write(project)
-            Result.success(Unit)
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
+    override fun createProject(project: ProjectDto) {
+        projectsCsvHandler.write(project)
     }
 
     override fun editProject(newProject: ProjectDto) {
         projectsCsvHandler.edit(newProject)
     }
 
-    override fun deleteProjectById(project: ProjectDto): Result<Unit> {
-        return try {
-            projectsCsvHandler.delete(project)
-            Result.success(Unit)
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
+    override fun deleteProjectById(project: ProjectDto) {
+        projectsCsvHandler.delete(project)
     }
 
     override fun getProjectById(projectId: UUID): ProjectDto {
@@ -80,10 +69,6 @@ class CsvDataSource(
         return statesCsvHandler.readAll()
     }
 
-    override fun getAllAuditRecords(): List<LogDto> {
-        TODO("Not yet implemented")
-    }
-
     override fun recordLog(log: LogDto) {
         logsCsvHandler.write(log)
     }
@@ -92,13 +77,8 @@ class CsvDataSource(
         return logsCsvHandler.readAll().filter { it.entityType == EntityType.TASK && it.entityId == taskId }
     }
 
-    override fun createTask(task: TaskDto): Result<Unit> {
-        return try {
-            tasksCsvHandler.write(task)
-            Result.success(Unit)
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
+    override fun createTask(task: TaskDto) {
+        tasksCsvHandler.write(task)
     }
 
     override fun editTask(task: TaskDto) {
@@ -110,10 +90,8 @@ class CsvDataSource(
     }
 
     override fun getTaskById(taskID: UUID): TaskDto {
-
         val task = tasksCsvHandler.readAll().find { it.id == taskID }
         return task!!
-
     }
 
     override fun getStateById(stateId: UUID): StateDto {

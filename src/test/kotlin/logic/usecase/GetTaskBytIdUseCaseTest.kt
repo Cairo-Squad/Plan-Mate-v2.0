@@ -13,8 +13,8 @@ import java.util.*
 import kotlin.NoSuchElementException
 
 class GetTaskByIdUseCaseTest {
-    lateinit var getTaskByIdUseCase: GetTaskBytIdUseCase
-    lateinit var taskRepository: TasksRepository
+    private lateinit var getTaskByIdUseCase: GetTaskBytIdUseCase
+    private lateinit var taskRepository: TasksRepository
 
     @BeforeEach
     fun setup() {
@@ -45,7 +45,6 @@ class GetTaskByIdUseCaseTest {
         val exception = org.junit.jupiter.api.assertThrows<NoSuchElementException> {
             getTaskByIdUseCase.getTaskById(taskId)
         }
-
         assertThat(exception.message).isEqualTo("Task not found")
     }
 
@@ -59,7 +58,6 @@ class GetTaskByIdUseCaseTest {
         val exception = org.junit.jupiter.api.assertThrows<RuntimeException> {
             getTaskByIdUseCase.getTaskById(taskId)
         }
-
         assertThat(exception.message).isEqualTo("Unexpected error")
     }
 

@@ -2,6 +2,8 @@ package logic.usecase
 
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.verify
+import logic.exception.EmptyTitleException
 import logic.model.State
 import logic.model.Task
 import logic.repositories.TasksRepository
@@ -10,6 +12,7 @@ import logic.usecase.task.CreateTaskUseCase
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import java.util.*
 
 class CreateTaskUseCaseTest {
@@ -25,27 +28,26 @@ class CreateTaskUseCaseTest {
     }
 
     @Test
-    fun `should return success when using a valid task`() {
+    fun `should create task when passing a valid task`() {
         //Given
-        every { taskRepository.createTask(validTask()) } returns Result.success(Unit)
+        val validTask = validTask()
 
         // When
-        val actualResult = createTaskUseCase.createTask(validTask())
+        createTaskUseCase.createTask(validTask)
 
         // Then
-        assertTrue(actualResult.isSuccess)
+        verify { taskRepository.createTask(validTask) }
     }
 
     @Test
-    fun `should return failure when using a invalid task`() {
+    fun `should throw exception when using a invalid task`() {
         // Given
-        every { taskRepository.createTask(invalidTask()) } returns Result.failure(Exception())
+        every { taskRepository.createTask(invalidTask()) }
 
-        // When
-        val actualResult = createTaskUseCase.createTask(invalidTask())
-
-        // Then
-        assertTrue(actualResult.isFailure)
+        // When & Then
+        assertThrows<EmptyTitleException> {
+            createTaskUseCase.createTask(invalidTask())
+        }
     }
 
     private fun validTask(): Task {
@@ -67,6 +69,4 @@ class CreateTaskUseCaseTest {
             projectId = UUID.randomUUID()
         )
     }
-
-
 }

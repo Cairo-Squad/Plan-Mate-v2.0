@@ -16,7 +16,7 @@ class StatesRepositoryImpl(
     }
 
     override fun editState(state: State) {
-        dataSource.editState(state.toStateDto())
+        return dataSource.editState(state.toStateDto())
     }
 
     override fun getAllStates(): List<State> {
