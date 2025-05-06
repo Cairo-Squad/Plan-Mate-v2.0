@@ -11,10 +11,10 @@ import java.util.*
 class CreateUserUseCase(
     private val authRepository: AuthenticationRepository
 ) {
-    fun createUser(id: UUID, name: String, password: String, type: UserType) {
+    fun createUser(id: UUID, name: String, password: String, type: UserType): User {
         if (name.isEmpty()) throw EmptyNameException()
         if (password.isEmpty()) throw EmptyPasswordException()
 
-        return authRepository.createUser(id, name, password, type)
+        return authRepository.createUser(id, name, password, type).toUser()
     }
 }

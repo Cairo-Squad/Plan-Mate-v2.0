@@ -8,7 +8,7 @@ import data.dto.*
 interface DataSource {
     // region Users
     fun getAllUsers(): List<UserDto>
-    fun createUser(id: UUID, name: String, password: String, type: UserType)
+    fun createUser(id: UUID, name: String, password: String, type: UserType): UserDto
     fun editUser(user: UserDto)
     fun deleteUser(user: UserDto)
     // endregion

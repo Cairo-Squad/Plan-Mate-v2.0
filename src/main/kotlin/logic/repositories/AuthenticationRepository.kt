@@ -6,8 +6,8 @@ import logic.model.User
 import java.util.*
 
 interface AuthenticationRepository {
-    fun createUser(id: UUID, name: String, password: String, userType: UserType)
+    fun createUser(id: UUID, name: String, password: String, userType: UserType): UserDto
     fun getAllUsers(): List<User>
-    fun deleteUser(userId: UUID)
+    fun deleteUser(userId: UUID): Boolean
     fun editUser(user: User)
 }
