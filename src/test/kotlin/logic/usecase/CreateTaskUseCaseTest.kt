@@ -40,7 +40,7 @@ class CreateTaskUseCaseTest {
         // Given
         every { taskRepository.createTask(invalidTask()) }
 
-        // When && Then
+        // When & Then
         assertThrows<EmptyTitleException> {
             createTaskUseCase.createTask(invalidTask())
         }

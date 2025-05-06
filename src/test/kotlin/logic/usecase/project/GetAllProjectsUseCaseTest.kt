@@ -41,7 +41,7 @@ class GetAllProjectsUseCaseTest {
         // Given
         every { projectRepository.getAllProjects() } throws NoSuchElementException()
 
-        // When && Then
+        // When & Then
         assertThrows<NoSuchElementException> { getAllProjectsUseCase.getAllProjects() }
     }
 

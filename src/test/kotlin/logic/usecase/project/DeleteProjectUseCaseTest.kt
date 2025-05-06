@@ -27,7 +27,7 @@ class DeleteProjectUseCaseTest {
         //Given
         val fakeId = UUID.randomUUID()
         every { projectsRepository.deleteProject(any()) } throws projectNotFoundException()
-        //When && Then
+        //When & Then
         assertThrows<projectNotFoundException>
         { deleteProjectUseCase.deleteProjectById(fakeId) }
     }

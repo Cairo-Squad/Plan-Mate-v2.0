@@ -27,7 +27,7 @@ class EditTaskUseCaseTest {
         //Given
         val task = getValidTask()
 
-        //When && Then
+        //When & Then
         assertFailsWith<IllegalStateException> {
             editTaskUseCase.editTask(newTask = task, oldTask = task)
         }
@@ -39,7 +39,7 @@ class EditTaskUseCaseTest {
         val oldTask = getValidTask()
         val newTask = oldTask.copy(title = "  ")
 
-        //When && Then
+        //When & Then
         assertFailsWith<IllegalArgumentException> {
             editTaskUseCase.editTask(newTask = newTask, oldTask = oldTask)
         }
@@ -51,7 +51,7 @@ class EditTaskUseCaseTest {
         val oldTask = getValidTask()
         val newTask = oldTask.copy(description = "")
 
-        //When && Then
+        //When & Then
         assertFailsWith<IllegalArgumentException> {
             editTaskUseCase.editTask(newTask = newTask, oldTask = oldTask)
         }

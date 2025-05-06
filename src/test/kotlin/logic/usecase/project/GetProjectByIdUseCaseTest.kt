@@ -48,7 +48,7 @@ class GetProjectByIdUseCaseTest {
         val exception = NoSuchElementException()
         every { projectsRepository.getProjectById(project.id) } throws exception
 
-        // When && Then
+        // When & Then
         assertThrows<NoSuchElementException> { getProjectByIdUseCase.getProjectById(project.id) }
     }
 }

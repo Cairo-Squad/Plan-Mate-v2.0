@@ -26,7 +26,7 @@ class EditProjectTest {
 
     @Test
     fun `should successfully edit project when valid new description is given`() {
-        //Give
+        //Given
         val newProject = getNewProject()
 
         //When
@@ -38,7 +38,7 @@ class EditProjectTest {
 
     @Test
     fun `should successfully edit project when empty description is given`() {
-        //Give
+        //Given
         val newProject = getNewProject()
 
         //When
@@ -50,30 +50,30 @@ class EditProjectTest {
 
     @Test
     fun `should throw exception when database throws write exception `() {
-        //Give
+        //Given
         val newProject = getNewProject()
         every { projectsRepository.editProject(any()) } throws WriteException()
 
-        //When && Then
+        //When & Then
         assertThrows<WriteException> { editProjectDescription.editProject(newProject) }
     }
 
     @Test
     fun `should throw exception when database throws unknown exception`() {
-        //Give
+        //Given
         val newProject = getNewProject()
         every { projectsRepository.editProject(any()) } throws UnknownException()
 
-        //When && Then
+        //When & Then
         assertThrows<UnknownException> { editProjectDescription.editProject(newProject) }
     }
 
     @Test
     fun `should throw empty name exception when editing project with empty title`() {
-        //Give
+        //Given
         val newProject = getNewProject().copy(title = "   ")
 
-        //When && Then
+        //When & Then
         assertThrows<EmptyNameException> { editProjectDescription.editProject(newProject) }
     }
 

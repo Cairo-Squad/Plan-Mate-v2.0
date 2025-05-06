@@ -10,5 +10,5 @@ interface ProjectsRepository {
     fun editProject(newProject: Project)
     fun deleteProject(projectId: UUID)
     fun getProjectById(projectId: UUID): Project
-    fun getAllProjects():List<Project>
+    fun getAllProjects(): List<Project>
 }

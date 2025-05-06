@@ -28,7 +28,7 @@ class DeleteTaskUseCaseTest {
         // Given
         every { tasksRepository.deleteTask(any()) } throws Exception()
 
-        // When && Then
+        // When & Then
         assertThrows<Exception> {
             deleteTaskUseCase.deleteTask(getTask())
         }

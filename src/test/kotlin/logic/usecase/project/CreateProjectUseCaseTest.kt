@@ -43,7 +43,7 @@ class CreateProjectUseCaseTest {
         val project = FakeData.validProject
         every { (projectRepository).createProject(project, invalidUser) } throws InvalidUserException()
 
-        //When && Then
+        //When & Then
         assertThrows<InvalidUserException> {
             createProjectUseCase.createProject(project, invalidUser)
         }
@@ -68,7 +68,7 @@ class CreateProjectUseCaseTest {
         //Given
         val project = FakeData.projectWithNoTitle
 
-        //When && Then
+        //When & Then
         assertThrows<EmptyTitleException> {
             createProjectUseCase.createProject(project, validUser)
         }
