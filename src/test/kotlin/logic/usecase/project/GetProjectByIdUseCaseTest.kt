@@ -31,27 +31,24 @@ class GetProjectByIdUseCaseTest {
     }
 
     @Test
-    fun `should return Success with Project when repository returns project`() {
+    fun `should return project Successfully when repository returns project`() {
         // Given
-        every { projectsRepository.getProjectById(project.id) } returns Result.success(project)
+        every { projectsRepository.getProjectById(project.id) } returns project
 
         // When
         val result = getProjectByIdUseCase.getProjectById(project.id)
 
         //Then
-        assertThat(result.isSuccess).isTrue()
+        assertThat(result).isEqualTo(project)
     }
 
     @Test
-    fun `should return Failure when repository returns not found`() {
+    fun `should throw exception when repository returns no projects`() {
         // Given
         val exception = NoSuchElementException()
-        every { projectsRepository.getProjectById(project.id) } returns Result.failure(exception)
+        every { projectsRepository.getProjectById(project.id) } throws exception
 
-        // When
-        val result = getProjectByIdUseCase.getProjectById(project.id)
-
-        //Then
-        assertThat(result.isFailure).isTrue()
+        // When & Then
+        assertThrows<NoSuchElementException> { getProjectByIdUseCase.getProjectById(project.id) }
     }
 }

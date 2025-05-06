@@ -17,7 +17,7 @@ class TasksRepositoryImpl(
         return taskDto.toTask(taskState.toState())
     }
 
-    override fun createTask(task: Task): Result<Unit> {
+    override fun createTask(task: Task) {
         return csvDataSource.createTask(task.toTaskDto())
     }
 
