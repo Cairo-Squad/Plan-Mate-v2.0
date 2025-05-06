@@ -8,7 +8,7 @@ import java.util.*
 interface ProjectsRepository {
     fun createProject(project: Project, user: User)
     fun editProject(newProject: Project)
-    fun deleteProject(projectId: UUID):Boolean
+    fun deleteProject(projectId: UUID)
     fun getProjectById(projectId: UUID): Project
     fun getAllProjects():List<Project>
 }
