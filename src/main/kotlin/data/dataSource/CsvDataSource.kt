@@ -19,7 +19,6 @@ class CsvDataSource(
             password = password,
             type = type
         )
-
         usersCsvHandler.write(userDto)
         return userDto
     }
@@ -42,7 +41,7 @@ class CsvDataSource(
     }
 
     override fun createProject(project: ProjectDto) {
-            projectsCsvHandler.write(project)
+        projectsCsvHandler.write(project)
     }
 
     override fun editProject(newProject: ProjectDto) {
@@ -83,7 +82,7 @@ class CsvDataSource(
     }
 
     override fun createTask(task: TaskDto) {
-            tasksCsvHandler.write(task)
+        tasksCsvHandler.write(task)
     }
 
     override fun editTask(task: TaskDto) {
@@ -95,10 +94,8 @@ class CsvDataSource(
     }
 
     override fun getTaskById(taskID: UUID): TaskDto {
-
         val task = tasksCsvHandler.readAll().find { it.id == taskID }
         return task!!
-
     }
 
     override fun getStateById(stateId: UUID): StateDto {

@@ -27,8 +27,10 @@ class CreateProjectUseCaseTest {
     fun `should successfully create a project when user type is admin`() {
         //Given
         val project = FakeData.validProject
+
         //When
         createProjectUseCase.createProject(project, validUser)
+
         //Then
         verify(exactly = 1) {
             createProjectUseCase.createProject(project, validUser)
@@ -40,6 +42,7 @@ class CreateProjectUseCaseTest {
         //Given
         val project = FakeData.validProject
         every { (projectRepository).createProject(project, invalidUser) } throws InvalidUserException()
+
         //When && Then
         assertThrows<InvalidUserException> {
             createProjectUseCase.createProject(project, invalidUser)
@@ -50,8 +53,10 @@ class CreateProjectUseCaseTest {
     fun `should create a project successfully when description is empty`() {
         //Given
         val project = FakeData.projectWithNoDescription
+
         //When
         createProjectUseCase.createProject(project, validUser)
+
         //Then
         verify(exactly = 1) {
             createProjectUseCase.createProject(project, validUser)
@@ -62,6 +67,7 @@ class CreateProjectUseCaseTest {
     fun `should throw exception when project title is blank`() {
         //Given
         val project = FakeData.projectWithNoTitle
+
         //When && Then
         assertThrows<EmptyTitleException> {
             createProjectUseCase.createProject(project, validUser)

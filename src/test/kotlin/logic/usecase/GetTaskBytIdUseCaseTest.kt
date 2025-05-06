@@ -45,7 +45,6 @@ class GetTaskByIdUseCaseTest {
         val exception = org.junit.jupiter.api.assertThrows<NoSuchElementException> {
             getTaskByIdUseCase.getTaskById(taskId)
         }
-
         assertThat(exception.message).isEqualTo("Task not found")
     }
 
@@ -59,7 +58,6 @@ class GetTaskByIdUseCaseTest {
         val exception = org.junit.jupiter.api.assertThrows<RuntimeException> {
             getTaskByIdUseCase.getTaskById(taskId)
         }
-
         assertThat(exception.message).isEqualTo("Unexpected error")
     }
 

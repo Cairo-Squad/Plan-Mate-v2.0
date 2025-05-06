@@ -6,7 +6,7 @@ import logic.repositories.TasksRepository
 class DeleteTaskUseCase(
     private val tasksRepository: TasksRepository
 ) {
-    fun execute(task: Task) {
+    fun deleteTask(task: Task) {
         return tasksRepository.deleteTask(task)
     }
 }

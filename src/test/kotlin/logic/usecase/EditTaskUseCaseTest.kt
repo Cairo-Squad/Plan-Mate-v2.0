@@ -24,37 +24,49 @@ class EditTaskUseCaseTest {
 
     @Test
     fun `should throw exception when new task is the same as old task`() {
+        //Given
         val task = getValidTask()
+
+        //When && Then
         assertFailsWith<IllegalStateException> {
-            editTaskUseCase(newTask = task, oldTask = task)
+            editTaskUseCase.editTask(newTask = task, oldTask = task)
         }
     }
 
     @Test
     fun `should throw exception when title is blank`() {
+        //Given
         val oldTask = getValidTask()
         val newTask = oldTask.copy(title = "  ")
+
+        //When && Then
         assertFailsWith<IllegalArgumentException> {
-            editTaskUseCase(newTask = newTask, oldTask = oldTask)
+            editTaskUseCase.editTask(newTask = newTask, oldTask = oldTask)
         }
     }
 
     @Test
     fun `should throw exception when description is blank`() {
+        //Given
         val oldTask = getValidTask()
         val newTask = oldTask.copy(description = "")
+
+        //When && Then
         assertFailsWith<IllegalArgumentException> {
-            editTaskUseCase(newTask = newTask, oldTask = oldTask)
+            editTaskUseCase.editTask(newTask = newTask, oldTask = oldTask)
         }
     }
 
     @Test
     fun `should call editTask on repository if input is valid and changed`() {
+        //Given
         val oldTask = getValidTask()
         val newTask = oldTask.copy(title = "Updated Title")
 
-        editTaskUseCase(newTask = newTask, oldTask = oldTask)
+        //When
+        editTaskUseCase.editTask(newTask = newTask, oldTask = oldTask)
 
+        //Then
         verify { tasksRepository.editTask(newTask) }
     }
 

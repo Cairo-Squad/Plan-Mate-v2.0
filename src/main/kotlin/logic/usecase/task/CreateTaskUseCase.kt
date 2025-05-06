@@ -11,7 +11,7 @@ class CreateTaskUseCase(private val repository: TasksRepository) {
     }
 
     private fun validateTask(task: Task) {
-        if (task.title.isBlank()) throw (EmptyTitleException())
+        if (task.title.isBlank()) throw EmptyTitleException()
     }
 }
 

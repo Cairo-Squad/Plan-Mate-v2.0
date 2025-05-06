@@ -14,41 +14,25 @@ class TasksRepositoryImpl(
     override fun getTaskById(taskId: UUID): Task {
         val taskDto = csvDataSource.getTaskById(taskId)
         val taskState = csvDataSource.getStateById(taskDto.stateId)
-        return tryToExecute {
+        return taskDto.toTask(taskState.toState())
+    }
+
+    override fun createTask(task: Task) {
+        return csvDataSource.createTask(task.toTaskDto())
+    }
+
+    override fun editTask(task: Task) {
+        csvDataSource.editTask(task.toTaskDto())
+    }
+
+    override fun getAllTasksByProjectId(projectId: UUID): List<Task> {
+        return csvDataSource.getTasksByProjectId(projectId).map { taskDto ->
+            val taskState = csvDataSource.getStateById(taskDto.stateId)
             taskDto.toTask(taskState.toState())
         }
     }
 
-    override fun createTask(task: Task) {
-        return tryToExecute {
-            csvDataSource.createTask(task.toTaskDto())
-        }
-    }
-
-    override fun editTask(task: Task) {
-        tryToExecute {
-            csvDataSource.editTask(task.toTaskDto())
-        }
-    }
-
-    override fun getAllTasksByProjectId(projectId: UUID): List<Task> {
-        return tryToExecute {
-            csvDataSource.getTasksByProjectId(projectId).map { taskDto ->
-                val taskState = csvDataSource.getStateById(taskDto.stateId)
-                taskDto.toTask(taskState.toState())
-            }
-        }
-    }
-
     override fun deleteTask(task: Task) {
-        tryToExecute { csvDataSource.deleteTask(task.toTaskDto()) }
-    }
-
-    private fun <T> tryToExecute(function: () -> T): T {
-        return try {
-            function()
-        } catch (e: Exception) {
-            throw e
-        }
+        csvDataSource.deleteTask(task.toTaskDto())
     }
 }

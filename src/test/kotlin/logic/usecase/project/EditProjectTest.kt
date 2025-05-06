@@ -28,8 +28,10 @@ class EditProjectTest {
     fun `should successfully edit project when valid new description is given`() {
         //Give
         val newProject = getNewProject()
+
         //When
         editProjectDescription.editProject(newProject)
+
         //Then
         verify { projectsRepository.editProject(any()) }
     }
@@ -38,8 +40,10 @@ class EditProjectTest {
     fun `should successfully edit project when empty description is given`() {
         //Give
         val newProject = getNewProject()
+
         //When
         editProjectDescription.editProject(newProject.copy(description = ""))
+
         //Then
         verify { projectsRepository.editProject(any()) }
     }
@@ -49,6 +53,7 @@ class EditProjectTest {
         //Give
         val newProject = getNewProject()
         every { projectsRepository.editProject(any()) } throws WriteException()
+
         //When && Then
         assertThrows<WriteException> { editProjectDescription.editProject(newProject) }
     }
@@ -58,6 +63,7 @@ class EditProjectTest {
         //Give
         val newProject = getNewProject()
         every { projectsRepository.editProject(any()) } throws UnknownException()
+
         //When && Then
         assertThrows<UnknownException> { editProjectDescription.editProject(newProject) }
     }
@@ -66,6 +72,7 @@ class EditProjectTest {
     fun `should throw empty name exception when editing project with empty title`() {
         //Give
         val newProject = getNewProject().copy(title = "   ")
+
         //When && Then
         assertThrows<EmptyNameException> { editProjectDescription.editProject(newProject) }
     }

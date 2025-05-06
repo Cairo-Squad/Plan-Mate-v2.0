@@ -28,8 +28,10 @@ class GetAllProjectsUseCaseTest {
         // Given
         val list = projectsList()
         every { projectRepository.getAllProjects() } returns list
+
         // When
         val result = getAllProjectsUseCase.getAllProjects()
+
         // Then
         assertEquals(list, result)
     }
@@ -38,6 +40,7 @@ class GetAllProjectsUseCaseTest {
     fun `should throw exception when repository returns Failure`() {
         // Given
         every { projectRepository.getAllProjects() } throws NoSuchElementException()
+
         // When && Then
         assertThrows<NoSuchElementException> { getAllProjectsUseCase.getAllProjects() }
     }

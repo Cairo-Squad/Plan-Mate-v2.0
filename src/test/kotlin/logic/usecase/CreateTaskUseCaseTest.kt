@@ -44,7 +44,6 @@ class CreateTaskUseCaseTest {
         assertThrows<EmptyTitleException> {
             createTaskUseCase.createTask(invalidTask())
         }
-
     }
 
     private fun validTask(): Task {
@@ -66,5 +65,4 @@ class CreateTaskUseCaseTest {
             projectId = UUID.randomUUID()
         )
     }
-
 }
