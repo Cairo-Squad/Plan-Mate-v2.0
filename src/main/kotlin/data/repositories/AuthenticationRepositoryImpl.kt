@@ -5,9 +5,10 @@ import data.dto.UserType
 import data.hashing.PasswordEncryptor
 import data.repositories.mappers.toUser
 import data.repositories.mappers.toUserDto
+import logic.exception.UserNotFoundException
 import logic.model.User
 import logic.repositories.AuthenticationRepository
-import java.util.UUID
+import java.util.*
 
 class AuthenticationRepositoryImpl(
     private val csvDataSource: DataSource,
@@ -20,7 +21,9 @@ class AuthenticationRepositoryImpl(
     }
 
     override fun deleteUser(userId: UUID): Boolean {
-        val userDto = csvDataSource.getAllUsers().find { it.id == userId } ?: return false
+        val userDto = csvDataSource.getAllUsers()
+            .find { it.id == userId }
+            ?: throw UserNotFoundException()
         csvDataSource.deleteUser(userDto)
         return true
     }

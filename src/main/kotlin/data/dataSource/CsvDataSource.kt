@@ -19,7 +19,6 @@ class CsvDataSource(
             password = password,
             type = type
         )
-
         usersCsvHandler.write(userDto)
         return userDto
     }

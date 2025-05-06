@@ -3,6 +3,7 @@ package logic.exception
 import java.io.IOException
 
 class UnknownException() : Exception("Unknown exception has occurred")
+class UserNotFoundException: Exception("User not found")
 
 class CsvWriteException() : Exception("Failed to write to CSV file")
 

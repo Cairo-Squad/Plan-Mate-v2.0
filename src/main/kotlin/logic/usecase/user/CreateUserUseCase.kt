@@ -6,26 +6,15 @@ import logic.exception.EmptyNameException
 import logic.exception.EmptyPasswordException
 import logic.model.User
 import logic.repositories.AuthenticationRepository
-import java.util.UUID
+import java.util.*
 
 class CreateUserUseCase(
     private val authRepository: AuthenticationRepository
 ) {
-    fun createUser(name: String, password: String, type: UserType): Result<User> {
-        if (name.isEmpty()) {
-            return Result.failure(EmptyNameException())
-        }
+    fun createUser(id: UUID, name: String, password: String, type: UserType): User {
+        if (name.isEmpty()) throw EmptyNameException()
+        if (password.isEmpty()) throw EmptyPasswordException()
 
-        if (password.isEmpty()) {
-            return Result.failure(EmptyPasswordException())
-        }
-
-        try {
-            val userDto = authRepository.createUser(UUID.randomUUID(), name, password, type)
-            val user = userDto.toUser()
-            return Result.success(user)
-        } catch (e: Exception) {
-            return Result.failure(e)
-        }
+        return authRepository.createUser(id, name, password, type).toUser()
     }
 }
