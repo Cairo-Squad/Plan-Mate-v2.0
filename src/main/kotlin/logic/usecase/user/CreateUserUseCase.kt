@@ -11,7 +11,7 @@ import java.util.*
 class CreateUserUseCase(
     private val authRepository: AuthenticationRepository
 ) {
-    fun createUser(id: UUID, name: String, password: String, type: UserType): User {
+    suspend fun createUser(id: UUID, name: String, password: String, type: UserType): User {
         if (name.isEmpty()) throw EmptyNameException()
         if (password.isEmpty()) throw EmptyPasswordException()
 
