@@ -57,7 +57,7 @@ class CreateTaskView(
                 )
                 
                 try{
-                    val result = createTaskUseCase.createTask(task)
+                    val result = createTaskUseCase.createTask(task, UserSession.getUser()!!)
                     val updatedProject = selectedProject.copy(
                         tasks = selectedProject.tasks + task
                     )

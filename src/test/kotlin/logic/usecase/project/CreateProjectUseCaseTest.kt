@@ -1,9 +1,8 @@
 package logic.usecase.project
 
 import com.google.common.truth.Truth.assertThat
-import io.mockk.every
-import io.mockk.mockk
-import io.mockk.verify
+import io.mockk.*
+import kotlinx.coroutines.test.runTest
 import logic.exception.EmptyTitleException
 import logic.exception.InvalidUserException
 import logic.repositories.ProjectsRepository
@@ -28,7 +27,7 @@ class CreateProjectUseCaseTest() {
     }
 
     @Test
-    fun `should successfully create a project when user type is admin`() {
+    fun `should successfully create a project when user type is admin`() = runTest {
         //Given
         val project = FakeData.validProject
 
@@ -36,16 +35,16 @@ class CreateProjectUseCaseTest() {
         createProject.createProject(project, validUser)
 
         //Then
-        verify(exactly = 1) {
+        coVerify(exactly = 1) {
             createProject.createProject(project, validUser)
         }
     }
 
     @Test
-    fun `should not create a project when user type is mate`() {
+    fun `should not create a project when user type is mate`() = runTest {
         //Given
         val project = FakeData.validProject
-        every { (projectRepository).createProject(project, invalidUser) } throws InvalidUserException()
+        coEvery { (projectRepository).createProject(project, invalidUser) } throws InvalidUserException()
 
         //When & Then
         assertThrows<InvalidUserException> {
@@ -54,7 +53,7 @@ class CreateProjectUseCaseTest() {
     }
 
     @Test
-    fun `should create a project successfully when description is empty`() {
+    fun `should create a project successfully when description is empty`() = runTest {
         //Given
         val project = FakeData.projectWithNoDescription
 
@@ -62,13 +61,13 @@ class CreateProjectUseCaseTest() {
         createProject.createProject(project, validUser)
 
         //Then
-        verify(exactly = 1) {
+        coVerify(exactly = 1) {
             createProject.createProject(project, validUser)
         }
     }
 
     @Test
-    fun `should throw exception when project title is blank`() {
+    fun `should throw exception when project title is blank`() = runTest {
         //Given
         val project = FakeData.projectWithNoTitle
 

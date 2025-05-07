@@ -1,6 +1,7 @@
 package logic.usecase
 
 import io.mockk.*
+import kotlinx.coroutines.test.runTest
 import logic.model.State
 import logic.model.Task
 import logic.repositories.TasksRepository
@@ -26,7 +27,7 @@ class EditTaskUseCaseTest {
     }
 
     @Test
-    fun `should throw exception when new task is the same as old task`() {
+    fun `should throw exception when new task is the same as old task`() = runTest {
         //Given
         val task = getValidTask()
 
@@ -37,7 +38,7 @@ class EditTaskUseCaseTest {
     }
 
     @Test
-    fun `should throw exception when title is blank`() {
+    fun `should throw exception when title is blank`() = runTest {
         //Given
         val oldTask = getValidTask()
         val newTask = oldTask.copy(title = "  ")
@@ -49,7 +50,7 @@ class EditTaskUseCaseTest {
     }
 
     @Test
-    fun `should throw exception when description is blank`() {
+    fun `should throw exception when description is blank`() = runTest {
         //Given
         val oldTask = getValidTask()
         val newTask = oldTask.copy(description = "")
@@ -61,7 +62,7 @@ class EditTaskUseCaseTest {
     }
 
     @Test
-    fun `should call editTask on repository if input is valid and changed`() {
+    fun `should call editTask on repository if input is valid and changed`() = runTest {
         //Given
         val oldTask = getValidTask()
         val newTask = oldTask.copy(title = "Updated Title")
@@ -70,7 +71,7 @@ class EditTaskUseCaseTest {
         editTaskUseCase.editTask(newTask = newTask, oldTask = oldTask)
 
         //Then
-        verify { tasksRepository.editTask(newTask) }
+        coVerify { tasksRepository.editTask(newTask) }
     }
 
     private fun getValidTask(): Task {

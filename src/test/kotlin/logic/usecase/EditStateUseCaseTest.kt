@@ -1,8 +1,7 @@
 package logic.usecase
 
-import io.mockk.every
-import io.mockk.mockk
-import io.mockk.verify
+import io.mockk.*
+import kotlinx.coroutines.test.runTest
 import logic.exception.DtoNotFoundException
 import logic.exception.EmptyNameException
 import logic.model.State
@@ -25,7 +24,7 @@ class EditStateUseCaseTest {
     }
 
     @Test
-    fun `editState should return unit, when title has changed`() {
+    fun `editState should return unit, when title has changed`() = runTest {
         // Given
         val updateState = State(UUID(1, 1), "In Progress")
         val originalState = State(UUID(1, 1), "Done")
@@ -34,15 +33,15 @@ class EditStateUseCaseTest {
         editStateUseCase.editState(updateState, originalState)
 
         // Then
-        verify(exactly = 1) { editStateUseCase.editState(updateState, originalState) }
+        coVerify(exactly = 1) { editStateUseCase.editState(updateState, originalState) }
     }
 
     @Test
-    fun `editState should return DtoNotFoundException, when state is not found`() {
+    fun `editState should return DtoNotFoundException, when state is not found`() = runTest {
         // Given
         val updatedState = State(id = UUID(2, 2), title = "In Progress")
         val originalState = State(id = UUID(1, 1), title = "Done")
-        every { repository.editState(updatedState) } throws DtoNotFoundException()
+        coEvery { repository.editState(updatedState) } throws DtoNotFoundException()
 
         // When & Then
         assertThrows<DtoNotFoundException> {
@@ -51,7 +50,7 @@ class EditStateUseCaseTest {
     }
 
     @Test
-    fun `editState should return EmptyNameException, when state title is empty`() {
+    fun `editState should return EmptyNameException, when state title is empty`() = runTest {
         // Given
         val updatedUser = State(id = UUID(1, 1), title = "")
         val originalUser = State(id = UUID(1, 1), title = "In Progress")

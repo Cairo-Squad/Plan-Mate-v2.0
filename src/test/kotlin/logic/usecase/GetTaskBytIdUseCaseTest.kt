@@ -1,8 +1,10 @@
 package logic.usecase
 
 import com.google.common.truth.Truth.assertThat
+import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
+import kotlinx.coroutines.test.runTest
 import logic.model.State
 import logic.model.Task
 import logic.repositories.TasksRepository
@@ -23,10 +25,10 @@ class GetTaskByIdUseCaseTest {
     }
 
     @Test
-    fun `should return task when it exists`() {
+    fun `should return task when it exists`() = runTest {
         val expectedTask = validTask()
         // Given
-        every { taskRepository.getTaskById(expectedTask.id) } returns expectedTask
+        coEvery { taskRepository.getTaskById(expectedTask.id) } returns expectedTask
 
         // When
         val actualResult = getTaskByIdUseCase.getTaskById(expectedTask.id)
@@ -36,10 +38,10 @@ class GetTaskByIdUseCaseTest {
     }
 
     @Test
-    fun `should throw exception when task does not exist`() {
+    fun `should throw exception when task does not exist`() = runTest {
         // Given
         val taskId = UUID.randomUUID()
-        every { taskRepository.getTaskById(taskId) } throws NoSuchElementException("Task not found")
+        coEvery { taskRepository.getTaskById(taskId) } throws NoSuchElementException("Task not found")
 
         // When & Then
         val exception = org.junit.jupiter.api.assertThrows<NoSuchElementException> {
@@ -49,10 +51,10 @@ class GetTaskByIdUseCaseTest {
     }
 
     @Test
-    fun `should handle repository failure gracefully`() {
+    fun `should handle repository failure gracefully`() = runTest {
         // Given
         val taskId = UUID.randomUUID()
-        every { taskRepository.getTaskById(taskId) } throws RuntimeException("Unexpected error")
+        coEvery { taskRepository.getTaskById(taskId) } throws RuntimeException("Unexpected error")
 
         // When & Then
         val exception = org.junit.jupiter.api.assertThrows<RuntimeException> {

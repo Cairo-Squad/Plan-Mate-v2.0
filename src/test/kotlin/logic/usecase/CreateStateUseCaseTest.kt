@@ -2,8 +2,10 @@ package logic.usecase
 
 import com.google.common.truth.Truth.assertThat
 import data.dto.UserType
+import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
+import kotlinx.coroutines.test.runTest
 import logic.model.State
 import logic.model.User
 import logic.repositories.StatesRepository
@@ -25,12 +27,12 @@ class CreateStateUseCaseTest {
     }
 
     @Test
-    fun `should return true when admin user creates state`() {
+    fun `should return true when admin user creates state`() = runTest {
         // Given
         val state = State(UUID.randomUUID(), "Test State")
         val user = User(UUID.randomUUID(), "admin", "pw", UserType.ADMIN)
-
-        every { statesRepository.createState(any()) } returns true
+        
+        coEvery { statesRepository.createState(any()) } returns true
 
         // When
         val result = createStateUseCase.createState(state)
@@ -40,12 +42,12 @@ class CreateStateUseCaseTest {
     }
 
     @Test
-    fun `should return false when mate user tries to create state`() {
+    fun `should return false when mate user tries to create state`() = runTest {
         // Given
         val state = State(UUID.randomUUID(), "Test State")
         val user = User(UUID.randomUUID(), "mateUser", "pw", UserType.MATE)
 
-        every { statesRepository.createState(any()) } returns false
+        coEvery { statesRepository.createState(any()) } returns false
 
         // When
         val result = createStateUseCase.createState(state)
@@ -55,11 +57,11 @@ class CreateStateUseCaseTest {
     }
 
     @Test
-    fun `should throw Exception when repository throws exception`() {
+    fun `should throw Exception when repository throws exception`() = runTest {
         // Given
         val state = State(UUID.randomUUID(), "Test State")
         val user = User(UUID.randomUUID(), "mateUser", "pw", UserType.MATE)
-        every { statesRepository.createState(any()) } throws Exception()
+        coEvery { statesRepository.createState(any()) } throws Exception()
 
         // When & Then
         assertThrows<Exception> { createStateUseCase.createState(state) }

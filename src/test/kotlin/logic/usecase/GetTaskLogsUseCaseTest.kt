@@ -3,8 +3,10 @@ package logic.usecase
 import com.google.common.truth.Truth.assertThat
 import data.dto.EntityType
 import data.dto.UserAction
+import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
+import kotlinx.coroutines.test.runTest
 import logic.model.Log
 import logic.repositories.LogsRepository
 import logic.usecase.Log.GetTaskLogsUseCase
@@ -26,9 +28,9 @@ class GetTaskLogsUseCaseTest {
     }
 
     @Test
-    fun `should throw an exception when the logs repository throws an exception`() {
+    fun `should throw an exception when the logs repository throws an exception`() = runTest {
         // Given
-        every { logsRepository.getTaskLogs(any()) } throws Exception()
+        coEvery { logsRepository.getTaskLogs(any()) } throws Exception()
 
         // When, Then
         assertThrows<Exception> {
@@ -37,9 +39,9 @@ class GetTaskLogsUseCaseTest {
     }
 
     @Test
-    fun `should return an empty list when the there is no logs for this task id`() {
+    fun `should return an empty list when the there is no logs for this task id`() = runTest {
         // Given
-        every { logsRepository.getTaskLogs(any()) } returns emptyList()
+        coEvery { logsRepository.getTaskLogs(any()) } returns emptyList()
 
         // When
         val result = getTaskLogsUseCase.execute(UUID.randomUUID())
@@ -49,9 +51,9 @@ class GetTaskLogsUseCaseTest {
     }
 
     @Test
-    fun `should return the logs list when the there is logs for this task id`() {
+    fun `should return the logs list when the there is logs for this task id`() = runTest {
         // Given
-        every { logsRepository.getTaskLogs(any()) } returns getValidLogsList()
+        coEvery { logsRepository.getTaskLogs(any()) } returns getValidLogsList()
 
         // When
         val result = getTaskLogsUseCase.execute(UUID.randomUUID())

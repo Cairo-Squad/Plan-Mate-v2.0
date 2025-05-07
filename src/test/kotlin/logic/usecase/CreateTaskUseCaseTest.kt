@@ -1,11 +1,12 @@
 package logic.usecase
 
-import io.mockk.every
-import io.mockk.mockk
-import io.mockk.verify
+import data.dto.UserType
+import io.mockk.*
+import kotlinx.coroutines.test.runTest
 import logic.exception.EmptyTitleException
 import logic.model.State
 import logic.model.Task
+import logic.model.User
 import logic.repositories.TasksRepository
 import logic.usecase.Log.AddLogUseCase
 import logic.usecase.task.CreateTaskUseCase
@@ -22,31 +23,34 @@ class CreateTaskUseCaseTest {
 
     @BeforeEach
     fun setup() {
+        
         taskRepository = mockk(relaxed = true)
         addLogUseCase=mockk(relaxed =true )
         createTaskUseCase = CreateTaskUseCase(taskRepository,addLogUseCase)
     }
 
     @Test
-    fun `should create task when passing a valid task`() {
+    fun `should create task when passing a valid task`() = runTest {
         //Given
         val validTask = validTask()
+        val user = User(UUID.randomUUID(), "mohamed","123456", UserType.ADMIN)
 
         // When
-        createTaskUseCase.createTask(validTask)
+        createTaskUseCase.createTask(validTask, user)
 
         // Then
-        verify { taskRepository.createTask(validTask) }
+        coVerify { taskRepository.createTask(validTask) }
     }
 
     @Test
-    fun `should throw exception when using a invalid task`() {
+    fun `should throw exception when using a invalid task`() = runTest {
         // Given
-        every { taskRepository.createTask(invalidTask()) }
+        coEvery { taskRepository.createTask(invalidTask()) }
+        val user = User(UUID.randomUUID(), "mohamed","123456", UserType.ADMIN)
 
         // When & Then
         assertThrows<EmptyTitleException> {
-            createTaskUseCase.createTask(invalidTask())
+            createTaskUseCase.createTask(invalidTask(), user)
         }
     }
 

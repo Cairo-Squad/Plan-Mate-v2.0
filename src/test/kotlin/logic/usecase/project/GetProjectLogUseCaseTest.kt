@@ -3,8 +3,10 @@ package logic.usecase.project
 import com.google.common.truth.Truth.assertThat
 import data.dto.EntityType
 import data.dto.UserAction
+import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
+import kotlinx.coroutines.test.runTest
 import logic.model.Log
 import logic.repositories.LogsRepository
 import logic.usecase.Log.GetProjectLogUseCase
@@ -24,24 +26,24 @@ class GetProjectLogUseCaseTest {
     }
 
     @Test
-    fun `should return an empty list when the there are no logs for this project`() {
+    fun `should return an empty list when the there are no logs for this project`() = runTest {
         // Given
-        every { logsRepository.getProjectLog(UUID.randomUUID()) } returns emptyList()
+        coEvery { logsRepository.getProjectLogs(UUID.randomUUID()) } returns emptyList()
 
         // When
-        val result = getProjectLogUseCase.getProjectLog(UUID.randomUUID())
+        val result = getProjectLogUseCase.getProjectLogs(UUID.randomUUID())
 
         // Then
         assertThat(result).isEmpty()
     }
 
     @Test
-    fun `should return logs list when the there are logs for project`() {
+    fun `should return logs list when the there are logs for project`() = runTest {
         // Given
-        every { logsRepository.getProjectLog(any()) } returns getValidLogsList()
+        coEvery { logsRepository.getProjectLogs(any()) } returns getValidLogsList()
 
         // When
-        val result = getProjectLogUseCase.getProjectLog(UUID.randomUUID())
+        val result = getProjectLogUseCase.getProjectLogs(UUID.randomUUID())
 
         // Then
         assertThat(result).isNotEmpty()

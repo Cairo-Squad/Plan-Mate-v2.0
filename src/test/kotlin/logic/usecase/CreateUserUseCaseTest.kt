@@ -2,9 +2,8 @@ package logic.usecase
 
 import com.google.common.truth.Truth.assertThat
 import data.dto.UserType
-import io.mockk.every
-import io.mockk.mockk
-import io.mockk.verify
+import io.mockk.*
+import kotlinx.coroutines.test.runTest
 import logic.exception.EmptyNameException
 import logic.exception.EmptyPasswordException
 import logic.model.User
@@ -32,7 +31,7 @@ class CreateUserUseCaseTest {
     }
 
     @Test
-    fun `should call repository when all inputs are valid`() {
+    fun `should call repository when all inputs are valid`()  = runTest{
         // Given
         val user = validUser
 
@@ -40,14 +39,14 @@ class CreateUserUseCaseTest {
         createUserUseCase.createUser(user.id, user.name, user.password, user.type)
 
         // Then
-        verify { repository.createUser(user.id, user.name, user.password, user.type) }
+        coVerify { repository.createUser(user.id, user.name, user.password, user.type) }
     }
 
     @Test
-    fun `should throw EmptyNameException when name is empty`() {
+    fun `should throw EmptyNameException when name is empty`() = runTest {
         // Given
         val user = validUser.copy(name = "")
-        every { repository.createUser(user.id, user.name, user.password, user.type) } throws EmptyNameException()
+        coEvery { repository.createUser(user.id, user.name, user.password, user.type) } throws EmptyNameException()
 
         // When & Then
         assertThrows<EmptyNameException> {
@@ -56,10 +55,10 @@ class CreateUserUseCaseTest {
     }
 
     @Test
-    fun `should throw EmptyPasswordException when password is empty`() {
+    fun `should throw EmptyPasswordException when password is empty`() = runTest {
         // Given
         val user = validUser.copy(password = "")
-        every { repository.createUser(user.id, user.name, user.password, user.type) } throws EmptyPasswordException()
+        coEvery { repository.createUser(user.id, user.name, user.password, user.type) } throws EmptyPasswordException()
 
         // When & Then
         assertThrows<EmptyPasswordException> {
@@ -68,7 +67,7 @@ class CreateUserUseCaseTest {
     }
 
     @Test
-    fun `should success registration when duplication name but different id`() {
+    fun `should success registration when duplication name but different id`() = runTest {
         // Given
         val user = validUser
         val userWithDifferentId = validUser.copy(id = UUID.randomUUID())

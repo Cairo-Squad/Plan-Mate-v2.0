@@ -1,9 +1,8 @@
 package logic.usecase
 
 import data.dto.UserType
-import io.mockk.every
-import io.mockk.mockk
-import io.mockk.verify
+import io.mockk.*
+import kotlinx.coroutines.test.runTest
 import logic.exception.DtoNotFoundException
 import logic.exception.EmptyNameException
 import logic.exception.EmptyPasswordException
@@ -29,7 +28,7 @@ class EditUserUseCaseTest {
     }
 
     @Test
-    fun `editUser should return true, when input has changed property or more`() {
+    fun `editUser should return true, when input has changed property or more`() = runTest {
         // Given
         val updateUser =
             User(id = UUID(1, 1), name = "Mohamed", password = "123456", type = UserType.ADMIN)
@@ -41,18 +40,18 @@ class EditUserUseCaseTest {
         editUserUseCase.editUser(updateUser, originalUser)
 
         // Then
-        verify(exactly = 1) { editUserUseCase.editUser(updateUser, originalUser) }
+        coVerify(exactly = 1) { editUserUseCase.editUser(updateUser, originalUser) }
     }
 
     @Test
-    fun `editUser should return DtoNotFoundException, when user is not found`() {
+    fun `editUser should return DtoNotFoundException, when user is not found`() = runTest {
         // Given
         val updatedUser =
             User(id = UUID(2, 2), name = "Mohamed", password = "123456", type = UserType.ADMIN)
         val originalUser =
             User(id = UUID(1, 1), name = "Mohamed", password = "123456", type = UserType.ADMIN)
-
-        every { repository.editUser(updatedUser) } throws DtoNotFoundException()
+        
+        coEvery { repository.editUser(updatedUser) } throws DtoNotFoundException()
 
         // When & Then
         assertThrows<DtoNotFoundException> {
@@ -61,7 +60,7 @@ class EditUserUseCaseTest {
     }
 
     @Test
-    fun `editUser should return EntityNotChangedException, when user is not changed`() {
+    fun `editUser should return EntityNotChangedException, when user is not changed`() = runTest {
         // Given
         val updatedUser =
             User(id = UUID(1, 1), name = "Mohamed", password = "123456", type = UserType.ADMIN)
@@ -75,7 +74,7 @@ class EditUserUseCaseTest {
     }
 
     @Test
-    fun `editUser should return EmptyNameException, when user name is empty`() {
+    fun `editUser should return EmptyNameException, when user name is empty`() = runTest {
         // Given
         val updatedUser =
             User(id = UUID(1, 1), name = "", password = "123456", type = UserType.ADMIN)
@@ -89,7 +88,7 @@ class EditUserUseCaseTest {
     }
 
     @Test
-    fun `editUser should return EmptyPasswordException, when user password is empty`() {
+    fun `editUser should return EmptyPasswordException, when user password is empty`() = runTest {
         // Given
         val updatedUser =
             User(id = UUID(1, 1), name = "Mohamed", password = "", type = UserType.ADMIN)

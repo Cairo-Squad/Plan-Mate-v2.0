@@ -2,8 +2,10 @@ package logic.usecase
 
 import com.google.common.truth.Truth.assertThat
 import data.hashing.PasswordEncryptor
+import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
+import kotlinx.coroutines.test.runTest
 import logic.repositories.AuthenticationRepository
 import logic.usecase.user.LoginUserUseCase
 import org.junit.jupiter.api.BeforeEach
@@ -22,11 +24,11 @@ class LoginUserUseCaseTest {
 
     }
     @Test
-    fun `should return true when valid username and password`() {
+    fun `should return true when valid username and password`() = runTest {
         //Given
         val mockUsers = FakeData.mockUsers
-        every { authenticationRepository.getAllUsers() } returns FakeData.mockUsers
-        every { passwordEncryptor.hashPassword(mockUsers[0].password) } returns mockUsers[0].password
+        coEvery { authenticationRepository.getAllUsers() } returns FakeData.mockUsers
+        coEvery { passwordEncryptor.hashPassword(mockUsers[0].password) } returns mockUsers[0].password
 
         //when
         val result = loginUserUseCase.login(mockUsers[0].name, mockUsers[0].password)
@@ -36,11 +38,11 @@ class LoginUserUseCaseTest {
     }
 
     @Test
-    fun `should return false when  username valid and password is invalid`() {
+    fun `should return false when  username valid and password is invalid`() = runTest {
         //Given
         val mockUsers = FakeData.mockUsers
-        every { authenticationRepository.getAllUsers() } returns FakeData.mockUsers
-        every { passwordEncryptor.hashPassword("123456789") } returns "123456789"
+        coEvery { authenticationRepository.getAllUsers() } returns FakeData.mockUsers
+        coEvery { passwordEncryptor.hashPassword("123456789") } returns "123456789"
 
         //when
         val exception = assertThrows<Exception> {
@@ -51,11 +53,11 @@ class LoginUserUseCaseTest {
     }
 
     @Test
-    fun `should return false when  username is invalid and password is valid`() {
+    fun `should return false when  username is invalid and password is valid`() = runTest {
         //Given
         val mockUsers = FakeData.mockUsers
-        every { authenticationRepository.getAllUsers() } returns FakeData.mockUsers
-        every { passwordEncryptor.hashPassword(mockUsers[0].password) } returns mockUsers[0].password
+        coEvery { authenticationRepository.getAllUsers() } returns FakeData.mockUsers
+        coEvery { passwordEncryptor.hashPassword(mockUsers[0].password) } returns mockUsers[0].password
 
         //when
         val exception = assertThrows<Exception> {
@@ -67,9 +69,9 @@ class LoginUserUseCaseTest {
     }
 
     @Test
-    fun `should throw exception when repository throws error`() {
+    fun `should throw exception when repository throws error`() = runTest {
         //Given
-        every { authenticationRepository.getAllUsers() } throws RuntimeException("during get data error")
+        coEvery { authenticationRepository.getAllUsers() } throws RuntimeException("during get data error")
 
         //when&thenn
        assertThrows<Exception> {

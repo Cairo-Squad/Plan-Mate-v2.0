@@ -1,8 +1,7 @@
 package logic.usecase.project
 
-import io.mockk.every
-import io.mockk.mockk
-import io.mockk.verify
+import io.mockk.*
+import kotlinx.coroutines.test.runTest
 import logic.exception.WriteException
 import logic.exception.EmptyNameException
 import logic.exception.UnknownException
@@ -28,7 +27,7 @@ class EditProjectTest {
     }
 
     @Test
-    fun `should successfully edit project when valid new description is given`() {
+    fun `should successfully edit project when valid new description is given`() = runTest {
         //Given
         val newProject = getNewProject()
 
@@ -36,11 +35,11 @@ class EditProjectTest {
         editProjectDescription.editProject(newProject)
 
         //Then
-        verify { projectsRepository.editProject(any()) }
+        coVerify { projectsRepository.editProject(any()) }
     }
 
     @Test
-    fun `should successfully edit project when empty description is given`() {
+    fun `should successfully edit project when empty description is given`() = runTest {
         //Given
         val newProject = getNewProject()
 
@@ -48,31 +47,31 @@ class EditProjectTest {
         editProjectDescription.editProject(newProject.copy(description = ""))
 
         //Then
-        verify { projectsRepository.editProject(any()) }
+        coVerify { projectsRepository.editProject(any()) }
     }
 
     @Test
-    fun `should throw exception when database throws write exception `() {
+    fun `should throw exception when database throws write exception `() = runTest {
         //Given
         val newProject = getNewProject()
-        every { projectsRepository.editProject(any()) } throws WriteException()
+        coEvery { projectsRepository.editProject(any()) } throws WriteException()
 
         //When & Then
         assertThrows<WriteException> { editProjectDescription.editProject(newProject) }
     }
 
     @Test
-    fun `should throw exception when database throws unknown exception`() {
+    fun `should throw exception when database throws unknown exception`() = runTest {
         //Given
         val newProject = getNewProject()
-        every { projectsRepository.editProject(any()) } throws UnknownException()
+        coEvery { projectsRepository.editProject(any()) } throws UnknownException()
 
         //When & Then
         assertThrows<UnknownException> { editProjectDescription.editProject(newProject) }
     }
 
     @Test
-    fun `should throw empty name exception when editing project with empty title`() {
+    fun `should throw empty name exception when editing project with empty title`() = runTest {
         //Given
         val newProject = getNewProject().copy(title = "   ")
 
