@@ -56,7 +56,7 @@ class ProjectCreateView(
                     val taskState = State(UUID.randomUUID(), inputHandler.promptForInput("📊 Task state: "))
                     
                     val task = Task(UUID.randomUUID(), taskTitle, taskDescription, taskState, projectID)
-                    createTaskUseCase.createTask(task)
+                    createTaskUseCase.createTask(task, UserSession.getUser()!!)
                     tasks.add(task)
                     
                     val addAnother = inputHandler.promptForYesNo("➕ Do you want to add another task?")
