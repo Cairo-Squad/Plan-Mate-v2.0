@@ -7,38 +7,38 @@ import data.dto.*
 
 interface DataSource {
     // region Users
-    fun getAllUsers(): List<UserDto>
-    fun createUser(id: UUID, name: String, password: String, type: UserType): UserDto
-    fun editUser(user: UserDto)
-    fun deleteUser(user: UserDto)
+    suspend fun getAllUsers(): List<UserDto>
+    suspend fun createUser(id: UUID, name: String, password: String, type: UserType): UserDto
+    suspend fun editUser(user: UserDto)
+    suspend fun deleteUser(user: UserDto)
     // endregion
 
     // region Projects
-    fun getAllProjects(): List<ProjectDto>
-    fun getProjectById(projectId: UUID): ProjectDto
-    fun createProject(project: ProjectDto)
-    fun editProject(newProject: ProjectDto)
-    fun deleteProjectById(project: ProjectDto)
+    suspend fun getAllProjects(): List<ProjectDto>
+    suspend fun getProjectById(projectId: UUID): ProjectDto
+    suspend fun createProject(project: ProjectDto)
+    suspend fun editProject(newProject: ProjectDto)
+    suspend fun deleteProjectById(project: ProjectDto)
     // endregion
 
     // region Tasks
-    fun getTasksByProjectId(projectId: UUID): List<TaskDto>
-    fun createTask(task: TaskDto)
-    fun editTask(task: TaskDto)
-    fun deleteTask(task: TaskDto)
-    fun getTaskById(taskID: UUID): TaskDto
+    suspend fun getTasksByProjectId(projectId: UUID): List<TaskDto>
+    suspend fun createTask(task: TaskDto)
+    suspend fun editTask(task: TaskDto)
+    suspend fun deleteTask(task: TaskDto)
+    suspend fun getTaskById(taskID: UUID): TaskDto
     // endregion
 
     // region Logs
-    fun recordLog(log: LogDto)
-    fun getProjectLogs(projectId: UUID): List<LogDto>
-    fun getTaskLogs(taskId: UUID): List<LogDto>
+    suspend fun recordLog(log: LogDto)
+    suspend fun getProjectLogs(projectId: UUID): List<LogDto>
+    suspend fun getTaskLogs(taskId: UUID): List<LogDto>
     // endregion
 
     // region States
-    fun getAllStates(): List<StateDto>
-    fun getStateById(stateId: UUID): StateDto
-    fun createState(state: StateDto): Boolean
-    fun editState(state: StateDto)
+    suspend fun getAllStates(): List<StateDto>
+    suspend fun getStateById(stateId: UUID): StateDto
+    suspend fun createState(state: StateDto): Boolean
+    suspend fun editState(state: StateDto)
     // endregion
 }
