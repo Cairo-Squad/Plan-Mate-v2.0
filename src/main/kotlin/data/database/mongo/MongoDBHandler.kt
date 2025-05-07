@@ -3,9 +3,9 @@ package data.database.mongo
 import java.util.UUID
 
 interface MongoDBHandler<DTO> {
-	fun write(entity: DTO)
-	fun edit(entity: DTO)
-	fun delete(entity: DTO)
-	fun readAll():List<DTO>
-	fun readByEntityId(id:UUID):DTO
+	suspend fun write(entity: DTO)
+	suspend fun edit(entity: DTO)
+	suspend fun delete(entity: DTO)
+	suspend fun readAll():List<DTO>
+	suspend fun readByEntityId(id:UUID):DTO
 }

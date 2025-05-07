@@ -5,7 +5,7 @@ import data.dto.UserDto
 import logic.model.State
 
 interface StatesRepository {
-    fun createState(state: StateDto): Boolean
-    fun editState(state: State)
-    fun getAllStates(): List<State>
+    suspend fun createState(state: StateDto): Boolean
+    suspend fun editState(state: State)
+    suspend fun getAllStates(): List<State>
 }

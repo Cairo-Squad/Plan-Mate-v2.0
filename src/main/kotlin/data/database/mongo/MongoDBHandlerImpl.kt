@@ -29,7 +29,7 @@ abstract class MongoDBHandlerImpl<DTO>(
 		return database.listCollectionNames().contains(collectionName)
 	}
 	
-	override fun write(entity: DTO) {
+	override suspend fun write(entity: DTO) {
 		try {
 			val document = convertDtoToDocument(entity)
 			collection.insertOne(document)
@@ -38,7 +38,7 @@ abstract class MongoDBHandlerImpl<DTO>(
 		}
 	}
 	
-	override fun edit(entity: DTO) {
+	override suspend fun edit(entity: DTO) {
 		try {
 			val entityId = getDtoId(entity)
 			val document = convertDtoToDocument(entity)
@@ -53,7 +53,7 @@ abstract class MongoDBHandlerImpl<DTO>(
 		}
 	}
 	
-	override fun delete(entity: DTO) {
+	override suspend fun delete(entity: DTO) {
 		try {
 			val entityId = getDtoId(entity)
 			val result = collection.deleteOne(Filters.eq("_id", entityId.toString()))
@@ -67,7 +67,7 @@ abstract class MongoDBHandlerImpl<DTO>(
 		}
 	}
 	
-	override fun readAll(): List<DTO> {
+	override suspend fun readAll(): List<DTO> {
 		return try {
 			collection.find()
 				.map { convertDocumentToDto(it) }
@@ -77,7 +77,7 @@ abstract class MongoDBHandlerImpl<DTO>(
 		}
 	}
 	
-	override fun readByEntityId(id: UUID): DTO {
+	override suspend fun readByEntityId(id: UUID): DTO {
 		try {
 			val document = collection.find(Filters.eq("_id", id.toString())).first()
 				?: throw DtoNotFoundException()

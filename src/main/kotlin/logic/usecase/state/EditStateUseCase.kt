@@ -8,8 +8,7 @@ import logic.repositories.StatesRepository
 class EditStateUseCase(
     private val repository: StatesRepository
 ) {
-    fun editState(newState: State, oldState: State) {
-
+    suspend fun editState(newState: State, oldState: State) {
         repository.editState(state = newState)
     }
 

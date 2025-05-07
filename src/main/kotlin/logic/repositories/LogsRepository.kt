@@ -4,7 +4,7 @@ import logic.model.Log
 import java.util.UUID
 
 interface LogsRepository {
-    fun getProjectLogs(projectId: UUID): List<Log>
-    fun addLog(log: Log)
-    fun getTaskLogs(taskId: UUID): List<Log>
+    suspend fun getProjectLogs(projectId: UUID): List<Log>
+    suspend fun addLog(log: Log)
+    suspend fun getTaskLogs(taskId: UUID): List<Log>
 }

@@ -10,15 +10,15 @@ class LogsRepositoryImpl(
     private val dataSource: DataSource
 ) : LogsRepository {
 
-    override fun getProjectLogs(projectId: UUID): List<Log> {
+    override suspend fun getProjectLogs(projectId: UUID): List<Log> {
         return dataSource.getProjectLogs(projectId).map { it.toLog() }
     }
 
-    override fun addLog(log: Log) {
+    override suspend fun addLog(log: Log) {
         dataSource.recordLog(log.toLogDto())
     }
 
-    override fun getTaskLogs(taskId: UUID): List<Log> {
+    override suspend fun getTaskLogs(taskId: UUID): List<Log> {
         return dataSource.getTaskLogs(taskId).map { it.toLog() }
     }
 }

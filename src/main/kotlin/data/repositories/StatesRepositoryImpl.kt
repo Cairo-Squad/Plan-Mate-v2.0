@@ -11,15 +11,15 @@ class StatesRepositoryImpl(
     private val dataSource: DataSource
 ) : StatesRepository {
 
-    override fun createState(state: StateDto): Boolean {
+    override suspend fun createState(state: StateDto): Boolean {
         return dataSource.createState(state)
     }
 
-    override fun editState(state: State) {
+    override suspend fun editState(state: State) {
         return dataSource.editState(state.toStateDto())
     }
 
-    override fun getAllStates(): List<State> {
+    override suspend fun getAllStates(): List<State> {
         return dataSource.getAllStates().map { it.toState() }
     }
 }

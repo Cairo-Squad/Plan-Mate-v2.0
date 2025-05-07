@@ -8,7 +8,7 @@ class LoginUserUseCase(
     private val authenticationRepository: AuthenticationRepository,
     private val passwordEncryptor: PasswordEncryptor
 ) {
-    fun login(name: String, password: String): User {
+    suspend fun login(name: String, password: String): User {
         val users = authenticationRepository.getAllUsers()
         val hashedPassword = passwordEncryptor.hashPassword(password)
         return users.find { it.name == name && it.password == hashedPassword }

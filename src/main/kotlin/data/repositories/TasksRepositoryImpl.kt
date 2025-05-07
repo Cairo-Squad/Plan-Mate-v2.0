@@ -11,28 +11,28 @@ class TasksRepositoryImpl(
     private val dataSource: DataSource
 ) : TasksRepository {
 
-    override fun getTaskById(taskId: UUID): Task {
+    override suspend fun getTaskById(taskId: UUID): Task {
         val taskDto = dataSource.getTaskById(taskId)
         val taskState = dataSource.getStateById(taskDto.stateId)
         return taskDto.toTask(taskState.toState())
     }
 
-    override fun createTask(task: Task) {
+    override suspend fun createTask(task: Task) {
         return dataSource.createTask(task.toTaskDto())
     }
 
-    override fun editTask(task: Task) {
+    override suspend fun editTask(task: Task) {
         dataSource.editTask(task.toTaskDto())
     }
 
-    override fun getAllTasksByProjectId(projectId: UUID): List<Task> {
+    override suspend fun getAllTasksByProjectId(projectId: UUID): List<Task> {
         return dataSource.getTasksByProjectId(projectId).map { taskDto ->
             val taskState = dataSource.getStateById(taskDto.stateId)
             taskDto.toTask(taskState.toState())
         }
     }
 
-    override fun deleteTask(task: Task) {
+    override suspend fun deleteTask(task: Task) {
         dataSource.deleteTask(task.toTaskDto())
     }
 }

@@ -16,21 +16,21 @@ class ProjectsRepositoryImpl(
     private val dataSource: DataSource
 ) : ProjectsRepository {
 
-    override fun createProject(project: Project, user: User) {
+    override suspend fun createProject(project: Project, user: User) {
         return dataSource.createProject(project.toProjectDto())
     }
 
-    override fun editProject(newProject: Project) {
+    override suspend fun editProject(newProject: Project) {
         return dataSource.editProject(newProject.toProjectDto())
     }
 
-    override fun deleteProject(projectId: UUID) {
+    override suspend fun deleteProject(projectId: UUID) {
         val projectsDao = dataSource.getAllProjects()
             .find { it.id == projectId } ?: throw ProjectNotFoundException()
         return dataSource.deleteProjectById(projectsDao)
     }
 
-    override fun getProjectById(projectId: UUID): Project {
+    override suspend fun getProjectById(projectId: UUID): Project {
         val projectDto = dataSource.getProjectById(projectId)
         return projectDto.toProject(
             projectState = getState(projectDto.stateId),
@@ -38,7 +38,7 @@ class ProjectsRepositoryImpl(
         )
     }
 
-    override fun getAllProjects(): List<Project> {
+    override suspend fun getAllProjects(): List<Project> {
         return dataSource.getAllProjects().map { projectDto ->
             projectDto.toProject(
                 projectState = getState(projectDto.stateId),
@@ -47,13 +47,13 @@ class ProjectsRepositoryImpl(
         }
     }
 
-    private fun getState(stateId: UUID): State {
+    private suspend fun getState(stateId: UUID): State {
         return dataSource.getAllStates()
             .first { it.id == stateId }
             .toState()
     }
 
-    private fun getTasksForProject(projectId: UUID): List<Task> {
+    private suspend fun getTasksForProject(projectId: UUID): List<Task> {
         return dataSource.getTasksByProjectId(projectId)
             .map { it.toTask(taskState = getState(it.stateId)) }
     }

@@ -13,7 +13,7 @@ import java.util.UUID
 
 class EditProjectUseCase(private val projectsRepository: ProjectsRepository, private val addLogUseCase: AddLogUseCase) {
 
-    fun editProject(newProject: Project) {
+    suspend fun editProject(newProject: Project) {
         validateNewProject(newProject)
         projectsRepository.editProject(newProject)
 
