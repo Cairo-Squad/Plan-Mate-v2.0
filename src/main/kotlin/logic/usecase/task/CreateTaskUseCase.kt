@@ -14,7 +14,7 @@ import java.util.UUID
 class CreateTaskUseCase(
     private val repository: TasksRepository, private val addLogUseCase: AddLogUseCase
 ) {
-    fun createTask(task: Task) {
+    suspend fun createTask(task: Task) {
         validateTask(task)
         repository.createTask(task)
         val log = Log(
