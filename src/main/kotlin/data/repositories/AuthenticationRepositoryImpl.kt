@@ -15,24 +15,24 @@ class AuthenticationRepositoryImpl(
     private val passwordEncryptor: PasswordEncryptor
 ) : AuthenticationRepository {
 
-    override fun getAllUsers(): List<User> {
+    override suspend fun getAllUsers(): List<User> {
         val usersDto = dataSource.getAllUsers()
         return usersDto.map { it.toUser() }
     }
 
-    override fun deleteUser(userId: UUID): Boolean {
+    override suspend fun deleteUser(userId: UUID): Boolean {
         val userDto = dataSource.getAllUsers()
             .find { it.id == userId } ?: throw UserNotFoundException()
         dataSource.deleteUser(userDto)
         return true
     }
 
-    override fun createUser(id: UUID, name: String, password: String, userType: UserType): UserDto {
+    override suspend fun createUser(id: UUID, name: String, password: String, userType: UserType): UserDto {
         val hashedPassword = passwordEncryptor.hashPassword(password)
         return dataSource.createUser(id, name, hashedPassword, userType)
     }
 
-    override fun editUser(user: User) {
+    override suspend fun editUser(user: User) {
         return dataSource.editUser(user.toUserDto())
     }
 }
