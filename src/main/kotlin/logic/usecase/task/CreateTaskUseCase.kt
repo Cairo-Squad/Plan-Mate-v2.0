@@ -5,6 +5,7 @@ import data.dto.EntityType
 import data.dto.UserAction
 import logic.model.Log
 import logic.model.Task
+import logic.model.User
 import logic.repositories.TasksRepository
 import ui.features.auth.UserSession.getUser
 import java.time.LocalDateTime
@@ -14,7 +15,7 @@ import java.util.UUID
 class CreateTaskUseCase(
     private val repository: TasksRepository, private val addLogUseCase: AddLogUseCase
 ) {
-    suspend fun createTask(task: Task) {
+    suspend fun createTask(task: Task, user: User) {
         validateTask(task)
         repository.createTask(task)
         val log = Log(
@@ -23,7 +24,7 @@ class CreateTaskUseCase(
             entityTitle = task.title,
             entityType = EntityType.TASK,
             dateTime = LocalDateTime.now(),
-            userId = getUser()!!.id,
+            userId = user.id,
             userAction = UserAction.CreateTask(task.title, task.id, task.projectId)
         )
 
