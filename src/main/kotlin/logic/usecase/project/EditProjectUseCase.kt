@@ -17,8 +17,7 @@ class EditProjectUseCase(private val projectsRepository: ProjectsRepository, pri
         validateNewProject(newProject)
         projectsRepository.editProject(newProject)
 
-        val projectInfo = projectsRepository.getProjectById(newProject.id).getOrNull()
-        if (projectInfo == null) throw ProjectNotFoundException()
+        val projectInfo = projectsRepository.getProjectById(newProject.id)
 
         val log = Log(
             id = UUID.randomUUID(),

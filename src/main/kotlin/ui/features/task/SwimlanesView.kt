@@ -20,9 +20,9 @@ class SwimlanesView(
             """.trimIndent()
 		)
 
-		val projects = getAllProjectUseCase.getAllProjects().getOrNull()
+		val projects = getAllProjectUseCase.getAllProjects()
 
-		if (projects.isNullOrEmpty()) {
+		if (projects.isEmpty()) {
 			outputFormatter.printError("❌ No projects available!")
 			return
 		}
@@ -38,9 +38,9 @@ class SwimlanesView(
 
 		val selectedProject = projects[projectIndex]
 
-		val tasks = getAllTasksByProjectIdUseCase.execute(selectedProject.id).getOrNull()
+		val tasks = getAllTasksByProjectIdUseCase.getAllTasksByProjectId(selectedProject.id)
 
-		if (tasks.isNullOrEmpty()) {
+		if (tasks.isEmpty()) {
 			outputFormatter.printWarning("⚠️ No tasks found for project '${selectedProject.title}'!")
 		} else {
 			outputFormatter.printHeader("📌 Tasks in Project: ${selectedProject.title}")

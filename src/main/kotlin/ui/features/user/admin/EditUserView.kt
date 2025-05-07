@@ -20,7 +20,7 @@ class EditUserView(
             """.trimIndent()
         )
 
-        val users = getAllUsersUseCase.execute().getOrNull()
+        val users = getAllUsersUseCase.getAllUsers()
 
         if (users.isNullOrEmpty()) {
             outputFormatter.printError("❌ No users found!")

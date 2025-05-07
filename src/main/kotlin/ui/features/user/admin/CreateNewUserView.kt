@@ -4,8 +4,9 @@ import data.dto.UserType
 import logic.usecase.user.CreateUserUseCase
 import ui.utils.InputHandler
 import ui.utils.OutputFormatter
+import java.util.UUID
 
-class CreateNewUserView (
+class CreateNewUserView(
     private val inputHandler: InputHandler,
     private val outputFormatter: OutputFormatter,
     private val createUserUseCase: CreateUserUseCase
@@ -23,12 +24,12 @@ class CreateNewUserView (
         val password = inputHandler.promptForPassword("🔒 Enter password: ")
         val userType = UserType.MATE
 
-        val result = createUserUseCase.createUser(username, password, userType)
 
-        if (result.isSuccess) {
+        try {
+            createUserUseCase.createUser(UUID.randomUUID(), username, password, userType)
             outputFormatter.printSuccess("✅ User '$username' created successfully!")
-        } else {
-            outputFormatter.printError("❌ Failed to create user: ${result.exceptionOrNull()?.message}")
+        } catch (ex: Exception) {
+            outputFormatter.printError("❌ Failed to create user: ${ex.message}")
         }
 
         inputHandler.waitForEnter()

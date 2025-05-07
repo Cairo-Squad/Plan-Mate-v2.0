@@ -3,6 +3,7 @@ package ui.features.user.admin
 import logic.usecase.user.GetAllUsersUseCase
 import ui.utils.InputHandler
 import ui.utils.OutputFormatter
+
 class ListAllUsersView(
     private val inputHandler: InputHandler,
     private val outputFormatter: OutputFormatter,
@@ -17,9 +18,9 @@ class ListAllUsersView(
             """.trimIndent()
         )
 
-        val users = getAllUsersUseCase.execute().getOrNull()
+        val users = getAllUsersUseCase.getAllUsers()
 
-        if (users.isNullOrEmpty()) {
+        if (users.isEmpty()) {
             outputFormatter.printError("❌ No users found in the system!")
             return
         }

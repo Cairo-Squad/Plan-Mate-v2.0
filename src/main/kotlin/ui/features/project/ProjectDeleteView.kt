@@ -4,6 +4,7 @@ import logic.usecase.project.DeleteProjectUseCase
 import logic.usecase.project.GetAllProjectsUseCase
 import ui.utils.InputHandler
 import ui.utils.OutputFormatter
+
 class ProjectDeleteView(
     private val getAllProjectsUseCase: GetAllProjectsUseCase,
     private val deleteProjectUseCase: DeleteProjectUseCase,
@@ -19,9 +20,9 @@ class ProjectDeleteView(
             """.trimIndent()
         )
 
-        val projects = getAllProjectsUseCase.getAllProjects().getOrNull()
+        val projects = getAllProjectsUseCase.getAllProjects()
 
-        if (projects.isNullOrEmpty()) {
+        if (projects.isEmpty()) {
             outputFormatter.printError("❌ No projects available for deletion!")
             return
         }
@@ -39,13 +40,13 @@ class ProjectDeleteView(
         val confirmation = inputHandler.promptForInput("Type 'YES' to confirm deletion: ")
 
         if (confirmation.equals("YES", ignoreCase = true)) {
-            val result = deleteProjectUseCase.deleteProjectById(selectedProject.id)
-            result.fold(
-                { outputFormatter.printSuccess("✅ Project '${selectedProject.title}' deleted successfully!") },
-                { error -> outputFormatter.printError("❌ Failed to delete project: ${error.message}") }
-            )
-        } else {
-            outputFormatter.printInfo("🔄 Action canceled. No project was deleted.")
+            try {
+                val result = deleteProjectUseCase.deleteProjectById(selectedProject.id)
+                outputFormatter.printSuccess("✅ Project '${selectedProject.title}' deleted successfully!")
+            } catch (ex: Exception) {
+
+                outputFormatter.printError("❌ Failed to delete project: ${ex.message}")
+            }
         }
 
         inputHandler.waitForEnter()

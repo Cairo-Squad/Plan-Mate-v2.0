@@ -31,7 +31,6 @@ interface DataSource {
 
     // region Logs
     fun recordLog(log: LogDto)
-    fun getProjectLog(projectId: UUID): List<LogDto>
     fun getProjectLogs(projectId: UUID): List<LogDto>
     fun getTaskLogs(taskId: UUID): List<LogDto>
     // endregion

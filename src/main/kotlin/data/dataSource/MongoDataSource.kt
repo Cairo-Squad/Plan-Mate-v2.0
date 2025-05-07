@@ -96,10 +96,6 @@ class MongoDataSource(
 		statesHandler.edit(state)
 	}
 	
-	override fun getAllAuditRecords(): List<LogDto> {
-		return logsHandler.readAll()
-	}
-	
 	override fun recordLog(log: LogDto) {
 		logsHandler.write(log)
 	}

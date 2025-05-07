@@ -17,9 +17,8 @@ class ProjectDetailView(
             """.trimIndent()
 		)
 
-		val projects = getAllProjectsUseCase.getAllProjects().getOrNull()
-
-		if (projects.isNullOrEmpty()) {
+		val projects = getAllProjectsUseCase.getAllProjects()
+		if (projects.isEmpty()) {
 			outputFormatter.printError("❌ No projects available to view!")
 			return
 		}

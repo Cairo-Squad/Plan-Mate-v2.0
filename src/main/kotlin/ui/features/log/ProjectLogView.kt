@@ -21,9 +21,9 @@ class ProjectLogView(
             """.trimIndent()
         )
 
-        val projects = getAllProjectsUseCase.getAllProjects().getOrNull()
+        val projects = getAllProjectsUseCase.getAllProjects()
 
-        if (projects.isNullOrEmpty()) {
+        if (projects.isEmpty()) {
             outputFormatter.printError("❌ No projects available for log viewing!")
             return
         }

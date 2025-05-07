@@ -21,9 +21,9 @@ class DeleteTaskView(
             """.trimIndent()
         )
 
-        val projects = getAllProjectsUseCase.getAllProjects().getOrNull()
+        val projects = getAllProjectsUseCase.getAllProjects()
 
-        if (projects.isNullOrEmpty()) {
+        if (projects.isEmpty()) {
             outputFormatter.printError("❌ No projects available for task deletion!")
             return
         }
@@ -39,9 +39,9 @@ class DeleteTaskView(
 
         val selectedProject = projects[projectIndex]
 
-        val tasks = getAllTasksByProjectIdUseCase.execute(selectedProject.id).getOrNull()
+        val tasks = getAllTasksByProjectIdUseCase.getAllTasksByProjectId(selectedProject.id)
 
-        if (tasks.isNullOrEmpty()) {
+        if (tasks.isEmpty()) {
             outputFormatter.printWarning("⚠️ No tasks found for project '${selectedProject.title}'.")
             return
         }
@@ -58,7 +58,7 @@ class DeleteTaskView(
         val confirmation = inputHandler.promptForInput("Type 'YES' to confirm: ")
 
         if (confirmation.equals("YES", ignoreCase = true)) {
-            deleteTaskUseCase.execute(selectedTask)
+            deleteTaskUseCase.deleteTask(selectedTask)
             outputFormatter.printSuccess("✅ Task '${selectedTask.title}' deleted successfully!")
         } else {
             outputFormatter.printInfo("🔄 Action canceled. No task was deleted.")

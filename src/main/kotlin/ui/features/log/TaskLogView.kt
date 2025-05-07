@@ -22,9 +22,9 @@ class TaskLogView(
             """.trimIndent()
         )
 
-        val projects = getAllProjectsUseCase.getAllProjects().getOrNull()
+        val projects = getAllProjectsUseCase.getAllProjects()
 
-        if (projects.isNullOrEmpty()) {
+        if (projects.isEmpty()) {
             outputFormatter.printError("❌ No projects available for task logs!")
             return
         }
@@ -37,9 +37,9 @@ class TaskLogView(
         val projectIndex = inputHandler.promptForIntChoice("🔹 Select a project to view task logs:", 1..projects.size) - 1
         val selectedProject = projects[projectIndex]
 
-        val tasks = getAllTasksByProjectIdUseCase.execute(selectedProject.id).getOrNull()
+        val tasks = getAllTasksByProjectIdUseCase.getAllTasksByProjectId(selectedProject.id)
 
-        if (tasks.isNullOrEmpty()) {
+        if (tasks.isEmpty()) {
             outputFormatter.printWarning("⚠️ No tasks found for project '${selectedProject.title}'.")
             return
         }

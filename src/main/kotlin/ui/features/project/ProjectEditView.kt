@@ -15,11 +15,14 @@ class ProjectEditView(
     private val outputFormatter: OutputFormatter,
     private val editTaskView: EditTaskView // Inject EditTaskView for task editing
 ) {
+    lateinit var projects: List<Project>
     fun editProject() {
-        outputFormatter.printHeader("Edit Project")
 
-        val projects = getAllProjectsUseCase.getAllProjects().getOrElse {
-            outputFormatter.printError("Failed to retrieve projects.")
+        outputFormatter.printHeader("Edit Project")
+        try {
+            projects = getAllProjectsUseCase.getAllProjects()
+        } catch (ex: Exception) {
+            outputFormatter.printError(ex.message ?: "Failed to retrieve projects.")
             return
         }
 
@@ -36,7 +39,6 @@ class ProjectEditView(
         val projectIndex = inputHandler.promptForIntChoice("Select the project number to edit: ", 1..projects.size)
         val selectedProject = projects[projectIndex - 1]
 
-        // Edit basic project info
         val editBasicInfo = inputHandler.promptForYesNo("Do you want to edit basic project information?")
         var newTitle = selectedProject.title
         var newDescription = selectedProject.description
@@ -45,26 +47,30 @@ class ProjectEditView(
             newTitle = inputHandler.promptForInput("Enter new project title (leave empty to keep current): ")
                 .takeIf { it.isNotBlank() } ?: selectedProject.title
 
-            newDescription = inputHandler.promptForInput("Enter new project description (leave empty to keep current): ")
-                .takeIf { it.isNotBlank() } ?: selectedProject.description
+            newDescription =
+                inputHandler.promptForInput("Enter new project description (leave empty to keep current): ")
+                    .takeIf { it.isNotBlank() } ?: selectedProject.description
         }
 
-        // Ask the user if they want to edit tasks
+
         val editTasks = inputHandler.promptForYesNo("Do you want to edit tasks within this project?")
         if (editTasks) {
-            editTaskView.editTask() // Call the existing EditTaskView method
+            editTaskView.editTask()
+
+
+            val updatedProject = selectedProject.copy(
+                title = newTitle,
+                description = newDescription
+            )
+
+            try {
+                editProjectUseCase.editProject(updatedProject)
+                outputFormatter.printSuccess("Project updated successfully!")
+            } catch (ex: Exception) {
+                outputFormatter.printError("Failed to update project: ${ex.message}")
+            }
         }
 
-        // Create updated project
-        val updatedProject = selectedProject.copy(
-            title = newTitle,
-            description = newDescription
-        )
-
-        val result = editProjectUseCase.editProject(updatedProject)
-        result.fold(
-            { outputFormatter.printSuccess("Project updated successfully!") },
-            { error -> outputFormatter.printError("Failed to update project: ${error.message}") }
-        )
     }
 }
+

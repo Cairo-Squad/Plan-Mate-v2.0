@@ -20,9 +20,9 @@ class DeleteUserView(
             """.trimIndent()
         )
 
-        val users = getAllUsersUseCase.execute().getOrNull()
+        val users = getAllUsersUseCase.getAllUsers()
 
-        if (users.isNullOrEmpty()) {
+        if (users.isEmpty()) {
             outputFormatter.printError("❌ No users available to delete!")
             return
         }
