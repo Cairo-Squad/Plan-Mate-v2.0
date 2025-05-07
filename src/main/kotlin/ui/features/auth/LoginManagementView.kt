@@ -1,6 +1,7 @@
 package ui.features.auth
 
 import data.dto.UserType
+import kotlinx.coroutines.runBlocking
 import logic.usecase.user.LoginUserUseCase
 import ui.features.user.UserManagementView
 import ui.features.user.admin.AdminManagementView
@@ -15,21 +16,24 @@ class LoginManagementView(
 
 ) {
     fun showLoginScreen() {
-        outputFormatter.printHeader("🔑 PlanMate - Login")
-
-        val username = inputHandler.promptForInput("👤 Username: ")
-        val password = inputHandler.promptForPassword("🔒 Password: ")
-
-        try {
-            val user = loginUserUseCase.login(username, password)
-            UserSession.setUser(user)
-
-            outputFormatter.printSuccess("🎉 Login successful! Welcome, ${user.name} 🙌")
-            userManagementView.showUserMenu()
-            return
-
-        } catch (e: Exception) {
-            outputFormatter.printError("❌ Authentication failed: ${e.message}")
+        
+        runBlocking {
+            outputFormatter.printHeader("🔑 PlanMate - Login")
+            
+            val username = inputHandler.promptForInput("👤 Username: ")
+            val password = inputHandler.promptForPassword("🔒 Password: ")
+            
+            try {
+                val user = loginUserUseCase.login(username, password)
+                UserSession.setUser(user)
+                
+                outputFormatter.printSuccess("🎉 Login successful! Welcome, ${user.name} 🙌")
+                userManagementView.showUserMenu()
+	            return@runBlocking
+             
+            } catch (e: Exception) {
+                outputFormatter.printError("❌ Authentication failed: ${e.message}")
+            }
         }
     }
 

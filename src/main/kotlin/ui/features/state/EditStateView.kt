@@ -1,5 +1,6 @@
 package ui.features.state
 
+import kotlinx.coroutines.runBlocking
 import logic.model.State
 import logic.usecase.state.EditStateUseCase
 import ui.utils.InputHandler
@@ -11,11 +12,14 @@ class EditStateView(
     private val outputFormatter: OutputFormatter
 ) {
     fun editState(oldState: State) {
-        outputFormatter.printHeader("Edit a State ID")
-        val title = inputHandler.promptForInput("Enter new state title: ")
-        val newState = State(oldState.id, title = title)
-        // TODO: user singleton object
-        editStateUseCase.editState(oldState, newState)
-        outputFormatter.printSuccess("State updated successfully!")
+        
+        runBlocking {
+            outputFormatter.printHeader("Edit a State ID")
+            val title = inputHandler.promptForInput("Enter new state title: ")
+            val newState = State(oldState.id, title = title)
+            // TODO: user singleton object
+            editStateUseCase.editState(oldState, newState)
+            outputFormatter.printSuccess("State updated successfully!")
+        }
     }
 }

@@ -1,5 +1,6 @@
 package ui.features.task
 
+import kotlinx.coroutines.runBlocking
 import logic.model.Project
 import logic.model.State
 import logic.model.Task
@@ -22,58 +23,60 @@ class CreateTaskView(
 ) {
     lateinit var projects: List<Project>
     fun createTask() {
-        outputFormatter.printHeader("Create a New Task")
-
-        val title = inputHandler.promptForInput("Enter task title: ")
-        val description = inputHandler.promptForInput("Enter task description: ")
-        try {
-            projects = getAllProjectsUseCase.getAllProjects()
-            if (projects.isEmpty()) {
-                outputFormatter.printError("No projects available. Please create a project first.")
-            }
-
-            projects.forEachIndexed { index, project ->
-                outputFormatter.printInfo("${index + 1}. ${project.title} (ID: ${project.id})")
-            }
-
-            val projectIndex = inputHandler.promptForIntChoice(
-                "Select the number of project that you want to add task to : ",
-                1..projects.size
-            ) - 1
-            val selectedProject = projects[projectIndex]
-
-            val taskState = State(UUID.randomUUID(), "TODO")
-            createStateUseCase.createState(taskState)
-
-            val task = Task(
-                id = UUID.randomUUID(),
-                title = title,
-                description = description,
-                state = taskState,
-                projectId = selectedProject.id
-            )
-
-            try{
-                val result = createTaskUseCase.createTask(task)
-                val updatedProject = selectedProject.copy(
-                    tasks = selectedProject.tasks + task
+        
+        runBlocking {
+            outputFormatter.printHeader("Create a New Task")
+            
+            val title = inputHandler.promptForInput("Enter task title: ")
+            val description = inputHandler.promptForInput("Enter task description: ")
+            try {
+                projects = getAllProjectsUseCase.getAllProjects()
+                if (projects.isEmpty()) {
+                    outputFormatter.printError("No projects available. Please create a project first.")
+                }
+                
+                projects.forEachIndexed { index, project ->
+                    outputFormatter.printInfo("${index + 1}. ${project.title} (ID: ${project.id})")
+                }
+                
+                val projectIndex = inputHandler.promptForIntChoice(
+                    "Select the number of project that you want to add task to : ",
+                    1..projects.size
+                ) - 1
+                val selectedProject = projects[projectIndex]
+                
+                val taskState = State(UUID.randomUUID(), "TODO")
+                createStateUseCase.createState(taskState)
+                
+                val task = Task(
+                    id = UUID.randomUUID(),
+                    title = title,
+                    description = description,
+                    state = taskState,
+                    projectId = selectedProject.id
                 )
-
-                editProjectUseCase.editProject(updatedProject)
-                outputFormatter.printSuccess("Task created successfully!")
-
+                
+                try{
+                    val result = createTaskUseCase.createTask(task)
+                    val updatedProject = selectedProject.copy(
+                        tasks = selectedProject.tasks + task
+                    )
+                    
+                    editProjectUseCase.editProject(updatedProject)
+                    outputFormatter.printSuccess("Task created successfully!")
+                    
+                }
+                catch (ex: Exception)
+                {
+                    outputFormatter.printError(ex.message ?:"failed to create task!!")
+                }
+                
+                
+            } catch (ex: Exception) {
+                outputFormatter.printError("Failed to get all projects: ${ex.message}")
+                
             }
-            catch (ex: Exception)
-            {
-                outputFormatter.printError(ex.message ?:"failed to create task!!")
-            }
-
-
-        } catch (ex: Exception) {
-            outputFormatter.printError("Failed to get all projects: ${ex.message}")
-
         }
-
     }
 }
 
