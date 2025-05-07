@@ -50,7 +50,6 @@ class EditUserUseCaseTest {
             User(id = UUID(2, 2), name = "Mohamed", password = "123456", type = UserType.ADMIN)
         val originalUser =
             User(id = UUID(1, 1), name = "Mohamed", password = "123456", type = UserType.ADMIN)
-        
         coEvery { repository.editUser(updatedUser) } throws DtoNotFoundException()
 
         // When & Then

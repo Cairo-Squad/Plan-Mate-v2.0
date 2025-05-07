@@ -23,7 +23,6 @@ class CreateTaskUseCaseTest {
 
     @BeforeEach
     fun setup() {
-        
         taskRepository = mockk(relaxed = true)
         addLogUseCase=mockk(relaxed =true )
         createTaskUseCase = CreateTaskUseCase(taskRepository,addLogUseCase)
