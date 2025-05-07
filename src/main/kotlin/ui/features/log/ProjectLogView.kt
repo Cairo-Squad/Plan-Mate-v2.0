@@ -13,46 +13,47 @@ class ProjectLogView(
     private val outputFormatter: OutputFormatter
 ) {
     fun viewProjectLogs() {
-        outputFormatter.printHeader("Project Audit Logs")
+        outputFormatter.printHeader(
+            """
+            ╔════════════════════════════════╗
+            ║ 📜 Project Audit Logs Viewer 🏗️  ║
+            ╚════════════════════════════════╝
+            """.trimIndent()
+        )
 
-        // Fetch all projects
-        val projects = getAllProjectsUseCase.getAllProjects().getOrElse {
-            outputFormatter.printError("Failed to retrieve projects.")
-            return
-        }
+        val projects = getAllProjectsUseCase.getAllProjects()
 
-        // Display projects in a numbered list
         if (projects.isEmpty()) {
-            outputFormatter.printError("No projects available to view logs.")
+            outputFormatter.printError("❌ No projects available for log viewing!")
             return
         }
 
-        outputFormatter.printHeader("Available Projects:")
+        outputFormatter.printInfo("📂 Available Projects:")
         projects.forEachIndexed { index, project ->
-            outputFormatter.printInfo("${index + 1}. ${project.title} (ID: ${project.id})")
+            outputFormatter.printInfo("📌 ${index + 1}. ${project.title} | 🆔 ID: ${project.id}")
         }
 
-        // Let the user choose a project to view logs
-        val projectIndex = inputHandler.promptForIntChoice("Select the project number to view logs: ", 1..projects.size)
-        val selectedProject = projects[projectIndex - 1]
+        val projectIndex = inputHandler.promptForIntChoice("🔹 Select a project to view logs:", 1..projects.size) - 1
+        val selectedProject = projects[projectIndex]
 
-        val logs = getProjectLogUseCase.getProjectLog(selectedProject.id)
+        val logs = getProjectLogUseCase.getProjectLogs(selectedProject.id)
 
         if (logs.isEmpty()) {
-            outputFormatter.printError("No logs found for this project.")
+            outputFormatter.printWarning("⚠️ No logs found for project '${selectedProject.title}'.")
             return
         }
 
-        outputFormatter.printHeader("Project Logs:")
+        outputFormatter.printHeader("📜 Logs for Project: '${selectedProject.title}'")
         logs.forEach { log ->
             outputFormatter.printInfo("""
-                Log ID: ${log.id}
-                Entity: ${log.entityTitle} (${log.entityType})
-                Action: ${log.userAction}
-                User ID: ${log.userId}
-                Timestamp: ${log.dateTime}
+                🔹 Log ID: ${log.id}
+                📌 Entity: ${log.entityTitle} (${log.entityType})
+                ✏️ Action: ${log.userAction}
+                👤 User ID: ${log.userId}
+                ⏳ Timestamp: ${log.dateTime}
             """.trimIndent())
         }
+        println("-------------------------------------------------------------------------------")
 
         inputHandler.waitForEnter()
     }

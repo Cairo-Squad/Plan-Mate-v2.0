@@ -4,6 +4,7 @@ import io.mockk.*
 import logic.model.State
 import logic.model.Task
 import logic.repositories.TasksRepository
+import logic.usecase.Log.AddLogUseCase
 import logic.usecase.task.EditTaskUseCase
 import org.junit.jupiter.api.BeforeEach
 import java.util.*
@@ -15,11 +16,13 @@ class EditTaskUseCaseTest {
 
     private lateinit var tasksRepository: TasksRepository
     private lateinit var editTaskUseCase: EditTaskUseCase
+    lateinit var  addLogUseCase: AddLogUseCase
 
     @BeforeEach
     fun setup() {
         tasksRepository = mockk(relaxed = true)
-        editTaskUseCase = EditTaskUseCase(tasksRepository)
+        addLogUseCase=mockk(relaxed =true )
+        editTaskUseCase = EditTaskUseCase(tasksRepository,addLogUseCase)
     }
 
     @Test

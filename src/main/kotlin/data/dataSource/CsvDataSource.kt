@@ -73,6 +73,8 @@ class CsvDataSource(
         logsCsvHandler.write(log)
     }
 
+
+
     override fun getTaskLogs(taskId: UUID): List<LogDto> {
         return logsCsvHandler.readAll().filter { it.entityType == EntityType.TASK && it.entityId == taskId }
     }
@@ -104,11 +106,8 @@ class CsvDataSource(
         return true
     }
 
-    override fun addProjectLog(logDto: LogDto) {
-        logsCsvHandler.write(logDto)
-    }
 
-    override fun getProjectLog(projectId: UUID): List<LogDto> {
+    override fun getProjectLogs(projectId: UUID): List<LogDto> {
         return logsCsvHandler.readAll()
             .filter { it.entityType == EntityType.PROJECT && it.entityId == projectId }
     }

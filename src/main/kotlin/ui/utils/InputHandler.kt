@@ -23,9 +23,7 @@ class InputHandler {
         return readLine() ?: ""
     }
 
-    /**
-     * Prompts the user for an integer choice within a specified range
-     */
+
     fun promptForIntChoice(prompt: String, range: IntRange): Int {
         while (true) {
             print(prompt)
@@ -44,9 +42,7 @@ class InputHandler {
         }
     }
 
-    /**
-     * Prompts the user for a yes/no answer
-     */
+
     fun promptForYesNo(prompt: String): Boolean {
         while (true) {
             print("$prompt (y/n): ")
@@ -60,9 +56,6 @@ class InputHandler {
         }
     }
 
-    /**
-     * Waits for the user to press Enter to continue
-     */
     fun waitForEnter() {
         print("Press Enter to continue...")
         readLine()

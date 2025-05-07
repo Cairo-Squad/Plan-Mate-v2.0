@@ -56,7 +56,7 @@ class GetProjectLogUseCaseTest {
                 entityType = EntityType.PROJECT,
                 dateTime = LocalDateTime.now(),
                 userId = UUID.randomUUID(),
-                userAction = UserAction.EditProjectTitle("New title")
+                userAction = UserAction.EditProjectTitle(oldName = "Old title", newName = "New title")
             )
         )
     }

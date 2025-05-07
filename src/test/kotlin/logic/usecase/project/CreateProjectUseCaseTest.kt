@@ -1,11 +1,13 @@
 package logic.usecase.project
 
+import com.google.common.truth.Truth.assertThat
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import logic.exception.EmptyTitleException
 import logic.exception.InvalidUserException
 import logic.repositories.ProjectsRepository
+import logic.usecase.Log.AddLogUseCase
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -13,14 +15,16 @@ import util.FakeData
 import util.FakeData.invalidUser
 import util.FakeData.validUser
 
-class CreateProjectUseCaseTest {
+class CreateProjectUseCaseTest() {
     private lateinit var projectRepository: ProjectsRepository
-    private lateinit var createProjectUseCase: CreateProjectUseCase
+    private lateinit var createProject: CreateProjectUseCase
+    private lateinit var recordLog: AddLogUseCase
 
     @BeforeEach
     fun setUp() {
         projectRepository = mockk(relaxed = true)
-        createProjectUseCase = CreateProjectUseCase(projectRepository)
+        recordLog = mockk(relaxed = true)
+        createProject = CreateProjectUseCase(projectRepository ,recordLog)
     }
 
     @Test
@@ -29,11 +33,11 @@ class CreateProjectUseCaseTest {
         val project = FakeData.validProject
 
         //When
-        createProjectUseCase.createProject(project, validUser)
+        createProject.createProject(project, validUser)
 
         //Then
         verify(exactly = 1) {
-            createProjectUseCase.createProject(project, validUser)
+            createProject.createProject(project, validUser)
         }
     }
 
@@ -45,7 +49,7 @@ class CreateProjectUseCaseTest {
 
         //When & Then
         assertThrows<InvalidUserException> {
-            createProjectUseCase.createProject(project, invalidUser)
+            createProject.createProject(project, invalidUser)
         }
     }
 
@@ -55,11 +59,11 @@ class CreateProjectUseCaseTest {
         val project = FakeData.projectWithNoDescription
 
         //When
-        createProjectUseCase.createProject(project, validUser)
+        createProject.createProject(project, validUser)
 
         //Then
         verify(exactly = 1) {
-            createProjectUseCase.createProject(project, validUser)
+            createProject.createProject(project, validUser)
         }
     }
 
@@ -70,7 +74,7 @@ class CreateProjectUseCaseTest {
 
         //When & Then
         assertThrows<EmptyTitleException> {
-            createProjectUseCase.createProject(project, validUser)
+            createProject.createProject(project, validUser)
         }
     }
 }
