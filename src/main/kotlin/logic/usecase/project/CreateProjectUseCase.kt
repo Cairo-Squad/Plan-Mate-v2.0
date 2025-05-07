@@ -17,7 +17,7 @@ class CreateProjectUseCase(
     private val projectRepository: ProjectsRepository,
     private val addLogUseCase: AddLogUseCase
 ) {
-    fun createProject(project: Project, user: User) {
+    suspend fun createProject(project: Project, user: User) {
         validateProjectCreation(project, user)
         projectRepository.createProject(project, user)
 
