@@ -21,6 +21,8 @@ dependencies {
     
     implementation("org.mongodb:mongodb-driver-sync:4.11.1")
     implementation("org.slf4j:slf4j-simple:2.0.12")
+    
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
 }
 
 kover {
