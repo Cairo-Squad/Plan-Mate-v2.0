@@ -12,7 +12,7 @@ class CsvDataSource(
     private val tasksCsvHandler: FileHandler<TaskDto>,
     private val usersCsvHandler: FileHandler<UserDto>
 ) : DataSource {
-    override fun createUser(id: UUID, name: String, password: String, type: UserType): UserDto {
+    override suspend fun createUser(id: UUID, name: String, password: String, type: UserType): UserDto {
         val userDto = UserDto(
             id = UUID.randomUUID(),
             name = name,
@@ -23,91 +23,91 @@ class CsvDataSource(
         return userDto
     }
 
-    override fun getAllUsers(): List<UserDto> {
+    override suspend fun getAllUsers(): List<UserDto> {
         val users = usersCsvHandler.readAll()
         return users
     }
 
-    override fun editUser(user: UserDto) {
+    override suspend fun editUser(user: UserDto) {
         return usersCsvHandler.edit(user)
     }
 
-    override fun editState(state: StateDto) {
+    override suspend fun editState(state: StateDto) {
         return statesCsvHandler.edit(state)
     }
 
-    override fun deleteUser(user: UserDto) {
+    override suspend fun deleteUser(user: UserDto) {
         usersCsvHandler.delete(user)
     }
 
-    override fun createProject(project: ProjectDto) {
+    override suspend fun createProject(project: ProjectDto) {
         projectsCsvHandler.write(project)
     }
 
-    override fun editProject(newProject: ProjectDto) {
+    override suspend fun editProject(newProject: ProjectDto) {
         projectsCsvHandler.edit(newProject)
     }
 
-    override fun deleteProjectById(project: ProjectDto) {
+    override suspend fun deleteProjectById(project: ProjectDto) {
         projectsCsvHandler.delete(project)
     }
 
-    override fun getProjectById(projectId: UUID): ProjectDto {
+    override suspend fun getProjectById(projectId: UUID): ProjectDto {
         return projectsCsvHandler.readAll()
             .first { projectDto -> projectDto.id == projectId }
     }
 
-    override fun getAllProjects(): List<ProjectDto> {
+    override suspend fun getAllProjects(): List<ProjectDto> {
         return projectsCsvHandler.readAll()
     }
 
-    override fun getTasksByProjectId(projectId: UUID): List<TaskDto> {
+    override suspend fun getTasksByProjectId(projectId: UUID): List<TaskDto> {
         return tasksCsvHandler.readAll().filter { it.projectId == projectId }
     }
 
-    override fun getAllStates(): List<StateDto> {
+    override suspend fun getAllStates(): List<StateDto> {
         return statesCsvHandler.readAll()
     }
 
-    override fun recordLog(log: LogDto) {
+    override suspend fun recordLog(log: LogDto) {
         logsCsvHandler.write(log)
     }
 
 
 
-    override fun getTaskLogs(taskId: UUID): List<LogDto> {
+    override suspend fun getTaskLogs(taskId: UUID): List<LogDto> {
         return logsCsvHandler.readAll().filter { it.entityType == EntityType.TASK && it.entityId == taskId }
     }
 
-    override fun createTask(task: TaskDto) {
+    override suspend fun createTask(task: TaskDto) {
         tasksCsvHandler.write(task)
     }
 
-    override fun editTask(task: TaskDto) {
+    override suspend fun editTask(task: TaskDto) {
         tasksCsvHandler.edit(task)
     }
 
-    override fun deleteTask(task: TaskDto) {
+    override suspend fun deleteTask(task: TaskDto) {
         tasksCsvHandler.delete(task)
     }
 
-    override fun getTaskById(taskID: UUID): TaskDto {
+    override suspend fun getTaskById(taskID: UUID): TaskDto {
         val task = tasksCsvHandler.readAll().find { it.id == taskID }
         return task!!
     }
 
-    override fun getStateById(stateId: UUID): StateDto {
+    override suspend fun getStateById(stateId: UUID): StateDto {
         val stateDto = statesCsvHandler.readAll().find { it.id == stateId }
         return stateDto!!
     }
 
-    override fun createState(state: StateDto): Boolean {
+    override suspend fun createState(state: StateDto): Boolean {
         statesCsvHandler.write(state)
         return true
     }
 
 
-    override fun getProjectLogs(projectId: UUID): List<LogDto> {
+    override suspend fun getProjectLogs(projectId: UUID): List<LogDto> {
         return logsCsvHandler.readAll()
             .filter { it.entityType == EntityType.PROJECT && it.entityId == projectId }
     }
