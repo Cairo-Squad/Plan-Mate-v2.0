@@ -22,7 +22,7 @@ fun Project.toProjectDto(): ProjectDto {
         title = this.title,
         description = this.description,
         createdBy = this.createdBy,
-        tasks = this.tasks.map { it.id },
+        taskIds = this.tasks.map { it.id },
         stateId = this.state.id
     )
 }
