@@ -7,9 +7,9 @@ import ui.utils.OutputFormatter
 import java.util.UUID
 
 class CreateNewUserView(
-    private val inputHandler: InputHandler,
-    private val outputFormatter: OutputFormatter,
-    private val createUserUseCase: CreateUserUseCase
+    private val inputHandler : InputHandler,
+    private val outputFormatter : OutputFormatter,
+    private val createUserUseCase : CreateUserUseCase
 ) {
     fun createNewUser() {
         outputFormatter.printHeader(
@@ -21,14 +21,26 @@ class CreateNewUserView(
         )
 
         val username = inputHandler.promptForInput("📛 Enter username: ")
+        if (username.isEmpty()) {
+            outputFormatter.printError("❌ Username cannot be empty.")
+            inputHandler.waitForEnter()
+            return
+        }
+
         val password = inputHandler.promptForPassword("🔒 Enter password: ")
+        if (password.isEmpty()) {
+            outputFormatter.printError("❌ Password cannot be empty.")
+            inputHandler.waitForEnter()
+            return
+        }
         val userType = UserType.MATE
 
-
         try {
-            createUserUseCase.createUser(UUID.randomUUID(), username, password, userType)
-            outputFormatter.printSuccess("✅ User '$username' created successfully!")
-        } catch (ex: Exception) {
+            val isCreated = createUserUseCase.createUser(UUID.randomUUID(), username, password, userType)
+            if (isCreated) {
+                outputFormatter.printSuccess("✅ User '$username' created successfully!")
+            }
+        } catch (ex : Exception) {
             outputFormatter.printError("❌ Failed to create user: ${ex.message}")
         }
 
