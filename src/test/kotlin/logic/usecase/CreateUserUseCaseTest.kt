@@ -5,8 +5,8 @@ import data.dto.UserType
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
-import logic.exception.EmptyNameException
-import logic.exception.EmptyPasswordException
+import logic.util.EmptyNameException
+import logic.util.EmptyPasswordException
 import logic.model.User
 import logic.repositories.AuthenticationRepository
 import logic.usecase.user.CreateUserUseCase

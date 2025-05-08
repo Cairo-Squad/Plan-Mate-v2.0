@@ -3,8 +3,8 @@ package logic.usecase
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
-import logic.exception.DtoNotFoundException
-import logic.exception.EmptyNameException
+import logic.util.DtoNotFoundException
+import logic.util.EmptyNameException
 import logic.model.State
 import logic.repositories.StatesRepository
 import logic.usecase.state.EditStateUseCase

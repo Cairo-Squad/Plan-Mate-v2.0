@@ -1,21 +1,20 @@
 package logic.usecase.task
 
-import logic.exception.EmptyTitleException
 import data.dto.EntityType
 import data.dto.UserAction
 import logic.model.Log
 import logic.model.Task
 import logic.repositories.TasksRepository
+import logic.usecase.log.AddLogUseCase
 import ui.features.auth.UserSession.getUser
 import java.time.LocalDateTime
-import logic.usecase.Log.AddLogUseCase
-import java.util.UUID
+import java.util.*
 
 class CreateTaskUseCase(
-    private val repository: TasksRepository, private val addLogUseCase: AddLogUseCase
+    private val repository: TasksRepository,
+    private val addLogUseCase: AddLogUseCase
 ) {
     fun createTask(task: Task) {
-        validateTask(task)
         repository.createTask(task)
         val log = Log(
             id = UUID.randomUUID(),
@@ -26,13 +25,7 @@ class CreateTaskUseCase(
             userId = getUser()!!.id,
             userAction = UserAction.CreateTask(task.title, task.id, task.projectId)
         )
-
-
         addLogUseCase.addLog(log)
-    }
-
-    private fun validateTask(task: Task) {
-        if (task.title.isBlank()) throw EmptyTitleException()
     }
 }
 

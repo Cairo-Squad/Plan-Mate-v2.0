@@ -19,6 +19,7 @@ class CreateStateView(
         val state = State(id = UUID.randomUUID(), title = title)
         UserSession.getUser()?.let {
             if (it.type == UserType.ADMIN) {
+                createStateUseCase.createState(state)
                 outputFormatter.printSuccess("State created successfully!")
             }
         } ?: outputFormatter.printError("Non authorized access")

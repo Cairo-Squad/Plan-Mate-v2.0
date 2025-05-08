@@ -1,7 +1,6 @@
 package ui.features.log
 
-import logic.model.Log
-import logic.usecase.Log.GetProjectLogUseCase
+import logic.usecase.log.GetProjectLogUseCase
 import logic.usecase.project.GetAllProjectsUseCase
 import ui.utils.InputHandler
 import ui.utils.OutputFormatter

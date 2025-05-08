@@ -5,34 +5,40 @@ import data.dto.UserType
 import data.hashing.PasswordEncryptor
 import data.repositories.mappers.toUser
 import data.repositories.mappers.toUserDto
-import logic.exception.UserNotFoundException
 import logic.model.User
 import logic.repositories.AuthenticationRepository
-import java.util.UUID
+import logic.util.NotFoundException
+import java.util.*
 
 class AuthenticationRepositoryImpl(
     private val dataSource: DataSource,
     private val passwordEncryptor: PasswordEncryptor
-) : AuthenticationRepository {
+) : AuthenticationRepository, BaseRepository() {
 
     override fun getAllUsers(): List<User> {
-        val usersDto = dataSource.getAllUsers()
-        return usersDto.map { it.toUser() }
+        return wrap {
+            val usersDto = dataSource.getAllUsers()
+            usersDto.map { it.toUser() }
+        }
     }
 
     override fun deleteUser(userId: UUID): Boolean {
-        val userDto = dataSource.getAllUsers()
-            .find { it.id == userId } ?: throw UserNotFoundException()
-        dataSource.deleteUser(userDto)
-        return true
+        return wrap {
+            val userDto = dataSource.getAllUsers()
+                .find { it.id == userId } ?: throw NotFoundException()
+            dataSource.deleteUser(userDto)
+            true
+        }
     }
 
     override fun createUser(id: UUID, name: String, password: String, userType: UserType): UserDto {
-        val hashedPassword = passwordEncryptor.hashPassword(password)
-        return dataSource.createUser(id, name, hashedPassword, userType)
+        return wrap {
+            val hashedPassword = passwordEncryptor.hashPassword(password)
+            dataSource.createUser(id, name, hashedPassword, userType)
+        }
     }
 
     override fun editUser(user: User) {
-        return dataSource.editUser(user.toUserDto())
+        return wrap { dataSource.editUser(user.toUserDto()) }
     }
 }

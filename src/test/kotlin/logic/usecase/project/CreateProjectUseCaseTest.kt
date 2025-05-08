@@ -1,13 +1,12 @@
 package logic.usecase.project
 
-import com.google.common.truth.Truth.assertThat
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
-import logic.exception.EmptyTitleException
-import logic.exception.InvalidUserException
+import logic.util.EmptyTitleException
+import logic.util.AdminAccessDeniedException
 import logic.repositories.ProjectsRepository
-import logic.usecase.Log.AddLogUseCase
+import logic.usecase.log.AddLogUseCase
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -45,10 +44,10 @@ class CreateProjectUseCaseTest() {
     fun `should not create a project when user type is mate`() {
         //Given
         val project = FakeData.validProject
-        every { (projectRepository).createProject(project, invalidUser) } throws InvalidUserException()
+        every { (projectRepository).createProject(project, invalidUser) } throws AdminAccessDeniedException()
 
         //When & Then
-        assertThrows<InvalidUserException> {
+        assertThrows<AdminAccessDeniedException> {
             createProject.createProject(project, invalidUser)
         }
     }

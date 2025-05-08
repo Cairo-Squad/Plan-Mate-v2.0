@@ -3,13 +3,13 @@ package logic.usecase.project
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
-import logic.exception.WriteException
-import logic.exception.EmptyNameException
-import logic.exception.UnknownException
+import logic.util.WriteException
+import logic.util.EmptyNameException
+import logic.util.UnknownException
 import logic.model.Project
 import logic.model.State
 import logic.repositories.ProjectsRepository
-import logic.usecase.Log.AddLogUseCase
+import logic.usecase.log.AddLogUseCase
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows

@@ -4,7 +4,7 @@ import util.FakeData
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
-import logic.exception.ProjectNotFoundException
+import logic.util.ProjectNotFoundException
 import logic.repositories.ProjectsRepository
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test

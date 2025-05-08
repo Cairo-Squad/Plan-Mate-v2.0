@@ -54,26 +54,21 @@ class CreateTaskView(
             )
 
             try{
-                val result = createTaskUseCase.createTask(task)
+                createTaskUseCase.createTask(task)
                 val updatedProject = selectedProject.copy(
                     tasks = selectedProject.tasks + task
                 )
 
                 editProjectUseCase.editProject(updatedProject)
                 outputFormatter.printSuccess("Task created successfully!")
-
             }
             catch (ex: Exception)
             {
                 outputFormatter.printError(ex.message ?:"failed to create task!!")
             }
-
-
         } catch (ex: Exception) {
             outputFormatter.printError("Failed to get all projects: ${ex.message}")
-
         }
-
     }
 }
 

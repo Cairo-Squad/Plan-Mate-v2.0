@@ -5,7 +5,7 @@ import data.dto.UserAction
 import logic.model.Log
 import logic.model.Task
 import logic.repositories.TasksRepository
-import logic.usecase.Log.AddLogUseCase
+import logic.usecase.log.AddLogUseCase
 import ui.features.auth.UserSession.getUser
 import java.time.LocalDateTime
 import java.util.UUID

@@ -5,7 +5,7 @@ import data.database.util.UserActionConstants
 import data.dto.EntityType
 import data.dto.LogDto
 import data.dto.UserAction
-import logic.exception.CsvParseException
+import java.io.IOException
 import java.time.LocalDateTime
 import java.util.*
 
@@ -62,32 +62,32 @@ class LogsCsvHandler(
         return when {
             this.startsWith(UserActionConstants.DELETE_PROJECT) -> {
                 if (actionParts.size < 2) {
-                    throw CsvParseException()
+                    throw IOException()
                 }
                 try {
                     UserAction.DeleteProject(UUID.fromString(actionParts[1]))
                 } catch (e: Exception) {
-                    throw CsvParseException()
+                    throw IOException()
                 }
             }
 
             this.startsWith(UserActionConstants.EDIT_PROJECT_TITLE) -> {
                 if (actionParts.size < 3) {
-                    throw CsvParseException()
+                    throw IOException()
                 }
                 UserAction.EditProjectTitle(actionParts[1], actionParts[2])
             }
 
             this.startsWith(UserActionConstants.CREATE_PROJECT) -> {
                 if (actionParts.size < 2) {
-                    throw CsvParseException()
+                    throw IOException()
                 }
 
                 if (actionParts.size >= 3) {
                     try {
                         UserAction.CreateProject(actionParts[1], UUID.fromString(actionParts[2]))
                     } catch (e: Exception) {
-                        throw CsvParseException()
+                        throw IOException()
                     }
                 } else {
                     UserAction.CreateProject(actionParts[1], UUID.randomUUID()) // Using random UUID as fallback
@@ -96,7 +96,7 @@ class LogsCsvHandler(
 
             this.startsWith(UserActionConstants.CREATE_TASK) -> {
                 if (actionParts.size < 4) {
-                    throw CsvParseException()
+                    throw IOException()
                 }
                 try {
                     UserAction.CreateTask(
@@ -105,33 +105,33 @@ class LogsCsvHandler(
                         UUID.fromString(actionParts[3])
                     )
                 } catch (e: Exception) {
-                    throw CsvParseException()
+                    throw IOException()
                 }
             }
 
             this.startsWith(UserActionConstants.EDIT_PROJECT) -> {
                 if (actionParts.size < 3) {
-                    throw CsvParseException()
+                    throw IOException()
                 }
                 try {
                     UserAction.EditProject(UUID.fromString(actionParts[1]), actionParts[2])
                 } catch (e: Exception) {
-                    throw CsvParseException()
+                    throw IOException()
                 }
             }
 
             this.startsWith(UserActionConstants.EDIT_TASK) -> {
                 if (actionParts.size < 3) {
-                    throw CsvParseException()
+                    throw IOException()
                 }
                 try {
                     UserAction.EditTask(UUID.fromString(actionParts[1]), actionParts[2])
                 } catch (e: Exception) {
-                    throw CsvParseException()
+                    throw IOException()
                 }
             }
 
-            else -> throw CsvParseException()
+            else -> throw IOException()
         }
     }
 }

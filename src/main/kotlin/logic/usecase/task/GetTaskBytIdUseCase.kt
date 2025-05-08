@@ -4,7 +4,9 @@ import logic.model.Task
 import logic.repositories.TasksRepository
 import java.util.UUID
 
-class GetTaskBytIdUseCase(private val tasksRepository: TasksRepository) {
+class GetTaskBytIdUseCase(
+    private val tasksRepository: TasksRepository
+) {
     fun getTaskById(taskID: UUID): Task {
         return tasksRepository.getTaskById(taskID)
     }

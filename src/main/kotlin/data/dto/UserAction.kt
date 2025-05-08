@@ -28,4 +28,16 @@ sealed class UserAction {
     data class EditTask(val taskId: UUID, val changes: String) : UserAction() {
         override fun logMessage() = "Task with ID $taskId updated. Changes: $changes."
     }
+
+    data class EditEntity(
+        val entityType: EntityType,
+        val entityId: UUID,
+        val entityTitle: String,
+        val changedField: String,
+        val previousValue: String,
+        val newValue: String
+    ) : UserAction() {
+        override fun logMessage(): String =
+            "User changed $entityType '$entityTitle' ($entityId) - $changedField: '$previousValue' → '$newValue'."
+    }
 }
