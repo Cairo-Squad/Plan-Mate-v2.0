@@ -7,29 +7,29 @@ import io.mockk.every
 import io.mockk.mockk
 import logic.model.Log
 import logic.repositories.LogsRepository
-import logic.usecase.Log.GetProjectLogUseCase
+import logic.usecase.Log.GetProjectLogsUseCase
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import java.time.LocalDateTime
 import java.util.UUID
 
-class GetProjectLogUseCaseTest {
-    private lateinit var getProjectLogUseCase: GetProjectLogUseCase
+class GetProjectLogsUseCaseTest {
+    private lateinit var getProjectLogsUseCase: GetProjectLogsUseCase
     private lateinit var logsRepository: LogsRepository
 
     @BeforeEach
     fun setup() {
         logsRepository = mockk(relaxed = true)
-        getProjectLogUseCase = GetProjectLogUseCase(logsRepository)
+        getProjectLogsUseCase = GetProjectLogsUseCase(logsRepository)
     }
 
     @Test
     fun `should return an empty list when the there are no logs for this project`() {
         // Given
-        every { logsRepository.getProjectLog(UUID.randomUUID()) } returns emptyList()
+        every { logsRepository.getProjectLogs(UUID.randomUUID()) } returns emptyList()
 
         // When
-        val result = getProjectLogUseCase.getProjectLog(UUID.randomUUID())
+        val result = getProjectLogsUseCase.getProjectLogs(UUID.randomUUID())
 
         // Then
         assertThat(result).isEmpty()
@@ -38,10 +38,10 @@ class GetProjectLogUseCaseTest {
     @Test
     fun `should return logs list when the there are logs for project`() {
         // Given
-        every { logsRepository.getProjectLog(any()) } returns getValidLogsList()
+        every { logsRepository.getProjectLogs(any()) } returns getValidLogsList()
 
         // When
-        val result = getProjectLogUseCase.getProjectLog(UUID.randomUUID())
+        val result = getProjectLogsUseCase.getProjectLogs(UUID.randomUUID())
 
         // Then
         assertThat(result).isNotEmpty()
