@@ -18,7 +18,7 @@ class ProjectsCsvHandler(
         rowStringBuilder.append(",${entity.title}")
         rowStringBuilder.append(",${entity.description}")
         rowStringBuilder.append(",${entity.createdBy}")
-        rowStringBuilder.append(",${entity.tasks.joinToString("||")}")
+        rowStringBuilder.append(",${entity.taskIds.joinToString("||")}")
         rowStringBuilder.append(",${entity.stateId}")
         return rowStringBuilder.toString()
     }
@@ -30,7 +30,7 @@ class ProjectsCsvHandler(
             title = projectData[CsvIndices.PROJECT_TITLE],
             description = projectData[CsvIndices.PROJECT_DESCRIPTION],
             createdBy = UUID.fromString(projectData[CsvIndices.PROJECT_CREATED_BY]),
-            tasks = parseTasksList(projectData[CsvIndices.PROJECT_TASKS]),
+            taskIds = parseTasksList(projectData[CsvIndices.PROJECT_TASKS]),
             stateId = UUID.fromString(projectData[CsvIndices.PROJECT_STATE_ID])
         )
     }
