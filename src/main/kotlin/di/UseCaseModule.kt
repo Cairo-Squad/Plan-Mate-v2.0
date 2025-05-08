@@ -44,4 +44,8 @@ val useCasesModule = module {
     single { CreateStateUseCase(get()) }
     single { EditStateUseCase(get()) }
     // endregion
+    
+    // region validationProject
+    single { ValidationProject() }
+    // endregion
 }
