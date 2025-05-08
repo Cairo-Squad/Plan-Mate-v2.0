@@ -4,7 +4,7 @@ import logic.model.Log
 import logic.repositories.LogsRepository
 import java.util.*
 
-class GetProjectLogUseCase(
+class GetProjectLogsUseCase(
     private val logsRepository: LogsRepository
 ) {
     fun getProjectLogs(projectId: UUID): List<Log> {
