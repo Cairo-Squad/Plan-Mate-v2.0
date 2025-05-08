@@ -51,6 +51,6 @@ object FakeData {
         state = State(id = UUID.randomUUID(), title = "TODO")
     )
 
-    val invalidUser = User(name = "admin", password = "98543", id = UUID.randomUUID(), type = UserType.MATE)
-    val validUser = User(name = "admin", password = "76598", id = UUID.randomUUID(), type = UserType.ADMIN)
+    val mateUser = User(name = "admin", password = "98543", id = UUID.randomUUID(), type = UserType.MATE)
+    val adminUser = User(name = "admin", password = "76598", id = UUID.randomUUID(), type = UserType.ADMIN)
 }
