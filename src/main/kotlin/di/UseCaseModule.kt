@@ -9,8 +9,8 @@ import org.koin.dsl.module
 
 val useCasesModule = module {
     // region Projects
-    single { CreateProjectUseCase(projectRepository = get() ,get()) }
-    single { EditProjectUseCase(get(),get()) }
+    single { CreateProjectUseCase(projectRepository = get() ,get(), get())}
+    single { EditProjectUseCase(get(),get(), get()) }
     single { DeleteProjectUseCase(projectsRepository = get()) }
     single { GetProjectByIdUseCase(projectsRepository = get()) }
     single { GetAllProjectsUseCase(projectsRepository = get()) }
@@ -27,7 +27,7 @@ val useCasesModule = module {
 
     // region Logs
     single { GetTaskLogsUseCase(get()) }
-    single { GetProjectLogUseCase(get()) }
+    single { GetProjectLogsUseCase(get()) }
     single { AddLogUseCase(get()) }
     // endregion
 
