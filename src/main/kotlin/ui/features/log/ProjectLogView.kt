@@ -1,14 +1,13 @@
 package ui.features.log
 
-import logic.model.Log
-import logic.usecase.Log.GetProjectLogUseCase
+import logic.usecase.Log.GetProjectLogsUseCase
 import logic.usecase.project.GetAllProjectsUseCase
 import ui.utils.InputHandler
 import ui.utils.OutputFormatter
 
 class ProjectLogView(
     private val getAllProjectsUseCase: GetAllProjectsUseCase,
-    private val getProjectLogUseCase: GetProjectLogUseCase,
+    private val getProjectLogsUseCase: GetProjectLogsUseCase,
     private val inputHandler: InputHandler,
     private val outputFormatter: OutputFormatter
 ) {
@@ -36,7 +35,7 @@ class ProjectLogView(
         val projectIndex = inputHandler.promptForIntChoice("🔹 Select a project to view logs:", 1..projects.size) - 1
         val selectedProject = projects[projectIndex]
 
-        val logs = getProjectLogUseCase.getProjectLogs(selectedProject.id)
+        val logs = getProjectLogsUseCase.getProjectLogs(selectedProject.id)
 
         if (logs.isEmpty()) {
             outputFormatter.printWarning("⚠️ No logs found for project '${selectedProject.title}'.")
