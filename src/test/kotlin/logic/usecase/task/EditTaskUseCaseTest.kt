@@ -1,16 +1,15 @@
-package logic.usecase
+package logic.usecase.task
 
-import io.mockk.*
+import io.mockk.mockk
+import io.mockk.verify
 import logic.model.State
 import logic.model.Task
 import logic.repositories.TasksRepository
 import logic.usecase.Log.AddLogUseCase
-import logic.usecase.task.EditTaskUseCase
 import org.junit.jupiter.api.BeforeEach
-import java.util.*
+import java.util.UUID
 import kotlin.test.Test
 import kotlin.test.assertFailsWith
-
 
 class EditTaskUseCaseTest {
 
@@ -21,7 +20,7 @@ class EditTaskUseCaseTest {
     @BeforeEach
     fun setup() {
         tasksRepository = mockk(relaxed = true)
-        addLogUseCase=mockk(relaxed =true )
+        addLogUseCase= mockk(relaxed = true)
         editTaskUseCase = EditTaskUseCase(tasksRepository,addLogUseCase)
     }
 

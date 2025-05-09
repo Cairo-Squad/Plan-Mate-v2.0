@@ -8,12 +8,12 @@ import java.io.IOException
 import java.util.*
 
 abstract class CsvFileHandler<DTO>(
-    filePath: String,
-    private val headers: List<String>,
-    private val getDtoId: (DTO) -> UUID
+    filePath : String,
+    private val headers : List<String>,
+    private val getDtoId : (DTO) -> UUID
 ) : FileHandler<DTO> {
 
-    private val file: File = File(filePath)
+    private val file : File = File(filePath)
 
     init {
         if (!file.exists()) {
@@ -23,20 +23,23 @@ abstract class CsvFileHandler<DTO>(
         }
     }
 
-    override fun write(entity: DTO) {
+    override fun write(entity : DTO) : Boolean {
         try {
+            val numberOfRowBeforeWriter = file.readLines().size
             val newRow = fromDtoToCsvRow(entity)
             BufferedWriter(FileWriter(file, true)).use { writer ->
                 writer.appendLine(newRow)
             }
-        } catch (e: IOException) {
+            val numberOfRowAfterWriter = file.readLines().size
+            return numberOfRowAfterWriter > numberOfRowBeforeWriter
+        } catch (e : IOException) {
             throw WriteException()
-        } catch (e: Exception) {
+        } catch (e : Exception) {
             throw UnknownException()
         }
     }
 
-    private fun writeAll(entities: List<DTO>) {
+    private fun writeAll(entities : List<DTO>) {
         try {
             BufferedWriter(FileWriter(file, false)).use { writer ->
                 writer.appendLine(headers.joinToString(","))
@@ -44,15 +47,15 @@ abstract class CsvFileHandler<DTO>(
                     writer.appendLine(fromDtoToCsvRow(entity))
                 }
             }
-        } catch (e: IOException) {
+        } catch (e : IOException) {
             throw WriteException()
-        } catch (e: Exception) {
+        } catch (e : Exception) {
             throw UnknownException()
         }
     }
 
 
-    override fun edit(entity: DTO) {
+    override fun edit(entity : DTO) {
         val entityId = getDtoId(entity)
         val allEntities = readAll()
 
@@ -65,7 +68,7 @@ abstract class CsvFileHandler<DTO>(
         writeAll(updatedEntities)
     }
 
-    override fun readAll(): List<DTO> {
+    override fun readAll() : List<DTO> {
         return try {
             file.readLines()
                 .asSequence()
@@ -73,14 +76,14 @@ abstract class CsvFileHandler<DTO>(
                 .filter { it.isNotBlank() }
                 .map { fromCsvRowToDto(it) }
                 .toList()
-        } catch (e: IOException) {
+        } catch (e : IOException) {
             throw ReadException()
-        } catch (e: Exception) {
+        } catch (e : Exception) {
             throw UnknownException()
         }
     }
 
-    override fun delete(entity: DTO) {
+    override fun delete(entity : DTO) {
         try {
             val allEntities = readAll()
             if (allEntities.none { getDtoId(it) == getDtoId(entity) }) {
@@ -88,16 +91,16 @@ abstract class CsvFileHandler<DTO>(
             }
             val updatedEntities = allEntities.filter { getDtoId(it) != getDtoId(entity) }
             writeAll(updatedEntities)
-        } catch (e: EntityNotFoundException) {
-            println("Error: ${e.message}")
-        } catch (e: IOException) {
+        } catch (e : EntityNotFoundException) {
+            throw EntityNotFoundException()
+        } catch (e : IOException) {
             throw WriteException()
-        } catch (e: Exception) {
+        } catch (e : Exception) {
             throw UnknownException()
         }
     }
 
-    abstract fun fromDtoToCsvRow(entity: DTO): String
+    abstract fun fromDtoToCsvRow(entity : DTO) : String
 
-    abstract fun fromCsvRowToDto(row: String): DTO
+    abstract fun fromCsvRowToDto(row : String) : DTO
 }

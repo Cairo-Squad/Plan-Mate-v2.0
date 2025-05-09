@@ -27,12 +27,18 @@ class AuthenticationRepositoryImpl(
         return true
     }
 
-    override fun createUser(id: UUID, name: String, password: String, userType: UserType): UserDto {
+    override fun createUser(id : UUID, name : String, password : String, userType : UserType) : Boolean {
         val hashedPassword = passwordEncryptor.hashPassword(password)
         return dataSource.createUser(id, name, hashedPassword, userType)
     }
 
-    override fun editUser(user: User) {
+    override fun editUser(user: User){
         return dataSource.editUser(user.toUserDto())
+    }
+
+    override fun loginUser(name : String, password : String) : User? {
+        val users = getAllUsers()
+        val hashedPassword = passwordEncryptor.hashPassword(password)
+        return users.find { it.name == name && it.password == hashedPassword }
     }
 }

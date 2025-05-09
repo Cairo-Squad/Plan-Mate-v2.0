@@ -1,4 +1,4 @@
-package logic.usecase
+package logic.usecase.state
 
 import io.mockk.every
 import io.mockk.mockk
@@ -7,7 +7,6 @@ import logic.exception.DtoNotFoundException
 import logic.exception.EmptyNameException
 import logic.model.State
 import logic.repositories.StatesRepository
-import logic.usecase.state.EditStateUseCase
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
