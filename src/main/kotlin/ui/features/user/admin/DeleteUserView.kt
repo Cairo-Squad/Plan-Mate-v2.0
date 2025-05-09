@@ -40,10 +40,8 @@ class DeleteUserView(
 
         val confirmation = inputHandler.promptForInput("Type 'YES' to confirm: ")
 
-
         if (confirmation.equals("YES", ignoreCase = true)) {
             try {
-
                 deleteUserUseCase.deleteUser(selectedUser.id)
                 outputFormatter.printSuccess("✅ User '${selectedUser.name}' deleted successfully!")
             } catch (e: Exception) {
