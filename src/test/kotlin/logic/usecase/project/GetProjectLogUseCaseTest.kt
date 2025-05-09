@@ -26,10 +26,10 @@ class GetProjectLogUseCaseTest {
     @Test
     fun `should return an empty list when the there are no logs for this project`() {
         // Given
-        every { logsRepository.getProjectLog(UUID.randomUUID()) } returns emptyList()
+        every { logsRepository.getProjectLogs(UUID.randomUUID()) } returns emptyList()
 
         // When
-        val result = getProjectLogUseCase.getProjectLog(UUID.randomUUID())
+        val result = getProjectLogUseCase.getProjectLogs(UUID.randomUUID())
 
         // Then
         assertThat(result).isEmpty()
@@ -38,10 +38,10 @@ class GetProjectLogUseCaseTest {
     @Test
     fun `should return logs list when the there are logs for project`() {
         // Given
-        every { logsRepository.getProjectLog(any()) } returns getValidLogsList()
+        every { logsRepository.getProjectLogs(any()) } returns getValidLogsList()
 
         // When
-        val result = getProjectLogUseCase.getProjectLog(UUID.randomUUID())
+        val result = getProjectLogUseCase.getProjectLogs(UUID.randomUUID())
 
         // Then
         assertThat(result).isNotEmpty()

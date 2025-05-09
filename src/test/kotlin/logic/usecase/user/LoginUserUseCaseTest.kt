@@ -1,11 +1,11 @@
-package logic.usecase
+package logic.usecase.user
 
-import com.google.common.truth.Truth.assertThat
+import com.google.common.truth.Truth
 import data.hashing.PasswordEncryptor
 import io.mockk.every
 import io.mockk.mockk
 import logic.repositories.AuthenticationRepository
-import logic.usecase.user.LoginUserUseCase
+import logic.usecase.FakeData
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -32,7 +32,7 @@ class LoginUserUseCaseTest {
         val result = loginUserUseCase.login(mockUsers[0].name, mockUsers[0].password)
 
         //Then
-        assertThat(result).isEqualTo(FakeData.mockUsers[0])
+        Truth.assertThat(result).isEqualTo(FakeData.mockUsers[0])
     }
 
     @Test
@@ -47,7 +47,7 @@ class LoginUserUseCaseTest {
             loginUserUseCase.login(mockUsers[0].name, "123456789")
         }
         //Then
-        assertThat(exception).hasMessageThat().contains("Invalid username or password")
+        Truth.assertThat(exception).hasMessageThat().contains("Invalid username or password")
     }
 
     @Test
@@ -63,7 +63,7 @@ class LoginUserUseCaseTest {
         }
 
         //Then
-        assertThat(exception).hasMessageThat().contains("Invalid username or password")
+        Truth.assertThat(exception).hasMessageThat().contains("Invalid username or password")
     }
 
     @Test
@@ -72,7 +72,7 @@ class LoginUserUseCaseTest {
         every { authenticationRepository.getAllUsers() } throws RuntimeException("during get data error")
 
         //when&thenn
-       assertThrows<Exception> {
+        assertThrows<Exception> {
             loginUserUseCase.login("nour", "12345")
         }
     }

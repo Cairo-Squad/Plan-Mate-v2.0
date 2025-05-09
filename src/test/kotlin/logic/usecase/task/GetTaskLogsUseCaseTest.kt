@@ -1,6 +1,6 @@
-package logic.usecase
+package logic.usecase.task
 
-import com.google.common.truth.Truth.assertThat
+import com.google.common.truth.Truth
 import data.dto.EntityType
 import data.dto.UserAction
 import io.mockk.every
@@ -12,7 +12,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import java.time.LocalDateTime
-import java.util.*
+import java.util.UUID
 
 class GetTaskLogsUseCaseTest {
 
@@ -45,7 +45,7 @@ class GetTaskLogsUseCaseTest {
         val result = getTaskLogsUseCase.execute(UUID.randomUUID())
 
         // Then
-        assertThat(result).isEmpty()
+        Truth.assertThat(result).isEmpty()
     }
 
     @Test
@@ -57,7 +57,7 @@ class GetTaskLogsUseCaseTest {
         val result = getTaskLogsUseCase.execute(UUID.randomUUID())
 
         // Then
-        assertThat(result).isNotEmpty()
+        Truth.assertThat(result).isNotEmpty()
     }
 
     private fun getValidLogsList(): List<Log> {

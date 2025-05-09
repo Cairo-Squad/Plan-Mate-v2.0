@@ -4,8 +4,8 @@ import data.dto.EntityType
 import data.dto.UserAction
 import io.mockk.every
 import io.mockk.mockk
-import logic.exception.CsvWriteException
 import logic.exception.UnknownException
+import logic.exception.WriteException
 import logic.model.Log
 import logic.repositories.LogsRepository
 import logic.usecase.Log.AddLogUseCase
@@ -29,7 +29,7 @@ class AddLogUseCaseTest {
         //Given
         val projectLog = createLog()
         //When
-        val result = addLogUseCase.recordLog(projectLog)
+        val result = addLogUseCase.addLog(projectLog)
         //Then
         assertEquals(expected = Result.success(Unit), actual = result)
     }
@@ -37,22 +37,22 @@ class AddLogUseCaseTest {
     @Test
     fun `Given a project log,When adding to database,Then return failure`() {
         //Given
-        every { logsRepository.recordLog(any()) } throws CsvWriteException()
+        every { logsRepository.addLog(any()) } throws WriteException()
         val projectLog = createLog()
         //When
-        val result = addLogUseCase.recordLog(projectLog)
+        val result = addLogUseCase.addLog(projectLog)
         //Then
-        val expected = Result.failure<Exception>(CsvWriteException())
+        val expected = Result.failure<Exception>(WriteException())
         assertEquals(expected = expected.exceptionOrNull()!!::class, actual = result.exceptionOrNull()!!::class)
     }
 
     @Test
     fun `Given a project log,When adding to database,Then return  unKnown failure`() {
         //Given
-        every { logsRepository.recordLog(any()) } throws UnknownException()
+        every { logsRepository.addLog(any()) } throws UnknownException()
         val projectLog = createLog()
         //When
-        val result = addLogUseCase.recordLog(projectLog)
+        val result = addLogUseCase.addLog(projectLog)
         //Then
         val expected = Result.failure<Exception>(UnknownException())
         assertEquals(expected = expected.exceptionOrNull()!!::class, actual = result.exceptionOrNull()!!::class)

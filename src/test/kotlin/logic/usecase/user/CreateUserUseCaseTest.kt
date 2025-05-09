@@ -1,6 +1,6 @@
-package logic.usecase
+package logic.usecase.user
 
-import com.google.common.truth.Truth.assertThat
+import com.google.common.truth.Truth
 import data.dto.UserType
 import io.mockk.every
 import io.mockk.mockk
@@ -9,11 +9,10 @@ import logic.exception.EmptyNameException
 import logic.exception.EmptyPasswordException
 import logic.model.User
 import logic.repositories.AuthenticationRepository
-import logic.usecase.user.CreateUserUseCase
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import java.util.*
+import java.util.UUID
 
 class CreateUserUseCaseTest {
     private lateinit var repository: AuthenticationRepository
@@ -78,6 +77,6 @@ class CreateUserUseCaseTest {
         val secondUser = createUserUseCase.createUser(userWithDifferentId.id, user.name, user.password, user.type)
 
         // Then
-        assertThat(firstUser).isNotEqualTo(secondUser)
+        Truth.assertThat(firstUser).isNotEqualTo(secondUser)
     }
 }
