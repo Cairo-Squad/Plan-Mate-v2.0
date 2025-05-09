@@ -1,4 +1,4 @@
-package data.database.mongo
+package data.dataSource.remoteDataSource.mongo
 
 import com.mongodb.client.MongoCollection
 import com.mongodb.client.MongoDatabase
@@ -24,6 +24,9 @@ abstract class MongoDBHandlerImpl<DTO>(
 			database.createCollection(collectionName)
 		}
 	}
+	
+	abstract fun convertDtoToDocument(entity: DTO): Document
+	abstract fun convertDocumentToDto(document: Document): DTO
 	
 	private fun collectionExists(): Boolean {
 		return database.listCollectionNames().contains(collectionName)
@@ -88,7 +91,4 @@ abstract class MongoDBHandlerImpl<DTO>(
 			throw WriteException()
 		}
 	}
-	
-	abstract fun convertDtoToDocument(entity: DTO): Document
-	abstract fun convertDocumentToDto(document: Document): DTO
 }

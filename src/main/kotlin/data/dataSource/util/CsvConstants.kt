@@ -1,4 +1,4 @@
-package data.database.util
+package data.dataSource.util
 
 object CsvConstants {
     const val USERS_CSV_FILE_PATH = "users.csv"

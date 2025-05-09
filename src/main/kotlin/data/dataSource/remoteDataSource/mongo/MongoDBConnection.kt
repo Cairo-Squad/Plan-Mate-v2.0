@@ -1,11 +1,11 @@
-package data.database.mongo
+package data.dataSource.remoteDataSource.mongo
 
 import com.mongodb.ConnectionString
 import com.mongodb.MongoClientSettings
 import com.mongodb.client.MongoClient
 import com.mongodb.client.MongoClients
 import com.mongodb.client.MongoDatabase
-import data.database.util.MongoConstants
+import data.dataSource.util.MongoConstants
 
 object MongoDBConnection {
 	private var mongoClient: MongoClient? = null

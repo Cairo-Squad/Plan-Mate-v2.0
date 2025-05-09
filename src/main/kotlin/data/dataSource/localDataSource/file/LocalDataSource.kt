@@ -1,11 +1,10 @@
-package data.dataSource
+package data.dataSource.localDataSource.file
 
-import data.database.FileHandler
 import data.dto.*
 import data.repositories.DataSource
 import java.util.*
 
-class CsvDataSource(
+class LocalDataSource(
     private val logsCsvHandler: FileHandler<LogDto>,
     private val projectsCsvHandler: FileHandler<ProjectDto>,
     private val statesCsvHandler: FileHandler<StateDto>,

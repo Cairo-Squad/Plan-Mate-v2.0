@@ -1,6 +1,6 @@
-package data.database
+package data.dataSource.localDataSource.file
 
-import data.database.util.CsvIndices
+import data.dataSource.util.CsvIndices
 import data.dto.ProjectDto
 import java.util.*
 
@@ -9,7 +9,7 @@ class ProjectsCsvHandler(
     headers: List<String>
 ) : CsvFileHandler<ProjectDto>(
     filePath = filePath,
-    headers = headers,
+    columnNames = headers,
     getDtoId = { it.id }
 ) {
     override fun fromDtoToCsvRow(entity: ProjectDto): String {

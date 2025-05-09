@@ -1,4 +1,4 @@
-package data.database
+package data.dataSource.localDataSource.file
 
 import logic.exception.*
 import java.io.BufferedWriter
@@ -9,7 +9,7 @@ import java.util.*
 
 abstract class CsvFileHandler<DTO>(
     filePath: String,
-    private val headers: List<String>,
+    private val columnNames: List<String>,
     private val getDtoId: (DTO) -> UUID
 ) : FileHandler<DTO> {
 
@@ -18,11 +18,14 @@ abstract class CsvFileHandler<DTO>(
     init {
         if (!file.exists()) {
             FileWriter(file, true).use { writer ->
-                writer.appendLine(headers.joinToString(","))
+                writer.appendLine(columnNames.joinToString(","))
             }
         }
     }
-
+    
+    abstract fun fromDtoToCsvRow(entity: DTO): String
+    abstract fun fromCsvRowToDto(row: String): DTO
+    
     override fun write(entity: DTO) {
         try {
             val newRow = fromDtoToCsvRow(entity)
@@ -39,7 +42,7 @@ abstract class CsvFileHandler<DTO>(
     private fun writeAll(entities: List<DTO>) {
         try {
             BufferedWriter(FileWriter(file, false)).use { writer ->
-                writer.appendLine(headers.joinToString(","))
+                writer.appendLine(columnNames.joinToString(","))
                 entities.forEach { entity ->
                     writer.appendLine(fromDtoToCsvRow(entity))
                 }
@@ -89,15 +92,11 @@ abstract class CsvFileHandler<DTO>(
             val updatedEntities = allEntities.filter { getDtoId(it) != getDtoId(entity) }
             writeAll(updatedEntities)
         } catch (e: EntityNotFoundException) {
-            println("Error: ${e.message}")
+            throw EntityNotFoundException()
         } catch (e: IOException) {
             throw WriteException()
         } catch (e: Exception) {
             throw UnknownException()
         }
     }
-
-    abstract fun fromDtoToCsvRow(entity: DTO): String
-
-    abstract fun fromCsvRowToDto(row: String): DTO
 }

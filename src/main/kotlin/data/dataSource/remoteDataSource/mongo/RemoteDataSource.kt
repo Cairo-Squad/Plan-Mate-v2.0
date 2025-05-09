@@ -1,19 +1,18 @@
-package data.dataSource
+package data.dataSource.remoteDataSource.mongo
 
 import com.mongodb.client.MongoDatabase
-import data.database.mongo.*
 import data.dto.*
 import data.repositories.DataSource
 import java.util.*
 
-class MongoDataSource(
-	database: MongoDatabase
+class RemoteDataSource(
+	database: MongoDatabase,
+	private val logsHandler: LogsMongoHandlerImpl = LogsMongoHandlerImpl(database),
+	private val projectsHandler: ProjectsMongoHandlerImpl = ProjectsMongoHandlerImpl(database),
+	private val statesHandler: StatesMongoHandlerImpl = StatesMongoHandlerImpl(database),
+	private val tasksHandler: TasksMongoHandlerImpl = TasksMongoHandlerImpl(database),
+	private val usersHandler: UsersMongoHandlerImpl = UsersMongoHandlerImpl(database),
 ) : DataSource {
-	private val logsHandler = LogsMongoHandlerImpl(database)
-	private val projectsHandler = ProjectsMongoHandlerImpl(database)
-	private val statesHandler = StatesMongoHandlerImpl(database)
-	private val tasksHandler = TasksMongoHandlerImpl(database)
-	private val usersHandler = UsersMongoHandlerImpl(database)
 
 	override fun getAllUsers(): List<UserDto> {
 		return usersHandler.readAll()

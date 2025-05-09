@@ -1,4 +1,4 @@
-package data.database.mongo
+package data.dataSource.remoteDataSource.mongo
 
 import java.util.UUID
 

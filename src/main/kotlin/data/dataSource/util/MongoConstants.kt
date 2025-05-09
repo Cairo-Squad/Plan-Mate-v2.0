@@ -1,4 +1,4 @@
-package data.database.util
+package data.dataSource.util
 
 object MongoConstants {
 	const val MONGO_DB_CONNECT_STRING = "mongodb+srv://ahmbdelkhalek:UufV0Zf4KpU9uFE7@planmate.ubgejn9.mongodb.net/?retryWrites=true&w=majority&appName=planMate"

@@ -1,4 +1,4 @@
-package data.database.util
+package data.dataSource.util
 
 object UserActionConstants {
 	const val DELETE_PROJECT = "DeleteProject"
