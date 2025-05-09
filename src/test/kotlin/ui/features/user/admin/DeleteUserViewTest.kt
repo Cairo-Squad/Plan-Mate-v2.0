@@ -1,15 +1,13 @@
 package ui.features.user.admin
 
-import data.dto.UserType
 import io.mockk.*
-import logic.model.User
 import logic.usecase.user.DeleteUserUseCase
 import logic.usecase.user.GetAllUsersUseCase
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import ui.utils.InputHandler
 import ui.utils.OutputFormatter
-import java.util.*
+import util.FakeData.getAllUsers
 import kotlin.RuntimeException
 
 class DeleteUserViewTest {
@@ -24,13 +22,13 @@ class DeleteUserViewTest {
     fun setUp() {
         inputHandler = mockk(relaxed = true)
         outputFormatter = mockk(relaxed = true)
-        getAllUsersUseCase = mockk()
+        getAllUsersUseCase = mockk(relaxed = true)
         deleteUserUseCase = mockk(relaxed = true)
         deleteUserView = DeleteUserView(inputHandler, outputFormatter, getAllUsersUseCase, deleteUserUseCase)
     }
 
     @Test
-    fun `fun delete user should print error if there is no users`() {
+    fun `function delete user should print error if there is no users`() {
         //Given
         every { getAllUsersUseCase.getAllUsers() } returns emptyList()
 
@@ -46,7 +44,7 @@ class DeleteUserViewTest {
     @Test
     fun `should delete when user confirms deletion`() {
         //Given
-        every { getAllUsersUseCase.getAllUsers() } returns listOf(firstUser, secondUser)
+        every { getAllUsersUseCase.getAllUsers() } returns getAllUsers()
         every { inputHandler.promptForIntChoice(any(), any()) } returns 1
         every { inputHandler.promptForInput(any()) } returns "YES"
 
@@ -54,15 +52,15 @@ class DeleteUserViewTest {
         deleteUserView.deleteUser()
 
         //Then
-        verify { deleteUserUseCase.deleteUser(firstUser.id) }
-        verify { outputFormatter.printSuccess("✅ User '${firstUser.name}' deleted successfully!") }
+        verify { deleteUserUseCase.deleteUser(getAllUsers()[0].id) }
+        verify { outputFormatter.printSuccess("✅ User '${getAllUsers()[0].name}' deleted successfully!") }
         verify { inputHandler.waitForEnter() }
     }
 
     @Test
     fun `should not delete when user does not confirm deletion`() {
         //Given
-        every { getAllUsersUseCase.getAllUsers() } returns listOf(firstUser, secondUser)
+        every { getAllUsersUseCase.getAllUsers() } returns getAllUsers()
         every { inputHandler.promptForIntChoice(any(), any()) } returns 1
         every { inputHandler.promptForInput(any()) } returns "NO"
 
@@ -78,10 +76,10 @@ class DeleteUserViewTest {
     fun `should handle exception when user deletion fails during data retrieval`() {
         //Given
         val exception = RuntimeException("Failed to retrieve data")
-        every { getAllUsersUseCase.getAllUsers() } returns listOf(firstUser, secondUser)
+        every { getAllUsersUseCase.getAllUsers() } returns getAllUsers()
         every { inputHandler.promptForIntChoice(any(), any()) } returns 2
         every { inputHandler.promptForInput(any()) } returns "YES"
-        every { deleteUserUseCase.deleteUser(secondUser.id) } throws exception
+        every { deleteUserUseCase.deleteUser(getAllUsers()[1].id) } throws exception
 
         //When
         deleteUserView.deleteUser()
@@ -90,13 +88,4 @@ class DeleteUserViewTest {
         verify { outputFormatter.printInfo("🔄 Action canceled. No user was deleted: ${exception.message}") }
         verify { inputHandler.waitForEnter() }
     }
-
-    private val firstUser = User(
-        UUID.fromString("55555555-1244-1234-1144-55555555"), "Hadeel",
-        password = "8474",
-        UserType.MATE
-    )
-    private val secondUser = User(
-        UUID.fromString("11111111-2222-3333-2222-11111111"), "Fathy", password = "97609", UserType.ADMIN
-    )
 }

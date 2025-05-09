@@ -1,16 +1,14 @@
 package ui.features.user.admin
 
-import data.dto.UserType
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
-import logic.model.User
 import logic.usecase.user.GetAllUsersUseCase
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import ui.utils.InputHandler
 import ui.utils.OutputFormatter
-import java.util.*
+import util.FakeData.getAllUsers
 
 class ListAllUsersViewTest {
 
@@ -23,12 +21,12 @@ class ListAllUsersViewTest {
     fun setUp() {
         inputHandler = mockk(relaxed = true)
         outputFormatter = mockk(relaxed = true)
-        getAllUsersUseCase = mockk()
+        getAllUsersUseCase = mockk(relaxed = true)
         listAllUsersView = ListAllUsersView(inputHandler, outputFormatter, getAllUsersUseCase)
     }
 
     @Test
-    fun `fun list all users should print error if there is no users`() {
+    fun `function list all users should print error if there is no users`() {
         //Given
         every { getAllUsersUseCase.getAllUsers() } returns emptyList()
 
@@ -42,9 +40,9 @@ class ListAllUsersViewTest {
     }
 
     @Test
-    fun `fun list all users should print all users when found`() {
+    fun `function list all users should print all users when found`() {
         //Given
-        every { getAllUsersUseCase.getAllUsers() } returns listOf(firstUser, secondUser)
+        every { getAllUsersUseCase.getAllUsers() } returns getAllUsers()
 
         //When
         listAllUsersView.listAllUsers()
@@ -52,18 +50,9 @@ class ListAllUsersViewTest {
         //Then
         verify { outputFormatter.printHeader(any()) }
         verify { outputFormatter.printInfo("📋 Available Users:") }
-        verify { outputFormatter.printInfo("📌 1. Hadeel | 🆔 ID: ${firstUser.id} | 🏷️ Type: ${firstUser.type}") }
-        verify { outputFormatter.printInfo("📌 2. Fathy | 🆔 ID: ${secondUser.id} | 🏷️ Type: ${secondUser.type}") }
+        verify { outputFormatter.printInfo("📌 1. Hadeel | 🆔 ID: ${getAllUsers()[0].id} | 🏷️ Type: ${getAllUsers()[0].type}") }
+        verify { outputFormatter.printInfo("📌 2. Fathy | 🆔 ID: ${getAllUsers()[1].id} | 🏷️ Type: ${getAllUsers()[1].type}") }
         verify { inputHandler.waitForEnter() }
         verify(exactly = 0) { outputFormatter.printError(any()) }
     }
-
-    private val firstUser = User(
-        UUID.fromString("55555555-1244-1234-1144-55555555"), "Hadeel",
-        password = "8474",
-        UserType.MATE
-    )
-    private val secondUser = User(
-        UUID.fromString("11111111-2222-3333-2222-11111111"), "Fathy", password = "98665", UserType.ADMIN
-    )
 }
