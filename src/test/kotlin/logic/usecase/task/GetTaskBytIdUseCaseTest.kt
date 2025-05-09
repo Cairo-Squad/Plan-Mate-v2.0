@@ -1,4 +1,4 @@
-package logic.usecase
+package logic.usecase.task
 
 import com.google.common.truth.Truth.assertThat
 import io.mockk.every
@@ -6,9 +6,9 @@ import io.mockk.mockk
 import logic.model.State
 import logic.model.Task
 import logic.repositories.TasksRepository
-import logic.usecase.task.GetTaskBytIdUseCase
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import java.util.*
 import kotlin.NoSuchElementException
 
@@ -42,7 +42,7 @@ class GetTaskByIdUseCaseTest {
         every { taskRepository.getTaskById(taskId) } throws NoSuchElementException("Task not found")
 
         // When & Then
-        val exception = org.junit.jupiter.api.assertThrows<NoSuchElementException> {
+        val exception = assertThrows<NoSuchElementException> {
             getTaskByIdUseCase.getTaskById(taskId)
         }
         assertThat(exception.message).isEqualTo("Task not found")
@@ -55,7 +55,7 @@ class GetTaskByIdUseCaseTest {
         every { taskRepository.getTaskById(taskId) } throws RuntimeException("Unexpected error")
 
         // When & Then
-        val exception = org.junit.jupiter.api.assertThrows<RuntimeException> {
+        val exception = assertThrows<RuntimeException> {
             getTaskByIdUseCase.getTaskById(taskId)
         }
         assertThat(exception.message).isEqualTo("Unexpected error")

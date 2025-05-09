@@ -1,14 +1,14 @@
-package logic.usecase
+package logic.usecase.user
 
-import com.google.common.truth.Truth.assertThat
+import com.google.common.truth.Truth
 import io.mockk.every
 import io.mockk.mockk
 import logic.repositories.AuthenticationRepository
-import logic.usecase.user.DeleteUserUseCase
+import logic.usecase.FakeData
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import java.util.*
+import java.util.UUID
 
 class DeleteUserUseCaseTest {
     private lateinit var authenticationRepository : AuthenticationRepository
@@ -23,14 +23,14 @@ class DeleteUserUseCaseTest {
     @Test
     fun `should return true when userid exist`() {
         // Given
-        val mockUsers=FakeData.mockUsers
+        val mockUsers= FakeData.mockUsers
         every { authenticationRepository.deleteUser(mockUsers[0].id) } returns true
 
         // When
         val result = deleteUserUseCase.deleteUser(mockUsers[0].id)
 
         // Then
-        assertThat(result).isTrue()
+        Truth.assertThat(result).isTrue()
     }
 
     @Test
@@ -43,7 +43,7 @@ class DeleteUserUseCaseTest {
         val result = deleteUserUseCase.deleteUser(notExistUserId)
 
         // Then
-        assertThat(result).isFalse()
+        Truth.assertThat(result).isFalse()
     }
 
     @Test

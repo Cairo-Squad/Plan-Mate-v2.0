@@ -92,7 +92,7 @@ abstract class CsvFileHandler<DTO>(
             val updatedEntities = allEntities.filter { getDtoId(it) != getDtoId(entity) }
             writeAll(updatedEntities)
         } catch (e : EntityNotFoundException) {
-            println("Error: ${e.message}")
+            throw EntityNotFoundException()
         } catch (e : IOException) {
             throw WriteException()
         } catch (e : Exception) {

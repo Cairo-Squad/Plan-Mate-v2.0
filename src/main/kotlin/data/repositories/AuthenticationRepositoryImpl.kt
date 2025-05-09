@@ -32,7 +32,7 @@ class AuthenticationRepositoryImpl(
         return dataSource.createUser(id, name, hashedPassword, userType)
     }
 
-    override fun editUser(user: User) {
+    override fun editUser(user: User){
         return dataSource.editUser(user.toUserDto())
     }
 

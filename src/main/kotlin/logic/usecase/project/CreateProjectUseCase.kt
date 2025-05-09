@@ -21,7 +21,7 @@ class CreateProjectUseCase(
         validateProjectCreation(project, user)
         projectRepository.createProject(project, user)
 
-        val log = Log(
+       /* val log = Log(
             id = UUID.randomUUID(),
             entityId = project.id,
             entityTitle = project.title,
@@ -31,7 +31,7 @@ class CreateProjectUseCase(
             userAction = UserAction.CreateProject(project.title, project.id)
         )
 
-        addLogUseCase.addLog(log)
+        addLogUseCase.addLog(log)*/
 
     }
 }
