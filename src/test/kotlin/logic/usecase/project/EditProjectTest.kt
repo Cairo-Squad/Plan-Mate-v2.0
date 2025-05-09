@@ -20,22 +20,25 @@ class EditProjectTest {
     private val projectsRepository = mockk<ProjectsRepository>(relaxed = true)
     private lateinit var editProjectDescription: EditProjectUseCase
     private lateinit var addLogUseCase: AddLogUseCase
+    private lateinit var validationProject: ValidationProject
 
     @BeforeEach
     fun setup() {
+        validationProject = mockk(relaxed = true)
         addLogUseCase=mockk(relaxed = true)
-        editProjectDescription = EditProjectUseCase(projectsRepository,addLogUseCase)
+        editProjectDescription = EditProjectUseCase(projectsRepository,addLogUseCase, validationProject)
     }
 
     @Test
     fun `should successfully edit project when valid new description is given`() {
         //Given
         val newProject = getNewProject()
-
+        every { validationProject.validateEditProject(newProject) } returns Unit
         //When
         editProjectDescription.editProject(newProject)
 
         //Then
+        verify { validationProject.validateEditProject(newProject) }
         verify { projectsRepository.editProject(any()) }
     }
 
@@ -75,6 +78,7 @@ class EditProjectTest {
     fun `should throw empty name exception when editing project with empty title`() {
         //Given
         val newProject = getNewProject().copy(title = "   ")
+        every { validationProject.validateEditProject(newProject) } throws EmptyNameException()
 
         //When & Then
         assertThrows<EmptyNameException> { editProjectDescription.editProject(newProject) }

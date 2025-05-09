@@ -1,7 +1,7 @@
-package data.database
+package data.dataSource.localDataSource.file
 
-import data.database.util.CsvIndices
-import data.database.util.UserActionConstants
+import data.dataSource.util.CsvIndices
+import data.dataSource.util.UserActionConstants
 import data.dto.EntityType
 import data.dto.LogDto
 import data.dto.UserAction
@@ -14,7 +14,7 @@ class LogsCsvHandler(
     headers: List<String>
 ) : CsvFileHandler<LogDto>(
     filePath = filePath,
-    headers = headers,
+    columnNames = headers,
     getDtoId = { it.id }
 ) {
 

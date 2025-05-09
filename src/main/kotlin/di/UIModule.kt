@@ -54,7 +54,7 @@ val uiModule = module {
     }
 
     single {
-        AdminManagementView(get(), get(), get(), get(), get(), get(), get(), get())
+        AdminManagementView(get(), get(), get(), get(), get(), get(), get(), get(),get())
     }
 
     single {

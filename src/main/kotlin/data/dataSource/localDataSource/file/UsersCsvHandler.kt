@@ -1,6 +1,6 @@
-package data.database
+package data.dataSource.localDataSource.file
 
-import data.database.util.CsvIndices
+import data.dataSource.util.CsvIndices
 import data.dto.UserDto
 import data.dto.UserType
 import java.util.*
@@ -10,7 +10,7 @@ class UsersCsvHandler(
     headers: List<String>
 ) : CsvFileHandler<UserDto>(
     filePath = filePath,
-    headers = headers,
+    columnNames = headers,
     getDtoId = { it.id }
 ) {
 

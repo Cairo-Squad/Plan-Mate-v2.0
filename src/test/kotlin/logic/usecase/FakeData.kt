@@ -11,4 +11,7 @@ object FakeData {
         User(id = UUID.randomUUID(), name = "nourhan", password = "1234567", type = UserType.MATE),
         User(id = UUID.randomUUID(), name = "nourhan", password = "12345678", type = UserType.MATE)
     )
+    
+    val adminUser = User(UUID.randomUUID(), "ahmed", "pass", UserType.ADMIN)
+    val mateUser = User(UUID.randomUUID(), "ahmed", "pass", UserType.MATE)
 }

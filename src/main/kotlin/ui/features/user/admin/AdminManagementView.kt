@@ -1,6 +1,7 @@
 package ui.features.user.admin
 import ui.features.log.LogManagementView
 import ui.features.project.ProjectManagementView
+import ui.features.task.TaskManagementView
 import ui.utils.InputHandler
 import ui.utils.OutputFormatter
 class AdminManagementView(
@@ -12,6 +13,7 @@ class AdminManagementView(
     private val deleteUserView: DeleteUserView,
     private val editUserView: EditUserView,
     private val listAllUsersView: ListAllUsersView,
+    private val taskManagementView: TaskManagementView
 ) {
     fun showAdminMenu() {
         while (true) {
@@ -27,16 +29,18 @@ class AdminManagementView(
                 listOf(
                     "📂 1. Manage Projects",
                     "👥 2. Manage Users",
-                    "📜 3. View Audit Logs",
-                    "🚪 4. Logout"
+                    "✅ 3. Manage Tasks",
+                    "📜 4. View Audit Logs",
+                    "🚪 5. Logout"
                 )
             )
 
             when (inputHandler.promptForIntChoice("🛠️ Select an option:", 1..4)) {
                 1 -> projectManagementView.showProjectMenu()
                 2 -> showUserManagementMenu()
-                3 -> auditMenuView.showAuditMenu()
-                4 -> {
+                3 -> taskManagementView.showTaskMenu()
+                4 -> auditMenuView.showAuditMenu()
+                5 -> {
                     outputFormatter.printSuccess("✅ You have logged out successfully! Have a great day! 👋")
                     break
 

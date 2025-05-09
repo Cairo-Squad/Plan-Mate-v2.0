@@ -1,4 +1,4 @@
-package data.database
+package data.dataSource.localDataSource.file
 
 interface FileHandler<DTO> {
     fun write(entity : DTO) : Boolean

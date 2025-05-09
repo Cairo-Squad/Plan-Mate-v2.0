@@ -2,8 +2,6 @@ package logic.usecase.project
 
 import data.dto.EntityType
 import data.dto.UserAction
-import logic.exception.EmptyNameException
-import logic.exception.ProjectNotFoundException
 import logic.model.Log
 import logic.model.Project
 import logic.repositories.ProjectsRepository
@@ -11,10 +9,13 @@ import logic.usecase.Log.AddLogUseCase
 import java.time.LocalDateTime
 import java.util.UUID
 
-class EditProjectUseCase(private val projectsRepository: ProjectsRepository, private val addLogUseCase: AddLogUseCase) {
-
+class EditProjectUseCase(
+    private val projectsRepository: ProjectsRepository,
+    private val addLogUseCase: AddLogUseCase,
+    private val validationProject: ValidationProject
+) {
     fun editProject(newProject: Project) {
-        validateNewProject(newProject)
+        validationProject.validateEditProject(newProject)
         projectsRepository.editProject(newProject)
 
         val projectInfo = projectsRepository.getProjectById(newProject.id)
@@ -31,11 +32,5 @@ class EditProjectUseCase(private val projectsRepository: ProjectsRepository, pri
 
         addLogUseCase.addLog(log)
 
-    }
-
-    private fun validateNewProject(newProject: Project) {
-        if (newProject.title.isBlank()) {
-            throw EmptyNameException()
-        }
     }
 }

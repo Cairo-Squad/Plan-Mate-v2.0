@@ -1,4 +1,4 @@
-package data.database.util
+package data.dataSource.util
 
 object CsvIndices {
 	const val LOG_ID = 0

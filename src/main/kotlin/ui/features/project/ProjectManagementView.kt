@@ -24,12 +24,12 @@ class ProjectManagementView(
 
             outputFormatter.printMenu(
                 listOf(
-                    "🆕 1. Create Project",
+                    "🆕  1. Create Project",
                     "✏️  2. Edit Project",
                     "🗑️  3. Delete Project",
-                    "📜 4. View Project Logs",
-                    "📂 5. View All Projects",
-                    "🚪 6. Exit"
+                    "📜  4. View Project Logs",
+                    "📂  5. View All Projects",
+                    "🚪  6. Exit"
                 )
             )
 

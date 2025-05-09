@@ -1,8 +1,9 @@
-package data.database.mongo
+package data.dataSource.remoteDataSource.mongo
 
 import com.mongodb.client.MongoDatabase
-import data.database.util.MongoConstants
-import data.database.util.UserActionConstants
+import data.dataSource.util.MongoConstants
+import data.dataSource.util.UserActionConstants
+
 import data.dto.EntityType
 import data.dto.LogDto
 import data.dto.UserAction

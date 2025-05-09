@@ -1,7 +1,7 @@
-package data.database.mongo
+package data.dataSource.remoteDataSource.mongo
 
 import com.mongodb.client.MongoDatabase
-import data.database.util.MongoConstants
+import data.dataSource.util.MongoConstants
 import data.dto.UserDto
 import data.dto.UserType
 import org.bson.Document

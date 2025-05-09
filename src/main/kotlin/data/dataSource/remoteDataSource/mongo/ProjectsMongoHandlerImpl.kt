@@ -1,7 +1,7 @@
-package data.database.mongo
+package data.dataSource.remoteDataSource.mongo
 
 import com.mongodb.client.MongoDatabase
-import data.database.util.MongoConstants
+import data.dataSource.util.MongoConstants
 import data.dto.ProjectDto
 import org.bson.Document
 import java.util.*
@@ -19,7 +19,7 @@ class ProjectsMongoHandlerImpl(
 			.append(MongoConstants.TITLE, entity.title)
 			.append(MongoConstants.DESCRIPTION, entity.description)
 			.append(MongoConstants.CREATED_BY, entity.createdBy.toString())
-			.append(MongoConstants.TASKS, entity.tasks.map { it.toString() })
+			.append(MongoConstants.TASKS, entity.taskIds.map { it.toString() })
 			.append(MongoConstants.STATE_ID, entity.stateId.toString())
 	}
 	
@@ -31,7 +31,7 @@ class ProjectsMongoHandlerImpl(
 			title = document.getString(MongoConstants.TITLE),
 			description = document.getString(MongoConstants.DESCRIPTION),
 			createdBy = UUID.fromString(document.getString(MongoConstants.CREATED_BY)),
-			tasks = tasksList.map { UUID.fromString(it) },
+			taskIds = tasksList.map { UUID.fromString(it) },
 			stateId = UUID.fromString(document.getString(MongoConstants.STATE_ID))
 		)
 	}

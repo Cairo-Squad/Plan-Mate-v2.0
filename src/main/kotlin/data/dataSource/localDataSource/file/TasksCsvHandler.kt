@@ -1,6 +1,6 @@
-package data.database
+package data.dataSource.localDataSource.file
 
-import data.database.util.CsvIndices
+import data.dataSource.util.CsvIndices
 import data.dto.TaskDto
 import java.util.*
 
@@ -9,7 +9,7 @@ class TasksCsvHandler(
     headers: List<String>
 ) : CsvFileHandler<TaskDto>(
     filePath = filePath,
-    headers = headers,
+    columnNames = headers,
     getDtoId = { it.id }
 ) {
     override fun fromDtoToCsvRow(entity: TaskDto): String {
