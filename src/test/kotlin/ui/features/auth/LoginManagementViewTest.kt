@@ -2,6 +2,7 @@ package ui.features.auth
 
 import data.dto.UserType
 import io.mockk.*
+import kotlinx.coroutines.test.runTest
 import logic.model.User
 import logic.usecase.user.LoginUserUseCase
 import org.junit.jupiter.api.BeforeEach
@@ -33,11 +34,11 @@ class LoginManagementViewTest {
         )
     }
     @Test
-    fun `should see login successfuly when username and password is valid` () {
+    fun `should see login successfuly when username and password is valid` () = runTest {
         val user = User(id = UUID.randomUUID(), name = "nour", password = "123456", type = UserType.MATE)
         every { inputHandler.promptForInput(any()) } returns "nour"
         every { inputHandler.promptForPassword(any()) } returns "123456"
-        every { loginUserUseCase.login("nour", "123456") } returns user
+        coEvery { loginUserUseCase.login("nour", "123456") } returns user
         mockkObject(UserSession)
         every { UserSession.setUser(user) } just Runs
 
@@ -49,18 +50,18 @@ class LoginManagementViewTest {
     }
 
     @Test
-    fun `should user see Username cannot be empty error when username is empty`() {
+    fun `should user see Username cannot be empty error when username is empty`() = runTest {
         every { inputHandler.promptForInput(any()) } returns ""
 
         loginManagementView.showLoginScreen()
 
         verify { outputFormatter.printError("❌ Username cannot be empty.") }
         verify { inputHandler.waitForEnter() }
-        verify(exactly = 0) { loginUserUseCase.login(any(), any()) }
+        coVerify(exactly = 0) { loginUserUseCase.login(any(), any()) }
     }
 
     @Test
-    fun `should user see Password cannot be empty error when password is empty`() {
+    fun `should user see Password cannot be empty error when password is empty`() = runTest {
         every { inputHandler.promptForInput(any()) } returns "nour"
         every { inputHandler.promptForPassword(any()) } returns ""
 
@@ -68,16 +69,16 @@ class LoginManagementViewTest {
 
         verify { outputFormatter.printError("❌ Password cannot be empty.") }
         verify { inputHandler.waitForEnter() }
-        verify(exactly = 0) { loginUserUseCase.login(any(), any()) }
+        coVerify(exactly = 0) { loginUserUseCase.login(any(), any()) }
     }
 
 
 
     @Test
-    fun `should see Authentication failed Invalid username or password is invalid `() {
+    fun `should see Authentication failed Invalid username or password is invalid `() = runTest {
         every { inputHandler.promptForInput(any()) } returns "nour"
         every { inputHandler.promptForPassword(any()) } returns "1234567"
-        every { loginUserUseCase.login("nour", "1234567") } throws Exception("Invalid username or password")
+        coEvery { loginUserUseCase.login("nour", "1234567") } throws Exception("Invalid username or password")
 
         loginManagementView.showLoginScreen()
 

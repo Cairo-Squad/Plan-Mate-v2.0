@@ -1,5 +1,6 @@
 package ui.features.auth
 
+import kotlinx.coroutines.runBlocking
 import logic.usecase.user.LoginUserUseCase
 import ui.features.user.UserManagementView
 import ui.utils.InputHandler
@@ -12,21 +13,21 @@ class LoginManagementView(
     private val userManagementView : UserManagementView
 
 ) {
-    fun showLoginScreen() {
+    fun showLoginScreen() = runBlocking {
         outputFormatter.printHeader("🔑 PlanMate - Login")
 
         val username = inputHandler.promptForInput("👤 Username: ")
         if (username.isEmpty()) {
             outputFormatter.printError("❌ Username cannot be empty.")
             inputHandler.waitForEnter()
-            return
+	        return@runBlocking
         }
 
         val password = inputHandler.promptForPassword("🔒 Password: ")
         if (password.isEmpty()) {
             outputFormatter.printError("❌ Password cannot be empty.")
             inputHandler.waitForEnter()
-            return
+	        return@runBlocking
         }
 
         try {
@@ -36,7 +37,7 @@ class LoginManagementView(
 
             outputFormatter.printSuccess("🎉 Login successful! Welcome, ${user.name} 🙌")
             userManagementView.showUserMenu()
-            return
+	        return@runBlocking
 
         } catch (e : Exception) {
             outputFormatter.printError("❌ Authentication failed: ${e.message}")

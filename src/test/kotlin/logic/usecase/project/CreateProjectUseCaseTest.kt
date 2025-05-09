@@ -1,8 +1,10 @@
 package logic.usecase.project
 
+import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
+import kotlinx.coroutines.test.runTest
 import logic.exception.EmptyTitleException
 import logic.exception.InvalidUserException
 import logic.repositories.ProjectsRepository
@@ -29,7 +31,7 @@ class CreateProjectUseCaseTest() {
     }
 
     @Test
-    fun `should successfully create a project when user type is admin`() {
+    fun `should successfully create a project when user type is admin`() = runTest {
         //Given
         val project = FakeData.validProject
         every { validationCreationProjectCreation.validateCreateProject(project, adminUser) } returns Unit
@@ -39,11 +41,11 @@ class CreateProjectUseCaseTest() {
 
         //Then
         verify(exactly = 1) { validationCreationProjectCreation.validateCreateProject(project, adminUser) }
-        verify(exactly = 1) { projectRepository.createProject(project, adminUser) }
+        coVerify(exactly = 1) { projectRepository.createProject(project, adminUser) }
     }
 
     @Test
-    fun `should not create a project when user type is mate`() {
+    fun `should not create a project when user type is mate`() = runTest {
         // Given
         val project = FakeData.validProject
         every { validationCreationProjectCreation.validateCreateProject(project, mateUser) } throws InvalidUserException()
@@ -55,7 +57,7 @@ class CreateProjectUseCaseTest() {
     }
 
     @Test
-    fun `should create a project successfully when description is empty`() {
+    fun `should create a project successfully when description is empty`() = runTest {
         //Given
         val project = FakeData.projectWithNoDescription
         every { validationCreationProjectCreation.validateCreateProject(project, adminUser) } returns Unit
@@ -65,11 +67,11 @@ class CreateProjectUseCaseTest() {
 
         //Then
         verify(exactly = 1) { validationCreationProjectCreation.validateCreateProject(project, adminUser) }
-        verify(exactly = 1) { projectRepository.createProject(project, adminUser) }
+        coVerify(exactly = 1) { projectRepository.createProject(project, adminUser) }
     }
 
     @Test
-    fun `should throw exception when project title is blank`() {
+    fun `should throw exception when project title is blank`() = runTest {
         //Given
         val project = FakeData.projectWithNoTitle
         every { validationCreationProjectCreation.validateCreateProject(project, adminUser) } throws EmptyTitleException()

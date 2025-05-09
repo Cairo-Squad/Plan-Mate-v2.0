@@ -1,6 +1,7 @@
 package ui.features.project
 
 import io.mockk.*
+import kotlinx.coroutines.test.runTest
 import logic.model.Project
 import logic.model.State
 import logic.usecase.project.DeleteProjectUseCase
@@ -53,9 +54,9 @@ class ProjectDeleteViewTest {
 	}
 	
 	@Test
-	fun `should show error when no projects available`() {
+	fun `should show error when no projects available`() = runTest {
 		// Given
-		every { getAllProjectsUseCase.getAllProjects() } returns emptyList()
+		coEvery { getAllProjectsUseCase.getAllProjects() } returns emptyList()
 		
 		// When
 		projectDeleteView.deleteProject()
@@ -67,13 +68,13 @@ class ProjectDeleteViewTest {
 	}
 	
 	@Test
-	fun `should delete project successfully when user confirms`() {
+	fun `should delete project successfully when user confirms`() = runTest {
 		// Given
 		val projects = getProjects(3)
 		val selectedIndex = 1
 		val selectedProject = projects[selectedIndex]
 		
-		every { getAllProjectsUseCase.getAllProjects() } returns projects
+		coEvery { getAllProjectsUseCase.getAllProjects() } returns projects
 		every {
 			inputHandler.promptForIntChoice(
 				"🔹 Select a project to delete:",
@@ -81,7 +82,7 @@ class ProjectDeleteViewTest {
 			)
 		} returns 2
 		every { inputHandler.promptForInput("Type 'YES' to confirm deletion: ") } returns "YES"
-		every { deleteProjectUseCase.deleteProjectById(selectedProject.id) } just Runs
+		coEvery { deleteProjectUseCase.deleteProjectById(selectedProject.id) } just Runs
 		every { inputHandler.waitForEnter() } just Runs
 		
 		// When
@@ -94,19 +95,19 @@ class ProjectDeleteViewTest {
 			verify { outputFormatter.printInfo(match { it.contains("${index + 1}") && it.contains(project.title) }) }
 		}
 		verify { outputFormatter.printWarning(match { it.contains(selectedProject.title) && it.contains("cannot be undone") }) }
-		verify { deleteProjectUseCase.deleteProjectById(selectedProject.id) }
+		coVerify { deleteProjectUseCase.deleteProjectById(selectedProject.id) }
 		verify { outputFormatter.printSuccess(match { it.contains(selectedProject.title) && it.contains("deleted successfully") }) }
 		verify { inputHandler.waitForEnter() }
 	}
 	
 	@Test
-	fun `should not delete project when user does not confirm`() {
+	fun `should not delete project when user does not confirm`() = runTest {
 		// Given
 		val projects = getProjects(3)
 		val selectedIndex = 1
 		val selectedProject = projects[selectedIndex]
 		
-		every { getAllProjectsUseCase.getAllProjects() } returns projects
+		coEvery { getAllProjectsUseCase.getAllProjects() } returns projects
 		every {
 			inputHandler.promptForIntChoice(
 				"🔹 Select a project to delete:",
@@ -122,19 +123,19 @@ class ProjectDeleteViewTest {
 		// Then
 		verify { outputFormatter.printHeader(any()) }
 		verify { outputFormatter.printWarning(match { it.contains(selectedProject.title) }) }
-		verify(exactly = 0) { deleteProjectUseCase.deleteProjectById(any()) }
+		coVerify(exactly = 0) { deleteProjectUseCase.deleteProjectById(any()) }
 		verify(exactly = 0) { outputFormatter.printSuccess(any()) }
 		verify { inputHandler.waitForEnter() }
 	}
 	
 	@Test
-	fun `should handle case insensitive confirmation`() {
+	fun `should handle case insensitive confirmation`() = runTest {
 		// Given
 		val projects = getProjects(3)
 		val selectedIndex = 0
 		val selectedProject = projects[selectedIndex]
 		
-		every { getAllProjectsUseCase.getAllProjects() } returns projects
+		coEvery { getAllProjectsUseCase.getAllProjects() } returns projects
 		every {
 			inputHandler.promptForIntChoice(
 				"🔹 Select a project to delete:",
@@ -142,28 +143,28 @@ class ProjectDeleteViewTest {
 			)
 		} returns 1
 		every { inputHandler.promptForInput("Type 'YES' to confirm deletion: ") } returns "yes"
-		every { deleteProjectUseCase.deleteProjectById(selectedProject.id) } just Runs
+		coEvery { deleteProjectUseCase.deleteProjectById(selectedProject.id) } just Runs
 		every { inputHandler.waitForEnter() } just Runs
 		
 		// When
 		projectDeleteView.deleteProject()
 		
 		// Then
-		verify { deleteProjectUseCase.deleteProjectById(selectedProject.id) }
+		coVerify { deleteProjectUseCase.deleteProjectById(selectedProject.id) }
 		verify { outputFormatter.printSuccess(match { it.contains(selectedProject.title) }) }
 	}
 	
 	@Test
-	fun `should handle deletion error`() {
+	fun `should handle deletion error`() = runTest {
 		// Given
 		val projects = getProjects(2)
 		val selectedProject = projects[0]
 		val errorMessage = "Database connection error"
 		
-		every { getAllProjectsUseCase.getAllProjects() } returns projects
+		coEvery { getAllProjectsUseCase.getAllProjects() } returns projects
 		every { inputHandler.promptForIntChoice("🔹 Select a project to delete:", 1..2) } returns 1
 		every { inputHandler.promptForInput("Type 'YES' to confirm deletion: ") } returns "YES"
-		every { deleteProjectUseCase.deleteProjectById(selectedProject.id) } throws Exception(errorMessage)
+		coEvery { deleteProjectUseCase.deleteProjectById(selectedProject.id) } throws Exception(errorMessage)
 		every { inputHandler.waitForEnter() } just Runs
 		
 		// When

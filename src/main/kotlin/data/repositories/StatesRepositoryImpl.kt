@@ -1,25 +1,25 @@
 package data.repositories
 
+import data.dataSource.remoteDataSource.mongo.RemoteDataSource
 import data.dto.StateDto
-import data.dto.UserDto
 import data.repositories.mappers.toState
 import data.repositories.mappers.toStateDto
 import logic.model.State
 import logic.repositories.StatesRepository
 
 class StatesRepositoryImpl(
-    private val dataSource: DataSource
+    private val remoteDataSource: RemoteDataSource
 ) : StatesRepository {
 
-    override fun createState(state: StateDto): Boolean {
-        return dataSource.createState(state)
+    override suspend fun createState(state: StateDto): Boolean {
+        return remoteDataSource.createState(state)
     }
 
-    override fun editState(state: State) {
-        return dataSource.editState(state.toStateDto())
+    override suspend fun editState(state: State) {
+        return remoteDataSource.editState(state.toStateDto())
     }
 
-    override fun getAllStates(): List<State> {
-        return dataSource.getAllStates().map { it.toState() }
+    override suspend fun getAllStates(): List<State> {
+        return remoteDataSource.getAllStates().map { it.toState() }
     }
 }

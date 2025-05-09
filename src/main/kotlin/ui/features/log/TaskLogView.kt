@@ -1,6 +1,7 @@
 package ui.features.log
 
 
+import kotlinx.coroutines.runBlocking
 import logic.usecase.Log.GetTaskLogsUseCase
 import logic.usecase.project.GetAllProjectsUseCase
 import logic.usecase.task.GetAllTasksByProjectIdUseCase
@@ -13,7 +14,7 @@ class TaskLogView(
     private val inputHandler: InputHandler,
     private val outputFormatter: OutputFormatter
 ) {
-    fun viewTaskLogs() {
+    fun viewTaskLogs() = runBlocking{
         outputFormatter.printHeader(
             """
             ╔════════════════════════════════╗
@@ -26,7 +27,7 @@ class TaskLogView(
 
         if (projects.isEmpty()) {
             outputFormatter.printError("❌ No projects available for task logs!")
-            return
+	        return@runBlocking
         }
 
         outputFormatter.printInfo("📂 Available Projects:")
@@ -41,7 +42,7 @@ class TaskLogView(
 
         if (tasks.isEmpty()) {
             outputFormatter.printWarning("⚠️ No tasks found for project '${selectedProject.title}'.")
-            return
+	        return@runBlocking
         }
 
         outputFormatter.printInfo("📝 Available Tasks:")
@@ -56,7 +57,7 @@ class TaskLogView(
 
         if (logs.isEmpty()) {
             outputFormatter.printError("❌ No logs found for this task.")
-            return
+	        return@runBlocking
         }
 
         outputFormatter.printHeader("📜 Task Logs for '${selectedTask.title}':")

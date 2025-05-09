@@ -14,7 +14,7 @@ class EditProjectUseCase(
     private val addLogUseCase: AddLogUseCase,
     private val validationProject: ValidationProject
 ) {
-    fun editProject(newProject: Project) {
+    suspend fun editProject(newProject: Project) {
         validationProject.validateEditProject(newProject)
         projectsRepository.editProject(newProject)
 

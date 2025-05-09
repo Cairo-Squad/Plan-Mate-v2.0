@@ -1,5 +1,6 @@
 package ui.features.user.admin
 
+import kotlinx.coroutines.runBlocking
 import logic.exception.EmptyNameException
 import logic.exception.EmptyPasswordException
 import logic.exception.EntityNotChangedException
@@ -15,7 +16,7 @@ class EditUserView(
     private val inputHandler: InputHandler,
     private val outputFormatter: OutputFormatter
 ) {
-    fun editUser() {
+    fun editUser() = runBlocking {
         outputFormatter.printHeader(
             """
             ╔════════════════════════════╗
@@ -28,7 +29,7 @@ class EditUserView(
 
         if (users.isNullOrEmpty()) {
             outputFormatter.printError("❌ No users found!")
-            return
+	        return@runBlocking
         }
 
         outputFormatter.printInfo("👥 Available Users:")

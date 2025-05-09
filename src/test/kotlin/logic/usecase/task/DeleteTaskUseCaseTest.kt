@@ -1,8 +1,7 @@
 package logic.usecase.task
 
-import io.mockk.every
-import io.mockk.mockk
-import io.mockk.verify
+import io.mockk.*
+import kotlinx.coroutines.test.runTest
 import logic.model.State
 import logic.model.Task
 import logic.repositories.TasksRepository
@@ -23,9 +22,9 @@ class DeleteTaskUseCaseTest {
     }
 
     @Test
-    fun `should throw Exception when the tasks repository throws an exception`() {
+    fun `should throw Exception when the tasks repository throws an exception`() = runTest {
         // Given
-        every { tasksRepository.deleteTask(any()) } throws Exception()
+        coEvery { tasksRepository.deleteTask(any()) } throws Exception()
 
         // When & Then
         assertThrows<Exception> {
@@ -34,12 +33,12 @@ class DeleteTaskUseCaseTest {
     }
 
     @Test
-    fun `should call deleteTask on the tasks repository`() {
+    fun `should call deleteTask on the tasks repository`() = runTest {
         // When
         deleteTaskUseCase.deleteTask(getTask())
 
         // Then
-        verify { tasksRepository.deleteTask(any()) }
+        coVerify { tasksRepository.deleteTask(any()) }
     }
 
     private fun getTask(): Task {

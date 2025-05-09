@@ -6,7 +6,7 @@ import logic.repositories.AuthenticationRepository
 class GetAllUsersUseCase(
     private val authenticationRepository: AuthenticationRepository
 ) {
-    fun getAllUsers(): List<User> {
+    suspend fun getAllUsers(): List<User> {
         return authenticationRepository.getAllUsers()
     }
 }

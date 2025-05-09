@@ -1,5 +1,6 @@
 package ui.features.task
 
+import kotlinx.coroutines.runBlocking
 import logic.model.Project
 import logic.model.State
 import logic.model.Task
@@ -21,7 +22,7 @@ class CreateTaskView(
     private val createStateUseCase: CreateStateUseCase
 ) {
     lateinit var projects: List<Project>
-    fun createTask() {
+    fun createTask() = runBlocking {
         outputFormatter.printHeader("Create a New Task")
 
         val title = inputHandler.promptForInput("Enter task title: ")
@@ -54,7 +55,7 @@ class CreateTaskView(
             )
 
             try{
-                val result = createTaskUseCase.createTask(task)
+                createTaskUseCase.createTask(task)
                 val updatedProject = selectedProject.copy(
                     tasks = selectedProject.tasks + task
                 )

@@ -2,9 +2,11 @@ package logic.usecase
 
 import com.google.common.truth.Truth.assertThat
 import data.dto.UserType
+import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
+import kotlinx.coroutines.test.runTest
 import logic.exception.EmptyNameException
 import logic.exception.EmptyPasswordException
 import logic.model.User
@@ -32,10 +34,10 @@ class CreateUserUseCaseTest {
     }
 
     @Test
-    fun `should call repository when all inputs are valid`() {
+    fun `should call repository when all inputs are valid`() = runTest {
         // Given
         val user = validUser
-        every { repository.createUser(user.id, user.name, user.password, user.type) } returns true
+        coEvery { repository.createUser(user.id, user.name, user.password, user.type) } returns true
 
         // When
         val isCreated = createUserUseCase.createUser(user.id, user.name, user.password, user.type)
@@ -47,12 +49,12 @@ class CreateUserUseCaseTest {
 
 
     @Test
-    fun `should success registration when duplication name but different id`() {
+    fun `should success registration when duplication name but different id`() = runTest {
         // Given
         val user = validUser
         val userWithDifferentId = validUser.copy(id = UUID.randomUUID())
-        every { repository.createUser(user.id, user.name, user.password, user.type) } returns true
-        every { repository.createUser(userWithDifferentId.id, user.name, user.password, user.type) } returns true
+        coEvery { repository.createUser(user.id, user.name, user.password, user.type) } returns true
+        coEvery { repository.createUser(userWithDifferentId.id, user.name, user.password, user.type) } returns true
 
         // When
         val firstUser = createUserUseCase.createUser(user.id, user.name, user.password, user.type)

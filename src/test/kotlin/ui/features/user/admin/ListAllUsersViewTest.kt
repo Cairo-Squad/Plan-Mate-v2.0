@@ -1,5 +1,6 @@
 package ui.features.user.admin
 
+import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -28,7 +29,7 @@ class ListAllUsersViewTest {
     @Test
     fun `function list all users should print error if there is no users`() {
         //Given
-        every { getAllUsersUseCase.getAllUsers() } returns emptyList()
+        coEvery { getAllUsersUseCase.getAllUsers() } returns emptyList()
 
         //When
         listAllUsersView.listAllUsers()
@@ -42,7 +43,7 @@ class ListAllUsersViewTest {
     @Test
     fun `function list all users should print all users when found`() {
         //Given
-        every { getAllUsersUseCase.getAllUsers() } returns getAllUsers()
+        coEvery { getAllUsersUseCase.getAllUsers() } returns getAllUsers()
 
         //When
         listAllUsersView.listAllUsers()

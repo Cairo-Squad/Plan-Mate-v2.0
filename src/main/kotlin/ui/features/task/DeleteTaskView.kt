@@ -1,5 +1,6 @@
 package ui.features.task
 
+import kotlinx.coroutines.runBlocking
 import logic.usecase.project.GetAllProjectsUseCase
 import logic.usecase.task.DeleteTaskUseCase
 import logic.usecase.task.GetAllTasksByProjectIdUseCase
@@ -12,7 +13,7 @@ class DeleteTaskView(
     private val outputFormatter: OutputFormatter,
     private val getAllProjectsUseCase: GetAllProjectsUseCase
 ) {
-    fun deleteTask() {
+    fun deleteTask() = runBlocking {
         outputFormatter.printHeader(
             """
             ╔══════════════════════════════╗
@@ -25,7 +26,7 @@ class DeleteTaskView(
 
         if (projects.isEmpty()) {
             outputFormatter.printError("❌ No projects available for task deletion!")
-            return
+	        return@runBlocking
         }
 
         outputFormatter.printInfo("📂 Available Projects:")
@@ -43,7 +44,7 @@ class DeleteTaskView(
 
         if (tasks.isEmpty()) {
             outputFormatter.printWarning("⚠️ No tasks found for project '${selectedProject.title}'.")
-            return
+	        return@runBlocking
         }
 
         outputFormatter.printInfo("📜 Available Tasks:")

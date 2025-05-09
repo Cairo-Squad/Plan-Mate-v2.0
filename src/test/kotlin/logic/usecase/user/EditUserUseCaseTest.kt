@@ -1,9 +1,8 @@
 package logic.usecase.user
 
 import data.dto.UserType
-import io.mockk.every
-import io.mockk.mockk
-import io.mockk.verify
+import io.mockk.*
+import kotlinx.coroutines.test.runTest
 import logic.exception.DtoNotFoundException
 import logic.model.User
 import logic.repositories.AuthenticationRepository
@@ -25,7 +24,7 @@ class EditUserUseCaseTest {
     }
 
     @Test
-    fun `editUser should return true, when input has changed property or more`() {
+    fun `editUser should return true, when input has changed property or more`() = runTest {
         // Given
         val updateUser =
             User(id = UUID(1, 1), name = "Mohamed", password = "123456", type = UserType.ADMIN)
@@ -34,16 +33,16 @@ class EditUserUseCaseTest {
         editUserUseCase.editUser(updateUser)
 
         // Then
-        verify(exactly = 1) { editUserUseCase.editUser(updateUser) }
+        coVerify(exactly = 1) { editUserUseCase.editUser(updateUser) }
     }
 
     @Test
-    fun `editUser should return DtoNotFoundException, when user is not found`() {
+    fun `editUser should return DtoNotFoundException, when user is not found`() = runTest {
         // Given
         val updatedUser =
             User(id = UUID(2, 2), name = "Mohamed", password = "123456", type = UserType.ADMIN)
      
-        every { authenticationRepository.editUser(updatedUser) } throws DtoNotFoundException()
+        coEvery { authenticationRepository.editUser(updatedUser) } throws DtoNotFoundException()
 
         // When & Then
         assertThrows<DtoNotFoundException> {

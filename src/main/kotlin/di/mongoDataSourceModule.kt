@@ -3,11 +3,11 @@ package di
 import com.mongodb.client.MongoDatabase
 import data.dataSource.remoteDataSource.mongo.*
 import data.dto.*
-import data.repositories.DataSource
+import data.dataSource.localDataSource.file.LocalDataSource
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
-val remoteDataSourceModule = module {
+val remoteDataSourceImplModule = module {
     // Provide MongoDB database instance
     single<MongoDatabase> {
         MongoDBConnection.getDatabase()
@@ -45,8 +45,8 @@ val remoteDataSourceModule = module {
     }
 
     // DataSource implementation
-    single<DataSource> {
-        RemoteDataSource(
+    single<RemoteDataSource> {
+        RemoteDataSourceImpl(
             database = get()
         )
     }

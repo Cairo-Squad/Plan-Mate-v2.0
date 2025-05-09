@@ -1,6 +1,7 @@
 package ui.features.project
 
 import io.mockk.*
+import kotlinx.coroutines.test.runTest
 import logic.model.Project
 import logic.model.State
 import logic.model.Task
@@ -68,9 +69,9 @@ class ProjectDetailViewTest {
 	}
 	
 	@Test
-	fun `should show error when no projects available`() {
+	fun `should show error when no projects available`() = runTest {
 		// Given
-		every { getAllProjectsUseCase.getAllProjects() } returns emptyList()
+		coEvery { getAllProjectsUseCase.getAllProjects() } returns emptyList()
 		
 		// When
 		projectDetailView.viewProjectDetails()
@@ -82,11 +83,11 @@ class ProjectDetailViewTest {
 	}
 	
 	@Test
-	fun `should display project list but not details when user declines to view details`() {
+	fun `should display project list but not details when user declines to view details`() = runTest {
 		// Given
 		val projects = getProjects(3)
 		
-		every { getAllProjectsUseCase.getAllProjects() } returns projects
+		coEvery { getAllProjectsUseCase.getAllProjects() } returns projects
 		every { inputHandler.promptForYesNo("🔍 Would you like to view details for a specific project?") } returns false
 		
 		// When
@@ -103,13 +104,13 @@ class ProjectDetailViewTest {
 	}
 	
 	@Test
-	fun `should display project details when user chooses to view a project`() {
+	fun `should display project details when user chooses to view a project`() = runTest {
 		// Given
 		val projects = getProjects(3, tasksPerProject = 2)
 		val selectedIndex = 1
 		val selectedProject = projects[selectedIndex]
 		
-		every { getAllProjectsUseCase.getAllProjects() } returns projects
+		coEvery { getAllProjectsUseCase.getAllProjects() } returns projects
 		every { inputHandler.promptForYesNo("🔍 Would you like to view details for a specific project?") } returns true
 		every {
 			inputHandler.promptForIntChoice("🔹 Select a project number:", 1..3)
@@ -132,12 +133,12 @@ class ProjectDetailViewTest {
 	}
 	
 	@Test
-	fun `should display project with empty task list correctly`() {
+	fun `should display project with empty task list correctly`() = runTest {
 		// Given
 		val project = getProject(taskCount = 0)
 		val projects = listOf(project)
 		
-		every { getAllProjectsUseCase.getAllProjects() } returns projects
+		coEvery { getAllProjectsUseCase.getAllProjects() } returns projects
 		every { inputHandler.promptForYesNo("🔍 Would you like to view details for a specific project?") } returns true
 		every { inputHandler.promptForIntChoice("🔹 Select a project number:", 1..1) } returns 1
 		every { inputHandler.waitForEnter() } just Runs
@@ -151,13 +152,13 @@ class ProjectDetailViewTest {
 	}
 	
 	@Test
-	fun `should display project with multiple tasks correctly`() {
+	fun `should display project with multiple tasks correctly`() = runTest {
 		// Given
 		val taskCount = 3
 		val project = getProject(taskCount = taskCount)
 		val projects = listOf(project)
 		
-		every { getAllProjectsUseCase.getAllProjects() } returns projects
+		coEvery { getAllProjectsUseCase.getAllProjects() } returns projects
 		every { inputHandler.promptForYesNo("🔍 Would you like to view details for a specific project?") } returns true
 		every { inputHandler.promptForIntChoice("🔹 Select a project number:", 1..1) } returns 1
 		every { inputHandler.waitForEnter() } just Runs

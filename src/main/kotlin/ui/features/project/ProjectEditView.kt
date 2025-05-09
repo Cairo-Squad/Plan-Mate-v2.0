@@ -1,5 +1,6 @@
 package ui.features.project
 
+import kotlinx.coroutines.runBlocking
 import logic.model.Project
 import logic.usecase.project.EditProjectUseCase
 import logic.usecase.project.GetAllProjectsUseCase
@@ -16,19 +17,19 @@ class ProjectEditView(
 ) {
     lateinit var projects: List<Project>
     
-    fun editProject() {
+    fun editProject() = runBlocking {
         outputFormatter.printHeader("Edit Project")
         
         try {
             projects = getAllProjectsUseCase.getAllProjects()
         } catch (ex: Exception) {
             outputFormatter.printError(ex.message ?: "Failed to retrieve projects.")
-            return
+	        return@runBlocking
         }
         
         if (projects.isEmpty()) {
             outputFormatter.printError("No projects available to edit.")
-            return
+	        return@runBlocking
         }
         
         outputFormatter.printHeader("Available Projects:")

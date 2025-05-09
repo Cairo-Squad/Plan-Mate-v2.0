@@ -6,7 +6,7 @@ import logic.repositories.LogsRepository
 class AddLogUseCase(
     private val logsRepository: LogsRepository
 ) {
-    fun addLog(log: Log): Result<Unit> {
+    suspend fun addLog(log: Log): Result<Unit> {
         return try {
             logsRepository.addLog(log)
             Result.success(Unit)

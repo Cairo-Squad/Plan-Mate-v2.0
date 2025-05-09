@@ -1,5 +1,6 @@
 package ui.features.log
 
+import kotlinx.coroutines.runBlocking
 import logic.usecase.Log.GetProjectLogsUseCase
 import logic.usecase.project.GetAllProjectsUseCase
 import ui.utils.InputHandler
@@ -11,7 +12,7 @@ class ProjectLogView(
     private val inputHandler: InputHandler,
     private val outputFormatter: OutputFormatter
 ) {
-    fun viewProjectLogs() {
+    fun viewProjectLogs() = runBlocking {
         outputFormatter.printHeader(
             """
             ╔════════════════════════════════╗
@@ -24,7 +25,7 @@ class ProjectLogView(
 
         if (projects.isEmpty()) {
             outputFormatter.printError("❌ No projects available for log viewing!")
-            return
+	        return@runBlocking
         }
 
         outputFormatter.printInfo("📂 Available Projects:")
@@ -39,7 +40,7 @@ class ProjectLogView(
 
         if (logs.isEmpty()) {
             outputFormatter.printWarning("⚠️ No logs found for project '${selectedProject.title}'.")
-            return
+	        return@runBlocking
         }
 
         outputFormatter.printHeader("📜 Logs for Project: '${selectedProject.title}'")

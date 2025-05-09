@@ -1,6 +1,7 @@
 package ui.features.user.admin
 
 import data.dto.UserType
+import kotlinx.coroutines.runBlocking
 import logic.usecase.user.CreateUserUseCase
 import ui.utils.InputHandler
 import ui.utils.OutputFormatter
@@ -11,7 +12,7 @@ class CreateNewUserView(
     private val outputFormatter : OutputFormatter,
     private val createUserUseCase : CreateUserUseCase
 ) {
-    fun createNewUser() {
+    fun createNewUser() = runBlocking {
         outputFormatter.printHeader(
             """
             ╔════════════════════════════╗
@@ -24,14 +25,14 @@ class CreateNewUserView(
         if (username.isEmpty()) {
             outputFormatter.printError("❌ Username cannot be empty.")
             inputHandler.waitForEnter()
-            return
+	        return@runBlocking
         }
 
         val password = inputHandler.promptForPassword("🔒 Enter password: ")
         if (password.isEmpty()) {
             outputFormatter.printError("❌ Password cannot be empty.")
             inputHandler.waitForEnter()
-            return
+	        return@runBlocking
         }
         val userType = UserType.MATE
 

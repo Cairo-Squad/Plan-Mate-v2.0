@@ -1,7 +1,9 @@
 package logic.usecase.project
 
+import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
+import kotlinx.coroutines.test.runTest
 import logic.model.Project
 import logic.model.State
 import logic.repositories.ProjectsRepository
@@ -24,10 +26,10 @@ class GetAllProjectsUseCaseTest {
     }
 
     @Test
-    fun `should return all projects when repository returns all projects`() {
+    fun `should return all projects when repository returns all projects`() = runTest {
         // Given
         val list = projectsList()
-        every { projectRepository.getAllProjects() } returns list
+        coEvery { projectRepository.getAllProjects() } returns list
 
         // When
         val result = getAllProjectsUseCase.getAllProjects()
@@ -37,9 +39,9 @@ class GetAllProjectsUseCaseTest {
     }
 
     @Test
-    fun `should throw exception when repository returns Failure`() {
+    fun `should throw exception when repository returns Failure`() = runTest {
         // Given
-        every { projectRepository.getAllProjects() } throws NoSuchElementException()
+        coEvery { projectRepository.getAllProjects() } throws NoSuchElementException()
 
         // When & Then
         assertThrows<NoSuchElementException> { getAllProjectsUseCase.getAllProjects() }
