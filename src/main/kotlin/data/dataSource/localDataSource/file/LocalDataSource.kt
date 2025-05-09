@@ -11,15 +11,15 @@ class LocalDataSource(
     private val tasksCsvHandler: FileHandler<TaskDto>,
     private val usersCsvHandler: FileHandler<UserDto>
 ) : DataSource {
-    override fun createUser(id: UUID, name: String, password: String, type: UserType): UserDto {
+    override fun createUser(id : UUID, name : String, password : String, type : UserType) : Boolean {
         val userDto = UserDto(
             id = UUID.randomUUID(),
             name = name,
             password = password,
             type = type
         )
-        usersCsvHandler.write(userDto)
-        return userDto
+        return usersCsvHandler.write(userDto)
+
     }
 
     override fun getAllUsers(): List<UserDto> {

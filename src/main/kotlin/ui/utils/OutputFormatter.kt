@@ -7,8 +7,6 @@ class OutputFormatter {
     private val RED = "\u001B[31m"
     private val GREEN = "\u001B[32m"
     private val YELLOW = "\u001B[33m"
-    private val BLUE = "\u001B[34m"
-    private val PURPLE = "\u001B[35m"
     private val CYAN = "\u001B[36m"
     private val BOLD = "\u001B[1m"
 
@@ -24,16 +22,6 @@ class OutputFormatter {
         println()
     }
 
-
-    fun printSubHeader(text: String) {
-        val line = "-".repeat(text.length + 4)
-        println()
-        println(colorize(line, BOLD))
-        println(colorize("  $text  ", BOLD))
-        println(colorize(line, BOLD))
-    }
-
-
     fun printMenu(options: List<String>) {
         println()
         options.forEach { option ->
@@ -42,37 +30,21 @@ class OutputFormatter {
         println()
     }
 
-
     fun printSuccess(message: String) {
         println(colorize("✓ SUCCESS: $message", GREEN))
     }
-
 
     fun printError(message: String) {
         println(colorize("✗ ERROR: $message", RED))
     }
 
-
     fun printInfo(message: String) {
         println(colorize(message, RESET))
     }
 
-
     fun printWarning(message: String) {
         println(colorize("! WARNING: $message", YELLOW))
     }
-
-
-    fun printDivider(width: Int = 80) {
-        println(colorize("-".repeat(width), RESET))
-    }
-
-
-    fun printRow(columns: List<String>) {
-        val columnSeparator = colorize(" | ", BLUE)
-        println(columns.joinToString(separator = columnSeparator))
-    }
-
 
     private fun colorize(text: String, color: String): String {
         return if (useColors) "$color$text$RESET" else text

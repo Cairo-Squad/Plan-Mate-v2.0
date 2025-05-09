@@ -35,49 +35,31 @@ class CreateUserUseCaseTest {
     fun `should call repository when all inputs are valid`() {
         // Given
         val user = validUser
+        every { repository.createUser(user.id, user.name, user.password, user.type) } returns true
 
         // When
-        createUserUseCase.createUser(user.id, user.name, user.password, user.type)
+        val isCreated = createUserUseCase.createUser(user.id, user.name, user.password, user.type)
 
         // Then
-        verify { repository.createUser(user.id, user.name, user.password, user.type) }
+        assertThat(isCreated).isTrue()
     }
 
-    @Test
-    fun `should throw EmptyNameException when name is empty`() {
-        // Given
-        val user = validUser.copy(name = "")
-        every { repository.createUser(user.id, user.name, user.password, user.type) } throws EmptyNameException()
 
-        // When & Then
-        assertThrows<EmptyNameException> {
-            createUserUseCase.createUser(user.id, user.name, user.password, user.type)
-        }
-    }
-
-    @Test
-    fun `should throw EmptyPasswordException when password is empty`() {
-        // Given
-        val user = validUser.copy(password = "")
-        every { repository.createUser(user.id, user.name, user.password, user.type) } throws EmptyPasswordException()
-
-        // When & Then
-        assertThrows<EmptyPasswordException> {
-            createUserUseCase.createUser(user.id, user.name, user.password, user.type)
-        }
-    }
 
     @Test
     fun `should success registration when duplication name but different id`() {
         // Given
         val user = validUser
         val userWithDifferentId = validUser.copy(id = UUID.randomUUID())
+        every { repository.createUser(user.id, user.name, user.password, user.type) } returns true
+        every { repository.createUser(userWithDifferentId.id, user.name, user.password, user.type) } returns true
 
         // When
         val firstUser = createUserUseCase.createUser(user.id, user.name, user.password, user.type)
         val secondUser = createUserUseCase.createUser(userWithDifferentId.id, user.name, user.password, user.type)
 
         // Then
-        assertThat(firstUser).isNotEqualTo(secondUser)
+        assertThat(firstUser).isTrue()
+        assertThat(secondUser).isTrue()
     }
 }

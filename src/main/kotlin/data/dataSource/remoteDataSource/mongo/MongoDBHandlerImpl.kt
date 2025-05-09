@@ -10,9 +10,9 @@ import org.bson.Document
 import java.util.*
 
 abstract class MongoDBHandlerImpl<DTO>(
-	protected val database: MongoDatabase,
-	protected val collectionName: String,
-	private val getDtoId: (DTO) -> UUID
+    protected val database : MongoDatabase,
+    protected val collectionName : String,
+    private val getDtoId : (DTO) -> UUID
 ) : MongoDBHandler<DTO> {
 	
 	private val collection: MongoCollection<Document> by lazy {
@@ -32,11 +32,14 @@ abstract class MongoDBHandlerImpl<DTO>(
 		return database.listCollectionNames().contains(collectionName)
 	}
 	
-	override fun write(entity: DTO) {
+	override fun write(entity : DTO) : Boolean {
 		try {
+			val collectionSizeBeforeInsert = collection.countDocuments()
 			val document = convertDtoToDocument(entity)
 			collection.insertOne(document)
-		} catch (e: Exception) {
+			val collectionSizeAfterInsert = collection.countDocuments()
+			return collectionSizeAfterInsert > collectionSizeBeforeInsert
+		} catch (e : Exception) {
 			throw WriteException()
 		}
 	}

@@ -51,6 +51,21 @@ object FakeData {
         state = State(id = UUID.randomUUID(), title = "TODO")
     )
 
-    val mateUser = User(name = "admin", password = "98543", id = UUID.randomUUID(), type = UserType.MATE)
-    val adminUser = User(name = "admin", password = "76598", id = UUID.randomUUID(), type = UserType.ADMIN)
+    val invalidUser = User(name = "admin", password = "98543", id = UUID.randomUUID(), type = UserType.MATE)
+    val validUser = User(name = "admin", password = "76598", id = UUID.randomUUID(), type = UserType.ADMIN)
+
+    fun getAllUsers(): List<User> {
+        return listOf(
+            User(
+                UUID.fromString("55555555-1244-1234-1144-55555555"), "Hadeel",
+                password = "8474",
+                UserType.MATE
+            ),
+            User(
+                UUID.fromString("11111111-2222-3333-2222-11111111"), "Fathy",
+                password = "98665",
+                UserType.ADMIN
+            )
+        )
+    }
 }

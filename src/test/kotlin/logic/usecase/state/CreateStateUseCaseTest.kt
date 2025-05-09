@@ -1,17 +1,16 @@
-package logic.usecase
+package logic.usecase.state
 
-import com.google.common.truth.Truth.assertThat
+import com.google.common.truth.Truth
 import data.dto.UserType
 import io.mockk.every
 import io.mockk.mockk
 import logic.model.State
 import logic.model.User
 import logic.repositories.StatesRepository
-import logic.usecase.state.CreateStateUseCase
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import java.util.*
+import java.util.UUID
 
 class CreateStateUseCaseTest {
 
@@ -36,7 +35,7 @@ class CreateStateUseCaseTest {
         val result = createStateUseCase.createState(state)
 
         // Then
-        assertThat(result).isTrue()
+        Truth.assertThat(result).isTrue()
     }
 
     @Test
@@ -51,7 +50,7 @@ class CreateStateUseCaseTest {
         val result = createStateUseCase.createState(state)
 
         // Then
-        assertThat(result).isFalse()
+        Truth.assertThat(result).isFalse()
     }
 
     @Test

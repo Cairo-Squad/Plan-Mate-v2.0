@@ -14,53 +14,53 @@ class RemoteDataSource(
 	private val usersHandler: UsersMongoHandlerImpl = UsersMongoHandlerImpl(database),
 ) : DataSource {
 
-	override fun getAllUsers(): List<UserDto> {
-		return usersHandler.readAll()
-	}
+    override fun getAllUsers() : List<UserDto> {
+        return usersHandler.readAll()
+    }
 
-	override fun createUser(id: UUID, name: String, password: String, type: UserType): UserDto {
-		val userDto = UserDto(
-			id = UUID.randomUUID(),
-			name = name,
-			password = password,
-			type = type
-		)
+    override fun createUser(id : UUID, name : String, password : String, type : UserType) : Boolean {
+        val userDto = UserDto(
+            id = UUID.randomUUID(),
+            name = name,
+            password = password,
+            type = type
+        )
 
-		usersHandler.write(userDto)
-		return userDto
-	}
+        return usersHandler.write(userDto)
 
-	override fun editUser(user: UserDto) {
-		usersHandler.edit(user)
-	}
-	
-	override fun deleteUser(user: UserDto) {
-		usersHandler.delete(user)
-	}
-	
-	override fun createProject(project: ProjectDto) {
-		projectsHandler.write(project)
-	}
-	
-	override fun editProject(newProject: ProjectDto) {
-		projectsHandler.edit(newProject)
-	}
-	
-	override fun deleteProjectById(project: ProjectDto) {
-		projectsHandler.delete(project)
-	}
-	
-	override fun getProjectById(projectId: UUID): ProjectDto {
-		return projectsHandler.readByEntityId(projectId)
-	}
-	
-	override fun getAllProjects(): List<ProjectDto> {
-		return projectsHandler.readAll()
-	}
+    }
 
-	override fun getTasksByProjectId(projectId: UUID): List<TaskDto> {
-		return tasksHandler.readAll().filter { it.projectId == projectId }
-	}
+    override fun editUser(user : UserDto) {
+        usersHandler.edit(user)
+    }
+
+    override fun deleteUser(user : UserDto) {
+        usersHandler.delete(user)
+    }
+
+    override fun createProject(project : ProjectDto) {
+        projectsHandler.write(project)
+    }
+
+    override fun editProject(newProject : ProjectDto) {
+        projectsHandler.edit(newProject)
+    }
+
+    override fun deleteProjectById(project : ProjectDto) {
+        projectsHandler.delete(project)
+    }
+
+    override fun getProjectById(projectId : UUID) : ProjectDto {
+        return projectsHandler.readByEntityId(projectId)
+    }
+
+    override fun getAllProjects() : List<ProjectDto> {
+        return projectsHandler.readAll()
+    }
+
+    override fun getTasksByProjectId(projectId : UUID) : List<TaskDto> {
+        return tasksHandler.readAll().filter { it.projectId == projectId }
+    }
 
 	override fun createTask(task: TaskDto) {
 		tasksHandler.write(task)

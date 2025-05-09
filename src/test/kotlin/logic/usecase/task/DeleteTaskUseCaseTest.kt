@@ -1,4 +1,4 @@
-package logic.usecase
+package logic.usecase.task
 
 import io.mockk.every
 import io.mockk.mockk
@@ -6,10 +6,9 @@ import io.mockk.verify
 import logic.model.State
 import logic.model.Task
 import logic.repositories.TasksRepository
-import logic.usecase.task.DeleteTaskUseCase
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.assertThrows
-import java.util.*
+import java.util.UUID
 import kotlin.test.Test
 
 class DeleteTaskUseCaseTest {

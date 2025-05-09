@@ -11,6 +11,5 @@ object CsvConstants {
     val PROJECTS_CSV_FILE_HEADERS = listOf("id", "title", "description", "createdBy", "tasks", "stateId")
     val TASKS_CSV_FILE_HEADERS = listOf("id", "title", "description", "stateId", "projectId")
     val STATES_CSV_FILE_HEADERS = listOf("id", "title")
-    val LOGS_CSV_FILE_HEADERS =
-        listOf("id", "entityId", "entityTitle", "entityType", "dateTime", "userId", "userAction")
+    val LOGS_CSV_FILE_HEADERS = listOf("id", "entityId", "entityTitle", "entityType", "dateTime", "userId", "userAction")
 }
