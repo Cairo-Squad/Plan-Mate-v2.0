@@ -11,16 +11,16 @@ import logic.repositories.AuthenticationRepository
 import java.util.UUID
 
 class AuthenticationRepositoryImpl(
-    private val dataSource : DataSource,
-    private val passwordEncryptor : PasswordEncryptor
+    private val dataSource: DataSource,
+    private val passwordEncryptor: PasswordEncryptor
 ) : AuthenticationRepository {
 
-    override fun getAllUsers() : List<User> {
+    override fun getAllUsers(): List<User> {
         val usersDto = dataSource.getAllUsers()
         return usersDto.map { it.toUser() }
     }
 
-    override fun deleteUser(userId : UUID) : Boolean {
+    override fun deleteUser(userId: UUID): Boolean {
         val userDto = dataSource.getAllUsers()
             .find { it.id == userId } ?: throw UserNotFoundException()
         dataSource.deleteUser(userDto)
@@ -32,7 +32,13 @@ class AuthenticationRepositoryImpl(
         return dataSource.createUser(id, name, hashedPassword, userType)
     }
 
-    override fun editUser(user : User) {
+    override fun editUser(user: User) {
         return dataSource.editUser(user.toUserDto())
+    }
+
+    override fun loginUser(name : String, password : String) : User? {
+        val users = getAllUsers()
+        val hashedPassword = passwordEncryptor.hashPassword(password)
+        return users.find { it.name == name && it.password == hashedPassword }
     }
 }

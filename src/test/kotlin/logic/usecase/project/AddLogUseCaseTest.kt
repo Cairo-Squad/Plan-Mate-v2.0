@@ -1,20 +1,20 @@
-package logic.usecase.project
-
-import data.dto.EntityType
-import data.dto.UserAction
-import io.mockk.every
-import io.mockk.mockk
+//package logic.usecase.project
+//
+//import data.dto.EntityType
+//import data.dto.UserAction
+//import io.mockk.every
+//import io.mockk.mockk
 //import logic.exception.CsvWriteException
-import logic.exception.UnknownException
-import logic.model.Log
-import logic.repositories.LogsRepository
-import logic.usecase.Log.AddLogUseCase
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Test
-import java.time.LocalDateTime
-import java.util.*
-import kotlin.test.assertEquals
-
+//import logic.exception.UnknownException
+//import logic.model.Log
+//import logic.repositories.LogsRepository
+//import logic.usecase.Log.AddLogUseCase
+//import org.junit.jupiter.api.BeforeEach
+//import org.junit.jupiter.api.Test
+//import java.time.LocalDateTime
+//import java.util.*
+//import kotlin.test.assertEquals
+//
 //class AddLogUseCaseTest {
 //    private val logsRepository = mockk<LogsRepository>(relaxed = true)
 //    private lateinit var addLogUseCase: AddLogUseCase

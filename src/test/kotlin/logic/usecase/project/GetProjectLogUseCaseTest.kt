@@ -1,18 +1,18 @@
-package logic.usecase.project
-
-import com.google.common.truth.Truth.assertThat
-import data.dto.EntityType
-import data.dto.UserAction
-import io.mockk.every
-import io.mockk.mockk
-import logic.model.Log
-import logic.repositories.LogsRepository
-import logic.usecase.Log.GetProjectLogUseCase
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Test
-import java.time.LocalDateTime
-import java.util.UUID
-
+//package logic.usecase.project
+//
+//import com.google.common.truth.Truth.assertThat
+//import data.dto.EntityType
+//import data.dto.UserAction
+//import io.mockk.every
+//import io.mockk.mockk
+//import logic.model.Log
+//import logic.repositories.LogsRepository
+//import logic.usecase.Log.GetProjectLogUseCase
+//import org.junit.jupiter.api.BeforeEach
+//import org.junit.jupiter.api.Test
+//import java.time.LocalDateTime
+//import java.util.UUID
+//
 //class GetProjectLogUseCaseTest {
 //    private lateinit var getProjectLogUseCase: GetProjectLogUseCase
 //    private lateinit var logsRepository: LogsRepository
