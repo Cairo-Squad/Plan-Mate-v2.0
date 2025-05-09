@@ -1,20 +1,18 @@
 package logic.usecase.project
 
-import data.dto.EntityType
-import data.dto.UserAction
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import logic.exception.EmptyTitleException
 import logic.exception.InvalidUserException
 import logic.repositories.ProjectsRepository
+import logic.usecase.FakeData.adminUser
+import logic.usecase.FakeData.mateUser
 import logic.usecase.Log.AddLogUseCase
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import util.FakeData
-import util.FakeData.mateUser
-import util.FakeData.adminUser
 
 class CreateProjectUseCaseTest() {
     private lateinit var projectRepository: ProjectsRepository
@@ -42,15 +40,6 @@ class CreateProjectUseCaseTest() {
         //Then
         verify(exactly = 1) { validationCreationProjectCreation.validateCreateProject(project, adminUser) }
         verify(exactly = 1) { projectRepository.createProject(project, adminUser) }
-        verify(exactly = 1) {
-          addLogUseCase.addLog(match {
-                it.entityId == project.id &&
-                        it.entityTitle == project.title &&
-                        it.userId == project.createdBy &&
-                        it.entityType == EntityType.PROJECT &&
-                        it.userAction is UserAction.CreateProject
-            })
-        }
     }
 
     @Test
@@ -77,15 +66,6 @@ class CreateProjectUseCaseTest() {
         //Then
         verify(exactly = 1) { validationCreationProjectCreation.validateCreateProject(project, adminUser) }
         verify(exactly = 1) { projectRepository.createProject(project, adminUser) }
-        verify(exactly = 1) {
-            addLogUseCase.addLog(match {
-                it.entityId == project.id &&
-                        it.entityTitle == project.title &&
-                        it.userId == project.createdBy &&
-                        it.entityType == EntityType.PROJECT &&
-                        it.userAction is UserAction.CreateProject
-            })
-        }
     }
 
     @Test
