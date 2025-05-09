@@ -1,5 +1,9 @@
 package ui.features.user.admin
 
+import logic.exception.EmptyNameException
+import logic.exception.EmptyPasswordException
+import logic.exception.EntityNotChangedException
+import logic.model.User
 import logic.usecase.user.EditUserUseCase
 import logic.usecase.user.GetAllUsersUseCase
 import ui.utils.InputHandler
@@ -43,11 +47,21 @@ class EditUserView(
             .takeIf { it.isNotBlank() } ?: selectedUser.password
 
         val updatedUser = selectedUser.copy(name = newName, password = newPassword)
+        validateUserInputs(updatedUser, selectedUser)
 
-        editUserUseCase.editUser(updatedUser, selectedUser)
+        editUserUseCase.editUser(updatedUser)
 
         outputFormatter.printSuccess("✅ User '${selectedUser.name}' updated successfully!")
 
         inputHandler.waitForEnter()
     }
+
+    private fun validateUserInputs(newUser: User, oldUser: User) {
+        if ((newUser.name.trim().isBlank() == oldUser.name.trim().isBlank())
+            && (newUser.password.trim().isBlank() == oldUser.password.trim().isBlank())
+        )
+            throw EntityNotChangedException()
+
+    }
 }
+

@@ -7,20 +7,9 @@ import logic.model.User
 import logic.repositories.AuthenticationRepository
 
 class EditUserUseCase(
-    private val repository: AuthenticationRepository
+    private val authenticationRepository: AuthenticationRepository
 ) {
-    fun editUser(newUser: User, oldUser: User) {
-        validateUserInputs(
-            newUser = newUser,
-            oldUser = oldUser
-        )
-        repository.editUser(user = newUser)
-    }
-
-    private fun validateUserInputs(newUser: User, oldUser: User) {
-        if (newUser == oldUser)
-            throw EntityNotChangedException()
-        if (newUser.name.isBlank()) throw EmptyNameException()
-        if (newUser.password.isBlank()) throw EmptyPasswordException()
+    fun editUser(newUser: User) {
+        authenticationRepository.editUser(user = newUser)
     }
 }
