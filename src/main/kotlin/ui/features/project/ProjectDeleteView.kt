@@ -1,5 +1,6 @@
 package ui.features.project
 
+import kotlinx.coroutines.runBlocking
 import logic.usecase.project.DeleteProjectUseCase
 import logic.usecase.project.GetAllProjectsUseCase
 import ui.utils.InputHandler
@@ -11,7 +12,7 @@ class ProjectDeleteView(
     private val inputHandler: InputHandler,
     private val outputFormatter: OutputFormatter
 ) {
-    fun deleteProject() {
+    fun deleteProject() = runBlocking {
         outputFormatter.printHeader(
             """
             ╔══════════════════════════════╗
@@ -24,7 +25,7 @@ class ProjectDeleteView(
 
         if (projects.isEmpty()) {
             outputFormatter.printError("❌ No projects available for deletion!")
-            return
+	        return@runBlocking
         }
 
         outputFormatter.printInfo("📂 Available Projects:")

@@ -1,8 +1,10 @@
 package logic.usecase.project
 
 import com.google.common.truth.Truth.assertThat
+import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
+import kotlinx.coroutines.test.runTest
 import logic.model.Project
 import logic.model.State
 import logic.repositories.ProjectsRepository
@@ -31,9 +33,9 @@ class GetProjectByIdUseCaseTest {
     }
 
     @Test
-    fun `should return project Successfully when repository returns project`() {
+    fun `should return project Successfully when repository returns project`() = runTest {
         // Given
-        every { projectsRepository.getProjectById(project.id) } returns project
+        coEvery { projectsRepository.getProjectById(project.id) } returns project
 
         // When
         val result = getProjectByIdUseCase.getProjectById(project.id)
@@ -43,10 +45,10 @@ class GetProjectByIdUseCaseTest {
     }
 
     @Test
-    fun `should throw exception when repository returns no projects`() {
+    fun `should throw exception when repository returns no projects`() = runTest {
         // Given
         val exception = NoSuchElementException()
-        every { projectsRepository.getProjectById(project.id) } throws exception
+        coEvery { projectsRepository.getProjectById(project.id) } throws exception
 
         // When & Then
         assertThrows<NoSuchElementException> { getProjectByIdUseCase.getProjectById(project.id) }

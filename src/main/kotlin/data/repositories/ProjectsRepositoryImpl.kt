@@ -1,5 +1,6 @@
 package data.repositories
 
+import data.dataSource.remoteDataSource.mongo.RemoteDataSource
 import data.repositories.mappers.toProject
 import data.repositories.mappers.toProjectDto
 import data.repositories.mappers.toState
@@ -13,33 +14,33 @@ import logic.repositories.ProjectsRepository
 import java.util.*
 
 class ProjectsRepositoryImpl(
-    private val dataSource: DataSource
+    private val remoteDataSource: RemoteDataSource
 ) : ProjectsRepository {
 
-    override fun createProject(project: Project, user: User) {
-        return dataSource.createProject(project.toProjectDto())
+    override suspend fun createProject(project: Project, user: User) {
+        return remoteDataSource.createProject(project.toProjectDto())
     }
 
-    override fun editProject(newProject: Project) {
-        return dataSource.editProject(newProject.toProjectDto())
+    override suspend fun editProject(newProject: Project) {
+        return remoteDataSource.editProject(newProject.toProjectDto())
     }
 
-    override fun deleteProject(projectId: UUID) {
-        val projectsDao = dataSource.getAllProjects()
+    override suspend fun deleteProject(projectId: UUID) {
+        val projectsDao = remoteDataSource.getAllProjects()
             .find { it.id == projectId } ?: throw ProjectNotFoundException()
-        return dataSource.deleteProjectById(projectsDao)
+        return remoteDataSource.deleteProjectById(projectsDao)
     }
 
-    override fun getProjectById(projectId: UUID): Project {
-        val projectDto = dataSource.getProjectById(projectId)
+    override suspend fun getProjectById(projectId: UUID): Project {
+        val projectDto = remoteDataSource.getProjectById(projectId)
         return projectDto.toProject(
             projectState = getState(projectDto.stateId),
             projectTasks = getTasksForProject(projectId),
         )
     }
 
-    override fun getAllProjects(): List<Project> {
-        return dataSource.getAllProjects().map { projectDto ->
+    override suspend fun getAllProjects(): List<Project> {
+        return remoteDataSource.getAllProjects().map { projectDto ->
             projectDto.toProject(
                 projectState = getState(projectDto.stateId),
                 projectTasks = getTasksForProject(projectDto.id)
@@ -47,14 +48,14 @@ class ProjectsRepositoryImpl(
         }
     }
 
-    private fun getState(stateId: UUID): State {
-        return dataSource.getAllStates()
+    private suspend fun getState(stateId: UUID): State {
+        return remoteDataSource.getAllStates()
             .first { it.id == stateId }
             .toState()
     }
 
-    private fun getTasksForProject(projectId: UUID): List<Task> {
-        return dataSource.getTasksByProjectId(projectId)
+    private suspend fun getTasksForProject(projectId: UUID): List<Task> {
+        return remoteDataSource.getTasksByProjectId(projectId)
             .map { it.toTask(taskState = getState(it.stateId)) }
     }
 }

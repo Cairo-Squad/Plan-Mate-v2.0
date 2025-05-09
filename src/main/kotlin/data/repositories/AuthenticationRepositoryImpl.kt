@@ -1,6 +1,7 @@
 package data.repositories
 
-import data.dto.UserDto
+import data.dataSource.localDataSource.file.LocalDataSource
+import data.dataSource.remoteDataSource.mongo.RemoteDataSource
 import data.dto.UserType
 import data.hashing.PasswordEncryptor
 import data.repositories.mappers.toUser
@@ -11,32 +12,32 @@ import logic.repositories.AuthenticationRepository
 import java.util.UUID
 
 class AuthenticationRepositoryImpl(
-    private val dataSource: DataSource,
+    private val remoteDataSource: RemoteDataSource,
     private val passwordEncryptor: PasswordEncryptor
 ) : AuthenticationRepository {
 
-    override fun getAllUsers(): List<User> {
-        val usersDto = dataSource.getAllUsers()
+    override suspend fun getAllUsers(): List<User> {
+        val usersDto = remoteDataSource.getAllUsers()
         return usersDto.map { it.toUser() }
     }
 
-    override fun deleteUser(userId: UUID): Boolean {
-        val userDto = dataSource.getAllUsers()
+    override suspend fun deleteUser(userId: UUID): Boolean {
+        val userDto = remoteDataSource.getAllUsers()
             .find { it.id == userId } ?: throw UserNotFoundException()
-        dataSource.deleteUser(userDto)
+        remoteDataSource.deleteUser(userDto)
         return true
     }
 
-    override fun createUser(id : UUID, name : String, password : String, userType : UserType) : Boolean {
+    override suspend fun createUser(id : UUID, name : String, password : String, userType : UserType) : Boolean {
         val hashedPassword = passwordEncryptor.hashPassword(password)
-        return dataSource.createUser(id, name, hashedPassword, userType)
+        return remoteDataSource.createUser(id, name, hashedPassword, userType)
     }
 
-    override fun editUser(user: User){
-        return dataSource.editUser(user.toUserDto())
+    override suspend fun editUser(user: User){
+        return remoteDataSource.editUser(user.toUserDto())
     }
 
-    override fun loginUser(name : String, password : String) : User? {
+    override suspend fun loginUser(name : String, password : String) : User? {
         val users = getAllUsers()
         val hashedPassword = passwordEncryptor.hashPassword(password)
         return users.find { it.name == name && it.password == hashedPassword }

@@ -1,113 +1,44 @@
 package data.dataSource.localDataSource.file
 
+
+import java.util.UUID
+import data.dto.StateDto
 import data.dto.*
-import data.repositories.DataSource
-import java.util.*
 
-class LocalDataSource(
-    private val logsCsvHandler: FileHandler<LogDto>,
-    private val projectsCsvHandler: FileHandler<ProjectDto>,
-    private val statesCsvHandler: FileHandler<StateDto>,
-    private val tasksCsvHandler: FileHandler<TaskDto>,
-    private val usersCsvHandler: FileHandler<UserDto>
-) : DataSource {
-    override fun createUser(id : UUID, name : String, password : String, type : UserType) : Boolean {
-        val userDto = UserDto(
-            id = UUID.randomUUID(),
-            name = name,
-            password = password,
-            type = type
-        )
-        return usersCsvHandler.write(userDto)
+interface LocalDataSource {
+    // region Users
+    fun getAllUsers() : List<UserDto>
+    fun createUser(id : UUID, name : String, password : String, type : UserType) : Boolean
+    fun editUser(user : UserDto)
+    fun deleteUser(user : UserDto)
+    // endregion
 
-    }
+    // region Projects
+    fun getAllProjects() : List<ProjectDto>
+    fun getProjectById(projectId : UUID) : ProjectDto
+    fun createProject(project : ProjectDto)
+    fun editProject(newProject : ProjectDto)
+    fun deleteProjectById(project : ProjectDto)
+    // endregion
 
-    override fun getAllUsers(): List<UserDto> {
-        val users = usersCsvHandler.readAll()
-        return users
-    }
+    // region Tasks
+    fun getTasksByProjectId(projectId : UUID) : List<TaskDto>
+    fun createTask(task : TaskDto)
+    fun editTask(task : TaskDto)
+    fun deleteTask(task : TaskDto)
+    fun getTaskById(taskID : UUID) : TaskDto
+    // endregion
 
-    override fun editUser(user: UserDto) {
-        return usersCsvHandler.edit(user)
-    }
+    // region Logs
+    fun recordLog(log : LogDto)
+    fun getProjectLogs(projectId : UUID) : List<LogDto>
+    fun getTaskLogs(taskId : UUID) : List<LogDto>
+    // endregion
 
-    override fun editState(state: StateDto) {
-        return statesCsvHandler.edit(state)
-    }
-
-    override fun deleteUser(user: UserDto) {
-        usersCsvHandler.delete(user)
-    }
-
-    override fun createProject(project: ProjectDto) {
-        projectsCsvHandler.write(project)
-    }
-
-    override fun editProject(newProject: ProjectDto) {
-        projectsCsvHandler.edit(newProject)
-    }
-
-    override fun deleteProjectById(project: ProjectDto) {
-        projectsCsvHandler.delete(project)
-    }
-
-    override fun getProjectById(projectId: UUID): ProjectDto {
-        return projectsCsvHandler.readAll()
-            .first { projectDto -> projectDto.id == projectId }
-    }
-
-    override fun getAllProjects(): List<ProjectDto> {
-        return projectsCsvHandler.readAll()
-    }
-
-    override fun getTasksByProjectId(projectId: UUID): List<TaskDto> {
-        return tasksCsvHandler.readAll().filter { it.projectId == projectId }
-    }
-
-    override fun getAllStates(): List<StateDto> {
-        return statesCsvHandler.readAll()
-    }
-
-    override fun recordLog(log: LogDto) {
-        logsCsvHandler.write(log)
-    }
-
-
-
-    override fun getTaskLogs(taskId: UUID): List<LogDto> {
-        return logsCsvHandler.readAll().filter { it.entityType == EntityType.TASK && it.entityId == taskId }
-    }
-
-    override fun createTask(task: TaskDto) {
-        tasksCsvHandler.write(task)
-    }
-
-    override fun editTask(task: TaskDto) {
-        tasksCsvHandler.edit(task)
-    }
-
-    override fun deleteTask(task: TaskDto) {
-        tasksCsvHandler.delete(task)
-    }
-
-    override fun getTaskById(taskID: UUID): TaskDto {
-        val task = tasksCsvHandler.readAll().find { it.id == taskID }
-        return task!!
-    }
-
-    override fun getStateById(stateId: UUID): StateDto {
-        val stateDto = statesCsvHandler.readAll().find { it.id == stateId }
-        return stateDto!!
-    }
-
-    override fun createState(state: StateDto): Boolean {
-        statesCsvHandler.write(state)
-        return true
-    }
-
-
-    override fun getProjectLogs(projectId: UUID): List<LogDto> {
-        return logsCsvHandler.readAll()
-            .filter { it.entityType == EntityType.PROJECT && it.entityId == projectId }
-    }
+    // region States
+    fun getAllStates() : List<StateDto>
+    fun getStateById(stateId : UUID) : StateDto
+    fun createState(state : StateDto) : Boolean
+    fun editState(state : StateDto)
+    // endregion
 }

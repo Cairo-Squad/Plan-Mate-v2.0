@@ -1,5 +1,6 @@
 package ui.features.task
 
+import kotlinx.coroutines.runBlocking
 import logic.usecase.project.GetAllProjectsUseCase
 import logic.usecase.task.GetAllTasksByProjectIdUseCase
 import ui.utils.InputHandler
@@ -11,7 +12,7 @@ class SwimlanesView(
 	private val getAllTasksByProjectIdUseCase: GetAllTasksByProjectIdUseCase,
 	private val getAllProjectUseCase: GetAllProjectsUseCase
 ) {
-	fun getAllTasksByProject() {
+	fun getAllTasksByProject() = runBlocking {
 		outputFormatter.printHeader(
 			"""
             ╔══════════════════════════╗
@@ -24,7 +25,7 @@ class SwimlanesView(
 
 		if (projects.isEmpty()) {
 			outputFormatter.printError("❌ No projects available!")
-			return
+			return@runBlocking
 		}
 
 		outputFormatter.printInfo("📌 Available Projects:")

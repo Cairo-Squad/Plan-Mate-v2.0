@@ -9,7 +9,7 @@ import logic.repositories.AuthenticationRepository
 class EditUserUseCase(
     private val authenticationRepository: AuthenticationRepository
 ) {
-    fun editUser(newUser: User) {
+    suspend fun editUser(newUser: User) {
         authenticationRepository.editUser(user = newUser)
     }
 }

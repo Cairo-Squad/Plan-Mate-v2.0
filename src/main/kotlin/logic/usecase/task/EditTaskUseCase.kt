@@ -14,7 +14,7 @@ class EditTaskUseCase(
     private val repository: TasksRepository,
     private val addLogUseCase: AddLogUseCase
 ) {
-    fun editTask(newTask: Task, oldTask: Task) {
+    suspend fun editTask(newTask: Task, oldTask: Task) {
         validateUserInputs(
             newTask = newTask,
             oldTask = oldTask

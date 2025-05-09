@@ -9,7 +9,7 @@ import logic.repositories.StatesRepository
 class CreateStateUseCase(
     private val stateRepository: StatesRepository
 ) {
-    fun createState(state: State): Boolean {
+    suspend fun createState(state: State): Boolean {
         return stateRepository.createState(state.toStateDto())
     }
 }

@@ -2,8 +2,10 @@ package logic.usecase
 
 import com.google.common.truth.Truth.assertThat
 import data.hashing.PasswordEncryptor
+import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
+import kotlinx.coroutines.test.runTest
 import logic.repositories.AuthenticationRepository
 import logic.usecase.user.LoginUserUseCase
 import org.junit.jupiter.api.BeforeEach
@@ -22,10 +24,10 @@ class LoginUserUseCaseTest {
     }
 
     @Test
-    fun `should return true when valid username and password`() {
+    fun `should return true when valid username and password`() = runTest {
         //Given
         val mockUser = FakeData.mockUsers[0]
-        every { authenticationRepository.loginUser(mockUser.name, mockUser.password) } returns mockUser
+        coEvery { authenticationRepository.loginUser(mockUser.name, mockUser.password) } returns mockUser
 
         //when
         val result = loginUserUseCase.login(mockUser.name, mockUser.password)
@@ -35,10 +37,10 @@ class LoginUserUseCaseTest {
     }
 
     @Test
-    fun `should return false when  username valid and password is invalid`() {
+    fun `should return false when  username valid and password is invalid`() = runTest {
         //Given
         val mockUser = FakeData.mockUsers[0]
-        every { authenticationRepository.loginUser(mockUser.name, "123456789") } returns null
+        coEvery { authenticationRepository.loginUser(mockUser.name, "123456789") } returns null
 
         //when
         val exception = assertThrows<Exception> {
@@ -49,10 +51,10 @@ class LoginUserUseCaseTest {
     }
 
     @Test
-    fun `should return false when  username is invalid and password is valid`() {
+    fun `should return false when  username is invalid and password is valid`() = runTest {
         //Given
         val mockUser = FakeData.mockUsers[1]
-        every { authenticationRepository.loginUser("ali", mockUser.password) } returns null
+        coEvery { authenticationRepository.loginUser("ali", mockUser.password) } returns null
 
         //when
         val exception = assertThrows<Exception> {

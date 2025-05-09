@@ -1,5 +1,6 @@
 package ui.features.user.admin
 
+import kotlinx.coroutines.runBlocking
 import logic.usecase.user.GetAllUsersUseCase
 import ui.utils.InputHandler
 import ui.utils.OutputFormatter
@@ -9,7 +10,7 @@ class ListAllUsersView(
     private val outputFormatter: OutputFormatter,
     private val getAllUsersUseCase: GetAllUsersUseCase,
 ) {
-    fun listAllUsers() {
+    fun listAllUsers() = runBlocking {
         outputFormatter.printHeader(
             """
             ╔══════════════════════════╗
@@ -22,7 +23,7 @@ class ListAllUsersView(
 
         if (users.isEmpty()) {
             outputFormatter.printError("❌ No users found in the system!")
-            return
+	        return@runBlocking
         }
 
         outputFormatter.printInfo("📋 Available Users:")

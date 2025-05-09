@@ -1,5 +1,6 @@
 package ui.features.project
 
+import kotlinx.coroutines.runBlocking
 import logic.model.Task
 import logic.usecase.project.GetAllProjectsUseCase
 import ui.utils.InputHandler
@@ -9,7 +10,7 @@ class ProjectDetailView(
 	private val inputHandler: InputHandler,
 	private val outputFormatter: OutputFormatter
 ) {
-	fun viewProjectDetails() {
+	fun viewProjectDetails() = runBlocking {
 		outputFormatter.printHeader(
 			"""
             ╔══════════════════════════╗
@@ -21,7 +22,7 @@ class ProjectDetailView(
 		val projects = getAllProjectsUseCase.getAllProjects()
 		if (projects.isEmpty()) {
 			outputFormatter.printError("❌ No projects available to view!")
-			return
+			return@runBlocking
 		}
 
 		outputFormatter.printInfo("📂 Available Projects:")

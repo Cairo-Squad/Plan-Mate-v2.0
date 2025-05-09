@@ -11,7 +11,7 @@ import java.util.*
 class CreateUserUseCase(
     private val authRepository : AuthenticationRepository
 ) {
-    fun createUser(id : UUID, name : String, password : String, type : UserType) : Boolean {
+    suspend fun createUser(id : UUID, name : String, password : String, type : UserType) : Boolean {
         return authRepository.createUser(id, name, password, type)
     }
 }

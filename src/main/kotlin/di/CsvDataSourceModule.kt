@@ -2,12 +2,12 @@ package di
 
 import data.dataSource.localDataSource.file.*
 import data.dataSource.util.CsvConstants
-import data.repositories.DataSource
+import data.dataSource.localDataSource.file.LocalDataSource
 import data.dto.*
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
-val dataSourceModule = module {
+val localDataSourceModule = module {
     single<FileHandler<ProjectDto>>(named("projectsHandler")) {
         ProjectsCsvHandler(
             filePath = CsvConstants.PROJECTS_CSV_FILE_PATH,
@@ -43,8 +43,8 @@ val dataSourceModule = module {
         )
     }
 
-    single<DataSource> {
-        LocalDataSource(
+    single<LocalDataSource> {
+        LocalDataSourceImpl(
             logsCsvHandler = get(named("logHandler")),
             projectsCsvHandler = get(named("projectsHandler")),
             statesCsvHandler = get(named("statesHandler")),

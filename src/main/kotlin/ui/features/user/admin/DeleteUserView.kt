@@ -1,5 +1,6 @@
 package ui.features.user.admin
 
+import kotlinx.coroutines.runBlocking
 import logic.usecase.user.DeleteUserUseCase
 import logic.usecase.user.GetAllUsersUseCase
 import ui.utils.InputHandler
@@ -11,7 +12,7 @@ class DeleteUserView(
     private val getAllUsersUseCase: GetAllUsersUseCase,
     private val deleteUserUseCase: DeleteUserUseCase
 ) {
-    fun deleteUser() {
+    fun deleteUser() = runBlocking {
         outputFormatter.printHeader(
             """
             ╔════════════════════════════╗
@@ -24,7 +25,7 @@ class DeleteUserView(
 
         if (users.isEmpty()) {
             outputFormatter.printError("❌ No users available to delete!")
-            return
+	        return@runBlocking
         }
 
         outputFormatter.printInfo("👥 Available Users:")

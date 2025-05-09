@@ -4,9 +4,9 @@ import logic.model.Task
 import java.util.UUID
 
 interface TasksRepository {
-    fun getTaskById(taskId: UUID): Task
-    fun editTask(task: Task)
-    fun getAllTasksByProjectId(projectId: UUID): List<Task>
-    fun deleteTask(task: Task)
-    fun createTask(task: Task)
+    suspend fun getTaskById(taskId: UUID): Task
+    suspend fun editTask(task: Task)
+    suspend fun getAllTasksByProjectId(projectId: UUID): List<Task>
+    suspend fun deleteTask(task: Task)
+    suspend fun createTask(task: Task)
 }

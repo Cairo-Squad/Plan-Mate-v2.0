@@ -1,110 +1,42 @@
 package data.dataSource.remoteDataSource.mongo
 
-import com.mongodb.client.MongoDatabase
 import data.dto.*
-import data.repositories.DataSource
 import java.util.*
 
-class RemoteDataSource(
-	database: MongoDatabase,
-	private val logsHandler: LogsMongoHandlerImpl = LogsMongoHandlerImpl(database),
-	private val projectsHandler: ProjectsMongoHandlerImpl = ProjectsMongoHandlerImpl(database),
-	private val statesHandler: StatesMongoHandlerImpl = StatesMongoHandlerImpl(database),
-	private val tasksHandler: TasksMongoHandlerImpl = TasksMongoHandlerImpl(database),
-	private val usersHandler: UsersMongoHandlerImpl = UsersMongoHandlerImpl(database),
-) : DataSource {
-
-    override fun getAllUsers() : List<UserDto> {
-        return usersHandler.readAll()
-    }
-
-    override fun createUser(id : UUID, name : String, password : String, type : UserType) : Boolean {
-        val userDto = UserDto(
-            id = UUID.randomUUID(),
-            name = name,
-            password = password,
-            type = type
-        )
-
-        return usersHandler.write(userDto)
-
-    }
-
-    override fun editUser(user : UserDto) {
-        usersHandler.edit(user)
-    }
-
-    override fun deleteUser(user : UserDto) {
-        usersHandler.delete(user)
-    }
-
-    override fun createProject(project : ProjectDto) {
-        projectsHandler.write(project)
-    }
-
-    override fun editProject(newProject : ProjectDto) {
-        projectsHandler.edit(newProject)
-    }
-
-    override fun deleteProjectById(project : ProjectDto) {
-        projectsHandler.delete(project)
-    }
-
-    override fun getProjectById(projectId : UUID) : ProjectDto {
-        return projectsHandler.readByEntityId(projectId)
-    }
-
-    override fun getAllProjects() : List<ProjectDto> {
-        return projectsHandler.readAll()
-    }
-
-    override fun getTasksByProjectId(projectId : UUID) : List<TaskDto> {
-        return tasksHandler.readAll().filter { it.projectId == projectId }
-    }
-
-	override fun createTask(task: TaskDto) {
-		tasksHandler.write(task)
-	}
-
-	override fun editTask(task: TaskDto) {
-		tasksHandler.edit(task)
-	}
-
-	override fun deleteTask(task: TaskDto) {
-		tasksHandler.delete(task)
-	}
-
-	override fun getTaskById(taskID: UUID): TaskDto {
-		return tasksHandler.readByEntityId(taskID)
-	}
+interface RemoteDataSource {
+	// region Users
+	suspend fun getAllUsers(): List<UserDto>
+	suspend fun createUser(id: UUID, name: String, password: String, type: UserType): Boolean
+	suspend fun editUser(user: UserDto)
+	suspend fun deleteUser(user: UserDto)
+	// endregion
 	
-	override fun getAllStates(): List<StateDto> {
-		return statesHandler.readAll()
-	}
-
-	override fun getStateById(stateId: UUID): StateDto {
-		return statesHandler.readByEntityId(stateId)
-	}
-
-	override fun createState(state: StateDto): Boolean {
-		statesHandler.write(state)
-		return true
-	}
-
-	override fun editState(state: StateDto) {
-		statesHandler.edit(state)
-	}
+	// region Projects
+	suspend fun getAllProjects(): List<ProjectDto>
+	suspend fun getProjectById(projectId: UUID): ProjectDto
+	suspend fun createProject(project: ProjectDto)
+	suspend fun editProject(newProject: ProjectDto)
+	suspend fun deleteProjectById(project: ProjectDto)
+	// endregion
 	
-	override fun recordLog(log: LogDto) {
-		logsHandler.write(log)
-	}
+	// region Tasks
+	suspend fun getTasksByProjectId(projectId: UUID): List<TaskDto>
+	suspend fun createTask(task: TaskDto)
+	suspend fun editTask(task: TaskDto)
+	suspend fun deleteTask(task: TaskDto)
+	suspend fun getTaskById(taskID: UUID): TaskDto
+	// endregion
 	
-	override fun getTaskLogs(taskId: UUID): List<LogDto> {
-		return logsHandler.readAll().filter { it.entityType == EntityType.TASK && it.entityId == taskId }
-	}
-
-	override fun getProjectLogs(projectId: UUID): List<LogDto> {
-		return logsHandler.readAll()
-			.filter { it.entityType == EntityType.PROJECT && it.entityId == projectId }
-	}
+	// region Logs
+	suspend fun recordLog(log: LogDto)
+	suspend fun getProjectLogs(projectId: UUID): List<LogDto>
+	suspend fun getTaskLogs(taskId: UUID): List<LogDto>
+	// endregion
+	
+	// region States
+	suspend fun getAllStates(): List<StateDto>
+	suspend fun getStateById(stateId: UUID): StateDto
+	suspend fun createState(state: StateDto): Boolean
+	suspend fun editState(state: StateDto)
+	// endregion
 }

@@ -2,6 +2,7 @@ package ui.features.project
 
 import data.dto.UserType
 import io.mockk.*
+import kotlinx.coroutines.test.runTest
 import logic.model.Project
 import logic.model.State
 import logic.model.Task
@@ -70,7 +71,7 @@ class ProjectCreateViewTest {
 	}
 	
 	@Test
-	fun `should create project without tasks successfully`() {
+	fun `should create project without tasks successfully`() = runTest {
 		// Given
 		val project = getProject()
 		
@@ -78,19 +79,19 @@ class ProjectCreateViewTest {
 		every { inputHandler.promptForInput("📝 Enter project description: ") } returns project.description
 		every { inputHandler.promptForInput("📊 Enter initial project state: ") } returns project.state.title
 		every { inputHandler.promptForYesNo("Do you want to add tasks to this project?") } returns false
-		every { createProjectUseCase.createProject(any(), mockUser) } just Runs
+		coEvery { createProjectUseCase.createProject(any(), mockUser) } just Runs
 		
 		// When
 		projectCreateView.createProject()
 		
 		// Then
-		verify { createStateUseCase.createState(match { it.title == project.state.title }) }
-		verify { createProjectUseCase.createProject(any(), mockUser) }
+		coVerify { createStateUseCase.createState(match { it.title == project.state.title }) }
+		coVerify { createProjectUseCase.createProject(any(), mockUser) }
 		verify { outputFormatter.printSuccess(match { it.contains(project.title) && it.contains("created successfully") }) }
 	}
 	
 	@Test
-	fun `should create project with tasks successfully`() {
+	fun `should create project with tasks successfully`() = runTest {
 		// Given
 		val project = getProject()
 		val task = getTask(project.id)
@@ -101,28 +102,28 @@ class ProjectCreateViewTest {
 		every { inputHandler.promptForInput("✅ Task title: ") } returns task.title
 		every { inputHandler.promptForInput("📝 Task description: ") } returns task.description
 		every { inputHandler.promptForInput("📊 Task state: ") } returns task.state.title
-		every { createTaskUseCase.createTask(any()) } just Runs
+		coEvery { createTaskUseCase.createTask(any()) } just Runs
 		every { inputHandler.promptForYesNo("➕ Do you want to add another task?") } returns false
-		every { createProjectUseCase.createProject(any(), mockUser) } just Runs
+		coEvery { createProjectUseCase.createProject(any(), mockUser) } just Runs
 		
 		// When
 		projectCreateView.createProject()
 		
 		// Then
-		verify { createStateUseCase.createState(match { it.title == project.state.title }) }
-		verify {
+		coVerify { createStateUseCase.createState(match { it.title == project.state.title }) }
+		coVerify {
 			createTaskUseCase.createTask(match {
 				it.title == task.title &&
 						it.description == task.description &&
 						it.state.title == task.state.title
 			})
 		}
-		verify { createProjectUseCase.createProject(any(), mockUser) }
+		coVerify { createProjectUseCase.createProject(any(), mockUser) }
 		verify { outputFormatter.printSuccess(match { it.contains(project.title) && it.contains("created successfully") }) }
 	}
 	
 	@Test
-	fun `should handle project creation failure`() {
+	fun `should handle project creation failure`() = runTest {
 		// Given
 		val project = getProject()
 		val errorMessage = "Database connection error"
@@ -131,7 +132,7 @@ class ProjectCreateViewTest {
 		every { inputHandler.promptForInput("📝 Enter project description: ") } returns project.description
 		every { inputHandler.promptForInput("📊 Enter initial project state: ") } returns project.state.title
 		every { inputHandler.promptForYesNo("Do you want to add tasks to this project?") } returns false
-		every { createProjectUseCase.createProject(any(), any()) } throws Exception(errorMessage)
+		coEvery { createProjectUseCase.createProject(any(), any()) } throws Exception(errorMessage)
 		
 		// When
 		projectCreateView.createProject()
@@ -141,7 +142,7 @@ class ProjectCreateViewTest {
 	}
 	
 	@Test
-	fun `should handle no authenticated user`() {
+	fun `should handle no authenticated user`() = runTest {
 		// Given
 		every { UserSession.getUser() } returns null
 		
@@ -151,11 +152,11 @@ class ProjectCreateViewTest {
 		// Then
 		verify { outputFormatter.printError(match { it.contains("No authenticated user found") }) }
 		verify(exactly = 0) { inputHandler.promptForInput(any()) }
-		verify(exactly = 0) { createProjectUseCase.createProject(any(), any()) }
+		coVerify (exactly = 0) { createProjectUseCase.createProject(any(), any()) }
 	}
 	
 	@Test
-	fun `should create project with multiple tasks successfully`() {
+	fun `should create project with multiple tasks successfully`() = runTest {
 		// Given
 		val project = getProject()
 		val task1 = getTask(project.id, "Task 1", "Task 1 Description", "In Progress")
@@ -177,20 +178,20 @@ class ProjectCreateViewTest {
 		// First time yes, second time no
 		every { inputHandler.promptForYesNo("➕ Do you want to add another task?") } returnsMany listOf(true, false)
 		
-		every { createTaskUseCase.createTask(any()) } just Runs
-		every { createProjectUseCase.createProject(any(), mockUser) } just Runs
+		coEvery { createTaskUseCase.createTask(any()) } just Runs
+		coEvery { createProjectUseCase.createProject(any(), mockUser) } just Runs
 		
 		// When
 		projectCreateView.createProject()
 		
 		// Then
-		verify { createStateUseCase.createState(match { it.title == project.state.title }) }
-		verify(exactly = 2) { createTaskUseCase.createTask(any()) }
-		verify { createProjectUseCase.createProject(any(), mockUser) }
-		verify { outputFormatter.printSuccess(match { it.contains(project.title) && it.contains("created successfully") }) }
+		coVerify { createStateUseCase.createState(match { it.title == project.state.title }) }
+		coVerify(exactly = 2) { createTaskUseCase.createTask(any()) }
+		coVerify { createProjectUseCase.createProject(any(), mockUser) }
+		coVerify { outputFormatter.printSuccess(match { it.contains(project.title) && it.contains("created successfully") }) }
 		
 		// Verify tasks were created with proper values
-		verify {
+		coVerify {
 			createTaskUseCase.createTask(match {
 				it.title == task1.title &&
 						it.description == task1.description &&
@@ -198,7 +199,7 @@ class ProjectCreateViewTest {
 			})
 		}
 		
-		verify {
+		coVerify {
 			createTaskUseCase.createTask(match {
 				it.title == task2.title &&
 						it.description == task2.description &&

@@ -1,6 +1,7 @@
 package ui.features.user.admin
 
 import io.mockk.*
+import kotlinx.coroutines.test.runTest
 import logic.usecase.user.CreateUserUseCase
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -23,18 +24,18 @@ class CreateNewUserViewTest {
     }
 
     @Test
-    fun `should user see Username cannot be empty error when username is empty`() {
+    fun `should user see Username cannot be empty error when username is empty`() = runTest {
         every { inputHandler.promptForInput(any()) } returns ""
 
         createNewUserView.createNewUser()
 
         verify { outputFormatter.printError("❌ Username cannot be empty.") }
         verify { inputHandler.waitForEnter() }
-        verify(exactly = 0) { createUserUseCase.createUser(any(), any(), any(), any()) }
+        coVerify(exactly = 0) { createUserUseCase.createUser(any(), any(), any(), any()) }
     }
 
     @Test
-    fun `should user see  Password cannot be empty error when password is empty`() {
+    fun `should user see  Password cannot be empty error when password is empty`() = runTest {
         every { inputHandler.promptForInput(any()) } returns "nour"
         every { inputHandler.promptForPassword(any()) } returns ""
 
@@ -42,14 +43,14 @@ class CreateNewUserViewTest {
 
         verify { outputFormatter.printError("❌ Password cannot be empty.") }
         verify { inputHandler.waitForEnter() }
-        verify(exactly = 0) { createUserUseCase.createUser(any(), any(), any(), any()) }
+        coVerify(exactly = 0) { createUserUseCase.createUser(any(), any(), any(), any()) }
     }
 
     @Test
-    fun `should user see created  successfully  when created successfully in database `() {
+    fun `should user see created  successfully  when created successfully in database `() = runTest {
         every { inputHandler.promptForInput(any()) } returns "nour"
         every { inputHandler.promptForPassword(any()) } returns "123456"
-        every { createUserUseCase.createUser(any(), "nour", "123456", any()) } returns true
+        coEvery { createUserUseCase.createUser(any(), "nour", "123456", any()) } returns true
 
         createNewUserView.createNewUser()
 
@@ -58,10 +59,10 @@ class CreateNewUserViewTest {
     }
 
     @Test
-    fun `should user see Failed to create user error if createUserUseCase throws exception`() {
+    fun `should user see Failed to create user error if createUserUseCase throws exception`() = runTest {
         every { inputHandler.promptForInput(any()) } returns "nour"
         every { inputHandler.promptForPassword(any()) } returns "123456"
-        every {
+        coEvery {
             createUserUseCase.createUser(
                 any(),
                 any(),

@@ -1,5 +1,6 @@
 package ui.features.task
 
+import kotlinx.coroutines.runBlocking
 import logic.model.State
 import logic.usecase.project.GetAllProjectsUseCase
 import logic.usecase.state.EditStateUseCase
@@ -16,7 +17,7 @@ class EditTaskView(
     private val getAllProjectsUseCase: GetAllProjectsUseCase,
     private val editStateUseCase: EditStateUseCase,
 ) {
-    fun editTask() {
+    fun editTask() = runBlocking {
         outputFormatter.printHeader(
             """
             ╔══════════════════════════╗
@@ -29,7 +30,7 @@ class EditTaskView(
 
         if (projects.isEmpty()) {
             outputFormatter.printError("❌ No projects available for task editing!")
-            return
+	        return@runBlocking
         }
 
         outputFormatter.printInfo("📂 Available Projects:")
@@ -47,7 +48,7 @@ class EditTaskView(
 
         if (tasks.isEmpty()) {
             outputFormatter.printWarning("⚠️ No tasks found for project '${selectedProject.title}'.")
-            return
+	        return@runBlocking
         }
 
         outputFormatter.printInfo("📝 Available Tasks:")

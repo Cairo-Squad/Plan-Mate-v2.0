@@ -1,5 +1,6 @@
 package ui.features.project
 
+import kotlinx.coroutines.runBlocking
 import logic.model.Project
 import logic.model.State
 import logic.model.Task
@@ -18,7 +19,7 @@ class ProjectCreateView(
     private val createStateUseCase: CreateStateUseCase,
     private val createTaskUseCase: CreateTaskUseCase
 ) {
-    fun createProject() {
+    fun createProject() = runBlocking {
         outputFormatter.printHeader(
             """
             ╔════════════════════════════╗
@@ -30,7 +31,7 @@ class ProjectCreateView(
         val currentUser = UserSession.getUser()
         if (currentUser == null) {
             outputFormatter.printError("❌ No authenticated user found! Please log in first.")
-            return
+	        return@runBlocking
         }
 
         val title = inputHandler.promptForInput("📂 Enter project title: ")
