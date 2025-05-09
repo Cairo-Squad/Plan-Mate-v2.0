@@ -1,17 +1,12 @@
 package di
 
-import com.mongodb.client.MongoDatabase
 import data.dataSource.remoteDataSource.mongo.*
 import data.dto.*
-import data.dataSource.localDataSource.file.LocalDataSource
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 val remoteDataSourceImplModule = module {
-    // Provide MongoDB database instance
-    single<MongoDatabase> {
-        MongoDBConnection.getDatabase()
-    }
+    
 
     // Define handlers for each entity
     single<MongoDBHandler<ProjectDto>>(named("projectsHandler")) {
