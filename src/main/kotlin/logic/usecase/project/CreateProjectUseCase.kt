@@ -1,27 +1,23 @@
 package logic.usecase.project
 
-import data.dto.EntityType
-import data.dto.UserAction
 import data.dto.UserType
-import logic.model.Log
 import logic.exception.EmptyTitleException
 import logic.exception.InvalidUserException
 import logic.model.Project
 import logic.model.User
 import logic.repositories.ProjectsRepository
 import logic.usecase.Log.AddLogUseCase
-import java.time.LocalDateTime
-import java.util.*
 
 class CreateProjectUseCase(
     private val projectRepository: ProjectsRepository,
-    private val addLogUseCase: AddLogUseCase
+    private val addLogUseCase: AddLogUseCase,
+    private val validationProject: ValidationProject
 ) {
     fun createProject(project: Project, user: User) {
-        validateProjectCreation(project, user)
+        validationProject.validateCreateProject(project, user)
         projectRepository.createProject(project, user)
 
-        val log = Log(
+       /* val log = Log(
             id = UUID.randomUUID(),
             entityId = project.id,
             entityTitle = project.title,
@@ -31,7 +27,7 @@ class CreateProjectUseCase(
             userAction = UserAction.CreateProject(project.title, project.id)
         )
 
-        addLogUseCase.addLog(log)
+        addLogUseCase.addLog(log)*/
 
     }
 }

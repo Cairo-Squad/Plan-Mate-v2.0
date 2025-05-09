@@ -1,5 +1,6 @@
 package ui.features.project
 
+import logic.model.Task
 import logic.usecase.project.GetAllProjectsUseCase
 import ui.utils.InputHandler
 import ui.utils.OutputFormatter
@@ -39,8 +40,18 @@ class ProjectDetailView(
 			outputFormatter.printInfo("📂 Title: ${selectedProject.title}")
 			outputFormatter.printInfo("📝 Description: ${selectedProject.description}")
 			outputFormatter.printInfo("📊 State: ${selectedProject.state.title}")
+			outputFormatter.printInfo("✅ Tasks: \n${displayTasksOnUiFormatter(selectedProject.tasks)}")
 
 			inputHandler.waitForEnter()
 		}
+	}
+	
+	
+	private fun displayTasksOnUiFormatter(tasks: List<Task>): String {
+		if (tasks.isEmpty()) return "⚠️ No tasks available."
+		
+		return tasks.mapIndexed { index, task ->
+			"🔹 ${index + 1}. ${task.title} [${task.state.title}]"
+		}.joinToString("\n")
 	}
 }
