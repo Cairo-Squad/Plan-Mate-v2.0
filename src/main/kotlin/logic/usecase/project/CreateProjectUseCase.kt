@@ -6,9 +6,11 @@ import logic.exception.InvalidUserException
 import logic.model.Project
 import logic.model.User
 import logic.repositories.ProjectsRepository
+import logic.usecase.Log.AddLogUseCase
 
 class CreateProjectUseCase(
     private val projectRepository: ProjectsRepository,
+    private val addLogUseCase: AddLogUseCase,
     private val validationProject: ValidationProject
 ) {
     fun createProject(project: Project, user: User) {
