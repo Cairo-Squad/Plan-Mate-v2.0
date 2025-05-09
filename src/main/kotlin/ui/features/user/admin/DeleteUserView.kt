@@ -39,13 +39,16 @@ class DeleteUserView(
         outputFormatter.printWarning("⚠️ Are you sure you want to delete '${selectedUser.name}'? This action cannot be undone.")
 
         val confirmation = inputHandler.promptForInput("Type 'YES' to confirm: ")
-        if (confirmation.equals("YES", ignoreCase = true)) {
-            deleteUserUseCase.deleteUser(selectedUser.id)
-            outputFormatter.printSuccess("✅ User '${selectedUser.name}' deleted successfully!")
-        } else {
-            outputFormatter.printInfo("🔄 Action canceled. No user was deleted.")
-        }
 
-        inputHandler.waitForEnter()
+        if (confirmation.equals("YES", ignoreCase = true)) {
+            try {
+                deleteUserUseCase.deleteUser(selectedUser.id)
+                outputFormatter.printSuccess("✅ User '${selectedUser.name}' deleted successfully!")
+            } catch (e: Exception) {
+                outputFormatter.printInfo("🔄 Action canceled. No user was deleted: ${e.message}")
+            }
+
+            inputHandler.waitForEnter()
+        }
     }
 }
