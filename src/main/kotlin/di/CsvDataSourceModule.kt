@@ -1,9 +1,8 @@
 package di
 
-import data.dataSource.CsvDataSource
+import data.dataSource.localDataSource.file.*
+import data.dataSource.util.CsvConstants
 import data.repositories.DataSource
-import data.database.*
-import data.database.util.CsvConstants
 import data.dto.*
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
@@ -45,7 +44,7 @@ val dataSourceModule = module {
     }
 
     single<DataSource> {
-        CsvDataSource(
+        LocalDataSource(
             logsCsvHandler = get(named("logHandler")),
             projectsCsvHandler = get(named("projectsHandler")),
             statesCsvHandler = get(named("statesHandler")),
