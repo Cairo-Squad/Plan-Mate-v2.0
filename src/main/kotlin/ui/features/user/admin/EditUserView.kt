@@ -57,11 +57,9 @@ class EditUserView(
     }
 
     private fun validateUserInputs(newUser: User, oldUser: User) {
-        if ((newUser.name.trim().isBlank() == oldUser.name.trim().isBlank())
-            && (newUser.password.trim().isBlank() == oldUser.password.trim().isBlank())
-        )
+        if (newUser.name.trim() == oldUser.name.trim() &&
+            newUser.password.trim() == oldUser.password.trim()) {
             throw EntityNotChangedException()
-
+        }
     }
 }
-

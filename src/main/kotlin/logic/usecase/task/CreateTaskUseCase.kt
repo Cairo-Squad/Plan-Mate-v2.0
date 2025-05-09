@@ -17,7 +17,7 @@ class CreateTaskUseCase(
     fun createTask(task: Task) {
         validateTask(task)
         repository.createTask(task)
-        val log = Log(
+      /*  val log = Log(
             id = UUID.randomUUID(),
             entityId = task.id,
             entityTitle = task.title,
@@ -28,7 +28,7 @@ class CreateTaskUseCase(
         )
 
 
-        addLogUseCase.addLog(log)
+        addLogUseCase.addLog(log)*/
     }
 
     private fun validateTask(task: Task) {
