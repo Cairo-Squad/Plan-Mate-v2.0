@@ -2,7 +2,7 @@ package ui.features.log
 
 
 import kotlinx.coroutines.runBlocking
-import logic.usecase.Log.GetTaskLogsUseCase
+import logic.usecase.log.GetTaskLogsUseCase
 import logic.usecase.project.GetAllProjectsUseCase
 import logic.usecase.task.GetAllTasksByProjectIdUseCase
 import ui.utils.InputHandler
