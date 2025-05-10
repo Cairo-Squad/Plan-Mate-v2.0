@@ -7,7 +7,7 @@ import data.dataSource.remoteDataSource.mongo.handler.MongoDBHandler
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
-val remoteDataSourceImplModule = module {
+val mongoRemoteDataSourceModule = module {
 
     // Define handlers for each entity
     single<MongoDBHandler<ProjectDto>>(named("projectsHandler")) {
