@@ -5,7 +5,7 @@ class InvalidUserCredentialsException : UserException()
 class InvalidUserException : UserException()
 
 open class AdminException : Exception()
-class UnauthorizedActionException : UserException()
+class UnauthorizedActionException : AdminException()
 
 open class GeneralException : Exception()
 class NotFoundException : GeneralException()
@@ -13,4 +13,4 @@ class UnknownException : GeneralException()
 
 class EmptyNameException : IllegalArgumentException()
 class EmptyTitleException : IllegalArgumentException()
-class EntityNotChangedException : Exception("Entity not changed")
+class EntityNotChangedException : Exception()
