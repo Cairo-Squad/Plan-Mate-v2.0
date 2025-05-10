@@ -3,7 +3,7 @@ package logic.usecase.task
 import logic.exception.EmptyTitleException
 import logic.model.Task
 import logic.repositories.TasksRepository
-import logic.usecase.Log.AddLogUseCase
+import logic.usecase.log.AddLogUseCase
 
 class CreateTaskUseCase(
     private val repository: TasksRepository, private val addLogUseCase: AddLogUseCase

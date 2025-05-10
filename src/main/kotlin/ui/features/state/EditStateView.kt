@@ -14,9 +14,7 @@ class EditStateView(
     fun editState(oldState: State) = runBlocking {
         outputFormatter.printHeader("Edit a State ID")
         val title = inputHandler.promptForInput("Enter new state title: ")
-        val newState = State(oldState.id, title = title)
-        // TODO: user singleton object
-        editStateUseCase.editState(oldState, newState)
+        editStateUseCase.editState(oldState)
         outputFormatter.printSuccess("State updated successfully!")
     }
 }

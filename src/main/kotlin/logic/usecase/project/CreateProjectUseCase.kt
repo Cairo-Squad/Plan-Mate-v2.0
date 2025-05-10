@@ -3,7 +3,7 @@ package logic.usecase.project
 import logic.model.Project
 import logic.model.User
 import logic.repositories.ProjectsRepository
-import logic.usecase.Log.AddLogUseCase
+import logic.usecase.log.AddLogUseCase
 import java.util.UUID
 
 class CreateProjectUseCase(

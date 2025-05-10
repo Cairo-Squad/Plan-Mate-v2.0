@@ -3,18 +3,13 @@ package logic.usecase
 import com.google.common.truth.Truth.assertThat
 import data.dto.UserType
 import io.mockk.coEvery
-import io.mockk.every
 import io.mockk.mockk
-import io.mockk.verify
 import kotlinx.coroutines.test.runTest
-import logic.exception.EmptyNameException
-import logic.exception.EmptyPasswordException
 import logic.model.User
 import logic.repositories.AuthenticationRepository
 import logic.usecase.user.CreateUserUseCase
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 import java.util.*
 
 class CreateUserUseCaseTest {

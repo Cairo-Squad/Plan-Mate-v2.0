@@ -10,7 +10,7 @@ import logic.exception.InvalidUserException
 import logic.repositories.ProjectsRepository
 import logic.usecase.FakeData.adminUser
 import logic.usecase.FakeData.mateUser
-import logic.usecase.Log.AddLogUseCase
+import logic.usecase.log.AddLogUseCase
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows

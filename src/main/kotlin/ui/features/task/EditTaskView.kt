@@ -71,7 +71,7 @@ class EditTaskView(
 
         val newState = State(selectedTask.state.id, newStateTitle)
 
-        editStateUseCase.editState(newState, selectedTask.state)
+        editStateUseCase.editState(newState)
 
         val updatedTask = selectedTask.copy(title = newTitle, description = newDescription, state = newState)
 
