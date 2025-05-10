@@ -97,7 +97,7 @@ class ProjectDetailViewTest {
 		verify { outputFormatter.printHeader(any()) }
 		verify { outputFormatter.printInfo("📂 Available Projects:") }
 		projects.forEachIndexed { index, project ->
-			verify { outputFormatter.printInfo(match { it.contains("${index + 1}") && it.contains(project.title) }) }
+			verify { outputFormatter.printInfo(match { it.contains("${index + 1}") && it.contains(project.title!!) }) }
 		}
 		verify(exactly = 0) { inputHandler.promptForIntChoice(any(), any()) }
 		verify(exactly = 0) { outputFormatter.printInfo("📝 Description") }
@@ -127,7 +127,7 @@ class ProjectDetailViewTest {
 		verify { outputFormatter.printInfo("🆔 Project ID: ${selectedProject.id}") }
 		verify { outputFormatter.printInfo("📂 Title: ${selectedProject.title}") }
 		verify { outputFormatter.printInfo("📝 Description: ${selectedProject.description}") }
-		verify { outputFormatter.printInfo("📊 State: ${selectedProject.state.title}") }
+		verify { outputFormatter.printInfo("📊 State: ${selectedProject.state!!.title}") }
 		verify { outputFormatter.printInfo(match { it.startsWith("✅ Tasks:") }) }
 		verify { inputHandler.waitForEnter() }
 	}
