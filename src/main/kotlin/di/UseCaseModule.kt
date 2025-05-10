@@ -1,6 +1,6 @@
 package di
 
-import logic.usecase.Log.*
+import logic.usecase.log.*
 import logic.usecase.project.*
 import logic.usecase.state.*
 import logic.usecase.task.*
