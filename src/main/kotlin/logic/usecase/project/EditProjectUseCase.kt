@@ -18,15 +18,15 @@ class EditProjectUseCase(
         validationProject.validateEditProject(newProject)
         projectsRepository.editProject(newProject)
 
-        val projectInfo = projectsRepository.getProjectById(newProject.id)
+        val projectInfo = projectsRepository.getProjectById(newProject.id!!)
 
         val log = Log(
             id = UUID.randomUUID(),
-            entityId = projectInfo.id,
-            entityTitle = projectInfo.title,
+            entityId = projectInfo.id!!,
+            entityTitle = projectInfo.title?:"",
             entityType = EntityType.PROJECT,
             dateTime = LocalDateTime.now(),
-            userId = newProject.createdBy,
+            userId = newProject.createdBy!!,
             userAction = UserAction.EditProject(newProject.id, "Updated project details")
         )
 

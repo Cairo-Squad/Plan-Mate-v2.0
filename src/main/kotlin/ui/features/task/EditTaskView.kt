@@ -44,7 +44,7 @@ class EditTaskView(
 
         val selectedProject = projects[projectIndex]
 
-        val tasks = getAllTasksByProjectIdUseCase.getAllTasksByProjectId(selectedProject.id)
+        val tasks = getAllTasksByProjectIdUseCase.getAllTasksByProjectId(selectedProject.id!!)
 
         if (tasks.isEmpty()) {
             outputFormatter.printWarning("⚠️ No tasks found for project '${selectedProject.title}'.")

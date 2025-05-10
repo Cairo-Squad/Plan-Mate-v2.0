@@ -35,10 +35,10 @@ class GetProjectByIdUseCaseTest {
     @Test
     fun `should return project Successfully when repository returns project`() = runTest {
         // Given
-        coEvery { projectsRepository.getProjectById(project.id) } returns project
+        coEvery { projectsRepository.getProjectById(project.id!!) } returns project
 
         // When
-        val result = getProjectByIdUseCase.getProjectById(project.id)
+        val result = getProjectByIdUseCase.getProjectById(project.id!!)
 
         //Then
         assertThat(result).isEqualTo(project)
@@ -48,9 +48,9 @@ class GetProjectByIdUseCaseTest {
     fun `should throw exception when repository returns no projects`() = runTest {
         // Given
         val exception = NoSuchElementException()
-        coEvery { projectsRepository.getProjectById(project.id) } throws exception
+        coEvery { projectsRepository.getProjectById(project.id!!) } throws exception
 
         // When & Then
-        assertThrows<NoSuchElementException> { getProjectByIdUseCase.getProjectById(project.id) }
+        assertThrows<NoSuchElementException> { getProjectByIdUseCase.getProjectById(project.id!!) }
     }
 }

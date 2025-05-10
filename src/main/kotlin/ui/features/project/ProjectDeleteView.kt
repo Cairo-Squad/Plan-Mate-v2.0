@@ -5,6 +5,7 @@ import logic.usecase.project.DeleteProjectUseCase
 import logic.usecase.project.GetAllProjectsUseCase
 import ui.utils.InputHandler
 import ui.utils.OutputFormatter
+import java.util.UUID
 
 class ProjectDeleteView(
     private val getAllProjectsUseCase: GetAllProjectsUseCase,
@@ -13,6 +14,27 @@ class ProjectDeleteView(
     private val outputFormatter: OutputFormatter
 ) {
     fun deleteProject() = runBlocking {
+        displayHeader()
+        
+        val projects = getAllProjectsUseCase.getAllProjects()
+        
+        if (projects.isEmpty()) {
+            handleEmptyProjectsList()
+            return@runBlocking
+        }
+        
+        displayAvailableProjects(projects)
+        
+        val selectedProject = selectProjectForDeletion(projects)
+        
+        if (confirmDeletion(selectedProject.title?: "")) {
+            performProjectDeletion(selectedProject.id!!, selectedProject.title?: "")
+        }
+        
+        inputHandler.waitForEnter()
+    }
+    
+    private fun displayHeader() {
         outputFormatter.printHeader(
             """
             ╔══════════════════════════════╗
@@ -20,36 +42,36 @@ class ProjectDeleteView(
             ╚══════════════════════════════╝
             """.trimIndent()
         )
-
-        val projects = getAllProjectsUseCase.getAllProjects()
-
-        if (projects.isEmpty()) {
-            outputFormatter.printError("❌ No projects available for deletion!")
-	        return@runBlocking
-        }
-
+    }
+    
+    private fun handleEmptyProjectsList() {
+        outputFormatter.printError("❌ No projects available for deletion!")
+    }
+    
+    private fun displayAvailableProjects(projects: List<logic.model.Project>) {
         outputFormatter.printInfo("📂 Available Projects:")
         projects.forEachIndexed { index, project ->
             outputFormatter.printInfo("📌 ${index + 1}. ${project.title} | 🆔 ID: ${project.id}")
         }
-
+    }
+    
+    private fun selectProjectForDeletion(projects: List<logic.model.Project>): logic.model.Project {
         val projectIndex = inputHandler.promptForIntChoice("🔹 Select a project to delete:", 1..projects.size) - 1
-        val selectedProject = projects[projectIndex]
-
-        outputFormatter.printWarning("⚠️ Are you sure you want to delete '${selectedProject.title}'? This action **cannot be undone**.")
-
+        return projects[projectIndex]
+    }
+    
+    private fun confirmDeletion(projectTitle: String): Boolean {
+        outputFormatter.printWarning("⚠️ Are you sure you want to delete '${projectTitle}'? This action **cannot be undone**.")
         val confirmation = inputHandler.promptForInput("Type 'YES' to confirm deletion: ")
-
-        if (confirmation.equals("YES", ignoreCase = true)) {
-            try {
-                val result = deleteProjectUseCase.deleteProjectById(selectedProject.id)
-                outputFormatter.printSuccess("✅ Project '${selectedProject.title}' deleted successfully!")
-            } catch (ex: Exception) {
-
-                outputFormatter.printError("❌ Failed to delete project: ${ex.message}")
-            }
+        return confirmation.equals("YES", ignoreCase = true)
+    }
+    
+    private fun performProjectDeletion(projectId: UUID, projectTitle: String) = runBlocking {
+        try {
+            val result = deleteProjectUseCase.deleteProjectById(projectId)
+            outputFormatter.printSuccess("✅ Project '${projectTitle}' deleted successfully!")
+        } catch (ex: Exception) {
+            outputFormatter.printError("❌ Failed to delete project: ${ex.message}")
         }
-
-        inputHandler.waitForEnter()
     }
 }
