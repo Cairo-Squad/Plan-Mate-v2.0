@@ -10,11 +10,11 @@ import logic.model.User
 class ValidationProject {
 	fun validateCreateProject(project: Project, user: User) {
 		if (user.type != UserType.ADMIN) throw InvalidUserException()
-		if (project.title.isBlank()) throw EmptyTitleException()
+		if (project.title?.isBlank() == true) throw EmptyTitleException()
 	}
 	
 	fun validateEditProject(project: Project){
-		if (project.title.isBlank()) {
+		if (project.title?.isBlank() == true) {
 			throw EmptyNameException()
 		}
 	}
