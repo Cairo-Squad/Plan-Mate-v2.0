@@ -14,12 +14,12 @@ fun Task.toTaskDto(): TaskDto{
 	)
 }
 
-fun TaskDto.toTask(projectState: State): Task{
+fun TaskDto.toTask(taskState: State): Task{
 	return Task(
 		id = this.id,
 		title = this.title,
 		description = this.description,
 		projectId = this.projectId,
-		state = projectState
+		state = taskState
 	)
 }
