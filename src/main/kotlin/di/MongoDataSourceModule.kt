@@ -1,6 +1,5 @@
 package di
 
-import com.mongodb.client.MongoDatabase
 import data.dataSource.remoteDataSource.RemoteDataSource
 import data.dataSource.remoteDataSource.mongo.*
 import data.dto.*
@@ -44,7 +43,11 @@ val remoteDataSourceImplModule = module {
     // DataSource implementation
     single<RemoteDataSource> {
         RemoteDataSourceImpl(
-            database = get()
+            get(named("logsHandler")),
+            get(named("projectsHandler")),
+            get(named("statesHandler")),
+            get(named("tasksHandler")),
+            get(named("usersHandler"))
         )
     }
 }
