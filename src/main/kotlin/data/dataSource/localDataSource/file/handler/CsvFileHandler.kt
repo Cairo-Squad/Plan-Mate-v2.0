@@ -1,10 +1,9 @@
 package data.dataSource.localDataSource.file.handler
 
-import logic.exception.*
+import logic.exception.NotFoundException
 import java.io.BufferedWriter
 import java.io.File
 import java.io.FileWriter
-import java.io.IOException
 import java.util.*
 
 abstract class CsvFileHandler<DTO>(
@@ -13,7 +12,7 @@ abstract class CsvFileHandler<DTO>(
     private val getDtoId: (DTO) -> UUID
 ) : FileHandler<DTO> {
 
-    private val file : File = File(filePath)
+    private val file: File = File(filePath)
 
     init {
         if (!file.exists()) {
@@ -22,48 +21,36 @@ abstract class CsvFileHandler<DTO>(
             }
         }
     }
-	
-	abstract fun fromDtoToCsvRow(entity: DTO): String
-	abstract fun fromCsvRowToDto(row: String): DTO
 
-    override fun write(entity : DTO) : Boolean {
-        try {
-            val numberOfRowBeforeWriter = file.readLines().size
-            val newRow = fromDtoToCsvRow(entity)
-            BufferedWriter(FileWriter(file, true)).use { writer ->
-                writer.appendLine(newRow)
-            }
-            val numberOfRowAfterWriter = file.readLines().size
-            return numberOfRowAfterWriter > numberOfRowBeforeWriter
-        } catch (e : IOException) {
-            throw WriteException()
-        } catch (e : Exception) {
-            throw UnknownException()
+    abstract fun fromDtoToCsvRow(entity: DTO): String
+    abstract fun fromCsvRowToDto(row: String): DTO
+
+    override fun write(entity: DTO): Boolean {
+        val numberOfRowBeforeWriter = file.readLines().size
+        val newRow = fromDtoToCsvRow(entity)
+        BufferedWriter(FileWriter(file, true)).use { writer ->
+            writer.appendLine(newRow)
         }
+        val numberOfRowAfterWriter = file.readLines().size
+        return numberOfRowAfterWriter > numberOfRowBeforeWriter
     }
 
-    private fun writeAll(entities : List<DTO>) {
-        try {
-            BufferedWriter(FileWriter(file, false)).use { writer ->
-                writer.appendLine(columnNames.joinToString(","))
-                entities.forEach { entity ->
-                    writer.appendLine(fromDtoToCsvRow(entity))
-                }
+    private fun writeAll(entities: List<DTO>) {
+        BufferedWriter(FileWriter(file, false)).use { writer ->
+            writer.appendLine(columnNames.joinToString(","))
+            entities.forEach { entity ->
+                writer.appendLine(fromDtoToCsvRow(entity))
             }
-        } catch (e : IOException) {
-            throw WriteException()
-        } catch (e : Exception) {
-            throw UnknownException()
         }
     }
 
 
-    override fun edit(entity : DTO) {
+    override fun edit(entity: DTO) {
         val entityId = getDtoId(entity)
         val allEntities = readAll()
 
         val index = allEntities.indexOfFirst { getDtoId(it) == entityId }
-        if (index == -1) throw DtoNotFoundException()
+        if (index == -1) throw NotFoundException()
 
         val updatedEntities = allEntities.toMutableList().apply {
             this[index] = entity
@@ -71,35 +58,21 @@ abstract class CsvFileHandler<DTO>(
         writeAll(updatedEntities)
     }
 
-    override fun readAll() : List<DTO> {
-        return try {
-            file.readLines()
-                .asSequence()
-                .drop(1)
-                .filter { it.isNotBlank() }
-                .map { fromCsvRowToDto(it) }
-                .toList()
-        } catch (e : IOException) {
-            throw ReadException()
-        } catch (e : Exception) {
-            throw UnknownException()
-        }
+    override fun readAll(): List<DTO> {
+        return file.readLines()
+            .asSequence()
+            .drop(1)
+            .filter { it.isNotBlank() }
+            .map { fromCsvRowToDto(it) }
+            .toList()
     }
 
-    override fun delete(entity : DTO) {
-        try {
-            val allEntities = readAll()
-            if (allEntities.none { getDtoId(it) == getDtoId(entity) }) {
-                throw EntityNotFoundException()
-            }
-            val updatedEntities = allEntities.filter { getDtoId(it) != getDtoId(entity) }
-            writeAll(updatedEntities)
-        } catch (e : EntityNotFoundException) {
-            throw EntityNotFoundException()
-        } catch (e : IOException) {
-            throw WriteException()
-        } catch (e : Exception) {
-            throw UnknownException()
+    override fun delete(entity: DTO) {
+        val allEntities = readAll()
+        if (allEntities.none { getDtoId(it) == getDtoId(entity) }) {
+            throw NotFoundException()
         }
+        val updatedEntities = allEntities.filter { getDtoId(it) != getDtoId(entity) }
+        writeAll(updatedEntities)
     }
 }
