@@ -1,6 +1,7 @@
 package data.dataSource.remoteDataSource.mongo
 
 import data.dto.*
+import logic.model.User
 import java.util.*
 
 interface RemoteDataSource {
@@ -9,6 +10,10 @@ interface RemoteDataSource {
 	suspend fun createUser(id: UUID, name: String, password: String, type: UserType): Boolean
 	suspend fun editUser(user: UserDto)
 	suspend fun deleteUser(user: UserDto)
+	suspend fun loginUser(name : String, password : String) :Boolean
+	suspend fun getCurrentUser() : UserDto?
+	suspend fun  setCurrentUser(user : UserDto?)
+
 	// endregion
 	
 	// region Projects
