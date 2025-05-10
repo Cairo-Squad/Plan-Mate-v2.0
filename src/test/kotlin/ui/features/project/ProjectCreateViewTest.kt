@@ -74,52 +74,55 @@ class ProjectCreateViewTest {
 	fun `should create project without tasks successfully`() = runTest {
 		// Given
 		val project = getProject()
+		val projectId = UUID.randomUUID()
 		
-		every { inputHandler.promptForInput("📂 Enter project title: ") } returns project.title
-		every { inputHandler.promptForInput("📝 Enter project description: ") } returns project.description
-		every { inputHandler.promptForInput("📊 Enter initial project state: ") } returns project.state.title
+		every { inputHandler.promptForInput("📂 Enter project title: ") } returns project.title!!
+		every { inputHandler.promptForInput("📝 Enter project description: ") } returns project.description!!
+		every { inputHandler.promptForInput("📊 Enter initial project state: ") } returns project.state?.title!!
 		every { inputHandler.promptForYesNo("Do you want to add tasks to this project?") } returns false
-		coEvery { createProjectUseCase.createProject(any(), mockUser) } just Runs
+		coEvery { createProjectUseCase.createProject(any(), mockUser) } returns projectId
 		
 		// When
 		projectCreateView.createProject()
 		
 		// Then
-		coVerify { createStateUseCase.createState(match { it.title == project.state.title }) }
+		coVerify { createStateUseCase.createState(match { it.title == project.state!!.title }) }
 		coVerify { createProjectUseCase.createProject(any(), mockUser) }
-		verify { outputFormatter.printSuccess(match { it.contains(project.title) && it.contains("created successfully") }) }
+		verify { outputFormatter.printSuccess(match { it.contains(project.title!!) && it.contains("created successfully") }) }
 	}
 	
 	@Test
 	fun `should create project with tasks successfully`() = runTest {
 		// Given
 		val project = getProject()
-		val task = getTask(project.id)
-		every { inputHandler.promptForInput("📂 Enter project title: ") } returns project.title
-		every { inputHandler.promptForInput("📝 Enter project description: ") } returns project.description
-		every { inputHandler.promptForInput("📊 Enter initial project state: ") } returns project.state.title
+		val projectId = UUID.randomUUID()
+		val task = getTask(projectId)
+		every { inputHandler.promptForInput("📂 Enter project title: ") } returns project.title!!
+		every { inputHandler.promptForInput("📝 Enter project description: ") } returns project.description!!
+		every { inputHandler.promptForInput("📊 Enter initial project state: ") } returns project.state?.title!!
 		every { inputHandler.promptForYesNo("Do you want to add tasks to this project?") } returns true
 		every { inputHandler.promptForInput("✅ Task title: ") } returns task.title
 		every { inputHandler.promptForInput("📝 Task description: ") } returns task.description
 		every { inputHandler.promptForInput("📊 Task state: ") } returns task.state.title
 		coEvery { createTaskUseCase.createTask(any()) } just Runs
 		every { inputHandler.promptForYesNo("➕ Do you want to add another task?") } returns false
-		coEvery { createProjectUseCase.createProject(any(), mockUser) } just Runs
+		coEvery { createProjectUseCase.createProject(any(), mockUser) } returns projectId
 		
 		// When
 		projectCreateView.createProject()
 		
 		// Then
-		coVerify { createStateUseCase.createState(match { it.title == project.state.title }) }
+		coVerify { createStateUseCase.createState(match { it.title == project.state!!.title }) }
 		coVerify {
 			createTaskUseCase.createTask(match {
 				it.title == task.title &&
 						it.description == task.description &&
-						it.state.title == task.state.title
+						it.state.title == task.state.title &&
+						it.projectId == projectId
 			})
 		}
 		coVerify { createProjectUseCase.createProject(any(), mockUser) }
-		verify { outputFormatter.printSuccess(match { it.contains(project.title) && it.contains("created successfully") }) }
+		verify { outputFormatter.printSuccess(match { it.contains(project.title!!) && it.contains("created successfully") }) }
 	}
 	
 	@Test
@@ -128,9 +131,9 @@ class ProjectCreateViewTest {
 		val project = getProject()
 		val errorMessage = "Database connection error"
 		
-		every { inputHandler.promptForInput("📂 Enter project title: ") } returns project.title
-		every { inputHandler.promptForInput("📝 Enter project description: ") } returns project.description
-		every { inputHandler.promptForInput("📊 Enter initial project state: ") } returns project.state.title
+		every { inputHandler.promptForInput("📂 Enter project title: ") } returns project.title!!
+		every { inputHandler.promptForInput("📝 Enter project description: ") } returns project.description!!
+		every { inputHandler.promptForInput("📊 Enter initial project state: ") } returns project.state!!.title
 		every { inputHandler.promptForYesNo("Do you want to add tasks to this project?") } returns false
 		coEvery { createProjectUseCase.createProject(any(), any()) } throws Exception(errorMessage)
 		
@@ -159,12 +162,13 @@ class ProjectCreateViewTest {
 	fun `should create project with multiple tasks successfully`() = runTest {
 		// Given
 		val project = getProject()
-		val task1 = getTask(project.id, "Task 1", "Task 1 Description", "In Progress")
-		val task2 = getTask(project.id, "Task 2", "Task 2 Description", "Blocked")
+		val projectId = UUID.randomUUID()
+		val task1 = getTask(projectId, "Task 1", "Task 1 Description", "In Progress")
+		val task2 = getTask(projectId, "Task 2", "Task 2 Description", "Blocked")
 		
-		every { inputHandler.promptForInput("📂 Enter project title: ") } returns project.title
-		every { inputHandler.promptForInput("📝 Enter project description: ") } returns project.description
-		every { inputHandler.promptForInput("📊 Enter initial project state: ") } returns project.state.title
+		every { inputHandler.promptForInput("📂 Enter project title: ") } returns project.title!!
+		every { inputHandler.promptForInput("📝 Enter project description: ") } returns project.description!!
+		every { inputHandler.promptForInput("📊 Enter initial project state: ") } returns project.state!!.title
 		every { inputHandler.promptForYesNo("Do you want to add tasks to this project?") } returns true
 		
 		// Task inputs - using sequence for multiple calls
@@ -179,23 +183,24 @@ class ProjectCreateViewTest {
 		every { inputHandler.promptForYesNo("➕ Do you want to add another task?") } returnsMany listOf(true, false)
 		
 		coEvery { createTaskUseCase.createTask(any()) } just Runs
-		coEvery { createProjectUseCase.createProject(any(), mockUser) } just Runs
+		coEvery { createProjectUseCase.createProject(any(), mockUser) } returns projectId
 		
 		// When
 		projectCreateView.createProject()
 		
 		// Then
-		coVerify { createStateUseCase.createState(match { it.title == project.state.title }) }
+		coVerify { createStateUseCase.createState(match { it.title == project.state!!.title }) }
 		coVerify(exactly = 2) { createTaskUseCase.createTask(any()) }
 		coVerify { createProjectUseCase.createProject(any(), mockUser) }
-		coVerify { outputFormatter.printSuccess(match { it.contains(project.title) && it.contains("created successfully") }) }
+		coVerify { outputFormatter.printSuccess(match { it.contains(project.title!!) && it.contains("created successfully") }) }
 		
 		// Verify tasks were created with proper values
 		coVerify {
 			createTaskUseCase.createTask(match {
 				it.title == task1.title &&
 						it.description == task1.description &&
-						it.state.title == task1.state.title
+						it.state.title == task1.state.title &&
+						it.projectId == projectId
 			})
 		}
 		
@@ -203,7 +208,8 @@ class ProjectCreateViewTest {
 			createTaskUseCase.createTask(match {
 				it.title == task2.title &&
 						it.description == task2.description &&
-						it.state.title == task2.state.title
+						it.state.title == task2.state.title &&
+						it.projectId == projectId
 			})
 		}
 	}
