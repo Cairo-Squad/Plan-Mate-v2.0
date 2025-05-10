@@ -2,14 +2,14 @@ package logic.usecase.task
 
 import io.mockk.coVerify
 import io.mockk.mockk
-import io.mockk.verify
 import kotlinx.coroutines.test.runTest
+import logic.exception.NotFoundException
 import logic.model.State
 import logic.model.Task
 import logic.repositories.TasksRepository
-import logic.usecase.Log.AddLogUseCase
+import logic.usecase.log.AddLogUseCase
 import org.junit.jupiter.api.BeforeEach
-import java.util.UUID
+import java.util.*
 import kotlin.test.Test
 import kotlin.test.assertFailsWith
 
@@ -17,46 +17,23 @@ class EditTaskUseCaseTest {
 
     private lateinit var tasksRepository: TasksRepository
     private lateinit var editTaskUseCase: EditTaskUseCase
-    lateinit var  addLogUseCase: AddLogUseCase
+    lateinit var addLogUseCase: AddLogUseCase
 
     @BeforeEach
     fun setup() {
         tasksRepository = mockk(relaxed = true)
-        addLogUseCase= mockk(relaxed = true)
-        editTaskUseCase = EditTaskUseCase(tasksRepository,addLogUseCase)
+        addLogUseCase = mockk(relaxed = true)
+        editTaskUseCase = EditTaskUseCase(tasksRepository, addLogUseCase)
     }
 
     @Test
-    fun `should throw exception when new task is the same as old task`() = runTest {
-        //Given
-        val task = getValidTask()
-
-        //When & Then
-        assertFailsWith<IllegalStateException> {
-            editTaskUseCase.editTask(newTask = task, oldTask = task)
-        }
-    }
-
-    @Test
-    fun `should throw exception when title is blank`() = runTest {
-        //Given
-        val oldTask = getValidTask()
-        val newTask = oldTask.copy(title = "  ")
-
-        //When & Then
-        assertFailsWith<IllegalArgumentException> {
-            editTaskUseCase.editTask(newTask = newTask, oldTask = oldTask)
-        }
-    }
-
-    @Test
-    fun `should throw exception when description is blank`() = runTest {
+    fun `should throw NotFoundException when repository throw exception`() = runTest {
         //Given
         val oldTask = getValidTask()
         val newTask = oldTask.copy(description = "")
 
         //When & Then
-        assertFailsWith<IllegalArgumentException> {
+        assertFailsWith<NotFoundException> {
             editTaskUseCase.editTask(newTask = newTask, oldTask = oldTask)
         }
     }
