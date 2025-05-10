@@ -1,10 +1,6 @@
 package logic.usecase.user
 
 import data.dto.UserType
-import data.repositories.mappers.toUser
-import logic.exception.EmptyNameException
-import logic.exception.EmptyPasswordException
-import logic.model.User
 import logic.repositories.AuthenticationRepository
 import java.util.*
 

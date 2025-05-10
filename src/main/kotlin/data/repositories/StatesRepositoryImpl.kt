@@ -9,17 +9,17 @@ import logic.repositories.StatesRepository
 
 class StatesRepositoryImpl(
     private val remoteDataSource: RemoteDataSource
-) : StatesRepository {
+) : StatesRepository, BaseRepository() {
 
     override suspend fun createState(state: StateDto): Boolean {
-        return remoteDataSource.createState(state)
+        return wrap { remoteDataSource.createState(state) }
     }
 
     override suspend fun editState(state: State) {
-        return remoteDataSource.editState(state.toStateDto())
+        return wrap { remoteDataSource.editState(state.toStateDto()) }
     }
 
     override suspend fun getAllStates(): List<State> {
-        return remoteDataSource.getAllStates().map { it.toState() }
+        return wrap { remoteDataSource.getAllStates().map { it.toState() } }
     }
 }

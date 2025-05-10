@@ -44,7 +44,5 @@ class LoginManagementView(
         } catch (e : Exception) {
             outputFormatter.printError("❌ Authentication failed: ${e.message}")
         }
-
     }
-
 }

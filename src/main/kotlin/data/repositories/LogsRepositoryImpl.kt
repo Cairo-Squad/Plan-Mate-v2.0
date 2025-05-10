@@ -9,17 +9,17 @@ import java.util.*
 
 class LogsRepositoryImpl(
     private val remoteDataSource: RemoteDataSource,
-) : LogsRepository {
+) : LogsRepository, BaseRepository() {
 
     override suspend fun getProjectLogs(projectId: UUID): List<Log> {
-        return remoteDataSource.getProjectLogs(projectId).map { it.toLog() }
+        return wrap { remoteDataSource.getProjectLogs(projectId).map { it.toLog() } }
     }
 
     override suspend fun addLog(log: Log) {
-        remoteDataSource.recordLog(log.toLogDto())
+        wrap { remoteDataSource.recordLog(log.toLogDto()) }
     }
 
     override suspend fun getTaskLogs(taskId: UUID): List<Log> {
-        return remoteDataSource.getTaskLogs(taskId).map { it.toLog() }
+        return wrap { remoteDataSource.getTaskLogs(taskId).map { it.toLog() } }
     }
 }

@@ -5,7 +5,7 @@ import data.dto.UserAction
 import logic.model.Log
 import logic.model.Project
 import logic.repositories.ProjectsRepository
-import logic.usecase.Log.AddLogUseCase
+import logic.usecase.log.AddLogUseCase
 import java.time.LocalDateTime
 import java.util.UUID
 

@@ -1,13 +1,8 @@
 package logic.usecase.task
 
-import data.dto.EntityType
-import data.dto.UserAction
-import logic.model.Log
 import logic.model.Task
 import logic.repositories.TasksRepository
-import logic.usecase.Log.AddLogUseCase
-import java.time.LocalDateTime
-import java.util.UUID
+import logic.usecase.log.AddLogUseCase
 
 class EditTaskUseCase(
     private val repository: TasksRepository,
