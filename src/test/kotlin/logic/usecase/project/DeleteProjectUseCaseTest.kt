@@ -35,7 +35,7 @@ class DeleteProjectUseCaseTest {
         //Given
         val validId = FakeData.fakeProjects[0].id
         //When
-        deleteProjectUseCase.deleteProjectById(validId)
+        deleteProjectUseCase.deleteProjectById(validId!!)
         //Then
         coVerify { projectsRepository.deleteProject(validId) }
     }
