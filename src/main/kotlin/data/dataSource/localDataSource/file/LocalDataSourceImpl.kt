@@ -53,7 +53,7 @@ class LocalDataSourceImpl(
         return currentUser
     }
 
-    override fun setCurrentUser(user : UserDto?) {
+    private fun setCurrentUser(user : UserDto?) {
         currentUser = user
     }
 

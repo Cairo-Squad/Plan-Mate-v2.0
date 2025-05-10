@@ -50,7 +50,7 @@ class RemoteDataSourceImpl(
 		return currentUser
 	}
 
-	override suspend fun setCurrentUser(user : UserDto?) {
+	private  fun setCurrentUser(user : UserDto?) {
 		currentUser = user
 	}
 

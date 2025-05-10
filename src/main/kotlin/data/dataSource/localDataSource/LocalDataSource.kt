@@ -13,7 +13,6 @@ interface LocalDataSource {
     fun deleteUser(user : UserDto)
     fun loginUser(name : String, password : String) :Boolean
     fun getCurrentUser(): UserDto?
-    fun setCurrentUser(user : UserDto?)
     // endregion
 
     // region Projects

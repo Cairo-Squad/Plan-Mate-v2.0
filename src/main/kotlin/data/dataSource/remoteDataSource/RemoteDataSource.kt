@@ -12,7 +12,6 @@ interface RemoteDataSource {
 	suspend fun deleteUser(user: UserDto)
 	suspend fun loginUser(name : String, password : String) :Boolean
 	suspend fun getCurrentUser() : UserDto?
-	suspend fun  setCurrentUser(user : UserDto?)
 
 	// endregion
 	
