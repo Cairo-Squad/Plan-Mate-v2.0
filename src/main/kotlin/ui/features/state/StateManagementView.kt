@@ -1,5 +1,6 @@
 package ui.features.state
 
+import kotlinx.coroutines.runBlocking
 import logic.model.Project
 import ui.utils.InputHandler
 import ui.utils.OutputFormatter
