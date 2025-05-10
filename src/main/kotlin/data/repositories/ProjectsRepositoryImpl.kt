@@ -1,6 +1,6 @@
 package data.repositories
 
-import data.dataSource.remoteDataSource.mongo.RemoteDataSource
+import data.dataSource.remoteDataSource.RemoteDataSource
 import data.repositories.mappers.toProject
 import data.repositories.mappers.toProjectDto
 import data.repositories.mappers.toState

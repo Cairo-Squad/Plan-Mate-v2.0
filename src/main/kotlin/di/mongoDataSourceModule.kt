@@ -1,9 +1,11 @@
 package di
 
 import com.mongodb.client.MongoDatabase
+import data.dataSource.remoteDataSource.RemoteDataSource
 import data.dataSource.remoteDataSource.mongo.*
 import data.dto.*
-import data.dataSource.localDataSource.file.LocalDataSource
+import data.dataSource.remoteDataSource.mongo.connection.MongoDBConnection
+import data.dataSource.remoteDataSource.mongo.handler.MongoDBHandler
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 

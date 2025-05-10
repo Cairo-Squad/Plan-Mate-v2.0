@@ -2,7 +2,8 @@ package di
 
 import data.dataSource.localDataSource.file.*
 import data.dataSource.util.CsvConstants
-import data.dataSource.localDataSource.file.LocalDataSource
+import data.dataSource.localDataSource.LocalDataSource
+import data.dataSource.localDataSource.file.handler.FileHandler
 import data.dto.*
 import org.koin.core.qualifier.named
 import org.koin.dsl.module

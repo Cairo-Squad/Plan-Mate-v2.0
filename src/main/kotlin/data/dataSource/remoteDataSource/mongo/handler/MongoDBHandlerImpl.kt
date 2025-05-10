@@ -1,4 +1,4 @@
-package data.dataSource.remoteDataSource.mongo
+package data.dataSource.remoteDataSource.mongo.handler
 
 import com.mongodb.client.MongoCollection
 import com.mongodb.client.MongoDatabase
