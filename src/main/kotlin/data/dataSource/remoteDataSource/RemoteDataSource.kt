@@ -1,4 +1,4 @@
-package data.dataSource.remoteDataSource.mongo
+package data.dataSource.remoteDataSource
 
 import data.dto.*
 import logic.model.User

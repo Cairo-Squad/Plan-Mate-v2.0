@@ -1,6 +1,5 @@
 package ui.features.state
 
-import kotlinx.coroutines.runBlocking
 import logic.model.Project
 import ui.utils.InputHandler
 import ui.utils.OutputFormatter
@@ -24,7 +23,7 @@ class StateManagementView(
 
             when (inputHandler.promptForIntChoice("Select an option: ", 1..3)) {
                 1 -> createStateView.createState()
-                2 -> editStateView.editState(project.state)
+                2 -> editStateView.editState(project.state!!)
                 else -> return@runBlocking
             }
         }

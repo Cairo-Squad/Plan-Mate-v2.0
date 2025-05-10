@@ -1,6 +1,6 @@
 package data.repositories
 
-import data.dataSource.remoteDataSource.mongo.RemoteDataSource
+import data.dataSource.remoteDataSource.RemoteDataSource
 import data.repositories.mappers.toProject
 import data.repositories.mappers.toProjectDto
 import data.repositories.mappers.toState
@@ -17,8 +17,10 @@ class ProjectsRepositoryImpl(
     private val remoteDataSource: RemoteDataSource
 ) : ProjectsRepository {
 
-    override suspend fun createProject(project: Project, user: User) {
-        return remoteDataSource.createProject(project.toProjectDto())
+    override suspend fun createProject(project: Project, user: User):UUID {
+        val projectId= project.copy(id = UUID.randomUUID())
+        remoteDataSource.createProject(project.toProjectDto())
+        return projectId.id?: UUID.randomUUID()
     }
 
     override suspend fun editProject(newProject: Project) {

@@ -82,7 +82,7 @@ class ProjectDeleteViewTest {
 			)
 		} returns 2
 		every { inputHandler.promptForInput("Type 'YES' to confirm deletion: ") } returns "YES"
-		coEvery { deleteProjectUseCase.deleteProjectById(selectedProject.id) } just Runs
+		coEvery { deleteProjectUseCase.deleteProjectById(selectedProject.id!!) } just Runs
 		every { inputHandler.waitForEnter() } just Runs
 		
 		// When
@@ -92,11 +92,11 @@ class ProjectDeleteViewTest {
 		verify { outputFormatter.printHeader(any()) }
 		verify { outputFormatter.printInfo("📂 Available Projects:") }
 		projects.forEachIndexed { index, project ->
-			verify { outputFormatter.printInfo(match { it.contains("${index + 1}") && it.contains(project.title) }) }
+			verify { outputFormatter.printInfo(match { it.contains("${index + 1}") && it.contains(project.title!!) }) }
 		}
-		verify { outputFormatter.printWarning(match { it.contains(selectedProject.title) && it.contains("cannot be undone") }) }
-		coVerify { deleteProjectUseCase.deleteProjectById(selectedProject.id) }
-		verify { outputFormatter.printSuccess(match { it.contains(selectedProject.title) && it.contains("deleted successfully") }) }
+		verify { outputFormatter.printWarning(match { it.contains(selectedProject.title!!) && it.contains("cannot be undone") }) }
+		coVerify { deleteProjectUseCase.deleteProjectById(selectedProject.id!!) }
+		verify { outputFormatter.printSuccess(match { it.contains(selectedProject.title!!) && it.contains("deleted successfully") }) }
 		verify { inputHandler.waitForEnter() }
 	}
 	
@@ -122,7 +122,7 @@ class ProjectDeleteViewTest {
 		
 		// Then
 		verify { outputFormatter.printHeader(any()) }
-		verify { outputFormatter.printWarning(match { it.contains(selectedProject.title) }) }
+		verify { outputFormatter.printWarning(match { it.contains(selectedProject.title!!) }) }
 		coVerify(exactly = 0) { deleteProjectUseCase.deleteProjectById(any()) }
 		verify(exactly = 0) { outputFormatter.printSuccess(any()) }
 		verify { inputHandler.waitForEnter() }
@@ -143,15 +143,15 @@ class ProjectDeleteViewTest {
 			)
 		} returns 1
 		every { inputHandler.promptForInput("Type 'YES' to confirm deletion: ") } returns "yes"
-		coEvery { deleteProjectUseCase.deleteProjectById(selectedProject.id) } just Runs
+		coEvery { deleteProjectUseCase.deleteProjectById(selectedProject.id!!) } just Runs
 		every { inputHandler.waitForEnter() } just Runs
 		
 		// When
 		projectDeleteView.deleteProject()
 		
 		// Then
-		coVerify { deleteProjectUseCase.deleteProjectById(selectedProject.id) }
-		verify { outputFormatter.printSuccess(match { it.contains(selectedProject.title) }) }
+		coVerify { deleteProjectUseCase.deleteProjectById(selectedProject.id!!) }
+		verify { outputFormatter.printSuccess(match { it.contains(selectedProject.title!!) }) }
 	}
 	
 	@Test
@@ -164,7 +164,7 @@ class ProjectDeleteViewTest {
 		coEvery { getAllProjectsUseCase.getAllProjects() } returns projects
 		every { inputHandler.promptForIntChoice("🔹 Select a project to delete:", 1..2) } returns 1
 		every { inputHandler.promptForInput("Type 'YES' to confirm deletion: ") } returns "YES"
-		coEvery { deleteProjectUseCase.deleteProjectById(selectedProject.id) } throws Exception(errorMessage)
+		coEvery { deleteProjectUseCase.deleteProjectById(selectedProject.id!!) } throws Exception(errorMessage)
 		every { inputHandler.waitForEnter() } just Runs
 		
 		// When

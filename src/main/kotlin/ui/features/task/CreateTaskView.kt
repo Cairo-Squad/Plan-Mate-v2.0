@@ -50,13 +50,13 @@ class CreateTaskView(
                 title = title,
                 description = description,
                 state = taskState,
-                projectId = selectedProject.id
+                projectId = selectedProject.id!!
             )
 
             try{
                 createTaskUseCase.createTask(task)
                 val updatedProject = selectedProject.copy(
-                    tasks = selectedProject.tasks + task
+                    tasks = (selectedProject.tasks?: emptyList()) + task
                 )
 
                 editProjectUseCase.editProject(updatedProject)

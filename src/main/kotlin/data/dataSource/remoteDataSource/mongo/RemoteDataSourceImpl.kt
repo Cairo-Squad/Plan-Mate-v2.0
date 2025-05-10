@@ -1,19 +1,18 @@
 package data.dataSource.remoteDataSource.mongo
 
 import com.mongodb.client.MongoDatabase
+import data.dataSource.remoteDataSource.RemoteDataSource
+import data.dataSource.remoteDataSource.mongo.handler.MongoDBHandler
 import data.dto.*
 import data.dataSource.localDataSource.file.LocalDataSource
-import data.hashing.PasswordEncryptor
-import logic.model.User
 import java.util.*
 
 class RemoteDataSourceImpl(
-	database: MongoDatabase,
-	private val logsHandler: LogsMongoHandlerImpl = LogsMongoHandlerImpl(database),
-	private val projectsHandler: ProjectsMongoHandlerImpl = ProjectsMongoHandlerImpl(database),
-	private val statesHandler: StatesMongoHandlerImpl = StatesMongoHandlerImpl(database),
-	private val tasksHandler: TasksMongoHandlerImpl = TasksMongoHandlerImpl(database),
-	private val usersHandler: UsersMongoHandlerImpl = UsersMongoHandlerImpl(database),
+	private val logsHandler: MongoDBHandler<LogDto>,
+	private val projectsHandler: MongoDBHandler<ProjectDto>,
+	private val statesHandler: MongoDBHandler<StateDto>,
+	private val tasksHandler: MongoDBHandler<TaskDto>,
+	private val usersHandler: MongoDBHandler<UserDto>,
 ) : RemoteDataSource {
 	private var currentUser: UserDto? = null
 

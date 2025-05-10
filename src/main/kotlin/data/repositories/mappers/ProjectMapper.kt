@@ -17,12 +17,12 @@ fun ProjectDto.toProject(projectTasks: List<Task>, projectState: State): Project
 }
 
 fun Project.toProjectDto(): ProjectDto {
-    return ProjectDto(
-        id = this.id,
-        title = this.title,
-        description = this.description,
-        createdBy = this.createdBy,
-        taskIds = this.tasks.map { it.id },
-        stateId = this.state.id
-    )
+	return ProjectDto(
+		id = this.id!!,
+		title = this.title ?: "",
+		description = this.description ?: "",
+		createdBy = this.createdBy!!,
+		taskIds = this.tasks?.map { it.id }?: emptyList(),
+		stateId = this.state?.id!!
+	)
 }
