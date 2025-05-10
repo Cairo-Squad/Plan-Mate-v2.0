@@ -38,7 +38,7 @@ class TaskLogView(
         val projectIndex = inputHandler.promptForIntChoice("🔹 Select a project to view task logs:", 1..projects.size) - 1
         val selectedProject = projects[projectIndex]
 
-        val tasks = getAllTasksByProjectIdUseCase.getAllTasksByProjectId(selectedProject.id)
+        val tasks = getAllTasksByProjectIdUseCase.getAllTasksByProjectId(selectedProject.id!!)
 
         if (tasks.isEmpty()) {
             outputFormatter.printWarning("⚠️ No tasks found for project '${selectedProject.title}'.")
