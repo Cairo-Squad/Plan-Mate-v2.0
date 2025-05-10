@@ -1,15 +1,9 @@
 package logic.usecase.task
 
 import logic.exception.EmptyTitleException
-import data.dto.EntityType
-import data.dto.UserAction
-import logic.model.Log
 import logic.model.Task
 import logic.repositories.TasksRepository
-import ui.features.auth.UserSession.getUser
-import java.time.LocalDateTime
 import logic.usecase.Log.AddLogUseCase
-import java.util.UUID
 
 class CreateTaskUseCase(
     private val repository: TasksRepository, private val addLogUseCase: AddLogUseCase

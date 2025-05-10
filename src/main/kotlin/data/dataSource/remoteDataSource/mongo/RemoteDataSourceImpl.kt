@@ -3,6 +3,8 @@ package data.dataSource.remoteDataSource.mongo
 import com.mongodb.client.MongoDatabase
 import data.dto.*
 import data.dataSource.localDataSource.file.LocalDataSource
+import data.hashing.PasswordEncryptor
+import logic.model.User
 import java.util.*
 
 class RemoteDataSourceImpl(
@@ -13,8 +15,9 @@ class RemoteDataSourceImpl(
 	private val tasksHandler: TasksMongoHandlerImpl = TasksMongoHandlerImpl(database),
 	private val usersHandler: UsersMongoHandlerImpl = UsersMongoHandlerImpl(database),
 ) : RemoteDataSource {
+	private var currentUser: UserDto? = null
 
-    override suspend fun getAllUsers() : List<UserDto> {
+	override suspend fun getAllUsers() : List<UserDto> {
         return usersHandler.readAll()
     }
 
@@ -38,7 +41,23 @@ class RemoteDataSourceImpl(
         usersHandler.delete(user)
     }
 
-    override suspend fun createProject(project : ProjectDto) {
+	override suspend fun loginUser(name: String, password: String): Boolean {
+		val users = usersHandler.readAll()
+		val user = users.find { it.name == name && it.password == password }
+		setCurrentUser(user)
+		return user !=null
+	}
+
+	override suspend fun getCurrentUser(): UserDto? {
+		return currentUser
+	}
+
+	override suspend fun setCurrentUser(user : UserDto?) {
+		currentUser = user
+	}
+
+
+	override suspend fun createProject(project : ProjectDto) {
         projectsHandler.write(project)
     }
 

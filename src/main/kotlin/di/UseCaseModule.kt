@@ -37,6 +37,7 @@ val useCasesModule = module {
     single { LoginUserUseCase(get()) }
     single { DeleteUserUseCase(get()) }
     single { GetAllUsersUseCase(get()) }
+    single { GetCurrentUserUseCase(get()) }
     // endregion
 
     // region States
