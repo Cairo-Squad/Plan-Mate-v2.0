@@ -6,7 +6,6 @@ import data.dataSource.util.UserActionConstants
 import data.dto.EntityType
 import data.dto.LogDto
 import data.dto.UserAction
-import logic.exception.CsvParseException
 import java.io.IOException
 import java.time.LocalDateTime
 import java.util.*
@@ -66,13 +65,13 @@ class LogsCsvHandler(
 
             this.startsWith(UserActionConstants.EDIT_TASK) -> {
                 if (actionParts.size < 3) {
-                    throw CsvParseException()
+                    throw IOException()
                 }
                 UserAction.EditTask(UUID.fromString(actionParts[1]), actionParts[2])
 
             }
 
-            else -> throw CsvParseException()
+            else -> throw IOException()
         }
     }
 }
