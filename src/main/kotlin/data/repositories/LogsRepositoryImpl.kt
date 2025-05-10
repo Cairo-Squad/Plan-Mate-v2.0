@@ -1,6 +1,6 @@
 package data.repositories
 
-import data.dataSource.remoteDataSource.mongo.RemoteDataSource
+import data.dataSource.remoteDataSource.RemoteDataSource
 import data.repositories.mappers.toLog
 import data.repositories.mappers.toLogDto
 import logic.model.Log
