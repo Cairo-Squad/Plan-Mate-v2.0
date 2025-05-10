@@ -10,5 +10,6 @@ interface AuthenticationRepository {
     suspend fun getAllUsers(): List<User>
     suspend fun deleteUser(userId: UUID): Boolean
     suspend fun editUser(user: User)
-    suspend fun loginUser(name: String, password : String) : User?
+    suspend fun loginUser(name: String, password : String) :Boolean
+    suspend fun getCurrentUser():User?
 }

@@ -36,9 +36,12 @@ class AuthenticationRepositoryImpl(
         return remoteDataSource.editUser(user.toUserDto())
     }
 
-    override suspend fun loginUser(name : String, password : String) : User? {
-        val users = getAllUsers()
+    override suspend fun loginUser(name : String, password : String) :Boolean{
         val hashedPassword = passwordEncryptor.hashPassword(password)
-        return users.find { it.name == name && it.password == hashedPassword }
+        return remoteDataSource.loginUser(name,hashedPassword)
+    }
+
+    override suspend fun getCurrentUser(): User? {
+        return remoteDataSource.getCurrentUser()?.toUser()
     }
 }

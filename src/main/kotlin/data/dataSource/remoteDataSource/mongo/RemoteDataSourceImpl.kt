@@ -13,8 +13,9 @@ class RemoteDataSourceImpl(
 	private val tasksHandler: MongoDBHandler<TaskDto>,
 	private val usersHandler: MongoDBHandler<UserDto>,
 ) : RemoteDataSource {
+	private var currentUser: UserDto? = null
 
-    override suspend fun getAllUsers() : List<UserDto> {
+	override suspend fun getAllUsers() : List<UserDto> {
         return usersHandler.readAll()
     }
 
@@ -38,7 +39,23 @@ class RemoteDataSourceImpl(
         usersHandler.delete(user)
     }
 
-    override suspend fun createProject(project : ProjectDto) {
+	override suspend fun loginUser(name: String, password: String): Boolean {
+		val users = usersHandler.readAll()
+		val user = users.find { it.name == name && it.password == password }
+		setCurrentUser(user)
+		return user !=null
+	}
+
+	override suspend fun getCurrentUser(): UserDto? {
+		return currentUser
+	}
+
+	private  fun setCurrentUser(user : UserDto?) {
+		currentUser = user
+	}
+
+
+	override suspend fun createProject(project : ProjectDto) {
         projectsHandler.write(project)
     }
 

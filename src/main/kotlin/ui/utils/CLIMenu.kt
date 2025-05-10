@@ -1,17 +1,19 @@
 package ui.utils
 
+import kotlinx.coroutines.runBlocking
+import logic.usecase.user.GetCurrentUserUseCase
 import ui.features.auth.LoginManagementView
-import ui.features.auth.UserSession
 import ui.features.user.UserManagementView
 
 class CLIMenu(
     private val loginView: LoginManagementView,
     private val userManagementView: UserManagementView,
-    private val outputFormatter: OutputFormatter
+    private val outputFormatter: OutputFormatter,
+    private val getCurrentUser : GetCurrentUserUseCase
 ) {
-    fun start() {
+   fun start() = runBlocking {
         displayWelcomeMessage()
-        while (UserSession.getUser() == null) {
+        while (getCurrentUser.getCurrentUser() == null) {
             loginView.showLoginScreen()
         }
         userManagementView.showUserMenu()

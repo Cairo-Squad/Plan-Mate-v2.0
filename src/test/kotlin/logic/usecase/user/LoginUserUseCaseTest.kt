@@ -11,6 +11,7 @@ import logic.usecase.user.LoginUserUseCase
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import kotlin.test.assertFalse
 
 class LoginUserUseCaseTest {
     private lateinit var authenticationRepository : AuthenticationRepository
@@ -27,41 +28,40 @@ class LoginUserUseCaseTest {
     fun `should return true when valid username and password`() = runTest {
         //Given
         val mockUser = FakeData.mockUsers[0]
-        coEvery { authenticationRepository.loginUser(mockUser.name, mockUser.password) } returns mockUser
+        coEvery { authenticationRepository.loginUser(mockUser.name, mockUser.password) } returns true
 
         //when
         val result = loginUserUseCase.login(mockUser.name, mockUser.password)
 
         //Then
-        assertThat(result).isEqualTo(FakeData.mockUsers[0])
+        assertThat(result).isTrue()
     }
 
     @Test
     fun `should return false when  username valid and password is invalid`() = runTest {
-        //Given
+        // Given
         val mockUser = FakeData.mockUsers[0]
-        coEvery { authenticationRepository.loginUser(mockUser.name, "123456789") } returns null
+        coEvery { authenticationRepository.loginUser(mockUser.name, "123456789") } returns false
 
-        //when
-        val exception = assertThrows<Exception> {
-            loginUserUseCase.login(mockUser.name, "123456789")
-        }
-        //Then
-        assertThat(exception).hasMessageThat().contains("Invalid username or password")
+        // When
+        val result = loginUserUseCase.login(mockUser.name, "123456789")
+
+        // Then
+        assertThat(result).isFalse()
+
     }
 
     @Test
     fun `should return false when  username is invalid and password is valid`() = runTest {
         //Given
         val mockUser = FakeData.mockUsers[1]
-        coEvery { authenticationRepository.loginUser("ali", mockUser.password) } returns null
+        coEvery { authenticationRepository.loginUser("ali", mockUser.password) } returns false
 
         //when
-        val exception = assertThrows<Exception> {
-            loginUserUseCase.login("ali", mockUser.password)
-        }
+        val exception = loginUserUseCase.login("ali", mockUser.password)
 
         //Then
-        assertThat(exception).hasMessageThat().contains("Invalid username or password")
+        assertFalse(exception)
+
     }
 }
