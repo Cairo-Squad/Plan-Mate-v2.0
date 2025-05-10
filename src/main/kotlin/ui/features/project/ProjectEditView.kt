@@ -18,51 +18,96 @@ class ProjectEditView(
     lateinit var projects: List<Project>
     
     fun editProject() = runBlocking {
-        outputFormatter.printHeader("Edit Project")
+        displayHeader()
         
-        try {
-            projects = getAllProjectsUseCase.getAllProjects()
-        } catch (ex: Exception) {
-            outputFormatter.printError(ex.message ?: "Failed to retrieve projects.")
-	        return@runBlocking
+        if (!loadProjects()) {
+            return@runBlocking
         }
         
+        if (handleEmptyProjectsList()) {
+            return@runBlocking
+        }
+        
+        displayAvailableProjects()
+        
+        val selectedProject = selectProjectToEdit()
+        
+        val updatedProject = updateProjectInformation(selectedProject)
+        
+        saveUpdatedProject(updatedProject)
+    }
+    
+    private fun displayHeader() {
+        outputFormatter.printHeader("Edit Project")
+    }
+    
+    private fun loadProjects(): Boolean = runBlocking{
+	    return@runBlocking try {
+		    projects = getAllProjectsUseCase.getAllProjects()
+		    true
+	    } catch (ex: Exception) {
+		    outputFormatter.printError(ex.message ?: "Failed to retrieve projects.")
+		    false
+	    }
+    }
+    
+    private fun handleEmptyProjectsList(): Boolean {
         if (projects.isEmpty()) {
             outputFormatter.printError("No projects available to edit.")
-	        return@runBlocking
+            return true
         }
-        
+        return false
+    }
+    
+    private fun displayAvailableProjects() {
         outputFormatter.printHeader("Available Projects:")
         projects.forEachIndexed { index, project ->
             outputFormatter.printInfo("${index + 1}. ${project.title} (ID: ${project.id})")
         }
-        
+    }
+    
+    private fun selectProjectToEdit(): Project {
         val projectIndex = inputHandler.promptForIntChoice("Select the project number to edit: ", 1..projects.size)
-        val selectedProject = projects[projectIndex - 1]
+        return projects[projectIndex - 1]
+    }
+    
+    private fun updateProjectInformation(project: Project): Project = runBlocking{
+        var newTitle = project.title
+        var newDescription = project.description
         
         val editBasicInfo = inputHandler.promptForYesNo("Do you want to edit basic project information?")
-        var newTitle = selectedProject.title
-        var newDescription = selectedProject.description
         
         if (editBasicInfo) {
-            newTitle = inputHandler.promptForInput("Enter new project title (leave empty to keep current): ")
-                .takeIf { it.isNotBlank() } ?: selectedProject.title
+            newTitle = promptForNewTitle(project.title?: "")
+            newDescription = promptForNewDescription(project.description?: "")
             
-            newDescription =
-                inputHandler.promptForInput("Enter new project description (leave empty to keep current): ")
-                    .takeIf { it.isNotBlank() } ?: selectedProject.description
-            
-            val editTasks = inputHandler.promptForYesNo("Do you want to edit tasks within this project?")
-            if (editTasks) {
-                editTaskView.editTask()
-            }
+            handleTaskEditing()
         }
-        
-        val updatedProject = selectedProject.copy(
-            title = newTitle,
-            description = newDescription,
-        )
-        
+	    
+	    return@runBlocking project.copy(
+		    title = newTitle,
+		    description = newDescription,
+	    )
+    }
+    
+    private fun promptForNewTitle(currentTitle: String): String {
+        return inputHandler.promptForInput("Enter new project title (leave empty to keep current): ")
+            .takeIf { it.isNotBlank() } ?: currentTitle
+    }
+    
+    private fun promptForNewDescription(currentDescription: String): String {
+        return inputHandler.promptForInput("Enter new project description (leave empty to keep current): ")
+            .takeIf { it.isNotBlank() } ?: currentDescription
+    }
+    
+    private fun handleTaskEditing() {
+        val editTasks = inputHandler.promptForYesNo("Do you want to edit tasks within this project?")
+        if (editTasks) {
+            editTaskView.editTask()
+        }
+    }
+    
+    private fun saveUpdatedProject(updatedProject: Project) = runBlocking{
         try {
             editProjectUseCase.editProject(updatedProject)
             outputFormatter.printSuccess("Project updated successfully!")
