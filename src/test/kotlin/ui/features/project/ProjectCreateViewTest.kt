@@ -62,6 +62,7 @@ class ProjectCreateViewTest {
 	
 	@Test
 	fun `should create project without tasks successfully`() = runTest {
+		// Given
 		val user = getUser()
 		val project = getProject()
 		val projectId = UUID.randomUUID()
@@ -73,8 +74,10 @@ class ProjectCreateViewTest {
 		every { inputHandler.promptForYesNo("Do you want to add tasks to this project?") } returns false
 		coEvery { createProjectUseCase.createProject(any(), user) } returns projectId
 		
+		// When
 		projectCreateView.createProject()
 		
+		// Then
 		coVerify { createStateUseCase.createState(match { it.title == project.state!!.title }) }
 		coVerify { createProjectUseCase.createProject(any(), user) }
 		verify { outputFormatter.printSuccess(match { it.contains(project.title!!) }) }
@@ -82,6 +85,7 @@ class ProjectCreateViewTest {
 	
 	@Test
 	fun `should create project with tasks successfully`() = runTest {
+		// Given
 		val user = getUser()
 		val project = getProject()
 		val projectId = UUID.randomUUID()
@@ -98,8 +102,10 @@ class ProjectCreateViewTest {
 		every { inputHandler.promptForYesNo("➕ Do you want to add another task?") } returns false
 		coEvery { createProjectUseCase.createProject(any(), user) } returns projectId
 		
+		// When
 		projectCreateView.createProject()
 		
+		// Then
 		coVerify { createTaskUseCase.createTask(match {
 			it.title == task.title &&
 					it.description == task.description &&
@@ -110,6 +116,7 @@ class ProjectCreateViewTest {
 	
 	@Test
 	fun `should handle project creation failure`() = runTest {
+		// Given
 		val user = getUser()
 		val project = getProject()
 		val errorMessage = "Database connection error"
@@ -121,17 +128,22 @@ class ProjectCreateViewTest {
 		every { inputHandler.promptForYesNo("Do you want to add tasks to this project?") } returns false
 		coEvery { createProjectUseCase.createProject(any(), user) } throws Exception(errorMessage)
 		
+		// When
 		projectCreateView.createProject()
 		
+		// Then
 		verify { outputFormatter.printError(match { it.contains(errorMessage) }) }
 	}
 	
 	@Test
 	fun `should handle no authenticated user`() = runTest {
+		// Given
 		coEvery { getCurrentUserUseCase.getCurrentUser() } returns null
 		
+		// When
 		projectCreateView.createProject()
 		
+		// Then
 		verify { outputFormatter.printError(match { it.contains("No authenticated user found") }) }
 		verify(exactly = 0) { inputHandler.promptForInput(any()) }
 		coVerify(exactly = 0) { createProjectUseCase.createProject(any(), any()) }
@@ -139,6 +151,7 @@ class ProjectCreateViewTest {
 	
 	@Test
 	fun `should create project with multiple tasks successfully`() = runTest {
+		// Given
 		val user = getUser()
 		val project = getProject()
 		val projectId = UUID.randomUUID()
@@ -156,8 +169,10 @@ class ProjectCreateViewTest {
 		every { inputHandler.promptForYesNo("➕ Do you want to add another task?") } returnsMany listOf(true, false)
 		coEvery { createProjectUseCase.createProject(any(), user) } returns projectId
 		
+		// When
 		projectCreateView.createProject()
 		
+		// Then
 		coVerify(exactly = 2) { createTaskUseCase.createTask(any()) }
 		coVerify {
 			createTaskUseCase.createTask(match {
