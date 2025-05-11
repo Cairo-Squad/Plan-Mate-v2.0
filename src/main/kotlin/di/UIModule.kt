@@ -46,7 +46,7 @@ val uiModule = module {
     }
 
     single {
-        ProjectCreateView(get(), get(), get(), get() ,get())
+        ProjectCreateView(get(), get(), get(), get() ,get(),get())
     }
 
     single {
@@ -81,13 +81,13 @@ val uiModule = module {
         TaskManagementView(get(), get(), get(), get(), get(),get(),get())
     }
 
-    single { UserManagementView(get(), get()) }
+    single { UserManagementView(get(), get(),get()) }
 
     single {
-        LoginManagementView(get(), get(), get(),get())
+        LoginManagementView(get(), get(), get(),get(),get())
     }
 
-    single { CLIMenu(get(), get(), get()) }
+    single { CLIMenu(get(), get(), get(),get()) }
     
     single { SwimlanesView(get(), get(),get(),get()) }
 

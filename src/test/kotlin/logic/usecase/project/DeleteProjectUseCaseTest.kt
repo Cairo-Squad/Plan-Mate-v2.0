@@ -3,7 +3,7 @@ package logic.usecase.project
 import io.mockk.*
 import util.FakeData
 import kotlinx.coroutines.test.runTest
-import logic.exception.ProjectNotFoundException
+import logic.exception.NotFoundException
 import logic.repositories.ProjectsRepository
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -24,9 +24,9 @@ class DeleteProjectUseCaseTest {
     fun `should throw exception when id is not found `() = runTest{
         //Given
         val fakeId = UUID.randomUUID()
-        coEvery { projectsRepository.deleteProject(any()) } throws ProjectNotFoundException()
+        coEvery { projectsRepository.deleteProject(any()) } throws NotFoundException()
         //When & Then
-        assertThrows<ProjectNotFoundException>
+        assertThrows<NotFoundException>
         { deleteProjectUseCase.deleteProjectById(fakeId) }
     }
 

@@ -6,10 +6,10 @@ import logic.repositories.AuthenticationRepository
 class LoginUserUseCase(
     private val authenticationRepository : AuthenticationRepository,
 ) {
-    suspend fun login(name : String, password : String) : User? {
+    suspend fun login(name : String, password : String) : Boolean{
         return  authenticationRepository.loginUser(
             name = name,
             password = password
-        ) ?: throw Exception("Invalid username or password.")
+        )
     }
 }

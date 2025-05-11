@@ -1,18 +1,20 @@
 package data.dataSource.remoteDataSource.mongo
 
 import com.mongodb.client.MongoDatabase
+import data.dataSource.remoteDataSource.RemoteDataSource
+import data.dataSource.remoteDataSource.mongo.handler.MongoDBHandler
 import data.dto.*
 import logic.exception.WriteException
 import java.util.*
 
 class RemoteDataSourceImpl(
-	database: MongoDatabase,
-	private val logsHandler: LogsMongoHandlerImpl = LogsMongoHandlerImpl(database),
-	private val projectsHandler: ProjectsMongoHandlerImpl = ProjectsMongoHandlerImpl(database),
-	private val statesHandler: StatesMongoHandlerImpl = StatesMongoHandlerImpl(database),
-	private val tasksHandler: TasksMongoHandlerImpl = TasksMongoHandlerImpl(database),
-	private val usersHandler: UsersMongoHandlerImpl = UsersMongoHandlerImpl(database),
+	private val logsHandler: MongoDBHandler<LogDto>,
+	private val projectsHandler: MongoDBHandler<ProjectDto>,
+	private val statesHandler: MongoDBHandler<StateDto>,
+	private val tasksHandler: MongoDBHandler<TaskDto>,
+	private val usersHandler: MongoDBHandler<UserDto>,
 ) : RemoteDataSource {
+	private var currentUser: UserDto? = null
 
     override suspend fun getAllUsers() : List<UserDto> {
         return usersHandler.readAll()
@@ -38,8 +40,24 @@ class RemoteDataSourceImpl(
         usersHandler.delete(user)
     }
 
-    override suspend fun createProject(project : ProjectDto): UUID {
-	    if (projectsHandler.write(project)) return project.id else throw WriteException()
+	override suspend fun loginUser(name: String, password: String): Boolean {
+		val users = usersHandler.readAll()
+		val user = users.find { it.name == name && it.password == password }
+		setCurrentUser(user)
+		return user !=null
+	}
+
+	override suspend fun getCurrentUser(): UserDto? {
+		return currentUser
+	}
+
+	private  fun setCurrentUser(user : UserDto?) {
+		currentUser = user
+	}
+
+
+	override suspend fun createProject(project : ProjectDto) : UUID {
+		if (projectsHandler.write(project)) return project.id else throw WriteException()
     }
 
     override suspend fun editProject(newProject : ProjectDto) {

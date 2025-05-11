@@ -1,4 +1,4 @@
-package data.dataSource.localDataSource.file
+package data.dataSource.localDataSource
 
 
 import java.util.UUID
@@ -11,6 +11,8 @@ interface LocalDataSource {
     fun createUser(id : UUID, name : String, password : String, type : UserType) : Boolean
     fun editUser(user : UserDto)
     fun deleteUser(user : UserDto)
+    fun loginUser(name : String, password : String) :Boolean
+    fun getCurrentUser(): UserDto?
     // endregion
 
     // region Projects

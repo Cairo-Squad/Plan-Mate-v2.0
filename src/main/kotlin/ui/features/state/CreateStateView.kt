@@ -3,7 +3,7 @@ package ui.features.state
 import data.dto.UserType
 import logic.model.State
 import logic.usecase.state.CreateStateUseCase
-import ui.features.auth.UserSession
+import logic.usecase.user.GetCurrentUserUseCase
 import ui.utils.InputHandler
 import ui.utils.OutputFormatter
 import java.util.*
@@ -11,13 +11,14 @@ import java.util.*
 class CreateStateView(
     private val createStateUseCase: CreateStateUseCase,
     private val inputHandler: InputHandler,
-    private val outputFormatter: OutputFormatter
+    private val outputFormatter: OutputFormatter,
+    private val getCurrentUser : GetCurrentUserUseCase
 ) {
-    fun createState() {
+    suspend fun createState() {
         outputFormatter.printHeader("Create a New State")
         val title = inputHandler.promptForInput("Enter state title: ")
         val state = State(id = UUID.randomUUID(), title = title)
-        UserSession.getUser()?.let {
+        getCurrentUser.getCurrentUser()?.let {
             if (it.type == UserType.ADMIN) {
                 outputFormatter.printSuccess("State created successfully!")
             }

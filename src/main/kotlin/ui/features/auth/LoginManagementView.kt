@@ -1,6 +1,7 @@
 package ui.features.auth
 
 import kotlinx.coroutines.runBlocking
+import logic.usecase.user.GetCurrentUserUseCase
 import logic.usecase.user.LoginUserUseCase
 import ui.features.user.UserManagementView
 import ui.utils.InputHandler
@@ -10,7 +11,8 @@ class LoginManagementView(
     private val loginUserUseCase : LoginUserUseCase,
     private val inputHandler : InputHandler,
     private val outputFormatter : OutputFormatter,
-    private val userManagementView : UserManagementView
+    private val userManagementView : UserManagementView,
+    private val getCurrentUser : GetCurrentUserUseCase
 
 ) {
     fun showLoginScreen() = runBlocking {
@@ -20,28 +22,27 @@ class LoginManagementView(
         if (username.isEmpty()) {
             outputFormatter.printError("❌ Username cannot be empty.")
             inputHandler.waitForEnter()
-	        return@runBlocking
+            return@runBlocking
         }
 
         val password = inputHandler.promptForPassword("🔒 Password: ")
         if (password.isEmpty()) {
             outputFormatter.printError("❌ Password cannot be empty.")
             inputHandler.waitForEnter()
-	        return@runBlocking
+            return@runBlocking
         }
 
         try {
-            val user = loginUserUseCase.login(username, password)
-                ?: throw Exception("Invalid username or password.")
-            UserSession.setUser(user)
-
-            outputFormatter.printSuccess("🎉 Login successful! Welcome, ${user.name} 🙌")
-            userManagementView.showUserMenu()
-	        return@runBlocking
-
+            val isLogin = loginUserUseCase.login(username, password)
+            val getCurrentUser = getCurrentUser.getCurrentUser()
+            if (isLogin && getCurrentUser != null) {
+                outputFormatter.printSuccess("🎉 Login successful! Welcome, ${getCurrentUser.name} 🙌")
+                userManagementView.showUserMenu()
+            } else {
+                outputFormatter.printError("❌ Invalid username or password.")
+            }
         } catch (e : Exception) {
             outputFormatter.printError("❌ Authentication failed: ${e.message}")
         }
     }
-
 }

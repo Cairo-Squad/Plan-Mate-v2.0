@@ -8,7 +8,6 @@ import logic.usecase.project.EditProjectUseCase
 import logic.usecase.project.GetAllProjectsUseCase
 import logic.usecase.state.CreateStateUseCase
 import logic.usecase.task.CreateTaskUseCase
-import ui.features.auth.UserSession
 import ui.utils.InputHandler
 import ui.utils.OutputFormatter
 import java.util.*

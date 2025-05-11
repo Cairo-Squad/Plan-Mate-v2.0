@@ -1,6 +1,6 @@
 package di
 
-import logic.usecase.Log.*
+import logic.usecase.log.*
 import logic.usecase.project.*
 import logic.usecase.state.*
 import logic.usecase.task.*
@@ -9,7 +9,7 @@ import org.koin.dsl.module
 
 val useCasesModule = module {
     // region Projects
-    single { CreateProjectUseCase(projectRepository = get() ,get(), get())}
+    single { CreateProjectUseCase(projectRepository = get() ,get())}
     single { EditProjectUseCase(get(),get(), get()) }
     single { DeleteProjectUseCase(projectsRepository = get()) }
     single { GetProjectByIdUseCase(projectsRepository = get()) }
@@ -37,6 +37,7 @@ val useCasesModule = module {
     single { LoginUserUseCase(get()) }
     single { DeleteUserUseCase(get()) }
     single { GetAllUsersUseCase(get()) }
+    single { GetCurrentUserUseCase(get()) }
     // endregion
 
     // region States

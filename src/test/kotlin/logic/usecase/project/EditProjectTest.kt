@@ -2,16 +2,16 @@ package logic.usecase.project
 
 import io.mockk.*
 import kotlinx.coroutines.test.runTest
-import logic.exception.WriteException
 import logic.exception.EmptyNameException
 import logic.exception.UnknownException
 import logic.model.Project
 import logic.model.State
 import logic.repositories.ProjectsRepository
-import logic.usecase.Log.AddLogUseCase
+import logic.usecase.log.AddLogUseCase
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import java.io.IOException
 import java.util.*
 
 class EditProjectTest {
@@ -57,10 +57,10 @@ class EditProjectTest {
     fun `should throw exception when database throws write exception `() = runTest {
         //Given
         val newProject = getNewProject()
-        coEvery { projectsRepository.editProject(any()) } throws WriteException()
+        coEvery { projectsRepository.editProject(any()) } throws IOException()
 
         //When & Then
-        assertThrows<WriteException> { editProjectDescription.editProject(newProject) }
+        assertThrows<IOException> { editProjectDescription.editProject(newProject) }
     }
 
     @Test

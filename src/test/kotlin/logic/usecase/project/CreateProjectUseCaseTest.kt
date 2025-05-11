@@ -10,7 +10,7 @@ import logic.exception.InvalidUserException
 import logic.repositories.ProjectsRepository
 import logic.usecase.FakeData.adminUser
 import logic.usecase.FakeData.mateUser
-import logic.usecase.Log.AddLogUseCase
+import logic.usecase.log.AddLogUseCase
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -19,15 +19,13 @@ import util.FakeData
 class CreateProjectUseCaseTest() {
     private lateinit var projectRepository: ProjectsRepository
     private lateinit var createProject: CreateProjectUseCase
-    private lateinit var addLogUseCase: AddLogUseCase
     private lateinit var validationCreationProjectCreation: ValidationProject
 
     @BeforeEach
     fun setUp() {
         validationCreationProjectCreation = mockk()
         projectRepository = mockk(relaxed = true)
-        addLogUseCase = mockk(relaxed = true)
-        createProject = CreateProjectUseCase(projectRepository, addLogUseCase, validationCreationProjectCreation)
+        createProject = CreateProjectUseCase(projectRepository, validationCreationProjectCreation)
     }
 
     @Test
