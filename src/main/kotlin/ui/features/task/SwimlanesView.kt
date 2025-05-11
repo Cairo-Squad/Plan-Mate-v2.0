@@ -46,7 +46,7 @@ class SwimlanesView(
 		} else {
 			outputFormatter.printHeader("📌 Tasks in Project: ${selectedProject.title}")
 			tasks.forEach { task ->
-				outputFormatter.printInfo("✅ ${task.title} | 🏷️ Status: ${task.state.title}")
+				outputFormatter.printInfo("✅ ${task.title} | 🏷️ Status: ${task.state?.title}")
 			}
 		}
 

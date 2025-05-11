@@ -11,7 +11,7 @@ import java.util.*
 class TasksRepositoryImpl(
     private val remoteDataSource: RemoteDataSource
 ) : TasksRepository, BaseRepository() {
-
+    
     override suspend fun getTaskById(taskId: UUID): Task {
         return wrap {
             val taskDto = remoteDataSource.getTaskById(taskId)
@@ -19,15 +19,15 @@ class TasksRepositoryImpl(
             taskDto.toTask(taskState.toState())
         }
     }
-
+    
     override suspend fun createTask(task: Task) {
         return wrap { remoteDataSource.createTask(task.toTaskDto()) }
     }
-
+    
     override suspend fun editTask(task: Task) {
         wrap { remoteDataSource.editTask(task.toTaskDto()) }
     }
-
+    
     override suspend fun getAllTasksByProjectId(projectId: UUID): List<Task> {
         return wrap {
             remoteDataSource.getTasksByProjectId(projectId).map { taskDto ->
@@ -36,7 +36,7 @@ class TasksRepositoryImpl(
             }
         }
     }
-
+    
     override suspend fun deleteTask(task: Task) {
         wrap { remoteDataSource.deleteTask(task.toTaskDto()) }
     }

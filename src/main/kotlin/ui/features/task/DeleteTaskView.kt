@@ -49,7 +49,7 @@ class DeleteTaskView(
 
         outputFormatter.printInfo("📜 Available Tasks:")
         tasks.forEachIndexed { index, task ->
-            outputFormatter.printInfo("✅ ${index + 1}. ${task.title} | 🆔 ID: ${task.id} | 🏷️ Status: ${task.state.title}")
+            outputFormatter.printInfo("✅ ${index + 1}. ${task.title} | 🆔 ID: ${task.id} | 🏷️ Status: ${task.state?.title}")
         }
 
         val taskIndex = inputHandler.promptForIntChoice("🔹 Select a task to delete:", 1..tasks.size) - 1

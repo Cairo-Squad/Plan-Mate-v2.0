@@ -53,7 +53,7 @@ class EditTaskView(
 
         outputFormatter.printInfo("📝 Available Tasks:")
         tasks.forEachIndexed { index, task ->
-            outputFormatter.printInfo("✅ ${index + 1}. ${task.title} | 🏷️ Status: ${task.state.title}")
+            outputFormatter.printInfo("✅ ${index + 1}. ${task.title} | 🏷️ Status: ${task.state?.title}")
         }
 
         val taskIndex = inputHandler.promptForIntChoice("🔹 Select a task to edit:", 1..tasks.size) - 1
@@ -67,9 +67,9 @@ class EditTaskView(
             .takeIf { it.isNotBlank() } ?: selectedTask.description
 
         val newStateTitle = inputHandler.promptForInput("🚀 Enter new state (leave empty to keep current): ")
-            .takeIf { it.isNotBlank() } ?: selectedTask.state.title
+            .takeIf { it.isNotBlank() } ?: selectedTask.state?.title
 
-        val newState = State(selectedTask.state.id, newStateTitle)
+        val newState = State(selectedTask.state?.id!!, newStateTitle!!)
 
         editStateUseCase.editState(newState)
 
