@@ -2,7 +2,7 @@ package data.dataSource.remoteDataSource.mongo
 
 import com.mongodb.client.MongoDatabase
 import data.dto.*
-import data.dataSource.localDataSource.file.LocalDataSource
+import logic.exception.WriteException
 import java.util.*
 
 class RemoteDataSourceImpl(
@@ -38,8 +38,8 @@ class RemoteDataSourceImpl(
         usersHandler.delete(user)
     }
 
-    override suspend fun createProject(project : ProjectDto) {
-        projectsHandler.write(project)
+    override suspend fun createProject(project : ProjectDto): UUID {
+	    if (projectsHandler.write(project)) return project.id else throw WriteException()
     }
 
     override suspend fun editProject(newProject : ProjectDto) {
