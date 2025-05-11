@@ -40,7 +40,7 @@ class AuthenticationRepositoryImpl(
     }
 
 
-    override suspend fun editUser(user: User) {
+    override suspend fun editUser(user: User):Boolean {
         return wrap { remoteDataSource.editUser(user.toUserDto()) }
     }
 
