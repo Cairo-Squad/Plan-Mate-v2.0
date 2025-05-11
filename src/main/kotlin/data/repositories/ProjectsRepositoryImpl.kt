@@ -18,9 +18,7 @@ class ProjectsRepositoryImpl(
 ) : ProjectsRepository {
 
     override suspend fun createProject(project: Project, user: User):UUID {
-        val projectId= project.copy(id = UUID.randomUUID())
-        remoteDataSource.createProject(project.toProjectDto())
-        return projectId.id?: UUID.randomUUID()
+        return remoteDataSource.createProject(project.toProjectDto())
     }
 
     override suspend fun editProject(newProject: Project) {
