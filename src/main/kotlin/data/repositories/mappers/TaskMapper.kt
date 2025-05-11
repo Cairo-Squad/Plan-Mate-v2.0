@@ -3,14 +3,15 @@ package data.repositories.mappers
 import data.dto.TaskDto
 import logic.model.State
 import logic.model.Task
+import java.util.*
 
-fun Task.toTaskDto(): TaskDto{
+fun Task.toTaskDto(customId: UUID? = null): TaskDto {
 	return TaskDto(
-		id = this.id,
-		title = this.title,
-		description = this.description,
-		stateId = this.state.id,
-		projectId = this.projectId
+		id = customId ?: this.id ?: UUID.randomUUID(),
+		title = this.title!!,
+		description = this.description!!,
+		stateId = this.state?.id!!,
+		projectId = this.projectId!!
 	)
 }
 

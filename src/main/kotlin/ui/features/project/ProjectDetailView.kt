@@ -73,7 +73,7 @@ class ProjectDetailView(
 		if (tasks.isEmpty()) return "⚠️ No tasks available."
 		
 		return tasks.mapIndexed { index, task ->
-			"🔹 ${index + 1}. ${task.title} [${task.state.title}]"
+			"🔹 ${index + 1}. ${task.title} [${task.state?.title}]"
 		}.joinToString("\n")
 	}
 }

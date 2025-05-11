@@ -46,7 +46,6 @@ class CreateTaskView(
             createStateUseCase.createState(taskState)
 
             val task = Task(
-                id = UUID.randomUUID(),
                 title = title,
                 description = description,
                 state = taskState,
@@ -67,13 +66,10 @@ class CreateTaskView(
             {
                 outputFormatter.printError(ex.message ?:"failed to create task!!")
             }
-
-
+            
         } catch (ex: Exception) {
             outputFormatter.printError("Failed to get all projects: ${ex.message}")
-
         }
-
     }
 }
 

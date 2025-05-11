@@ -97,7 +97,6 @@ class ProjectCreateView(
 		val taskState = createTaskState()
 
 		val task = Task(
-			id = UUID.randomUUID(), // TODO provide the id from data layer
 			title = taskTitle, description = taskDescription, state = taskState, projectId = projectId
 		)
 

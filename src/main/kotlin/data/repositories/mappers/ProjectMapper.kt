@@ -23,7 +23,7 @@ fun Project.toProjectDto(): ProjectDto {
 		title = this.title ?: "",
 		description = this.description ?: "",
 		createdBy = this.createdBy!!,
-		taskIds = this.tasks?.map { it.id }?: emptyList(),
+		taskIds = this.tasks?.map { it.id?: UUID.randomUUID() }?: emptyList(),
 		stateId = this.state?.id!!
 	)
 }
