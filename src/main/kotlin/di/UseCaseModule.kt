@@ -48,5 +48,6 @@ val useCasesModule = module {
     
     // region validationProject
     single { ValidationProject() }
+    single { ValidationTask() }
     // endregion
 }
