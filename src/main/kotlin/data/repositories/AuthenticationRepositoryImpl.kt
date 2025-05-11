@@ -31,12 +31,14 @@ class AuthenticationRepositoryImpl(
         }
     }
 
-    override suspend fun createUser(id: UUID, name: String, password: String, userType: UserType): Boolean {
+    override suspend fun createUser(user: User): Boolean {
         return wrap {
-            val hashedPassword = passwordEncryptor.hashPassword(password)
-            remoteDataSource.createUser(id, name, hashedPassword, userType)
+            val hashedPassword = passwordEncryptor.hashPassword(user.password)
+            val updatedUser = user.copy(id = UUID.randomUUID(), password = hashedPassword)
+            remoteDataSource.createUser(updatedUser.toUserDto())
         }
     }
+
 
     override suspend fun editUser(user: User) {
         return wrap { remoteDataSource.editUser(user.toUserDto()) }

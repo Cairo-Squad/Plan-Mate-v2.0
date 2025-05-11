@@ -4,13 +4,14 @@ package data.dataSource.localDataSource
 import java.util.UUID
 import data.dto.StateDto
 import data.dto.*
+import logic.model.User
 
 interface LocalDataSource {
     // region Users
     fun getAllUsers() : List<UserDto>
-    fun createUser(id : UUID, name : String, password : String, type : UserType) : Boolean
-    fun editUser(user : UserDto)
-    fun deleteUser(user : UserDto)
+    fun createUser(user : UserDto) : Boolean
+    fun editUser(user : UserDto) : Boolean
+    fun deleteUser(user : UserDto) : Boolean
     fun loginUser(name : String, password : String) :Boolean
     fun getCurrentUser(): UserDto?
     // endregion
