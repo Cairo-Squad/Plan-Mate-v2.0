@@ -11,20 +11,6 @@ class CreateProjectUseCase(
 ) {
     suspend fun createProject(project: Project, user: User):UUID {
         validationProject.validateCreateProject(project, user)
-        
-//
-//        val log = Log(
-//            id = UUID.randomUUID(),
-//            entityId = project.id,
-//            entityTitle = project.title,
-//            entityType = EntityType.PROJECT,
-//            dateTime = LocalDateTime.now(),
-//            userId = project.createdBy,
-//            userAction = UserAction.CreateProject(project.title, project.id)
-//        )
-
-//        addLogUseCase.addLog(log)
         return projectRepository.createProject(project, user)
-
     }
 }
