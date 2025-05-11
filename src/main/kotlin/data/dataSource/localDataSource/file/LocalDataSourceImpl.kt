@@ -3,6 +3,8 @@ package data.dataSource.localDataSource.file
 import data.dataSource.localDataSource.LocalDataSource
 import data.dataSource.localDataSource.file.handler.FileHandler
 import data.dto.*
+import data.hashing.PasswordEncryptor
+import data.repositories.mappers.toUserDto
 import logic.model.User
 import java.util.*
 
@@ -12,11 +14,14 @@ class LocalDataSourceImpl(
     private val statesCsvHandler : FileHandler<StateDto>,
     private val tasksCsvHandler : FileHandler<TaskDto>,
     private val usersCsvHandler : FileHandler<UserDto>,
+    private val passwordEncryptor: PasswordEncryptor
 ) : LocalDataSource {
     private var currentUser : UserDto? = null
 
     override fun createUser(user : UserDto) : Boolean {
-        return usersCsvHandler.write(user)
+        val hashedPassword = passwordEncryptor.hashPassword(user.password)
+        val updatedUser = user.copy(id = UUID.randomUUID(), password = hashedPassword)
+        return usersCsvHandler.write(updatedUser)
     }
 
     override fun getAllUsers() : List<UserDto> {

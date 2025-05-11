@@ -1,10 +1,11 @@
 package data.dataSource.remoteDataSource.mongo
 
-import com.mongodb.client.MongoDatabase
 import data.dataSource.remoteDataSource.RemoteDataSource
 import data.dataSource.remoteDataSource.mongo.handler.MongoDBHandler
 import data.dto.*
+import data.hashing.PasswordEncryptor
 import java.util.*
+
 
 class RemoteDataSourceImpl(
     private val logsHandler: MongoDBHandler<LogDto>,
@@ -12,6 +13,7 @@ class RemoteDataSourceImpl(
     private val statesHandler: MongoDBHandler<StateDto>,
     private val tasksHandler: MongoDBHandler<TaskDto>,
     private val usersHandler: MongoDBHandler<UserDto>,
+    private val passwordEncryptor: PasswordEncryptor
 ) : RemoteDataSource {
     private var currentUser: UserDto? = null
 
@@ -20,15 +22,19 @@ class RemoteDataSourceImpl(
     }
 
     override suspend fun createUser(user: UserDto): Boolean {
-        return usersHandler.write(user)
+        val updatedUser = user.copy(
+            id = UUID.randomUUID(),
+            password = passwordEncryptor.hashPassword(user.password)
+        )
+        return usersHandler.write(updatedUser)
     }
 
-    override suspend fun editUser(user: UserDto ) :Boolean{
-        return usersHandler.edit(user , true)
+    override suspend fun editUser(user: UserDto): Boolean {
+        return usersHandler.edit(user, true)
     }
 
-    override suspend fun deleteUser(user: UserDto):Boolean {
-        return usersHandler.delete(user ,true)
+    override suspend fun deleteUser(user: UserDto): Boolean {
+        return usersHandler.delete(user, true)
     }
 
     override suspend fun loginUser(name: String, password: String): Boolean {

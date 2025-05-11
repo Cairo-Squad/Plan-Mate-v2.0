@@ -33,9 +33,7 @@ class AuthenticationRepositoryImpl(
 
     override suspend fun createUser(user: User): Boolean {
         return wrap {
-            val hashedPassword = passwordEncryptor.hashPassword(user.password)
-            val updatedUser = user.copy(id = UUID.randomUUID(), password = hashedPassword)
-            remoteDataSource.createUser(updatedUser.toUserDto())
+            remoteDataSource.createUser(user.toUserDto())
         }
     }
 
