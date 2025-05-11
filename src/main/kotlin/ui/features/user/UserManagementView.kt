@@ -17,7 +17,6 @@ class UserManagementView(
             UserType.ADMIN -> adminManagementView.showAdminMenu()
             UserType.MATE -> mateManagementView.showMateMenu()
             else -> {
-                // TODO: 3amel eh ??
             }
         }
     }
