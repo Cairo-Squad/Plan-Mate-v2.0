@@ -4,8 +4,6 @@ import data.dataSource.localDataSource.LocalDataSource
 import data.dataSource.localDataSource.file.handler.FileHandler
 import data.dto.*
 import data.hashing.PasswordEncryptor
-import data.repositories.mappers.toUserDto
-import logic.model.User
 import java.util.*
 
 class LocalDataSourceImpl(

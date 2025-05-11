@@ -47,7 +47,8 @@ val mongoRemoteDataSourceModule = module {
             get(named("projectsHandler")),
             get(named("statesHandler")),
             get(named("tasksHandler")),
-            get(named("usersHandler"))
+            get(named("usersHandler")),
+            get()
         )
     }
 }
