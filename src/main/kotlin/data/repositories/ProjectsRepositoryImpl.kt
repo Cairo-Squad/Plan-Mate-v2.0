@@ -47,19 +47,11 @@ class ProjectsRepositoryImpl(
         return wrap {
             remoteDataSource.getAllProjects().map { projectDto ->
                 projectDto.toProject(
-                    projectState = createDefaultState(),
+                    projectState = getState(projectDto.stateId),
                     projectTasks = getTasksForProject(projectDto.id!!)
                 )
             }
         }
-    }
-    
-    // Create a default state to use when a referenced state cannot be found
-    private fun createDefaultState(): State {
-        return State(
-            id = UUID.randomUUID(),
-            title = "Unknown State",
-        )
     }
 
     private suspend fun getState(stateId: UUID): State {
