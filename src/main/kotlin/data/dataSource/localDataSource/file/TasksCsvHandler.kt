@@ -11,7 +11,7 @@ class TasksCsvHandler(
 ) : CsvFileHandler<TaskDto>(
     filePath = filePath,
     columnNames = headers,
-    getDtoId = { it.id }
+    getDtoId = { it.id?:UUID.randomUUID() }
 ) {
     override fun fromDtoToCsvRow(entity: TaskDto): String {
         val rowStringBuilder = StringBuilder()

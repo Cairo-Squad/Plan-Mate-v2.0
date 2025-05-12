@@ -28,10 +28,10 @@ class GetTaskByIdUseCaseTest {
     fun `should return task when it exists`() = runTest {
         val expectedTask = validTask()
         // Given
-        coEvery { taskRepository.getTaskById(expectedTask.id) } returns expectedTask
+        coEvery { taskRepository.getTaskById(expectedTask.id!!) } returns expectedTask
 
         // When
-        val actualResult = getTaskByIdUseCase.getTaskById(expectedTask.id)
+        val actualResult = getTaskByIdUseCase.getTaskById(expectedTask.id!!)
 
         // Then
         assertThat(actualResult).isEqualTo(expectedTask)

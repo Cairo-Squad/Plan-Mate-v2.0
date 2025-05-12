@@ -70,7 +70,7 @@ val uiModule = module {
     }
 
     single {
-        DeleteTaskView(get(), get(), get(), get() ,get())
+        DeleteTaskView(get(), get(), get(), get() ,get(), get())
     }
 
     single {

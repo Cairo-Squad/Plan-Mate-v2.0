@@ -1,6 +1,7 @@
 package ui.features.project
 
 import kotlinx.coroutines.runBlocking
+import logic.model.Project
 import logic.usecase.project.DeleteProjectUseCase
 import logic.usecase.project.GetAllProjectsUseCase
 import ui.utils.InputHandler
@@ -48,14 +49,14 @@ class ProjectDeleteView(
         outputFormatter.printError("❌ No projects available for deletion!")
     }
     
-    private fun displayAvailableProjects(projects: List<logic.model.Project>) {
+    private fun displayAvailableProjects(projects: List<Project>) {
         outputFormatter.printInfo("📂 Available Projects:")
         projects.forEachIndexed { index, project ->
             outputFormatter.printInfo("📌 ${index + 1}. ${project.title} | 🆔 ID: ${project.id}")
         }
     }
     
-    private fun selectProjectForDeletion(projects: List<logic.model.Project>): logic.model.Project {
+    private fun selectProjectForDeletion(projects: List<Project>): Project {
         val projectIndex = inputHandler.promptForIntChoice("🔹 Select a project to delete:", 1..projects.size) - 1
         return projects[projectIndex]
     }

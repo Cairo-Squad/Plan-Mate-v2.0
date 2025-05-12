@@ -4,6 +4,7 @@ import data.dataSource.remoteDataSource.RemoteDataSource
 import data.repositories.mappers.toState
 import data.repositories.mappers.toTask
 import data.repositories.mappers.toTaskDto
+import logic.exception.WriteException
 import logic.model.Task
 import logic.repositories.TasksRepository
 import java.util.*
@@ -11,7 +12,7 @@ import java.util.*
 class TasksRepositoryImpl(
     private val remoteDataSource: RemoteDataSource
 ) : TasksRepository, BaseRepository() {
-
+    
     override suspend fun getTaskById(taskId: UUID): Task {
         return wrap {
             val taskDto = remoteDataSource.getTaskById(taskId)
@@ -19,15 +20,19 @@ class TasksRepositoryImpl(
             taskDto.toTask(taskState.toState())
         }
     }
-
-    override suspend fun createTask(task: Task) {
-        return wrap { remoteDataSource.createTask(task.toTaskDto()) }
+    
+    override suspend fun createTask(task: Task): Task {
+        return wrap {
+            val finalTask = remoteDataSource.createTask(task.toTaskDto())
+            val taskState = remoteDataSource.getStateById(finalTask.stateId)
+            finalTask.toTask(taskState.toState())
+        }
     }
-
+    
     override suspend fun editTask(task: Task) {
         wrap { remoteDataSource.editTask(task.toTaskDto()) }
     }
-
+    
     override suspend fun getAllTasksByProjectId(projectId: UUID): List<Task> {
         return wrap {
             remoteDataSource.getTasksByProjectId(projectId).map { taskDto ->
@@ -36,7 +41,7 @@ class TasksRepositoryImpl(
             }
         }
     }
-
+    
     override suspend fun deleteTask(task: Task) {
         wrap { remoteDataSource.deleteTask(task.toTaskDto()) }
     }
