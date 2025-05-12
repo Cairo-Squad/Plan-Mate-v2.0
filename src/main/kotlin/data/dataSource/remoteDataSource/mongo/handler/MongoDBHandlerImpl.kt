@@ -5,7 +5,6 @@ import com.mongodb.client.MongoDatabase
 import com.mongodb.client.model.Filters
 import logic.exception.NotFoundException
 import org.bson.Document
-import org.koin.core.component.getScopeId
 import java.util.*
 
 abstract class MongoDBHandlerImpl<DTO>(
