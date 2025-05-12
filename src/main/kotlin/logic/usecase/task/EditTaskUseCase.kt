@@ -4,9 +4,9 @@ import logic.model.Task
 import logic.repositories.TasksRepository
 
 class EditTaskUseCase(
-    private val repository: TasksRepository
+    private val tasksRepository: TasksRepository
 ) {
     suspend fun editTask(newTask : Task) {
-        repository.editTask(task = newTask)
+        tasksRepository.editTask(task = newTask)
     }
 }
