@@ -9,7 +9,7 @@ class CreateProjectUseCase(
     private val projectRepository: ProjectsRepository,
     private val validationProject: ValidationProject
 ) {
-    suspend fun createProject(project: Project, user: User):UUID {
+    suspend fun createProject(project: Project, user: User):UUID? {
         validationProject.validateCreateProject(project, user)
         return projectRepository.createProject(project, user)
     }
