@@ -19,7 +19,7 @@ fun ProjectDto.toProject(projectTasks: List<Task>, projectState: State): Project
 
 fun Project.toProjectDto(): ProjectDto {
 	return ProjectDto(
-		id = this.id?: UUID.randomUUID(),
+		id = this.id,
 		title = this.title ?: "",
 		description = this.description ?: "",
 		createdBy = this.createdBy!!,
