@@ -17,7 +17,6 @@ class ProjectCreateView(
 	private val inputHandler: InputHandler,
 	private val outputFormatter: OutputFormatter,
 	private val createStateUseCase: CreateStateUseCase,
-	private val createTaskUseCase: CreateTaskUseCase,
     private val getCurrentUserUseCase : GetCurrentUserUseCase
 ) {
 	fun createProject() = runBlocking {
