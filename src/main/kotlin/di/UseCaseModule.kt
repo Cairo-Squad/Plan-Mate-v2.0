@@ -19,7 +19,7 @@ val useCasesModule = module {
 
     // region Tasks
     single { CreateTaskUseCase(get() ,get()) }
-    single { EditTaskUseCase(get(),get()) }
+    single { EditTaskUseCase(get()) }
     single { DeleteTaskUseCase(get()) }
     single { GetTaskBytIdUseCase(get()) }
     single { GetAllTasksByProjectIdUseCase(get()) }
