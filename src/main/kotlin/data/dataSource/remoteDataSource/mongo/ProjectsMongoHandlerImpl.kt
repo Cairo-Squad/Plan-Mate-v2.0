@@ -12,7 +12,7 @@ class ProjectsMongoHandlerImpl(
 ) : MongoDBHandlerImpl<ProjectDto>(
 	database = database,
 	collectionName = "projects",
-	getDtoId = { it.id }
+	getDtoId = { it.id!! }
 ) {
 	override fun convertDtoToDocument(entity: ProjectDto): Document {
 		return Document()

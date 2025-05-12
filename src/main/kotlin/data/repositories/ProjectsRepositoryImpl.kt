@@ -17,7 +17,7 @@ class ProjectsRepositoryImpl(
     private val remoteDataSource: RemoteDataSource
 ) : ProjectsRepository, BaseRepository() {
 
-    override suspend fun createProject(project: Project, user: User): UUID {
+    override suspend fun createProject(project: Project, user: User): UUID? {
 	    return wrap { remoteDataSource.createProject(project.toProjectDto())}
     }
 
@@ -47,11 +47,19 @@ class ProjectsRepositoryImpl(
         return wrap {
             remoteDataSource.getAllProjects().map { projectDto ->
                 projectDto.toProject(
-                    projectState = getState(projectDto.stateId),
-                    projectTasks = getTasksForProject(projectDto.id)
+                    projectState = createDefaultState(),
+                    projectTasks = getTasksForProject(projectDto.id!!)
                 )
             }
         }
+    }
+    
+    // Create a default state to use when a referenced state cannot be found
+    private fun createDefaultState(): State {
+        return State(
+            id = UUID.randomUUID(),
+            title = "Unknown State",
+        )
     }
 
     private suspend fun getState(stateId: UUID): State {

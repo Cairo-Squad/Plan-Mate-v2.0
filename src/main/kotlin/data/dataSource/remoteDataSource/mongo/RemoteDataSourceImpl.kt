@@ -28,7 +28,8 @@ class RemoteDataSourceImpl(
             type = type
         )
 
-        return usersHandler.write(userDto)
+        val (success) =  usersHandler.write(userDto)
+	    return success
 
     }
 
@@ -56,8 +57,14 @@ class RemoteDataSourceImpl(
 	}
 
 
-	override suspend fun createProject(project : ProjectDto) : UUID {
-		if (projectsHandler.write(project)) return project.id else throw WriteException()
+	override suspend fun createProject(project : ProjectDto) : UUID? {
+		val projectWithId = project.copy(id = UUID.randomUUID())
+		val (success, generatedId) = projectsHandler.write(projectWithId)
+		if (success){
+			return generatedId
+		}else{
+			throw WriteException()
+		}
     }
 
     override suspend fun editProject(newProject : ProjectDto) {
