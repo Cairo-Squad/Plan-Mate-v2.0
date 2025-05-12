@@ -12,11 +12,12 @@ class ProjectsMongoHandlerImpl(
 ) : MongoDBHandlerImpl<ProjectDto>(
 	database = database,
 	collectionName = "projects",
-	getDtoId = { it.id }
+	getDtoId = { it.id?: UUID.randomUUID() }
 ) {
 	override fun convertDtoToDocument(entity: ProjectDto): Document {
+		val id = getDtoId(entity)
 		return Document()
-			.append(MongoConstants.ID, entity.id.toString())
+			.append(MongoConstants.ID, id.toString())
 			.append(MongoConstants.TITLE, entity.title)
 			.append(MongoConstants.DESCRIPTION, entity.description)
 			.append(MongoConstants.CREATED_BY, entity.createdBy.toString())

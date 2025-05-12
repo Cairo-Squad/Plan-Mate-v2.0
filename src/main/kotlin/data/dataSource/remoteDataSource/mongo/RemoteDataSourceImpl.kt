@@ -29,7 +29,6 @@ class RemoteDataSourceImpl(
         )
 
         return usersHandler.write(userDto)
-
     }
 
     override suspend fun editUser(user : UserDto) {
@@ -56,8 +55,8 @@ class RemoteDataSourceImpl(
 	}
 
 
-	override suspend fun createProject(project : ProjectDto) : UUID {
-		if (projectsHandler.write(project)) return project.id else throw WriteException()
+	override suspend fun createProject(project : ProjectDto):Boolean{
+		if (projectsHandler.write(project)) return true else throw WriteException()
     }
 
     override suspend fun editProject(newProject : ProjectDto) {
