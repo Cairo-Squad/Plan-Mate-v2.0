@@ -10,7 +10,7 @@ import java.util.*
 abstract class MongoDBHandlerImpl<DTO>(
     protected val database: MongoDatabase,
     protected val collectionName: String,
-    private val getDtoId: (DTO) -> UUID
+    protected val getDtoId: (DTO) -> UUID
 ) : MongoDBHandler<DTO> {
 
     private val collection: MongoCollection<Document> by lazy {
