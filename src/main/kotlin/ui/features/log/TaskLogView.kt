@@ -7,6 +7,8 @@ import logic.usecase.project.GetAllProjectsUseCase
 import logic.usecase.task.GetAllTasksByProjectIdUseCase
 import ui.utils.InputHandler
 import ui.utils.OutputFormatter
+import java.util.*
+
 class TaskLogView(
     private val getAllProjectsUseCase: GetAllProjectsUseCase,
     private val getAllTasksByProjectIdUseCase: GetAllTasksByProjectIdUseCase,
@@ -47,13 +49,13 @@ class TaskLogView(
 
         outputFormatter.printInfo("📝 Available Tasks:")
         tasks.forEachIndexed { index, task ->
-            outputFormatter.printInfo("✅ ${index + 1}. ${task.title} | 🏷️ Status: ${task.state.title} | 🆔 ID: ${task.id}")
+            outputFormatter.printInfo("✅ ${index + 1}. ${task.title} | 🏷️ Status: ${task.state?.title} | 🆔 ID: ${task.id}")
         }
 
         val taskIndex = inputHandler.promptForIntChoice("🔹 Select a task to view logs:", 1..tasks.size) - 1
         val selectedTask = tasks[taskIndex]
 
-        val logs = getTaskLogsUseCase.execute(selectedTask.id)
+        val logs = getTaskLogsUseCase.execute(selectedTask.id?: UUID.randomUUID())
 
         if (logs.isEmpty()) {
             outputFormatter.printError("❌ No logs found for this task.")
