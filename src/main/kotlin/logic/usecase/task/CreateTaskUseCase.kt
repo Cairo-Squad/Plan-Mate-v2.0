@@ -7,8 +7,8 @@ class CreateTaskUseCase(
     private val repository: TasksRepository,
     private val validationTask : ValidationTask
 ) {
-    suspend fun createTask(task: Task) {
+    suspend fun createTask(task: Task):Task {
         validationTask.validateCreateTask(task)
-        repository.createTask(task)
+        return repository.createTask(task)
     }
 }
