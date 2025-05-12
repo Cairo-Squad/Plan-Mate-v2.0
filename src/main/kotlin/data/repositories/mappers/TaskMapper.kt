@@ -5,9 +5,9 @@ import logic.model.State
 import logic.model.Task
 import java.util.*
 
-fun Task.toTaskDto(customId: UUID? = null): TaskDto {
+fun Task.toTaskDto(): TaskDto {
 	return TaskDto(
-		id = customId ?: this.id ?: UUID.randomUUID(),
+		id = this.id,
 		title = this.title!!,
 		description = this.description!!,
 		stateId = this.state?.id!!,
