@@ -11,7 +11,6 @@ import java.util.UUID
 import kotlin.test.Test
 
 class DeleteTaskUseCaseTest {
-
     private lateinit var tasksRepository: TasksRepository
     private lateinit var deleteTaskUseCase: DeleteTaskUseCase
 
