@@ -6,7 +6,7 @@ import logic.repositories.AuthenticationRepository
 class EditUserUseCase(
     private val authenticationRepository: AuthenticationRepository
 ) {
-    suspend fun editUser(newUser: User) {
-        authenticationRepository.editUser(user = newUser)
+    suspend fun editUser(newUser: User): Boolean {
+        return authenticationRepository.editUser(user = newUser)
     }
 }

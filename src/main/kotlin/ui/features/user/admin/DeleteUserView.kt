@@ -15,20 +15,13 @@ class DeleteUserView(
 ) {
     fun deleteUser() = runBlocking {
         showHeader()
-
-        val users = getAllUsersUseCase.getAllUsers()
-        if (users.isEmpty()) {
-            outputFormatter.printError("❌ No users available to delete!")
-            return@runBlocking
-        }
+        val users = fetchUsers() ?: return@runBlocking
 
         printUserInfo(users)
-        val selectedUser = promptUserSelection(users)
-        if (confirmDeletion(selectedUser)) {
-            performDeletion(selectedUser)
-            inputHandler.waitForEnter()
-        }
+        val selectedUser = promptUserSelection(users) ?: return@runBlocking
+        if (confirmDeletion(selectedUser)) performDeletion(selectedUser)
     }
+
 
     private fun showHeader() {
         outputFormatter.printHeader(
@@ -40,6 +33,17 @@ class DeleteUserView(
         )
     }
 
+
+    private suspend fun fetchUsers(): List<User>? {
+        val users = getAllUsersUseCase.getAllUsers()
+        if (users.isEmpty()) {
+            outputFormatter.printError("❌ No users available to delete!")
+            return null
+        }
+        return users
+    }
+
+
     private fun printUserInfo(users: List<User>) {
         outputFormatter.printInfo("👥 Available Users:")
         users.forEachIndexed { index, user ->
@@ -47,24 +51,26 @@ class DeleteUserView(
         }
     }
 
-    private fun promptUserSelection(users: List<User>): User {
+
+    private fun promptUserSelection(users: List<User>): User? {
         val selectedIndex = inputHandler.promptForIntChoice("🔹 Select a user to delete: ", 1..users.size) - 1
-        return users[selectedIndex]
+        return users.getOrNull(selectedIndex)
     }
+
 
     private fun confirmDeletion(selectedUser: User): Boolean {
         outputFormatter.printWarning("⚠️ Are you sure you want to delete '${selectedUser.name}'? This action cannot be undone.")
-
-        val confirmation = inputHandler.promptForInput("Type 'YES' to confirm: ")
-        return confirmation.equals("YES", ignoreCase = true)
+        return inputHandler.promptForInput("Type 'YES' to confirm: ").equals("YES", ignoreCase = true)
     }
+
 
     private suspend fun performDeletion(selectedUser: User) {
         try {
-            deleteUserUseCase.deleteUser(selectedUser.id)
+            deleteUserUseCase.deleteUser(selectedUser.id!!)
             outputFormatter.printSuccess("✅ User '${selectedUser.name}' deleted successfully!")
         } catch (e: Exception) {
-            outputFormatter.printInfo("🔄 Action canceled. No user was deleted: ${e.message}")
+            outputFormatter.printError("🔄 Action canceled. No user was deleted: ${e.message}")
         }
+        inputHandler.waitForEnter()
     }
 }

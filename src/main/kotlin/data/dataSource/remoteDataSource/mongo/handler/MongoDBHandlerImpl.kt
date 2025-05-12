@@ -35,7 +35,6 @@ abstract class MongoDBHandlerImpl<DTO>(
         val document = convertDtoToDocument(entity)
         collection.insertOne(document)
         val collectionSizeAfterInsert = collection.countDocuments()
-        
         return collectionSizeAfterInsert > collectionSizeBeforeInsert
     }
 
@@ -57,7 +56,7 @@ abstract class MongoDBHandlerImpl<DTO>(
     }
 
     override fun readAll(): List<DTO> {
-        return collection.find().asSequence()
+        return collection.find()
             .map { convertDocumentToDto(it) }
             .toList()
 
@@ -67,5 +66,23 @@ abstract class MongoDBHandlerImpl<DTO>(
         val document = collection.find(Filters.eq("_id", id.toString())).first()
             ?: throw NotFoundException()
         return convertDocumentToDto(document)
+    }
+    override fun edit(entity: DTO , ayhaga: Boolean) :Boolean{
+        val entityId = getDtoId(entity)
+        val document = convertDtoToDocument(entity)
+        val result = collection.replaceOne(Filters.eq("_id", entityId.toString()), document)
+        if (result.matchedCount == 0L) {
+            return false
+        }
+        return true
+    }
+
+    override fun delete(entity: DTO ,ayhaga: Boolean):Boolean {
+        val entityId = getDtoId(entity)
+        val result = collection.deleteOne(Filters.eq("_id", entityId.toString()))
+        if (result.deletedCount == 0L) {
+            return false
+        }
+        return true
     }
 }

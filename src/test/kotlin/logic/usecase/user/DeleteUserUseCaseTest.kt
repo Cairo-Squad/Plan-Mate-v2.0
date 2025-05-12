@@ -26,10 +26,10 @@ class DeleteUserUseCaseTest {
     fun `should return true when userid exist`() = runTest {
         // Given
         val mockUsers= FakeData.mockUsers
-        coEvery { authenticationRepository.deleteUser(mockUsers[0].id) } returns true
+        coEvery { authenticationRepository.deleteUser(mockUsers[0].id!!) } returns true
 
         // When
-        val result = deleteUserUseCase.deleteUser(mockUsers[0].id)
+        val result = deleteUserUseCase.deleteUser(mockUsers[0].id!!)
 
         // Then
         Truth.assertThat(result).isTrue()
@@ -55,6 +55,6 @@ class DeleteUserUseCaseTest {
         coEvery { authenticationRepository.deleteUser(any()) } throws Exception()
 
         // When & Then
-        assertThrows<Exception> { deleteUserUseCase.deleteUser(mockUsers[0].id) }
+        assertThrows<Exception> { deleteUserUseCase.deleteUser(mockUsers[0].id!!) }
     }
 }

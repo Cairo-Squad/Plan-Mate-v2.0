@@ -45,6 +45,48 @@ abstract class CsvFileHandler<DTO>(
     }
 
 
+    override fun edit(entity: DTO, ayhaga: Boolean): Boolean {
+        val entityId = getDtoId(entity)
+        val allEntities = readAll()
+
+        val index = allEntities.indexOfFirst { getDtoId(it) == entityId }
+        if (index == -1) return false
+
+        val updatedEntities = allEntities.toMutableList().apply {
+            this[index] = entity
+        }
+        writeAll(updatedEntities)
+        return true
+    }
+
+    override fun readAll(): List<DTO> {
+        return file.readLines()
+            .asSequence()
+            .drop(1)
+            .filter { it.isNotBlank() }
+            .map { fromCsvRowToDto(it) }
+            .toList()
+    }
+
+    override fun delete(entity: DTO, ayhaga: Boolean): Boolean {
+        val allEntities = readAll()
+        if (allEntities.none { getDtoId(it) == getDtoId(entity) }) {
+            return false
+        }
+        val updatedEntities = allEntities.filter { getDtoId(it) != getDtoId(entity) }
+        writeAll(updatedEntities)
+        return true
+    }
+
+    override fun delete(entity: DTO) {
+        val allEntities = readAll()
+        if (allEntities.none { getDtoId(it) == getDtoId(entity) }) {
+            throw NotFoundException()
+        }
+        val updatedEntities = allEntities.filter { getDtoId(it) != getDtoId(entity) }
+        writeAll(updatedEntities)
+    }
+
     override fun edit(entity: DTO) {
         val entityId = getDtoId(entity)
         val allEntities = readAll()
@@ -58,21 +100,5 @@ abstract class CsvFileHandler<DTO>(
         writeAll(updatedEntities)
     }
 
-    override fun readAll(): List<DTO> {
-        return file.readLines()
-            .asSequence()
-            .drop(1)
-            .filter { it.isNotBlank() }
-            .map { fromCsvRowToDto(it) }
-            .toList()
-    }
 
-    override fun delete(entity: DTO) {
-        val allEntities = readAll()
-        if (allEntities.none { getDtoId(it) == getDtoId(entity) }) {
-            throw NotFoundException()
-        }
-        val updatedEntities = allEntities.filter { getDtoId(it) != getDtoId(entity) }
-        writeAll(updatedEntities)
-    }
 }

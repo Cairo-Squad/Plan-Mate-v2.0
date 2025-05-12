@@ -74,4 +74,5 @@ class LogsMongoHandlerImpl(
             else -> throw IOException()
         }
     }
+
 }

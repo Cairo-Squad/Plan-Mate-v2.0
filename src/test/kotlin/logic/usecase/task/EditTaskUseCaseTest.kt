@@ -9,12 +9,9 @@ import logic.model.State
 import logic.model.Task
 import logic.repositories.TasksRepository
 import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.assertThrows
 import java.util.*
 import kotlin.test.Test
-import kotlin.test.assertFailsWith
-import kotlin.test.assertEquals
 
 class EditTaskUseCaseTest {
 	private lateinit var tasksRepository: TasksRepository
