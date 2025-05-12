@@ -28,7 +28,7 @@ class ProjectCreateView(
 		val (title, description) = collectProjectInfo()
 		val projectState = createInitialState()
 
-		val project = buildProject(title, description, currentUser.id, projectState)
+		val project = buildProject(title, description, currentUser.id!!, projectState)
 
 		try {
 			val isProjectCreated = createProjectUseCase.createProject(project, currentUser)

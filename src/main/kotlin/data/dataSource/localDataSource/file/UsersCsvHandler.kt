@@ -13,7 +13,7 @@ class UsersCsvHandler(
 ) : CsvFileHandler<UserDto>(
     filePath = filePath,
     columnNames = headers,
-    getDtoId = { it.id }
+    getDtoId = { it.id?: UUID.randomUUID() }
 ) {
 
     override fun fromDtoToCsvRow(entity: UserDto): String {

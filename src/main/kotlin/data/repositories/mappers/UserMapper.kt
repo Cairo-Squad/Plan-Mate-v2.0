@@ -15,7 +15,7 @@ fun UserDto.toUser(): User {
 
 fun User.toUserDto(): UserDto {
     return UserDto(
-        id = this.id!!,
+        id = this.id,
         name = this.name?:"",
         password = this.password!!,
         type = this.type!!

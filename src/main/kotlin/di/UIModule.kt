@@ -46,7 +46,7 @@ val uiModule = module {
     }
 
     single {
-        ProjectCreateView(get(), get(), get(), get() ,get())
+        ProjectCreateView(get(), get(), get(), get() ,get() ,get())
     }
 
     single {

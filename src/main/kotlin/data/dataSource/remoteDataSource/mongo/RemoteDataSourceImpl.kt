@@ -1,10 +1,10 @@
 package data.dataSource.remoteDataSource.mongo
 
-import com.mongodb.client.MongoDatabase
 import data.dataSource.remoteDataSource.RemoteDataSource
 import data.dataSource.remoteDataSource.mongo.handler.MongoDBHandler
 import data.dto.*
 import data.hashing.PasswordEncryptor
+import logic.exception.WriteException
 import java.util.*
 
 class RemoteDataSourceImpl(
@@ -13,6 +13,7 @@ class RemoteDataSourceImpl(
 	private val statesHandler: MongoDBHandler<StateDto>,
 	private val tasksHandler: MongoDBHandler<TaskDto>,
 	private val usersHandler: MongoDBHandler<UserDto>,
+	private val passwordEncryptor: PasswordEncryptor
 ) : RemoteDataSource {
 	private var currentUser: UserDto? = null
 

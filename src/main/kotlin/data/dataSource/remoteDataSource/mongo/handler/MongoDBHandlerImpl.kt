@@ -35,7 +35,6 @@ abstract class MongoDBHandlerImpl<DTO>(
         val document = convertDtoToDocument(entity)
         collection.insertOne(document)
         val collectionSizeAfterInsert = collection.countDocuments()
-        
         return collectionSizeAfterInsert > collectionSizeBeforeInsert
     }
 
@@ -57,7 +56,7 @@ abstract class MongoDBHandlerImpl<DTO>(
     }
 
     override fun readAll(): List<DTO> {
-        return collection.find().asSequence()
+        return collection.find()
             .map { convertDocumentToDto(it) }
             .toList()
 
