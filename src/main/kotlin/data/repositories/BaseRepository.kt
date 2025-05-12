@@ -13,7 +13,13 @@ abstract class BaseRepository {
                 is UserException -> throw UserException()
                 is AdminException -> throw AdminException()
                 is GeneralException -> throw GeneralException()
-                else -> throw Exception("Unhandled exception")
+                else-> {
+                    println(e)
+                    throw Exception("handel")
+
+                }
+
+
             }
         }
     }

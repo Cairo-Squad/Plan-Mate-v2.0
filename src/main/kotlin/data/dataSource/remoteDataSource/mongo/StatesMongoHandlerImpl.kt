@@ -12,13 +12,19 @@ class StatesMongoHandlerImpl(
 ) : MongoDBHandlerImpl<StateDto>(
 	database = database,
 	collectionName = "states",
-	getDtoId = { it.id }
+	getDtoId = { it.id?: UUID.randomUUID()}
 ) {
 	override fun convertDtoToDocument(entity: StateDto): Document {
+		var id = entity.id
+		if (id == null) {
+			id = UUID.randomUUID()
+			entity.id = id
+		}
 		return Document()
-			.append(MongoConstants.ID, entity.id.toString())
+			.append(MongoConstants.ID, id.toString())
 			.append(MongoConstants.STATE_TITLE, entity.title)
 	}
+
 	
 	override fun convertDocumentToDto(document: Document): StateDto {
 		return StateDto(

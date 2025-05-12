@@ -5,6 +5,7 @@ import com.mongodb.client.MongoDatabase
 import com.mongodb.client.model.Filters
 import logic.exception.NotFoundException
 import org.bson.Document
+import org.koin.core.component.getScopeId
 import java.util.*
 
 abstract class MongoDBHandlerImpl<DTO>(
@@ -34,8 +35,10 @@ abstract class MongoDBHandlerImpl<DTO>(
         val collectionSizeBeforeInsert = collection.countDocuments()
         val document = convertDtoToDocument(entity)
         collection.insertOne(document)
+        val x =document
+        println(x)
         val collectionSizeAfterInsert = collection.countDocuments()
-        
+
         return collectionSizeAfterInsert > collectionSizeBeforeInsert
     }
 

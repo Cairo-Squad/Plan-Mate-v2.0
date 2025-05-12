@@ -7,9 +7,11 @@ import logic.model.User
 import logic.repositories.StatesRepository
 
 class CreateStateUseCase(
-    private val stateRepository: StatesRepository
+    private val stateRepository: StatesRepository,
+    private val validationState: ValidationState
 ) {
     suspend fun createState(state: State): Boolean {
-        return stateRepository.createState(state.toStateDto())
+        validationState.validateOfState(state)
+        return stateRepository.createState(state)
     }
 }

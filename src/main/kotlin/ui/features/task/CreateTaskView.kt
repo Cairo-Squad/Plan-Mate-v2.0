@@ -70,8 +70,8 @@ class CreateTaskView(
 	}
 	
 	private suspend fun createTaskState(): State {
-		val taskState = State(UUID.randomUUID(), "TODO")
-		createStateUseCase.createState(taskState)
+		val taskState = State(title =  "TODO")
+		val finalStateOfTask =createStateUseCase.createState(taskState)
 		return taskState
 	}
 	

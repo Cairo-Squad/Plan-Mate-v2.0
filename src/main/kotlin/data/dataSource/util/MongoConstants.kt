@@ -19,7 +19,6 @@ object MongoConstants {
 	const val LOG_USER_ID = "userId"
 	const val LOG_USER_ACTION = "userAction"
 	
-	
 	const val STATE_TITLE = "title"
 	
 	const val TASK_ID = "_id"

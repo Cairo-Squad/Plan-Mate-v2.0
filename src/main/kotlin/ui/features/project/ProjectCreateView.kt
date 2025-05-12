@@ -63,8 +63,8 @@ class ProjectCreateView(
 	
 	private fun createInitialState(): State = runBlocking {
 		val stateTitle = inputHandler.promptForInput("📊 Enter initial project state: ")
-		val projectState = State(UUID.randomUUID(), stateTitle)
-		createStateUseCase.createState(projectState)
+		val projectState = State(title = stateTitle)
+		 createStateUseCase.createState(projectState)
 		return@runBlocking projectState
 	}
 	

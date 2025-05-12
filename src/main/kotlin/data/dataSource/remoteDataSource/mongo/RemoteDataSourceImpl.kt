@@ -108,8 +108,13 @@ class RemoteDataSourceImpl(
 	}
 
 	override suspend fun createState(state: StateDto): Boolean {
-		statesHandler.write(state)
-		return true
+		if (statesHandler.write(state)) {
+			println("remote"+true)
+			return true
+		} else{
+			throw WriteException()
+		}
+
 	}
 
 	override suspend fun editState(state: StateDto) {
