@@ -15,7 +15,7 @@ class ProjectsMongoHandlerImpl(
 	getDtoId = { it.id?: UUID.randomUUID() }
 ) {
 	override fun convertDtoToDocument(entity: ProjectDto): Document {
-		val id = entity.id ?: UUID.randomUUID()
+		val id = getDtoId(entity)
 		return Document()
 			.append(MongoConstants.ID, id.toString())
 			.append(MongoConstants.TITLE, entity.title)
