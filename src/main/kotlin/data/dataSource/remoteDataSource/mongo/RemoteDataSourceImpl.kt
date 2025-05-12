@@ -4,6 +4,7 @@ import com.mongodb.client.MongoDatabase
 import data.dataSource.remoteDataSource.RemoteDataSource
 import data.dataSource.remoteDataSource.mongo.handler.MongoDBHandler
 import data.dto.*
+import logic.exception.WriteException
 import java.util.*
 
 class RemoteDataSourceImpl(
@@ -15,7 +16,7 @@ class RemoteDataSourceImpl(
 ) : RemoteDataSource {
 	private var currentUser: UserDto? = null
 
-	override suspend fun getAllUsers() : List<UserDto> {
+    override suspend fun getAllUsers() : List<UserDto> {
         return usersHandler.readAll()
     }
 
@@ -28,7 +29,6 @@ class RemoteDataSourceImpl(
         )
 
         return usersHandler.write(userDto)
-
     }
 
     override suspend fun editUser(user : UserDto) {
@@ -55,8 +55,8 @@ class RemoteDataSourceImpl(
 	}
 
 
-	override suspend fun createProject(project : ProjectDto) {
-        projectsHandler.write(project)
+	override suspend fun createProject(project : ProjectDto):Boolean{
+		if (projectsHandler.write(project)) return true else throw WriteException()
     }
 
     override suspend fun editProject(newProject : ProjectDto) {

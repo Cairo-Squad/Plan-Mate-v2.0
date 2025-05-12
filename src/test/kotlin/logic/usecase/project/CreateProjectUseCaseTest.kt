@@ -19,15 +19,13 @@ import util.FakeData
 class CreateProjectUseCaseTest() {
     private lateinit var projectRepository: ProjectsRepository
     private lateinit var createProject: CreateProjectUseCase
-    private lateinit var addLogUseCase: AddLogUseCase
     private lateinit var validationCreationProjectCreation: ValidationProject
 
     @BeforeEach
     fun setUp() {
         validationCreationProjectCreation = mockk()
         projectRepository = mockk(relaxed = true)
-        addLogUseCase = mockk(relaxed = true)
-        createProject = CreateProjectUseCase(projectRepository, addLogUseCase, validationCreationProjectCreation)
+        createProject = CreateProjectUseCase(projectRepository, validationCreationProjectCreation)
     }
 
     @Test
