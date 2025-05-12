@@ -4,9 +4,11 @@ import logic.model.State
 import logic.repositories.StatesRepository
 
 class EditStateUseCase(
-    private val repository: StatesRepository
+    private val statesRepository: StatesRepository,
+    private val validationState: ValidationState
 ) {
     suspend fun editState(newState: State) {
-        repository.editState(state = newState)
+        validationState.validateState(newState)
+        statesRepository.editState(state = newState)
     }
 }

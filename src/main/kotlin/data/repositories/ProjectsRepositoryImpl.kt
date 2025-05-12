@@ -18,7 +18,9 @@ class ProjectsRepositoryImpl(
 ) : ProjectsRepository, BaseRepository() {
 
     override suspend fun createProject(project: Project, user: User): Boolean {
-	    return wrap { remoteDataSource.createProject(project.toProjectDto())}
+	    return wrap {
+            remoteDataSource.createProject(project.toProjectDto())
+        }
     }
 
     override suspend fun editProject(newProject: Project) {
@@ -37,7 +39,7 @@ class ProjectsRepositoryImpl(
         return wrap {
             val projectDto = remoteDataSource.getProjectById(projectId)
             projectDto.toProject(
-                projectState = getState(projectDto.stateId),
+                projectState = getState(projectDto.stateId!!),
                 projectTasks = getTasksForProject(projectId),
             )
         }
@@ -47,7 +49,7 @@ class ProjectsRepositoryImpl(
         return wrap {
             remoteDataSource.getAllProjects().map { projectDto ->
                 projectDto.toProject(
-                    projectState = getState(projectDto.stateId),
+                    projectState = getState(projectDto.stateId!!),
                     projectTasks = getTasksForProject(projectDto.id!!)
                 )
             }

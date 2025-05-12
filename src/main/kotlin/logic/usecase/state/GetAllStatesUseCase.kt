@@ -6,7 +6,7 @@ import logic.repositories.StatesRepository
 class GetAllStatesUseCase(
     private val statesRepository: StatesRepository
 ) {
-    suspend fun execute(): List<State> {
+    suspend fun getAllStateById(): List<State> {
         return statesRepository.getAllStates()
     }
 }

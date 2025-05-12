@@ -3,6 +3,6 @@ package data.dto
 import java.util.UUID
 
 data class StateDto(
-    val id: UUID,
+    var id: UUID?,
     val title: String,
 )

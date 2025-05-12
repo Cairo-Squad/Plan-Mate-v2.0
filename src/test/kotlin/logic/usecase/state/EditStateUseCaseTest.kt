@@ -14,12 +14,14 @@ import java.util.UUID
 class EditStateUseCaseTest {
 
     private lateinit var repository: StatesRepository
+    private lateinit var validationState: ValidationState
     private lateinit var editStateUseCase: EditStateUseCase
 
     @BeforeEach
     fun setup() {
         repository = mockk(relaxed = true)
-        editStateUseCase = EditStateUseCase(repository)
+        validationState= mockk(relaxed = true)
+        editStateUseCase = EditStateUseCase(repository,validationState)
     }
 
     @Test
@@ -31,7 +33,7 @@ class EditStateUseCaseTest {
         editStateUseCase.editState(updateState)
 
         // Then
-        coVerify(exactly = 1) { editStateUseCase.editState(updateState,) }
+        coVerify(exactly = 1) { editStateUseCase.editState(updateState) }
     }
 
     @Test

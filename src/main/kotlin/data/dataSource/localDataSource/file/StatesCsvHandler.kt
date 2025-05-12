@@ -11,7 +11,7 @@ class StatesCsvHandler(
 ) : CsvFileHandler<StateDto>(
     filePath = filePath,
     columnNames = headers,
-    getDtoId = { it.id }
+    getDtoId = { it.id!! }
 ) {
     override fun fromDtoToCsvRow(entity: StateDto): String {
         val rowStringBuilder = StringBuilder()

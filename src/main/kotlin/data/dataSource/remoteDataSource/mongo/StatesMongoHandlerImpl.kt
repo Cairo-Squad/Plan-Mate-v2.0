@@ -8,22 +8,25 @@ import org.bson.Document
 import java.util.*
 
 class StatesMongoHandlerImpl(
-	database: MongoDatabase
+    database: MongoDatabase
 ) : MongoDBHandlerImpl<StateDto>(
-	database = database,
-	collectionName = "states",
-	getDtoId = { it.id }
+    database = database,
+    collectionName = "states",
+    getDtoId = { it.id ?: UUID.randomUUID() }
 ) {
-	override fun convertDtoToDocument(entity: StateDto): Document {
-		return Document()
-			.append(MongoConstants.ID, entity.id.toString())
-			.append(MongoConstants.STATE_TITLE, entity.title)
-	}
-	
-	override fun convertDocumentToDto(document: Document): StateDto {
-		return StateDto(
-			id = UUID.fromString(document.getString(MongoConstants.ID)),
-			title = document.getString(MongoConstants.STATE_TITLE)
-		)
-	}
+    override fun convertDtoToDocument(entity: StateDto): Document {
+        val id = entity.id ?: UUID.randomUUID()
+        entity.id = id
+        return Document()
+            .append(MongoConstants.ID, id.toString())
+            .append(MongoConstants.STATE_TITLE, entity.title)
+    }
+
+
+    override fun convertDocumentToDto(document: Document): StateDto {
+        return StateDto(
+            id = UUID.fromString(document.getString(MongoConstants.ID)),
+            title = document.getString(MongoConstants.STATE_TITLE)
+        )
+    }
 }

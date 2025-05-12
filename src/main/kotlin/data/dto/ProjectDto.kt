@@ -8,5 +8,5 @@ data class ProjectDto(
     val description: String,
     val createdBy: UUID,
     val taskIds: List<UUID>,
-    val stateId: UUID
+    val stateId: UUID?
 )

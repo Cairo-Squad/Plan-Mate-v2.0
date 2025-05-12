@@ -1,10 +1,9 @@
 package logic.repositories
 
-import data.dto.StateDto
 import logic.model.State
 
 interface StatesRepository {
-    suspend fun createState(state: StateDto): Boolean
+    suspend fun createState(state: State): State
     suspend fun editState(state: State)
     suspend fun getAllStates(): List<State>
 }
