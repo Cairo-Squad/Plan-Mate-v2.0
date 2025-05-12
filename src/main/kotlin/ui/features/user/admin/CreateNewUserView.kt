@@ -2,17 +2,24 @@ package ui.features.user.admin
 
 import data.dto.UserType
 import kotlinx.coroutines.runBlocking
+import logic.model.User
 import logic.usecase.user.CreateUserUseCase
 import ui.utils.InputHandler
 import ui.utils.OutputFormatter
 import java.util.UUID
 
 class CreateNewUserView(
-    private val inputHandler : InputHandler,
-    private val outputFormatter : OutputFormatter,
-    private val createUserUseCase : CreateUserUseCase
+    private val inputHandler: InputHandler,
+    private val outputFormatter: OutputFormatter,
+    private val createUserUseCase: CreateUserUseCase
 ) {
     fun createNewUser() = runBlocking {
+        showHeader()
+        val user = collectUserInput() ?: return@runBlocking
+        performUserCreation(user)
+    }
+
+    private fun showHeader() {
         outputFormatter.printHeader(
             """
             ╔════════════════════════════╗
@@ -20,29 +27,36 @@ class CreateNewUserView(
             ╚════════════════════════════╝
             """.trimIndent()
         )
+    }
 
+    private fun collectUserInput(): User? {
         val username = inputHandler.promptForInput("📛 Enter username: ")
-        if (username.isEmpty()) {
+        if (username.isBlank()) {
             outputFormatter.printError("❌ Username cannot be empty.")
             inputHandler.waitForEnter()
-	        return@runBlocking
+            return null
         }
 
         val password = inputHandler.promptForPassword("🔒 Enter password: ")
-        if (password.isEmpty()) {
+        if (password.isBlank()) {
             outputFormatter.printError("❌ Password cannot be empty.")
             inputHandler.waitForEnter()
-	        return@runBlocking
+            return null
         }
-        val userType = UserType.MATE
 
+        return User( name = username, password = password, type = UserType.MATE)
+    }
+
+    private suspend fun performUserCreation(user: User) {
         try {
-            val isCreated = createUserUseCase.createUser(UUID.randomUUID(), username, password, userType)
+            val isCreated = createUserUseCase.createUser(user)
             if (isCreated) {
-                outputFormatter.printSuccess("✅ User '$username' created successfully!")
+                outputFormatter.printSuccess("✅ User '${user.name}' created successfully!")
+            } else {
+                outputFormatter.printError("❌ Failed to create user. Please try again.")
             }
-        } catch (ex : Exception) {
-            outputFormatter.printError("❌ Failed to create user: ${ex.message}")
+        } catch (ex: Exception) {
+            outputFormatter.printError("❌ Error during user creation: ${ex.message}")
         }
 
         inputHandler.waitForEnter()

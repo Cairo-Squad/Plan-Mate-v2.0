@@ -4,6 +4,7 @@ import data.dataSource.localDataSource.file.handler.CsvFileHandler
 import data.dataSource.util.CsvIndices
 import data.dto.UserDto
 import data.dto.UserType
+import logic.model.User
 import java.util.*
 
 class UsersCsvHandler(
@@ -12,7 +13,7 @@ class UsersCsvHandler(
 ) : CsvFileHandler<UserDto>(
     filePath = filePath,
     columnNames = headers,
-    getDtoId = { it.id }
+    getDtoId = { it.id?: UUID.randomUUID() }
 ) {
 
     override fun fromDtoToCsvRow(entity: UserDto): String {
@@ -33,4 +34,5 @@ class UsersCsvHandler(
             type = UserType.valueOf(userData[CsvIndices.USER_TYPE])
         )
     }
+
 }

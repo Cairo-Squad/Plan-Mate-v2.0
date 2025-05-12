@@ -10,7 +10,7 @@ import ui.features.user.admin.AdminManagementView
 import ui.features.user.admin.CreateNewUserView
 import ui.features.user.admin.DeleteUserView
 import ui.features.user.admin.EditUserView
-import ui.features.user.admin.ListAllUsersView
+import ui.features.user.admin.GetAllUsersView
 import ui.features.user.mate.MateManagementView
 import ui.utils.CLIMenu
 import ui.utils.InputHandler
@@ -98,6 +98,6 @@ val uiModule = module {
     single{ DeleteUserView(get() , get() ,get() ,get()) }
 
     single {
-        ListAllUsersView(get(), get(), get())
+        GetAllUsersView(get(), get(), get())
     }
 }

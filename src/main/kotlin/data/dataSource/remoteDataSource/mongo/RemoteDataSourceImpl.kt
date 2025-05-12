@@ -1,9 +1,9 @@
 package data.dataSource.remoteDataSource.mongo
 
-import com.mongodb.client.MongoDatabase
 import data.dataSource.remoteDataSource.RemoteDataSource
 import data.dataSource.remoteDataSource.mongo.handler.MongoDBHandler
 import data.dto.*
+import data.hashing.PasswordEncryptor
 import logic.exception.WriteException
 import java.util.*
 
@@ -13,57 +13,55 @@ class RemoteDataSourceImpl(
 	private val statesHandler: MongoDBHandler<StateDto>,
 	private val tasksHandler: MongoDBHandler<TaskDto>,
 	private val usersHandler: MongoDBHandler<UserDto>,
+	private val passwordEncryptor: PasswordEncryptor
 ) : RemoteDataSource {
 	private var currentUser: UserDto? = null
 
-    override suspend fun getAllUsers() : List<UserDto> {
+	override suspend fun getAllUsers() : List<UserDto> {
         return usersHandler.readAll()
     }
 
-    override suspend fun createUser(id : UUID, name : String, password : String, type : UserType) : Boolean {
-        val userDto = UserDto(
+    override suspend fun createUser(user: UserDto): Boolean {
+        val updatedUser = user.copy(
             id = UUID.randomUUID(),
-            name = name,
-            password = password,
-            type = type
+            password = passwordEncryptor.hashPassword(user.password)
         )
-
-        return usersHandler.write(userDto)
+        return usersHandler.write(updatedUser)
     }
 
-    override suspend fun editUser(user : UserDto) {
-        usersHandler.edit(user)
+    override suspend fun editUser(user: UserDto): Boolean {
+        return usersHandler.edit(user, true)
     }
 
-    override suspend fun deleteUser(user : UserDto) {
-        usersHandler.delete(user)
+    override suspend fun deleteUser(user: UserDto): Boolean {
+        return usersHandler.delete(user, true)
     }
 
-	override suspend fun loginUser(name: String, password: String): Boolean {
-		val users = usersHandler.readAll()
-		val user = users.find { it.name == name && it.password == password }
-		setCurrentUser(user)
-		return user !=null
-	}
+    override suspend fun loginUser(name: String, password: String): Boolean {
+        val users = usersHandler.readAll()
+        val user = users.find { it.name == name && it.password == password }
+        setCurrentUser(user)
+        return user != null
+    }
 
-	override suspend fun getCurrentUser(): UserDto? {
-		return currentUser
-	}
+    override suspend fun getCurrentUser(): UserDto? {
+        return currentUser
+    }
 
-	private  fun setCurrentUser(user : UserDto?) {
-		currentUser = user
-	}
+    private fun setCurrentUser(user: UserDto?) {
+        currentUser = user
+    }
 
 
 	override suspend fun createProject(project : ProjectDto):Boolean{
 		if (projectsHandler.write(project)) return true else throw WriteException()
     }
 
-    override suspend fun editProject(newProject : ProjectDto) {
+    override suspend fun editProject(newProject: ProjectDto) {
         projectsHandler.edit(newProject)
     }
 
-    override suspend fun deleteProjectById(project : ProjectDto) {
+    override suspend fun deleteProjectById(project: ProjectDto) {
         projectsHandler.delete(project)
     }
 

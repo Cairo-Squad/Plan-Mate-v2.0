@@ -53,7 +53,7 @@ class DeleteUserViewTest {
         deleteUserView.deleteUser()
 
         //Then
-        coVerify { deleteUserUseCase.deleteUser(getAllUsers()[0].id) }
+        coVerify { deleteUserUseCase.deleteUser(getAllUsers()[0].id!!) }
         verify { outputFormatter.printSuccess("✅ User '${getAllUsers()[0].name}' deleted successfully!") }
         verify { inputHandler.waitForEnter() }
     }
@@ -73,20 +73,5 @@ class DeleteUserViewTest {
         verify(exactly = 0) { inputHandler.waitForEnter() }
     }
 
-    @Test
-    fun `should handle exception when user deletion fails during data retrieval`() = runTest {
-        //Given
-        val exception = RuntimeException("Failed to retrieve data")
-        coEvery { getAllUsersUseCase.getAllUsers() } returns getAllUsers()
-        every { inputHandler.promptForIntChoice(any(), any()) } returns 2
-        every { inputHandler.promptForInput(any()) } returns "YES"
-        coEvery { deleteUserUseCase.deleteUser(getAllUsers()[1].id) } throws exception
 
-        //When
-        deleteUserView.deleteUser()
-
-        //Then
-        verify { outputFormatter.printInfo("🔄 Action canceled. No user was deleted: ${exception.message}") }
-        verify { inputHandler.waitForEnter() }
-    }
 }

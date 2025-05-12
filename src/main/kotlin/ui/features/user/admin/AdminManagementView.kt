@@ -12,7 +12,7 @@ class AdminManagementView(
     private val createNewUserView: CreateNewUserView,
     private val deleteUserView: DeleteUserView,
     private val editUserView: EditUserView,
-    private val listAllUsersView: ListAllUsersView,
+    private val listAllUsersView: GetAllUsersView,
     private val taskManagementView: TaskManagementView
 ) {
     fun showAdminMenu() {

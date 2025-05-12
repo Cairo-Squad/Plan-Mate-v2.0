@@ -3,6 +3,7 @@ package data.dataSource.localDataSource.file
 import data.dataSource.localDataSource.LocalDataSource
 import data.dataSource.localDataSource.file.handler.FileHandler
 import data.dto.*
+import data.hashing.PasswordEncryptor
 import java.util.*
 
 class LocalDataSourceImpl(
@@ -11,17 +12,14 @@ class LocalDataSourceImpl(
     private val statesCsvHandler : FileHandler<StateDto>,
     private val tasksCsvHandler : FileHandler<TaskDto>,
     private val usersCsvHandler : FileHandler<UserDto>,
+    private val passwordEncryptor: PasswordEncryptor
 ) : LocalDataSource {
     private var currentUser : UserDto? = null
 
-    override fun createUser(id : UUID, name : String, password : String, type : UserType) : Boolean {
-        val userDto = UserDto(
-            id = UUID.randomUUID(),
-            name = name,
-            password = password,
-            type = type
-        )
-        return usersCsvHandler.write(userDto)
+    override fun createUser(user : UserDto) : Boolean {
+        val hashedPassword = passwordEncryptor.hashPassword(user.password)
+        val updatedUser = user.copy(id = UUID.randomUUID(), password = hashedPassword)
+        return usersCsvHandler.write(updatedUser)
     }
 
     override fun getAllUsers() : List<UserDto> {
@@ -29,16 +27,16 @@ class LocalDataSourceImpl(
         return users
     }
 
-    override fun editUser(user : UserDto) {
-        return usersCsvHandler.edit(user)
+    override fun editUser(user : UserDto ):Boolean {
+        return usersCsvHandler.edit(user ,true)
     }
 
     override fun editState(state : StateDto) {
-        return statesCsvHandler.edit(state)
+         statesCsvHandler.edit(state)
     }
 
-    override fun deleteUser(user : UserDto) {
-        usersCsvHandler.delete(user)
+    override fun deleteUser(user : UserDto) :Boolean{
+         return usersCsvHandler.delete(user , true)
     }
 
     override fun loginUser(name : String, password : String) : Boolean {

@@ -13,7 +13,7 @@ class UsersMongoHandlerImpl(
 ) : MongoDBHandlerImpl<UserDto>(
 	database = database,
 	collectionName = "users",
-	getDtoId = { it.id }
+	getDtoId = { it.id?: UUID.randomUUID() }
 ) {
 	override fun convertDtoToDocument(entity: UserDto): Document {
 		return Document()
