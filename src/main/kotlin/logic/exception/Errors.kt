@@ -16,4 +16,6 @@ class EntityNotChangedException : Exception()
 class EmptyNameException : IllegalArgumentException()
 class EmptyTitleException : IllegalArgumentException()
 
+open class OperationException: Exception()
+class WriteException: OperationException()
 

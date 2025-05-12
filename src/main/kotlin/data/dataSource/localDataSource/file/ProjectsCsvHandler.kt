@@ -11,7 +11,7 @@ class ProjectsCsvHandler(
 ) : CsvFileHandler<ProjectDto>(
     filePath = filePath,
     columnNames = headers,
-    getDtoId = { it.id }
+    getDtoId = { it.id!! }
 ) {
     override fun fromDtoToCsvRow(entity: ProjectDto): String {
         val rowStringBuilder = StringBuilder()
@@ -19,7 +19,7 @@ class ProjectsCsvHandler(
         rowStringBuilder.append(",${entity.title}")
         rowStringBuilder.append(",${entity.description}")
         rowStringBuilder.append(",${entity.createdBy}")
-        rowStringBuilder.append(",${entity.taskIds.joinToString("||")}")
+        rowStringBuilder.append(",${entity.taskIds!!.joinToString("||")}")
         rowStringBuilder.append(",${entity.stateId}")
         return rowStringBuilder.toString()
     }
