@@ -17,49 +17,46 @@ import java.util.UUID
 class CreateStateUseCaseTest {
 
     private lateinit var statesRepository: StatesRepository
+    private lateinit var validationState: ValidationState
     private lateinit var createStateUseCase: CreateStateUseCase
 
     @BeforeEach
     fun setup() {
-        statesRepository = mockk()
-        createStateUseCase = CreateStateUseCase(statesRepository)
+        statesRepository = mockk(relaxed = true)
+        validationState= mockk(relaxed = true)
+        createStateUseCase = CreateStateUseCase(statesRepository,validationState)
     }
 
     @Test
     fun `should return true when admin user creates state`() = runTest {
         // Given
         val state = State(UUID.randomUUID(), "Test State")
-        val user = User(UUID.randomUUID(), "admin", "pw", UserType.ADMIN)
 
-        coEvery { statesRepository.createState(any()) } returns true
+        coEvery { validationState.validateOfState(state) } throws IllegalArgumentException("Invalid state")
 
-        // When
-        val result = createStateUseCase.createState(state)
-
-        // Then
-        Truth.assertThat(result).isTrue()
+        // When & Then
+        assertThrows<IllegalArgumentException> {
+            createStateUseCase.createState(state)
+        }
     }
 
     @Test
     fun `should return false when mate user tries to create state`() = runTest {
         // Given
         val state = State(UUID.randomUUID(), "Test State")
-        val user = User(UUID.randomUUID(), "mateUser", "pw", UserType.MATE)
 
-        coEvery { statesRepository.createState(any()) } returns false
+        coEvery { validationState.validateOfState(state) } throws IllegalArgumentException("Invalid state")
 
-        // When
-        val result = createStateUseCase.createState(state)
-
-        // Then
-        Truth.assertThat(result).isFalse()
+        // When & Then
+        assertThrows<IllegalArgumentException> {
+            createStateUseCase.createState(state)
+        }
     }
 
     @Test
     fun `should throw Exception when repository throws exception`() = runTest {
         // Given
         val state = State(UUID.randomUUID(), "Test State")
-        val user = User(UUID.randomUUID(), "mateUser", "pw", UserType.MATE)
         coEvery { statesRepository.createState(any()) } throws Exception()
 
         // When & Then

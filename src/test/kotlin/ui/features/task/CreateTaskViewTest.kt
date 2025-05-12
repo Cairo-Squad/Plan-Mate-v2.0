@@ -71,14 +71,15 @@ class CreateTaskViewTest {
 		// Given
 		val project = getProject()
 		val task = getTask(project)
-		
+		val state = State(UUID.randomUUID(), "Test State")
+
 		coEvery { getAllProjectsUseCase.getAllProjects() } returns listOf(project)
 		
 		every { inputHandler.promptForInput("Enter task title: ") } returns task.title!!
 		every { inputHandler.promptForInput("Enter task description: ") } returns task.description!!
 		every { inputHandler.promptForIntChoice(any(), any()) } returns 1
 		
-		coEvery { createStateUseCase.createState(any()) } returns true
+		coEvery { createStateUseCase.createState(any()) } returns state
 		coEvery { createTaskUseCase.createTask(any()) } returns task
 		coEvery { editProjectUseCase.editProject(any()) } just Runs
 		
@@ -131,14 +132,14 @@ class CreateTaskViewTest {
 		// Given
 		val project = getProject()
 		val task = getTask(project)
-		
+		val state = State(UUID.randomUUID(), "Test State")
 		coEvery { getAllProjectsUseCase.getAllProjects() } returns listOf(project)
 		
 		every { inputHandler.promptForInput("Enter task title: ") } returns task.title!!
 		every { inputHandler.promptForInput("Enter task description: ") } returns task.description!!
 		every { inputHandler.promptForIntChoice(any(), any()) } returns 1
 		
-		coEvery { createStateUseCase.createState(any()) } returns true
+		coEvery { createStateUseCase.createState(any()) } returns state
 		
 		val errorMessage = "Database error"
 		coEvery { createTaskUseCase.createTask(any()) } throws Exception(errorMessage)

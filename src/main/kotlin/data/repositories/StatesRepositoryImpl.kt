@@ -12,11 +12,9 @@ class StatesRepositoryImpl(
     private val remoteDataSource: RemoteDataSource
 ) : StatesRepository, BaseRepository() {
 
-    override suspend fun createState(state: State): Boolean {
+    override suspend fun createState(state: State): State {
         return wrap {
-            val x = remoteDataSource.createState(state.toStateDto())
-            println("repo"+ x)
-             x
+          remoteDataSource.createState(state.toStateDto()).toState()
         }
     }
 
