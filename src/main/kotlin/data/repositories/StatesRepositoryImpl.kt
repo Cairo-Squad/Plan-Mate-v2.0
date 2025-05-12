@@ -14,7 +14,7 @@ class StatesRepositoryImpl(
 
     override suspend fun createState(state: State): State {
         return wrap {
-          remoteDataSource.createState(state.toStateDto()).toState()
+            remoteDataSource.createState(state.toStateDto()).toState()
         }
     }
 
