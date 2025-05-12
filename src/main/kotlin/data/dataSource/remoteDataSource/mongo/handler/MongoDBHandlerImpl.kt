@@ -30,12 +30,13 @@ abstract class MongoDBHandlerImpl<DTO>(
         return database.listCollectionNames().contains(collectionName)
     }
 
-    override fun write(entity: DTO): Boolean {
+    override fun write(entity: DTO): Pair<Boolean, UUID?> {
         val collectionSizeBeforeInsert = collection.countDocuments()
         val document = convertDtoToDocument(entity)
         collection.insertOne(document)
         val collectionSizeAfterInsert = collection.countDocuments()
-        return collectionSizeAfterInsert > collectionSizeBeforeInsert
+        
+        return Pair(collectionSizeAfterInsert > collectionSizeBeforeInsert, getDtoId(entity))
     }
 
     override fun edit(entity: DTO) {
@@ -56,7 +57,7 @@ abstract class MongoDBHandlerImpl<DTO>(
     }
 
     override fun readAll(): List<DTO> {
-        return collection.find()
+        return collection.find().asSequence()
             .map { convertDocumentToDto(it) }
             .toList()
 
