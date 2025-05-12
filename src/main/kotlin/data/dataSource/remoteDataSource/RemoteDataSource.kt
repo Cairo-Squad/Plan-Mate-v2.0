@@ -40,7 +40,7 @@ interface RemoteDataSource {
 	// region States
 	suspend fun getAllStates(): List<StateDto>
 	suspend fun getStateById(stateId: UUID): StateDto
-	suspend fun createState(state: StateDto): Boolean
+	suspend fun createState(state: StateDto): StateDto
 	suspend fun editState(state: StateDto)
 	// endregion
 }

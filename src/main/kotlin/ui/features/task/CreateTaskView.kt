@@ -35,9 +35,8 @@ class CreateTaskView(
 				outputFormatter.printError("No projects available. Please create a project first.")
 				return@runBlocking
 			}
-			
-			val selectedProject = selectProject()
 			val taskState = createTaskState()
+			val selectedProject = selectProject()
 			
 			val task = Task(
 				title = title,
@@ -70,9 +69,10 @@ class CreateTaskView(
 	}
 	
 	private suspend fun createTaskState(): State {
-		val taskState = State(title =  "TODO")
+		val stateTitle= inputHandler.promptForInput("Enter state title: ")
+		val taskState = State(title = stateTitle)
 		val finalStateOfTask =createStateUseCase.createState(taskState)
-		return taskState
+		return finalStateOfTask
 	}
 	
 	private suspend fun createAndUpdateProject(task: Task, selectedProject: Project) {

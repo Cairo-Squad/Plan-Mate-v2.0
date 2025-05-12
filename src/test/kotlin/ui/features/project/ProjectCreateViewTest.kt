@@ -61,7 +61,7 @@ class ProjectCreateViewTest {
 		coEvery { getCurrentUserUseCase.getCurrentUser() } returns user
 		every { inputHandler.promptForInput("📂 Enter project title: ") } returns project.title!!
 		every { inputHandler.promptForInput("📝 Enter project description: ") } returns project.description!!
-		every { inputHandler.promptForInput("📊 Enter initial project state: ") } returns project.state!!.title
+		every { inputHandler.promptForInput("📊 Enter initial project state: ") } returns project.state!!.title!!
 		every { inputHandler.promptForYesNo("Do you want to add tasks to this project?") } returns false
 		coEvery { createProjectUseCase.createProject(any(), user) } returns true
 		
@@ -84,7 +84,7 @@ class ProjectCreateViewTest {
 		coEvery { getCurrentUserUseCase.getCurrentUser() } returns user
 		every { inputHandler.promptForInput("📂 Enter project title: ") } returns project.title!!
 		every { inputHandler.promptForInput("📝 Enter project description: ") } returns project.description!!
-		every { inputHandler.promptForInput("📊 Enter initial project state: ") } returns project.state!!.title
+		every { inputHandler.promptForInput("📊 Enter initial project state: ") } returns project.state!!.title!!
 		every { inputHandler.promptForYesNo("Do you want to add tasks to this project?") } returns false
 		coEvery { createProjectUseCase.createProject(any(), user) } throws Exception(errorMessage)
 		

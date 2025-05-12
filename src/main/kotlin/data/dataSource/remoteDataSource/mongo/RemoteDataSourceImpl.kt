@@ -107,10 +107,9 @@ class RemoteDataSourceImpl(
 		return statesHandler.readByEntityId(stateId)
 	}
 
-	override suspend fun createState(state: StateDto): Boolean {
+	override suspend fun createState(state: StateDto): StateDto {
 		if (statesHandler.write(state)) {
-			println("remote"+true)
-			return true
+			return state
 		} else{
 			throw WriteException()
 		}

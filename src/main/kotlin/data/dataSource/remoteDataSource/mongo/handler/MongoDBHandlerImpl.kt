@@ -35,10 +35,7 @@ abstract class MongoDBHandlerImpl<DTO>(
         val collectionSizeBeforeInsert = collection.countDocuments()
         val document = convertDtoToDocument(entity)
         collection.insertOne(document)
-        val x =document
-        println(x)
         val collectionSizeAfterInsert = collection.countDocuments()
-
         return collectionSizeAfterInsert > collectionSizeBeforeInsert
     }
 
