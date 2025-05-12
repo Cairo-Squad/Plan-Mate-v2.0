@@ -15,8 +15,8 @@ class StatesMongoHandlerImpl(
     getDtoId = { it.id ?: UUID.randomUUID() }
 ) {
     override fun convertDtoToDocument(entity: StateDto): Document {
-        val id = entity.id?: UUID.randomUUID()
-		entity.id = id
+        val id = entity.id ?: UUID.randomUUID()
+        entity.id = id
         return Document()
             .append(MongoConstants.ID, id.toString())
             .append(MongoConstants.STATE_TITLE, entity.title)
