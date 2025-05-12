@@ -1,7 +1,6 @@
 package ui.features.user.admin
 
 import io.mockk.coEvery
-import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import logic.usecase.user.GetAllUsersUseCase
@@ -11,19 +10,19 @@ import ui.utils.InputHandler
 import ui.utils.OutputFormatter
 import util.FakeData.getAllUsers
 
-class ListAllUsersViewTest {
+class GetAllUsersViewTest {
 
     private lateinit var inputHandler: InputHandler
     private lateinit var outputFormatter: OutputFormatter
     private lateinit var getAllUsersUseCase: GetAllUsersUseCase
-    private lateinit var listAllUsersView: ListAllUsersView
+    private lateinit var listAllUsersView: GetAllUsersView
 
     @BeforeEach
     fun setUp() {
         inputHandler = mockk(relaxed = true)
         outputFormatter = mockk(relaxed = true)
         getAllUsersUseCase = mockk(relaxed = true)
-        listAllUsersView = ListAllUsersView(inputHandler, outputFormatter, getAllUsersUseCase)
+        listAllUsersView = GetAllUsersView(inputHandler, outputFormatter, getAllUsersUseCase)
     }
 
     @Test

@@ -32,10 +32,10 @@ class CreateUserUseCaseTest {
     fun `should call repository when all inputs are valid`() = runTest {
         // Given
         val user = validUser
-        coEvery { repository.createUser(user.id, user.name, user.password, user.type) } returns true
+        coEvery { repository.createUser(validUser) } returns true
 
         // When
-        val isCreated = createUserUseCase.createUser(user.id, user.name, user.password, user.type)
+        val isCreated = createUserUseCase.createUser(validUser)
 
         // Then
         assertThat(isCreated).isTrue()
@@ -48,12 +48,12 @@ class CreateUserUseCaseTest {
         // Given
         val user = validUser
         val userWithDifferentId = validUser.copy(id = UUID.randomUUID())
-        coEvery { repository.createUser(user.id, user.name, user.password, user.type) } returns true
-        coEvery { repository.createUser(userWithDifferentId.id, user.name, user.password, user.type) } returns true
+        coEvery { repository.createUser(user) } returns true
+        coEvery { repository.createUser(userWithDifferentId) } returns true
 
         // When
-        val firstUser = createUserUseCase.createUser(user.id, user.name, user.password, user.type)
-        val secondUser = createUserUseCase.createUser(userWithDifferentId.id, user.name, user.password, user.type)
+        val firstUser = createUserUseCase.createUser(user)
+        val secondUser = createUserUseCase.createUser(userWithDifferentId)
 
         // Then
         assertThat(firstUser).isTrue()

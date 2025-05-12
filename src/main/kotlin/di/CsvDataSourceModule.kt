@@ -9,6 +9,7 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 val localDataSourceModule = module {
+
     single<FileHandler<ProjectDto>>(named("projectsHandler")) {
         ProjectsCsvHandler(
             filePath = CsvConstants.PROJECTS_CSV_FILE_PATH,
@@ -33,8 +34,9 @@ val localDataSourceModule = module {
     single<FileHandler<UserDto>>(named("userHandler")) {
         UsersCsvHandler(
             filePath = CsvConstants.USERS_CSV_FILE_PATH,
-            headers = CsvConstants.USERS_CSV_FILE_HEADERS
-        )
+            headers = CsvConstants.USERS_CSV_FILE_HEADERS,
+
+            )
     }
 
     single<FileHandler<LogDto>>(named("logHandler")) {
@@ -51,6 +53,7 @@ val localDataSourceModule = module {
             statesCsvHandler = get(named("statesHandler")),
             tasksCsvHandler = get(named("tasksHandler")),
             usersCsvHandler = get(named("userHandler")),
+            passwordEncryptor = get()
         )
     }
 }

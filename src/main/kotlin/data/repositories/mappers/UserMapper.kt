@@ -2,6 +2,7 @@ package data.repositories.mappers
 
 import data.dto.UserDto
 import logic.model.User
+import java.util.UUID
 
 fun UserDto.toUser(): User {
     return User(
@@ -15,8 +16,8 @@ fun UserDto.toUser(): User {
 fun User.toUserDto(): UserDto {
     return UserDto(
         id = this.id,
-        name = this.name,
-        password = this.password,
-        type = this.type
+        name = this.name?:"",
+        password = this.password!!,
+        type = this.type!!
     )
 }
