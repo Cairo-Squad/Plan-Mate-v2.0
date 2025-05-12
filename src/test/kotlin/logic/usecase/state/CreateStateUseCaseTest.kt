@@ -1,13 +1,9 @@
 package logic.usecase.state
 
-import com.google.common.truth.Truth
-import data.dto.UserType
 import io.mockk.coEvery
-import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import logic.model.State
-import logic.model.User
 import logic.repositories.StatesRepository
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -32,7 +28,7 @@ class CreateStateUseCaseTest {
         // Given
         val state = State(UUID.randomUUID(), "Test State")
 
-        coEvery { validationState.validateOfState(state) } throws IllegalArgumentException("Invalid state")
+        coEvery { validationState.validateState(state) } throws IllegalArgumentException("Invalid state")
 
         // When & Then
         assertThrows<IllegalArgumentException> {
@@ -45,7 +41,7 @@ class CreateStateUseCaseTest {
         // Given
         val state = State(UUID.randomUUID(), "Test State")
 
-        coEvery { validationState.validateOfState(state) } throws IllegalArgumentException("Invalid state")
+        coEvery { validationState.validateState(state) } throws IllegalArgumentException("Invalid state")
 
         // When & Then
         assertThrows<IllegalArgumentException> {

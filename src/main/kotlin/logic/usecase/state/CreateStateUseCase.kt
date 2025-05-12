@@ -1,9 +1,6 @@
 package logic.usecase.state
 
-import data.repositories.mappers.toStateDto
-import data.repositories.mappers.toUserDto
 import logic.model.State
-import logic.model.User
 import logic.repositories.StatesRepository
 
 class CreateStateUseCase(
@@ -11,7 +8,7 @@ class CreateStateUseCase(
     private val validationState: ValidationState
 ) {
     suspend fun createState(state: State): State {
-        validationState.validateOfState(state)
+        validationState.validateState(state)
         return stateRepository.createState(state)
     }
 }
