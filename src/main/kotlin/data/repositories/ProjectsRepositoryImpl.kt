@@ -17,7 +17,7 @@ class ProjectsRepositoryImpl(
     private val remoteDataSource: RemoteDataSource
 ) : ProjectsRepository, BaseRepository() {
 
-    override suspend fun createProject(project: Project, user: User): UUID? {
+    override suspend fun createProject(project: Project, user: User): Boolean {
 	    return wrap { remoteDataSource.createProject(project.toProjectDto())}
     }
 
