@@ -12,11 +12,12 @@ class TasksMongoHandlerImpl(
 ) : MongoDBHandlerImpl<TaskDto>(
 	database = database,
 	collectionName = "tasks",
-	getDtoId = { it.id }
+	getDtoId = { it.id?: UUID.randomUUID() }
 ) {
 	override fun convertDtoToDocument(entity: TaskDto): Document {
+		val id = getDtoId(entity)
 		return Document()
-			.append(MongoConstants.TASK_ID, entity.id.toString())
+			.append(MongoConstants.TASK_ID, id.toString())
 			.append(MongoConstants.TASK_TITLE, entity.title)
 			.append(MongoConstants.TASK_DESCRIPTION, entity.description)
 			.append(MongoConstants.TASK_STATE_ID, entity.stateId.toString())
