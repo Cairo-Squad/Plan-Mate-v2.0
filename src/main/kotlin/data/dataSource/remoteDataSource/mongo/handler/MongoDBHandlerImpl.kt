@@ -30,13 +30,13 @@ abstract class MongoDBHandlerImpl<DTO>(
         return database.listCollectionNames().contains(collectionName)
     }
 
-    override fun write(entity: DTO): Pair<Boolean, UUID?> {
+    override fun write(entity: DTO): Boolean {
         val collectionSizeBeforeInsert = collection.countDocuments()
         val document = convertDtoToDocument(entity)
         collection.insertOne(document)
         val collectionSizeAfterInsert = collection.countDocuments()
         
-        return Pair(collectionSizeAfterInsert > collectionSizeBeforeInsert, getDtoId(entity))
+        return collectionSizeAfterInsert > collectionSizeBeforeInsert
     }
 
     override fun edit(entity: DTO) {
