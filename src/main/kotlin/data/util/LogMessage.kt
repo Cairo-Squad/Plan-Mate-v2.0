@@ -1,6 +1,6 @@
 package data.util
 
-import data.dto.UserAction
+import logic.model.UserAction
 
 class LogMessage {
 

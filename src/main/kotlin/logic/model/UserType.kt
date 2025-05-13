@@ -1,4 +1,4 @@
-package data.dto
+package logic.model
 
 enum class UserType {
     ADMIN,

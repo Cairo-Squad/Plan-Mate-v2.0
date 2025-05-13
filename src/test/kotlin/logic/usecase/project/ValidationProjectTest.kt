@@ -1,7 +1,7 @@
 package logic.usecase.project
 
 import data.customException.PlanMateException
-import data.dto.UserType
+import logic.model.UserType
 import logic.model.Project
 import logic.model.User
 import org.junit.jupiter.api.BeforeEach

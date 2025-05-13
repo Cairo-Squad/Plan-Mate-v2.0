@@ -1,6 +1,6 @@
 package ui.features.project
 
-import data.dto.UserType
+import logic.model.UserType
 import io.mockk.*
 import kotlinx.coroutines.test.runTest
 import logic.model.Project

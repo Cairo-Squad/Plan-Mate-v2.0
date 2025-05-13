@@ -4,9 +4,9 @@ import com.mongodb.client.MongoDatabase
 import data.dataSource.remoteDataSource.mongo.handler.MongoDBHandlerImpl
 import data.dataSource.util.MongoConstants
 import data.dataSource.util.UserActionConstants
-import data.dto.EntityType
+import logic.model.EntityType
 import data.dto.LogDto
-import data.dto.UserAction
+import logic.model.UserAction
 import org.bson.Document
 import java.io.IOException
 import java.time.LocalDateTime

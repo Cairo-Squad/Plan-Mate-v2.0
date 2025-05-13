@@ -1,7 +1,7 @@
 package logic.usecase.log
 
-import data.dto.EntityType
-import data.dto.UserAction
+import logic.model.EntityType
+import logic.model.UserAction
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk

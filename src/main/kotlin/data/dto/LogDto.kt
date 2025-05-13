@@ -1,5 +1,7 @@
 package data.dto
 
+import logic.model.EntityType
+import logic.model.UserAction
 import java.time.LocalDateTime
 import java.util.UUID
 

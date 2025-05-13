@@ -1,6 +1,6 @@
 package ui.features.user
 
-import data.dto.UserType
+import logic.model.UserType
 import kotlinx.coroutines.runBlocking
 import logic.usecase.user.GetCurrentUserUseCase
 import ui.features.user.admin.AdminManagementView

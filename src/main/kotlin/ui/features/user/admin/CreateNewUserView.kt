@@ -1,12 +1,11 @@
 package ui.features.user.admin
 
-import data.dto.UserType
+import logic.model.UserType
 import kotlinx.coroutines.runBlocking
 import logic.model.User
 import logic.usecase.user.CreateUserUseCase
 import ui.utils.InputHandler
 import ui.utils.OutputFormatter
-import java.util.UUID
 
 class CreateNewUserView(
     private val inputHandler: InputHandler,

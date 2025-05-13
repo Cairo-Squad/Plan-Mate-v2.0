@@ -45,7 +45,7 @@ abstract class CsvFileHandler<DTO>(
     }
 
 
-    override fun edit(entity: DTO, ayhaga: Boolean): Boolean {
+    override fun edit(entity: DTO): Boolean {
         val entityId = getDtoId(entity)
         val allEntities = readAll()
 
@@ -68,7 +68,7 @@ abstract class CsvFileHandler<DTO>(
             .toList()
     }
 
-    override fun delete(entity: DTO, ayhaga: Boolean): Boolean {
+    override fun delete(entity: DTO): Boolean {
         val allEntities = readAll()
         if (allEntities.none { getDtoId(it) == getDtoId(entity) }) {
             return false
@@ -77,28 +77,4 @@ abstract class CsvFileHandler<DTO>(
         writeAll(updatedEntities)
         return true
     }
-
-    override fun delete(entity: DTO) {
-        val allEntities = readAll()
-        if (allEntities.none { getDtoId(it) == getDtoId(entity) }) {
-            throw PlanMateException.NetworkException.IOException()
-        }
-        val updatedEntities = allEntities.filter { getDtoId(it) != getDtoId(entity) }
-        writeAll(updatedEntities)
-    }
-
-    override fun edit(entity: DTO) {
-        val entityId = getDtoId(entity)
-        val allEntities = readAll()
-
-        val index = allEntities.indexOfFirst { getDtoId(it) == entityId }
-        if (index == -1) throw PlanMateException.NetworkException.IOException()
-
-        val updatedEntities = allEntities.toMutableList().apply {
-            this[index] = entity
-        }
-        writeAll(updatedEntities)
-    }
-
-
 }

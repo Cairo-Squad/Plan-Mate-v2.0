@@ -1,6 +1,6 @@
 package util
 
-import data.dto.UserType
+import logic.model.UserType
 import logic.model.Project
 import logic.model.State
 import logic.model.User

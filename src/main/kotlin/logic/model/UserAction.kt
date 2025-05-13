@@ -1,4 +1,4 @@
-package data.dto
+package logic.model
 
 import java.util.*
 

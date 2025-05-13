@@ -1,5 +1,6 @@
 package data.dto
 
+import logic.model.UserType
 import java.util.UUID
 
 data class UserDto(
