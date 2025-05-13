@@ -37,17 +37,13 @@ class AdminManagementViewTest {
         listAllUsersView = mockk()
         taskManagementView = mockk()
 
-        // Mock printHeader and printMenu to avoid actual printing during tests
         every { outputFormatter.printHeader(any()) } returns Unit
         every { outputFormatter.printMenu(any()) } returns Unit
 
-        // Mock user input
         every { inputHandler.promptForIntChoice(any(), any()) } returns 1
 
-        // Mock the showProjectMenu method
         every { projectManagementView.showProjectMenu() } returns Unit
 
-        // Instantiate the AdminManagementView
         adminManagementView = AdminManagementView(
             projectManagementView, auditMenuView, inputHandler, outputFormatter,
             createNewUserView, deleteUserView, editUserView, listAllUsersView, taskManagementView
@@ -56,10 +52,10 @@ class AdminManagementViewTest {
 
     @Test
     fun `should show admin menu and handle user input`() {
-        // When: showAdminMenu is called
+        // When
         adminManagementView.showAdminMenu()
 
-        // Then: Verify the interactions
+        // Then
         verify { projectManagementView.showProjectMenu() }
         verify(exactly = 0) { taskManagementView.showTaskMenu() }
     }
