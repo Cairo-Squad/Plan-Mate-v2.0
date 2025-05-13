@@ -1,0 +1,45 @@
+package logic.usecase.log
+
+import data.dto.EntityType
+import data.dto.UserAction
+import io.mockk.coVerify
+import io.mockk.mockk
+import kotlinx.coroutines.test.runTest
+import logic.model.Log
+import logic.repositories.TaskLogsRepository
+import org.junit.jupiter.api.BeforeEach
+import java.time.LocalDateTime
+import java.util.*
+import kotlin.test.Test
+
+class AddTaskLogUseCaseTest {
+
+    private lateinit var logsRepository: TaskLogsRepository
+    private lateinit var useCase: AddTaskLogUseCase
+
+    @BeforeEach
+    fun setup() {
+        logsRepository = mockk(relaxed = true)
+        useCase = AddTaskLogUseCase(logsRepository)
+    }
+
+    @Test
+    fun `addLog should call logsRepository addLog with correct log`() = runTest {
+        // Given
+        val log = Log(
+            id = UUID.randomUUID(),
+            entityId = UUID.randomUUID(),
+            entityTitle = "Generic Entity",
+            entityType = EntityType.TASK,
+            dateTime = LocalDateTime.now(),
+            userId = UUID.randomUUID(),
+            userAction = UserAction.EditTask(UUID.randomUUID(), "Updated status")
+        )
+
+        // When
+        useCase.addLog(log)
+
+        // Then
+        coVerify { logsRepository.addLog(log) }
+    }
+}
