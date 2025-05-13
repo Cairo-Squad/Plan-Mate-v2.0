@@ -5,11 +5,10 @@ import io.mockk.*
 import kotlinx.coroutines.test.runTest
 import logic.model.Project
 import logic.model.State
-import logic.model.Task
 import logic.model.User
 import logic.usecase.project.CreateProjectUseCase
 import logic.usecase.state.CreateStateUseCase
-import logic.usecase.task.CreateTaskUseCase
+import logic.usecase.state.GetAllStatesUseCase
 import logic.usecase.user.GetCurrentUserUseCase
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -25,6 +24,7 @@ class ProjectCreateViewTest {
 	private lateinit var createStateUseCase: CreateStateUseCase
 	private lateinit var getCurrentUserUseCase: GetCurrentUserUseCase
 	private lateinit var projectCreateView: ProjectCreateView
+	private lateinit var getAllStatesUseCase: GetAllStatesUseCase
 
 	@BeforeEach
 	fun setup() {
@@ -33,13 +33,15 @@ class ProjectCreateViewTest {
 		outputFormatter = mockk(relaxed = true)
 		createStateUseCase = mockk(relaxed = true)
 		getCurrentUserUseCase = mockk(relaxed = true)
+		
 
 		projectCreateView = ProjectCreateView(
 			createProjectUseCase,
 			inputHandler,
 			outputFormatter,
 			createStateUseCase,
-			getCurrentUserUseCase
+			getCurrentUserUseCase,
+			getAllStatesUseCase = getAllStatesUseCase
 		)
 	}
 

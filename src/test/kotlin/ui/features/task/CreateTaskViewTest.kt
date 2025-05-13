@@ -9,7 +9,9 @@ import logic.model.Task
 import logic.usecase.project.EditProjectUseCase
 import logic.usecase.project.GetAllProjectsUseCase
 import logic.usecase.state.CreateStateUseCase
+import logic.usecase.state.GetAllStatesUseCase
 import logic.usecase.task.CreateTaskUseCase
+import logic.usecase.task.GetAllTasksUseCase
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import ui.utils.InputHandler
@@ -25,6 +27,8 @@ class CreateTaskViewTest {
 	private lateinit var getAllProjectsUseCase: GetAllProjectsUseCase
 	private lateinit var createStateUseCase: CreateStateUseCase
 	private lateinit var createTaskView: CreateTaskView
+	private lateinit var getAllStatesUseCase: GetAllStatesUseCase
+	private lateinit var getAllTasksUseCase: GetAllTasksUseCase
 	
 	@BeforeEach
 	fun setup() {
@@ -41,7 +45,9 @@ class CreateTaskViewTest {
 			outputFormatter,
 			editProjectUseCase,
 			getAllProjectsUseCase,
-			createStateUseCase
+			createStateUseCase,
+			getAllStatesUseCase,
+			getAllTasksUseCase
 		)
 	}
 	
@@ -79,8 +85,8 @@ class CreateTaskViewTest {
 		every { inputHandler.promptForInput("Enter task description: ") } returns task.description!!
 		every { inputHandler.promptForIntChoice(any(), any()) } returns 1
 		
-		coEvery { createStateUseCase.createState(any()) } returns state
-		coEvery { createTaskUseCase.createTask(any()) } returns task
+		coEvery { createStateUseCase.createState(any()) } returns true
+		coEvery { createTaskUseCase.createTask(any()) } returns true
 		coEvery { editProjectUseCase.editProject(any()) } just Runs
 		
 		// When
@@ -139,7 +145,7 @@ class CreateTaskViewTest {
 		every { inputHandler.promptForInput("Enter task description: ") } returns task.description!!
 		every { inputHandler.promptForIntChoice(any(), any()) } returns 1
 		
-		coEvery { createStateUseCase.createState(any()) } returns state
+		coEvery { createStateUseCase.createState(any()) } returns true
 		
 		val errorMessage = "Database error"
 		coEvery { createTaskUseCase.createTask(any()) } throws Exception(errorMessage)
