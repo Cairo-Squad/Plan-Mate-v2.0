@@ -7,7 +7,7 @@ class CreateTaskUseCase(
     private val tasksRepository: TasksRepository,
     private val validationTask : ValidationTask
 ) {
-    suspend fun createTask(task: Task):Task {
+    suspend fun createTask(task: Task):Boolean {
         validationTask.validateCreateTask(task)
         return tasksRepository.createTask(task)
     }

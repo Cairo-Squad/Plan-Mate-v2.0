@@ -24,10 +24,11 @@ interface RemoteDataSource {
 	
 	// region Tasks
 	suspend fun getTasksByProjectId(projectId: UUID): List<TaskDto>
-	suspend fun createTask(task: TaskDto):TaskDto
+	suspend fun createTask(task: TaskDto):Boolean
 	suspend fun editTask(task: TaskDto)
 	suspend fun deleteTask(task: TaskDto)
 	suspend fun getTaskById(taskID: UUID): TaskDto
+	suspend fun getAllTasks():List<TaskDto>
 	// endregion
 	
 	// region Logs
@@ -39,7 +40,7 @@ interface RemoteDataSource {
 	// region States
 	suspend fun getAllStates(): List<StateDto>
 	suspend fun getStateById(stateId: UUID): StateDto
-	suspend fun createState(state: StateDto): StateDto
+	suspend fun createState(state: StateDto): Boolean
 	suspend fun editState(state: StateDto)
 	// endregion
 }
