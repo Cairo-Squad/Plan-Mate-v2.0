@@ -16,9 +16,17 @@ val mongoRemoteDataSourceModule = module {
         )
     }
 
-    single<MongoDBHandler<LogDto>>(named("logsHandler")) {
+    single<MongoDBHandler<LogDto>>(named("taskLogsHandler")) {
         LogsMongoHandlerImpl(
-            database = get()
+            database = get(),
+            collectionName = "taskLogs"
+        )
+    }
+
+    single<MongoDBHandler<LogDto>>(named("projectLogsHandler")) {
+        LogsMongoHandlerImpl(
+            database = get(),
+            collectionName = "projectLogs"
         )
     }
 
@@ -43,12 +51,13 @@ val mongoRemoteDataSourceModule = module {
     // DataSource implementation
     single<RemoteDataSource> {
         RemoteDataSourceImpl(
-            get(named("logsHandler")),
+            get(named("taskLogsHandler")),
+            get(named("projectLogsHandler")),
             get(named("projectsHandler")),
             get(named("statesHandler")),
             get(named("tasksHandler")),
             get(named("usersHandler")),
-            get()
+            get(),
         )
     }
 }

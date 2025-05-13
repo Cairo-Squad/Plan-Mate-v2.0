@@ -15,10 +15,11 @@ import kotlin.text.split
 import kotlin.text.startsWith
 
 class LogsMongoHandlerImpl(
-    database: MongoDatabase
+    database: MongoDatabase,
+    collectionName: String
 ) : MongoDBHandlerImpl<LogDto>(
     database = database,
-    collectionName = "logs",
+    collectionName = collectionName,
     getDtoId = { it.id }
 ) {
     override fun convertDtoToDocument(entity: LogDto): Document {

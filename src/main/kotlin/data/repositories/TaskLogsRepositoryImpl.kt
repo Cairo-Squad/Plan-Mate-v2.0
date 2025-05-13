@@ -4,19 +4,15 @@ import data.dataSource.remoteDataSource.RemoteDataSource
 import data.repositories.mappers.toLog
 import data.repositories.mappers.toLogDto
 import logic.model.Log
-import logic.repositories.LogsRepository
+import logic.repositories.TaskLogsRepository
 import java.util.*
 
-class LogsRepositoryImpl(
+class TaskLogsRepositoryImpl(
     private val remoteDataSource: RemoteDataSource,
-) : LogsRepository, BaseRepository() {
-
-    override suspend fun getProjectLogs(projectId: UUID): List<Log> {
-        return wrap { remoteDataSource.getProjectLogs(projectId).map { it.toLog() } }
-    }
+) : TaskLogsRepository, BaseRepository() {
 
     override suspend fun addLog(log: Log) {
-        wrap { remoteDataSource.recordLog(log.toLogDto()) }
+        wrap { remoteDataSource.recordTaskLog(log.toLogDto()) }
     }
 
     override suspend fun getTaskLogs(taskId: UUID): List<Log> {
