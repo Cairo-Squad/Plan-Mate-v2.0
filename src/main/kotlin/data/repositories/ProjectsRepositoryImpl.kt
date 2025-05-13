@@ -5,7 +5,7 @@ import data.repositories.mappers.toProject
 import data.repositories.mappers.toProjectDto
 import data.repositories.mappers.toState
 import data.repositories.mappers.toTask
-import logic.exception.NotFoundException
+import data.customException.PlanMateException
 import logic.model.Project
 import logic.model.State
 import logic.model.Task
@@ -30,7 +30,7 @@ class ProjectsRepositoryImpl(
     override suspend fun deleteProject(projectId: UUID) {
         return wrap {
             val projectsDao = remoteDataSource.getAllProjects()
-                .find { it.id == projectId } ?: throw NotFoundException()
+                .find { it.id == projectId } ?: throw PlanMateException.NetworkException.IOException()
             remoteDataSource.deleteProjectById(projectsDao)
         }
     }

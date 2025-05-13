@@ -2,7 +2,6 @@ package ui.features.user.admin
 
 import io.mockk.*
 import kotlinx.coroutines.test.runTest
-import logic.exception.EntityNotChangedException
 import logic.model.User
 import logic.usecase.user.EditUserUseCase
 import logic.usecase.user.GetAllUsersUseCase

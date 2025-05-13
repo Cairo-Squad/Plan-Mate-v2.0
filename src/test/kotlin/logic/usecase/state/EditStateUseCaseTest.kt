@@ -2,7 +2,7 @@ package logic.usecase.state
 
 import io.mockk.*
 import kotlinx.coroutines.test.runTest
-import logic.exception.NotFoundException
+import data.customException.PlanMateException
 import logic.model.State
 import logic.repositories.StatesRepository
 import org.junit.jupiter.api.BeforeEach
@@ -39,10 +39,10 @@ class EditStateUseCaseTest {
     fun `editState should return DtoNotFoundException, when state is not found`() = runTest {
         // Given
         val updatedState = State(id = UUID(2, 2), title = "In Progress")
-        coEvery { repository.editState(updatedState) } throws NotFoundException()
+        coEvery { repository.editState(updatedState) } throws PlanMateException.NetworkException.DataNotFoundException()
 
         // When & Then
-        assertThrows<NotFoundException> {
+        assertThrows<PlanMateException.NetworkException.DataNotFoundException> {
             editStateUseCase.editState(updatedState)
         }
     }

@@ -1,10 +1,10 @@
 package data.repositories
 
+import data.customException.PlanMateException
 import data.dataSource.remoteDataSource.RemoteDataSource
 import data.hashing.PasswordEncryptor
 import data.repositories.mappers.toUser
 import data.repositories.mappers.toUserDto
-import logic.exception.*
 import logic.model.User
 import logic.repositories.AuthenticationRepository
 import java.util.*
@@ -41,7 +41,7 @@ class AuthenticationRepositoryImpl(
         return wrap {
             val hashedPassword = passwordEncryptor.hashPassword(password)
             if (!remoteDataSource.loginUser(name, hashedPassword)) {
-                throw InvalidUserCredentialsException()
+                throw PlanMateException.ValidationException.InvalidCredentialsException()
             }
             true
         }

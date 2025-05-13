@@ -2,7 +2,7 @@ package data.repositories
 
 import com.mongodb.MongoException
 import com.mongodb.MongoWriteException
-import logic.exception.PlanMateException
+import data.customException.PlanMateException
 import java.io.IOException
 
 abstract class BaseRepository {

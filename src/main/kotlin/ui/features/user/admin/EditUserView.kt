@@ -1,7 +1,6 @@
 package ui.features.user.admin
 
 import kotlinx.coroutines.runBlocking
-import logic.exception.EntityNotChangedException
 import logic.model.User
 import logic.usecase.user.EditUserUseCase
 import logic.usecase.user.GetAllUsersUseCase

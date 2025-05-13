@@ -1,10 +1,10 @@
 package logic.usecase.task
 
-import logic.exception.TitleException
+import data.customException.PlanMateException
 import logic.model.Task
 
 class ValidationTask {
 	fun validateCreateTask(task:Task){
-		if (task.title?.isBlank() == true) throw TitleException()
+		if (task.title?.isBlank() == true) throw PlanMateException.ValidationException.TitleException()
 	}
 }

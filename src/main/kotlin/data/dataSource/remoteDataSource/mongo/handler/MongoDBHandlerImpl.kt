@@ -4,7 +4,7 @@ import com.mongodb.client.MongoCollection
 import com.mongodb.client.MongoDatabase
 import com.mongodb.client.model.Filters
 import com.mongodb.client.result.InsertOneResult
-import logic.exception.NotFoundException
+import data.customException.PlanMateException
 import org.bson.Document
 import java.util.*
 
@@ -57,7 +57,7 @@ abstract class MongoDBHandlerImpl<DTO>(
 
     override fun readByEntityId(id: UUID): DTO {
         val document = collection.find(Filters.eq("_id", id.toString())).first()
-            ?: throw NotFoundException()
+            ?: throw PlanMateException.NetworkException.DataNotFoundException()
         return convertDocumentToDto(document)
     }
 }
