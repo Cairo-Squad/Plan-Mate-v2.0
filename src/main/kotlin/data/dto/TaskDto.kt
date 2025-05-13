@@ -3,7 +3,7 @@ package data.dto
 import java.util.UUID
 
 data class TaskDto(
-    val id: UUID?,
+    var id: UUID?,
     val title: String,
     val description: String,
     val stateId: UUID,
