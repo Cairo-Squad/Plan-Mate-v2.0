@@ -1,6 +1,8 @@
 package ui.features.log
 
 import kotlinx.coroutines.runBlocking
+import logic.model.Log
+import logic.model.Project
 import logic.usecase.log.GetProjectLogsUseCase
 import logic.usecase.project.GetAllProjectsUseCase
 import ui.utils.InputHandler
@@ -13,6 +15,20 @@ class ProjectLogView(
     private val outputFormatter: OutputFormatter
 ) {
     fun viewProjectLogs() = runBlocking {
+        displayHeader()
+
+        val projects = fetchProjects() ?: return@runBlocking
+
+        val selectedProject = selectProject(projects) ?: return@runBlocking
+
+        val logs = fetchLogs(selectedProject) ?: return@runBlocking
+
+        displayLogs(selectedProject, logs)
+
+        inputHandler.waitForEnter()
+    }
+
+    private fun displayHeader() {
         outputFormatter.printHeader(
             """
             ╔════════════════════════════════╗
@@ -20,12 +36,14 @@ class ProjectLogView(
             ╚════════════════════════════════╝
             """.trimIndent()
         )
+    }
 
+    suspend private fun fetchProjects(): List<Project>? {
         val projects = getAllProjectsUseCase.getAllProjects()
 
         if (projects.isEmpty()) {
             outputFormatter.printError("❌ No projects available for log viewing!")
-	        return@runBlocking
+            return null
         }
 
         outputFormatter.printInfo("📂 Available Projects:")
@@ -33,28 +51,39 @@ class ProjectLogView(
             outputFormatter.printInfo("📌 ${index + 1}. ${project.title} | 🆔 ID: ${project.id}")
         }
 
-        val projectIndex = inputHandler.promptForIntChoice("🔹 Select a project to view logs:", 1..projects.size) - 1
-        val selectedProject = projects[projectIndex]
+        return projects
+    }
 
-        val logs = getProjectLogsUseCase.getProjectLogs(selectedProject.id!!)
+
+    private fun selectProject(projects: List<Project>): Project? {
+        val projectIndex = inputHandler.promptForIntChoice("🔹 Select a project to view logs:", 1..projects.size) - 1
+        return projects.getOrNull(projectIndex)
+    }
+
+    suspend private fun fetchLogs(project: Project): List<Log>? {
+        val logs = getProjectLogsUseCase.getProjectLogs(project.id!!)
 
         if (logs.isEmpty()) {
-            outputFormatter.printWarning("⚠️ No logs found for project '${selectedProject.title}'.")
-	        return@runBlocking
+            outputFormatter.printWarning("⚠️ No logs found for project '${project.title}'.")
+            return null
         }
 
-        outputFormatter.printHeader("📜 Logs for Project: '${selectedProject.title}'")
+        return logs
+    }
+
+    private fun displayLogs(project: Project, logs: List<Log>) {
+        outputFormatter.printHeader("📜 Logs for Project: '${project.title}'")
         logs.forEach { log ->
-            outputFormatter.printInfo("""
+            outputFormatter.printInfo(
+                """
                 🔹 Log ID: ${log.id}
                 📌 Entity: ${log.entityTitle} (${log.entityType})
                 ✏️ Action: ${log.userAction}
                 👤 User ID: ${log.userId}
                 ⏳ Timestamp: ${log.dateTime}
-            """.trimIndent())
+            """.trimIndent()
+            )
         }
         println("-------------------------------------------------------------------------------")
-
-        inputHandler.waitForEnter()
     }
 }

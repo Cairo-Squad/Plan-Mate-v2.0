@@ -6,7 +6,7 @@ import data.customException.PlanMateException
 import logic.model.Project
 import logic.model.State
 import logic.repositories.ProjectsRepository
-import logic.usecase.log.AddLogUseCase
+import logic.usecase.log.AddProjectLogUseCase
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -17,14 +17,14 @@ class EditProjectTest {
 
     private val projectsRepository = mockk<ProjectsRepository>(relaxed = true)
     private lateinit var editProjectDescription: EditProjectUseCase
-    private lateinit var addLogUseCase: AddLogUseCase
+    private lateinit var addProjectLogUseCase: AddProjectLogUseCase
     private lateinit var validationProject: ValidationProject
 
     @BeforeEach
     fun setup() {
         validationProject = mockk(relaxed = true)
-        addLogUseCase=mockk(relaxed = true)
-        editProjectDescription = EditProjectUseCase(projectsRepository,addLogUseCase, validationProject)
+        addProjectLogUseCase = mockk(relaxed = true)
+        editProjectDescription = EditProjectUseCase(projectsRepository, addProjectLogUseCase, validationProject)
     }
 
     @Test

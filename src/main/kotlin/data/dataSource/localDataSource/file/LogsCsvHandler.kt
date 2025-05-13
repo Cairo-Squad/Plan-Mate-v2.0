@@ -16,7 +16,7 @@ class LogsCsvHandler(
 ) : CsvFileHandler<LogDto>(
     filePath = filePath,
     columnNames = headers,
-    getDtoId = { it.id }
+    getDtoId = { it.id ?: UUID.randomUUID() }
 ) {
 
     override fun fromDtoToCsvRow(entity: LogDto): String {
@@ -24,10 +24,10 @@ class LogsCsvHandler(
             entity.id,
             entity.entityId,
             entity.entityTitle,
-            entity.entityType.name,
+            entity.entityType?.name,
             entity.dateTime,
             entity.userId,
-            entity.userAction.parseToString()
+            entity.userAction?.parseToString()
         ).joinToString(",")
     }
 
