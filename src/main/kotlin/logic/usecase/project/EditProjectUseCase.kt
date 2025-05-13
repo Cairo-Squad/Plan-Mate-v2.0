@@ -5,13 +5,12 @@ import data.dto.UserAction
 import logic.model.Log
 import logic.model.Project
 import logic.repositories.ProjectsRepository
-import logic.usecase.log.AddLogUseCase
+import logic.usecase.log.AddProjectLogUseCase
 import java.time.LocalDateTime
-import java.util.UUID
 
 class EditProjectUseCase(
     private val projectsRepository: ProjectsRepository,
-    private val addLogUseCase: AddLogUseCase,
+    private val addProjectLogUseCase: AddProjectLogUseCase,
     private val validationProject: ValidationProject
 ) {
     suspend fun editProject(newProject: Project) {
@@ -21,7 +20,6 @@ class EditProjectUseCase(
         val projectInfo = projectsRepository.getProjectById(newProject.id!!)
 
         val log = Log(
-            id = UUID.randomUUID(),
             entityId = projectInfo.id!!,
             entityTitle = projectInfo.title?:"",
             entityType = EntityType.PROJECT,
@@ -30,7 +28,7 @@ class EditProjectUseCase(
             userAction = UserAction.EditProject(newProject.id, "Updated project details")
         )
 
-        addLogUseCase.addLog(log)
+        addProjectLogUseCase.addProjectLog(log)
 
     }
 }

@@ -1,13 +1,13 @@
 package logic.usecase.log
 
 import logic.model.Log
-import logic.repositories.LogsRepository
+import logic.repositories.TaskLogsRepository
 import java.util.UUID
 
 class GetTaskLogsUseCase(
-    private val logsRepository: LogsRepository
+    private val taskLogsRepository: TaskLogsRepository
 ) {
     suspend fun execute(taskId: UUID): List<Log> {
-        return logsRepository.getTaskLogs(taskId)
+        return taskLogsRepository.getTaskLogs(taskId)
     }
 }

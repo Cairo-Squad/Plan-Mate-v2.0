@@ -8,7 +8,8 @@ import logic.exception.WriteException
 import java.util.*
 
 class RemoteDataSourceImpl(
-    private val logsHandler: MongoDBHandler<LogDto>,
+    private val taskLogsHandler: MongoDBHandler<LogDto>,
+    private val projectLogsHandler: MongoDBHandler<LogDto>,
     private val projectsHandler: MongoDBHandler<ProjectDto>,
     private val statesHandler: MongoDBHandler<StateDto>,
     private val tasksHandler: MongoDBHandler<TaskDto>,
@@ -118,17 +119,21 @@ class RemoteDataSourceImpl(
         statesHandler.edit(state)
     }
 
-    override suspend fun recordLog(log: LogDto) {
-        logsHandler.write(log)
+    override suspend fun addTaskLog(log: LogDto) {
+        taskLogsHandler.write(log)
+    }
+
+    override suspend fun addProjectLog(log: LogDto) {
+        projectLogsHandler.write(log)
     }
 
     override suspend fun getTaskLogs(taskId: UUID): List<LogDto> {
-        return logsHandler.readAll()
+        return taskLogsHandler.readAll()
             .filter { it.entityType == EntityType.TASK && it.entityId == taskId }
     }
 
     override suspend fun getProjectLogs(projectId: UUID): List<LogDto> {
-        return logsHandler.readAll()
+        return projectLogsHandler.readAll()
             .filter { it.entityType == EntityType.PROJECT && it.entityId == projectId }
     }
 }

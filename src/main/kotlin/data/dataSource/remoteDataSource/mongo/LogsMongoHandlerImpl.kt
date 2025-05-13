@@ -15,21 +15,22 @@ import kotlin.text.split
 import kotlin.text.startsWith
 
 class LogsMongoHandlerImpl(
-    database: MongoDatabase
+    database: MongoDatabase,
+    collectionName: String
 ) : MongoDBHandlerImpl<LogDto>(
     database = database,
-    collectionName = "logs",
-    getDtoId = { it.id }
+    collectionName = collectionName,
+    getDtoId = { it.id ?: UUID.randomUUID() }
 ) {
     override fun convertDtoToDocument(entity: LogDto): Document {
         return Document()
-            .append(MongoConstants.ID, entity.id.toString())
+            .append(MongoConstants.ID, getDtoId(entity).toString())
             .append(MongoConstants.LOG_ENTITY_ID, entity.entityId.toString())
             .append(MongoConstants.LOG_ENTITY_TITLE, entity.entityTitle)
-            .append(MongoConstants.LOG_ENTITY_TYPE, entity.entityType.name)
+            .append(MongoConstants.LOG_ENTITY_TYPE, entity.entityType?.name)
             .append(MongoConstants.LOG_DATE_TIME, entity.dateTime.toString())
             .append(MongoConstants.LOG_USER_ID, entity.userId.toString())
-            .append(MongoConstants.LOG_USER_ACTION, serializeUserAction(entity.userAction))
+            .append(MongoConstants.LOG_USER_ACTION, serializeUserAction(entity.userAction!!)) // TODO: Remove this assertion
     }
 
     override fun convertDocumentToDto(document: Document): LogDto {
