@@ -1,9 +1,7 @@
 package logic.usecase.project
 
+import data.customException.PlanMateException
 import data.dto.UserType
-import logic.exception.EmptyNameException
-import logic.exception.EmptyTitleException
-import logic.exception.InvalidUserException
 import logic.model.Project
 import logic.model.User
 import org.junit.jupiter.api.BeforeEach
@@ -55,7 +53,7 @@ class ValidationProjectTest {
         )
 
         // When & Then
-        assertThrows<InvalidUserException> {
+        assertThrows<PlanMateException.ValidationException.InvalidUserTypeException> {
             validationProject.validateCreateProject(project, mateUser)
         }
     }
@@ -70,7 +68,7 @@ class ValidationProjectTest {
         )
 
         // When & Then
-        assertThrows<EmptyTitleException> {
+        assertThrows<PlanMateException.ValidationException.TitleException> {
             validationProject.validateCreateProject(project, adminUser)
         }
     }
@@ -98,7 +96,7 @@ class ValidationProjectTest {
         )
 
         // When & Then
-        assertThrows<EmptyNameException> {
+        assertThrows<PlanMateException.ValidationException.NameException> {
             validationProject.validateEditProject(project)
         }
     }

@@ -1,9 +1,10 @@
+package logic.usecase.state
+
+import data.customException.PlanMateException
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import logic.exception.EmptyTitleException
 import logic.model.State
-import logic.usecase.state.ValidationState
 import java.util.*
 
 class ValidationStateTest {
@@ -21,7 +22,7 @@ class ValidationStateTest {
         val state = State(title = "  ")  // Blank space
 
         // When & Then
-        assertThrows<EmptyTitleException> {
+        assertThrows<PlanMateException.ValidationException.TitleException> {
             validationState.validateState(state)  // This should throw the exception
         }
     }
@@ -32,7 +33,7 @@ class ValidationStateTest {
         val state = State(id = UUID.randomUUID(), title = null)
 
         // When & Then
-        assertThrows<EmptyTitleException> {
+        assertThrows<PlanMateException.ValidationException.TitleException> {
             validationState.validateState(state)  // This should throw the exception
         }
     }

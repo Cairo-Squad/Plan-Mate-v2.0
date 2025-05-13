@@ -5,6 +5,6 @@ import logic.model.State
 
 class ValidationState {
     fun validateState(state: State) {
-        if (state.title?.isBlank() == true) throw PlanMateException.ValidationException.TitleException()
+        if (state.title.isNullOrBlank()) throw PlanMateException.ValidationException.TitleException()
     }
 }

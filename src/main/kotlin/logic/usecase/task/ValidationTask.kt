@@ -5,6 +5,6 @@ import logic.model.Task
 
 class ValidationTask {
     fun validateCreateTask(task: Task) {
-        if (task.title?.isBlank() == true) throw PlanMateException.ValidationException.TitleException()
+        if (task.title.isNullOrBlank()) throw PlanMateException.ValidationException.TitleException()
     }
 }
