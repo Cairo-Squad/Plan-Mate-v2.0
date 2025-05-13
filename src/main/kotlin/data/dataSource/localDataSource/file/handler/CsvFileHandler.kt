@@ -1,6 +1,6 @@
 package data.dataSource.localDataSource.file.handler
 
-import logic.exception.NotFoundException
+import data.customException.PlanMateException
 import java.io.BufferedWriter
 import java.io.File
 import java.io.FileWriter
@@ -81,7 +81,7 @@ abstract class CsvFileHandler<DTO>(
     override fun delete(entity: DTO) {
         val allEntities = readAll()
         if (allEntities.none { getDtoId(it) == getDtoId(entity) }) {
-            throw NotFoundException()
+            throw PlanMateException.NetworkException.IOException()
         }
         val updatedEntities = allEntities.filter { getDtoId(it) != getDtoId(entity) }
         writeAll(updatedEntities)
@@ -92,7 +92,7 @@ abstract class CsvFileHandler<DTO>(
         val allEntities = readAll()
 
         val index = allEntities.indexOfFirst { getDtoId(it) == entityId }
-        if (index == -1) throw NotFoundException()
+        if (index == -1) throw PlanMateException.NetworkException.IOException()
 
         val updatedEntities = allEntities.toMutableList().apply {
             this[index] = entity

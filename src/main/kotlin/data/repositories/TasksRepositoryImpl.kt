@@ -4,7 +4,6 @@ import data.dataSource.remoteDataSource.RemoteDataSource
 import data.repositories.mappers.toState
 import data.repositories.mappers.toTask
 import data.repositories.mappers.toTaskDto
-import logic.exception.WriteException
 import logic.model.Task
 import logic.repositories.TasksRepository
 import java.util.*
@@ -21,11 +20,16 @@ class TasksRepositoryImpl(
         }
     }
     
-    override suspend fun createTask(task: Task): Task {
+    override suspend fun createTask(task: Task): Boolean {
+        return wrap { remoteDataSource.createTask(task.toTaskDto()) }
+    }
+    
+    override suspend fun getAllTasks(): List<Task> {
         return wrap {
-            val finalTask = remoteDataSource.createTask(task.toTaskDto())
-            val taskState = remoteDataSource.getStateById(finalTask.stateId)
-            finalTask.toTask(taskState.toState())
+            remoteDataSource.getAllTasks().map {
+                val taskState = remoteDataSource.getStateById(it.stateId)
+                it.toTask(taskState.toState())
+            }
         }
     }
     

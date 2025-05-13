@@ -1,5 +1,6 @@
 package logic.usecase.task
 
+import com.google.common.truth.Truth.assertThat
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -32,7 +33,7 @@ class CreateTaskUseCaseTest {
 		
 		coEvery { validationTask.validateCreateTask(taskToCreate) } returns Unit
 		val createdTask = taskToCreate.copy(id = UUID.randomUUID())
-		coEvery { tasksRepository.createTask(taskToCreate) } returns createdTask
+		coEvery { tasksRepository.createTask(taskToCreate) } returns true
 		
 		// When
 		val result = createTaskUseCase.createTask(taskToCreate)
@@ -40,7 +41,7 @@ class CreateTaskUseCaseTest {
 		// Then
 		coVerify(exactly = 1) { validationTask.validateCreateTask(taskToCreate) }
 		coVerify(exactly = 1) { tasksRepository.createTask(taskToCreate) }
-		assertEquals(createdTask, result)
+		assertThat(result).isTrue()
 	}
 	
 	@Test
@@ -64,7 +65,7 @@ class CreateTaskUseCaseTest {
 		// Given
 		val minimalTask = createValidTask().copy(description = "")
 		coEvery { validationTask.validateCreateTask(minimalTask) } returns Unit
-		coEvery { tasksRepository.createTask(minimalTask) } returns minimalTask.copy(id = UUID.randomUUID())
+		coEvery { tasksRepository.createTask(minimalTask) } returns true
 		
 		// When
 		createTaskUseCase.createTask(minimalTask)

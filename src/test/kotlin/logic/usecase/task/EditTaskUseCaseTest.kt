@@ -4,7 +4,7 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
-import logic.exception.NotFoundException
+import data.customException.PlanMateException
 import logic.model.State
 import logic.model.Task
 import logic.repositories.TasksRepository
@@ -54,10 +54,10 @@ class EditTaskUseCaseTest {
 	fun `should throw NotFoundException when repository fails to edit task`() = runTest {
 		// Given
 		val taskToEdit = createValidTask()
-		coEvery { tasksRepository.editTask(any()) } throws NotFoundException()
+		coEvery { tasksRepository.editTask(any()) } throws PlanMateException.NetworkException.DataNotFoundException()
 
 		// When & Then
-		assertThrows<NotFoundException> {
+		assertThrows<PlanMateException.NetworkException.DataNotFoundException> {
 			editTaskUseCase.editTask(newTask = taskToEdit)
 		}
 	}

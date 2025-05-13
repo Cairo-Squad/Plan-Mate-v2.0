@@ -2,8 +2,7 @@ package logic.usecase.project
 
 import io.mockk.*
 import kotlinx.coroutines.test.runTest
-import logic.exception.EmptyNameException
-import logic.exception.UnknownException
+import data.customException.PlanMateException
 import logic.model.Project
 import logic.model.State
 import logic.repositories.ProjectsRepository
@@ -67,20 +66,20 @@ class EditProjectTest {
     fun `should throw exception when database throws unknown exception`() = runTest {
         //Given
         val newProject = getNewProject()
-        coEvery { projectsRepository.editProject(any()) } throws UnknownException()
+        coEvery { projectsRepository.editProject(any()) } throws PlanMateException.NetworkException.UnKnownException()
 
         //When & Then
-        assertThrows<UnknownException> { editProjectDescription.editProject(newProject) }
+        assertThrows<PlanMateException.NetworkException.UnKnownException> { editProjectDescription.editProject(newProject) }
     }
 
     @Test
     fun `should throw empty name exception when editing project with empty title`() = runTest {
         //Given
         val newProject = getNewProject().copy(title = "   ")
-        every { validationProject.validateEditProject(newProject) } throws EmptyNameException()
+        every { validationProject.validateEditProject(newProject) } throws PlanMateException.ValidationException.NameException()
 
         //When & Then
-        assertThrows<EmptyNameException> { editProjectDescription.editProject(newProject) }
+        assertThrows<PlanMateException.ValidationException.NameException> { editProjectDescription.editProject(newProject) }
     }
 
     private fun getNewProject() = Project(

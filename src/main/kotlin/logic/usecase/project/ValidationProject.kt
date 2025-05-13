@@ -1,21 +1,20 @@
 package logic.usecase.project
 
 import data.dto.UserType
-import logic.exception.EmptyNameException
-import logic.exception.EmptyTitleException
-import logic.exception.InvalidUserException
+import data.customException.PlanMateException
+
 import logic.model.Project
 import logic.model.User
 
 class ValidationProject {
 	fun validateCreateProject(project: Project, user: User) {
-		if (user.type != UserType.ADMIN) throw InvalidUserException()
-		if (project.title?.isBlank() == true) throw EmptyTitleException()
+		if (user.type != UserType.ADMIN) throw PlanMateException.ValidationException.InvalidUserTypeException()
+		if (project.title?.isBlank() == true) throw PlanMateException.ValidationException.TitleException()
 	}
 	
 	fun validateEditProject(project: Project){
 		if (project.title?.isBlank() == true) {
-			throw EmptyNameException()
+			throw PlanMateException.ValidationException.NameException()
 		}
 	}
 }

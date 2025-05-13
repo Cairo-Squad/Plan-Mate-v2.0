@@ -1,6 +1,7 @@
-import logic.exception.EmptyTitleException
+package logic.usecase.task
+
+import data.customException.PlanMateException
 import logic.model.Task
-import logic.usecase.task.ValidationTask
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import java.util.UUID
@@ -21,7 +22,7 @@ class ValidationTaskTest {
         val task = Task(id = UUID.randomUUID(), title = "  ")
 
         // When & Then
-        assertThrows<EmptyTitleException> {
+        assertThrows<PlanMateException.ValidationException.TitleException> {
             validationTask.validateCreateTask(task)
         }
     }
@@ -32,7 +33,7 @@ class ValidationTaskTest {
         val task = Task(id = UUID.randomUUID(), title = null)
 
         // When & Then
-        assertThrows<EmptyTitleException> {
+        assertThrows<PlanMateException.ValidationException.TitleException> {
             validationTask.validateCreateTask(task)
         }
     }

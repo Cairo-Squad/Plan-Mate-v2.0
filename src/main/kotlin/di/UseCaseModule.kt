@@ -24,6 +24,7 @@ val useCasesModule = module {
     single { DeleteTaskUseCase(get()) }
     single { GetTaskBytIdUseCase(get()) }
     single { GetAllTasksByProjectIdUseCase(get()) }
+    single { GetAllTasksUseCase(get()) }
     // endregion
 
     // region Logs

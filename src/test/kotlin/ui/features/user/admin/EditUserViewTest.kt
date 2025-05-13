@@ -2,7 +2,6 @@ package ui.features.user.admin
 
 import io.mockk.*
 import kotlinx.coroutines.test.runTest
-import logic.exception.EntityNotChangedException
 import logic.model.User
 import logic.usecase.user.EditUserUseCase
 import logic.usecase.user.GetAllUsersUseCase
@@ -89,10 +88,10 @@ class EditUserViewTest {
         every { inputHandler.promptForIntChoice(any(), any()) } returns 1
         every { inputHandler.promptForInput(any()) } returns "NewAlice"
         every { inputHandler.promptForPassword(any()) } returns "NewPassword"
-        coEvery { editUserUseCase.editUser(any()) } throws EntityNotChangedException()
+        coEvery { editUserUseCase.editUser(any()) } throws Exception()
         editUserView.editUser()
 
         //Then
-        verify { outputFormatter.printError("🔄 No changes were applied: ${EntityNotChangedException().message}") }
+        verify { outputFormatter.printError("🔄 No changes were applied: ${Exception().message}") }
     }
 }

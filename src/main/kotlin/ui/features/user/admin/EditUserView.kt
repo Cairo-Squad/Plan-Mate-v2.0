@@ -1,7 +1,6 @@
 package ui.features.user.admin
 
 import kotlinx.coroutines.runBlocking
-import logic.exception.EntityNotChangedException
 import logic.model.User
 import logic.usecase.user.EditUserUseCase
 import logic.usecase.user.GetAllUsersUseCase
@@ -88,7 +87,7 @@ class EditUserView(
         try {
             editUserUseCase.editUser(updatedUser)
             outputFormatter.printSuccess("✅ User '${selectedUser.name}' updated successfully!")
-        } catch (e: EntityNotChangedException) {
+        } catch (e: Exception) {
             outputFormatter.printError("🔄 No changes were applied: ${e.message}")
         }
 

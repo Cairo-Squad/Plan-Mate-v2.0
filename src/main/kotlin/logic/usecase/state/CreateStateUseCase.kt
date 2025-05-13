@@ -7,7 +7,7 @@ class CreateStateUseCase(
     private val stateRepository: StatesRepository,
     private val validationState: ValidationState
 ) {
-    suspend fun createState(state: State): State {
+    suspend fun createState(state: State): Boolean {
         validationState.validateState(state)
         return stateRepository.createState(state)
     }

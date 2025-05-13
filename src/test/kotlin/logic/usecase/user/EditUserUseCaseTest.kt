@@ -3,7 +3,7 @@ package logic.usecase.user
 import data.dto.UserType
 import io.mockk.*
 import kotlinx.coroutines.test.runTest
-import logic.exception.NotFoundException
+import data.customException.PlanMateException
 import logic.model.User
 import logic.repositories.AuthenticationRepository
 import org.junit.jupiter.api.BeforeEach
@@ -42,10 +42,10 @@ class EditUserUseCaseTest {
         val updatedUser =
             User(id = UUID(2, 2), name = "Mohamed", password = "123456", type = UserType.ADMIN)
      
-        coEvery { authenticationRepository.editUser(updatedUser) } throws NotFoundException()
+        coEvery { authenticationRepository.editUser(updatedUser) } throws PlanMateException.NetworkException.DataNotFoundException()
 
         // When & Then
-        assertThrows<NotFoundException> {
+        assertThrows<PlanMateException.NetworkException.DataNotFoundException> {
             editUserUseCase.editUser(updatedUser)
         }
     }

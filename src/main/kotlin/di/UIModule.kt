@@ -46,7 +46,7 @@ val uiModule = module {
     }
 
     single {
-        ProjectCreateView(get(), get(), get(), get() ,get())
+        ProjectCreateView(get(), get(), get(), get() ,get(), get())
     }
 
     single {
@@ -66,7 +66,7 @@ val uiModule = module {
     }
 
     single {
-        CreateTaskView(get(), get(), get() ,get(), get(), get())
+        CreateTaskView(get(), get(), get() ,get(), get(), get(), get(), get())
     }
 
     single {

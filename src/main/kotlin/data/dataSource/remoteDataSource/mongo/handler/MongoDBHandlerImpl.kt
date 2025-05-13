@@ -3,7 +3,8 @@ package data.dataSource.remoteDataSource.mongo.handler
 import com.mongodb.client.MongoCollection
 import com.mongodb.client.MongoDatabase
 import com.mongodb.client.model.Filters
-import logic.exception.NotFoundException
+import com.mongodb.client.result.InsertOneResult
+import data.customException.PlanMateException
 import org.bson.Document
 import java.util.*
 
@@ -31,58 +32,32 @@ abstract class MongoDBHandlerImpl<DTO>(
     }
 
     override fun write(entity: DTO): Boolean {
-        val collectionSizeBeforeInsert = collection.countDocuments()
         val document = convertDtoToDocument(entity)
-        collection.insertOne(document)
-        val collectionSizeAfterInsert = collection.countDocuments()
-        return collectionSizeAfterInsert > collectionSizeBeforeInsert
+        val result: InsertOneResult = collection.insertOne(document)
+        return result.wasAcknowledged()
     }
 
-    override fun edit(entity: DTO) {
+    override fun edit(entity: DTO): Boolean {
         val entityId = getDtoId(entity)
         val document = convertDtoToDocument(entity)
         val result = collection.replaceOne(Filters.eq("_id", entityId.toString()), document)
-        if (result.matchedCount == 0L) {
-            throw NotFoundException()
-        }
+        return result.wasAcknowledged()
     }
 
-    override fun delete(entity: DTO) {
-        val entityId = getDtoId(entity)
+    override fun delete(entityId: UUID): Boolean {
         val result = collection.deleteOne(Filters.eq("_id", entityId.toString()))
-        if (result.deletedCount == 0L) {
-            throw NotFoundException()
-        }
+        return result.wasAcknowledged()
     }
 
     override fun readAll(): List<DTO> {
         return collection.find()
             .map { convertDocumentToDto(it) }
             .toList()
-
     }
 
     override fun readByEntityId(id: UUID): DTO {
         val document = collection.find(Filters.eq("_id", id.toString())).first()
-            ?: throw NotFoundException()
+            ?: throw PlanMateException.NetworkException.DataNotFoundException()
         return convertDocumentToDto(document)
-    }
-    override fun edit(entity: DTO , ayhaga: Boolean) :Boolean{
-        val entityId = getDtoId(entity)
-        val document = convertDtoToDocument(entity)
-        val result = collection.replaceOne(Filters.eq("_id", entityId.toString()), document)
-        if (result.matchedCount == 0L) {
-            return false
-        }
-        return true
-    }
-
-    override fun delete(entity: DTO ,ayhaga: Boolean):Boolean {
-        val entityId = getDtoId(entity)
-        val result = collection.deleteOne(Filters.eq("_id", entityId.toString()))
-        if (result.deletedCount == 0L) {
-            return false
-        }
-        return true
     }
 }

@@ -4,7 +4,6 @@ import data.dataSource.remoteDataSource.RemoteDataSource
 import data.dataSource.remoteDataSource.mongo.handler.MongoDBHandler
 import data.dto.*
 import data.hashing.PasswordEncryptor
-import logic.exception.WriteException
 import java.util.*
 
 class RemoteDataSourceImpl(
@@ -31,11 +30,11 @@ class RemoteDataSourceImpl(
     }
 
     override suspend fun editUser(user: UserDto): Boolean {
-        return usersHandler.edit(user, true)
+        return usersHandler.edit(user)
     }
 
-    override suspend fun deleteUser(user: UserDto): Boolean {
-        return usersHandler.delete(user, true)
+    override suspend fun deleteUser(userId: UUID): Boolean {
+        return usersHandler.delete(userId)
     }
 
     override suspend fun loginUser(name: String, password: String): Boolean {
@@ -55,7 +54,7 @@ class RemoteDataSourceImpl(
 
 
     override suspend fun createProject(project: ProjectDto): Boolean {
-        if (projectsHandler.write(project)) return true else throw WriteException()
+        return projectsHandler.write(project)
     }
 
     override suspend fun editProject(newProject: ProjectDto) {
@@ -63,7 +62,7 @@ class RemoteDataSourceImpl(
     }
 
     override suspend fun deleteProjectById(project: ProjectDto) {
-        projectsHandler.delete(project)
+        projectsHandler.delete(project.id!!)
     }
 
     override suspend fun getProjectById(projectId: UUID): ProjectDto {
@@ -78,20 +77,20 @@ class RemoteDataSourceImpl(
         return tasksHandler.readAll().filter { it.projectId == projectId }
     }
 
-    override suspend fun createTask(task: TaskDto): TaskDto {
-        if (tasksHandler.write(task)) {
-            return task
-        } else {
-            throw WriteException()
-        }
+    override suspend fun createTask(task: TaskDto): Boolean {
+        return tasksHandler.write(task)
     }
-
+    
+    override suspend fun getAllTasks(): List<TaskDto> {
+        return tasksHandler.readAll()
+    }
+    
     override suspend fun editTask(task: TaskDto) {
         tasksHandler.edit(task)
     }
 
     override suspend fun deleteTask(task: TaskDto) {
-        tasksHandler.delete(task)
+        tasksHandler.delete(task.id!!)
     }
 
     override suspend fun getTaskById(taskID: UUID): TaskDto {
@@ -106,13 +105,8 @@ class RemoteDataSourceImpl(
         return statesHandler.readByEntityId(stateId)
     }
 
-    override suspend fun createState(state: StateDto): StateDto {
-        if (statesHandler.write(state)) {
-            return state
-        } else {
-            throw WriteException()
-        }
-
+    override suspend fun createState(state: StateDto): Boolean {
+        return statesHandler.write(state)
     }
 
     override suspend fun editState(state: StateDto) {

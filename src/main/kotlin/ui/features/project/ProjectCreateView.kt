@@ -3,10 +3,9 @@ package ui.features.project
 import kotlinx.coroutines.runBlocking
 import logic.model.Project
 import logic.model.State
-import logic.model.Task
 import logic.usecase.project.CreateProjectUseCase
 import logic.usecase.state.CreateStateUseCase
-import logic.usecase.task.CreateTaskUseCase
+import logic.usecase.state.GetAllStatesUseCase
 import logic.usecase.user.GetCurrentUserUseCase
 import ui.utils.InputHandler
 import ui.utils.OutputFormatter
@@ -17,7 +16,8 @@ class ProjectCreateView(
 	private val inputHandler: InputHandler,
 	private val outputFormatter: OutputFormatter,
 	private val createStateUseCase: CreateStateUseCase,
-    private val getCurrentUserUseCase : GetCurrentUserUseCase
+    private val getCurrentUserUseCase : GetCurrentUserUseCase,
+	private val getAllStatesUseCase: GetAllStatesUseCase
 ) {
 	fun createProject() = runBlocking {
 		displayHeader()
@@ -63,8 +63,12 @@ class ProjectCreateView(
 
 	private fun createInitialState(): State = runBlocking {
 		val stateTitle = inputHandler.promptForInput("📊 Enter initial project state: ")
-		val projectState = createStateUseCase.createState(State(title = stateTitle))
-		return@runBlocking projectState
+		val isProjectStateCreated = createStateUseCase.createState(State(title = stateTitle))
+		if (isProjectStateCreated){
+			val projectState = getAllStatesUseCase.getAllStateById().last()
+			return@runBlocking projectState
+		}
+		return@runBlocking State()
 	}
 
 	private fun buildProject(title: String, description: String, userId: UUID, state: State): Project {

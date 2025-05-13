@@ -5,8 +5,7 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.test.runTest
-import logic.exception.EmptyTitleException
-import logic.exception.InvalidUserException
+import data.customException.PlanMateException
 import logic.repositories.ProjectsRepository
 import logic.usecase.FakeData.adminUser
 import logic.usecase.FakeData.mateUser
@@ -45,10 +44,10 @@ class CreateProjectUseCaseTest() {
     fun `should not create a project when user type is mate`() = runTest {
         // Given
         val project = FakeData.validProject
-        every { validationCreationProjectCreation.validateCreateProject(project, mateUser) } throws InvalidUserException()
+        every { validationCreationProjectCreation.validateCreateProject(project, mateUser) } throws PlanMateException.ValidationException.InvalidUserTypeException()
         
         // When & Then
-        assertThrows<InvalidUserException> {
+        assertThrows<PlanMateException.ValidationException.InvalidUserTypeException> {
             createProject.createProject(project, mateUser)
         }
     }
@@ -71,10 +70,10 @@ class CreateProjectUseCaseTest() {
     fun `should throw exception when project title is blank`() = runTest {
         //Given
         val project = FakeData.projectWithNoTitle
-        every { validationCreationProjectCreation.validateCreateProject(project, adminUser) } throws EmptyTitleException()
+        every { validationCreationProjectCreation.validateCreateProject(project, adminUser) } throws PlanMateException.ValidationException.TitleException()
 
         //When & Then
-        assertThrows<EmptyTitleException> {
+        assertThrows<PlanMateException.ValidationException.TitleException> {
             createProject.createProject(project, adminUser)
         }
     }
