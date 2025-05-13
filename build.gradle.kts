@@ -31,10 +31,10 @@ kover {
     reports {
         filters {
             includes {
-                packages("ui", "logic.usecase")
+                packages( "logic.usecase")
             }
             excludes {
-                classes("ui.MainKt")
+                classes("ui")
             }
         }
 
