@@ -1,7 +1,7 @@
 package logic.usecase.project
 
-import data.dto.EntityType
-import data.dto.UserAction
+import logic.model.EntityType
+import logic.model.UserAction
 import logic.model.Log
 import logic.model.Project
 import logic.repositories.ProjectsRepository

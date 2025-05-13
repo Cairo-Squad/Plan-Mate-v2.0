@@ -3,8 +3,7 @@ package data.dataSource.localDataSource.file
 import data.dataSource.localDataSource.file.handler.CsvFileHandler
 import data.dataSource.util.CsvIndices
 import data.dto.UserDto
-import data.dto.UserType
-import logic.model.User
+import logic.model.UserType
 import java.util.*
 
 class UsersCsvHandler(

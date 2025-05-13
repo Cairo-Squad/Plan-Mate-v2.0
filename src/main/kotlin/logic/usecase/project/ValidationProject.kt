@@ -1,6 +1,6 @@
 package logic.usecase.project
 
-import data.dto.UserType
+import logic.model.UserType
 import data.customException.PlanMateException
 
 import logic.model.Project

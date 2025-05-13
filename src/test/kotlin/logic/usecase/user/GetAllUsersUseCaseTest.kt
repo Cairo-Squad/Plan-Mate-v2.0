@@ -1,6 +1,6 @@
 package logic.usecase.user
 
-import data.dto.UserType
+import logic.model.UserType
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk

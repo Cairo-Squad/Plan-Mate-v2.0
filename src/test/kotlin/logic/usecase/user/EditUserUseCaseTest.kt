@@ -1,6 +1,6 @@
 package logic.usecase.user
 
-import data.dto.UserType
+import logic.model.UserType
 import io.mockk.*
 import kotlinx.coroutines.test.runTest
 import data.customException.PlanMateException

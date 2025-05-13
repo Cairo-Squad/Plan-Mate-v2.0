@@ -4,7 +4,7 @@ import com.mongodb.client.MongoDatabase
 import data.dataSource.remoteDataSource.mongo.handler.MongoDBHandlerImpl
 import data.dataSource.util.MongoConstants
 import data.dto.UserDto
-import data.dto.UserType
+import logic.model.UserType
 import org.bson.Document
 import java.util.*
 

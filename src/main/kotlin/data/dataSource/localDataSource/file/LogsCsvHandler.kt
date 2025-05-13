@@ -3,9 +3,9 @@ package data.dataSource.localDataSource.file
 import data.dataSource.localDataSource.file.handler.CsvFileHandler
 import data.dataSource.util.CsvIndices
 import data.dataSource.util.UserActionConstants
-import data.dto.EntityType
+import logic.model.EntityType
 import data.dto.LogDto
-import data.dto.UserAction
+import logic.model.UserAction
 import java.io.IOException
 import java.time.LocalDateTime
 import java.util.*

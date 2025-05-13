@@ -1,7 +1,6 @@
 package logic.usecase
 
-import data.dto.UserDto
-import data.dto.UserType
+import logic.model.UserType
 import logic.model.User
 import java.util.*
 

@@ -1,7 +1,7 @@
 package logic.usecase
 
 import com.google.common.truth.Truth.assertThat
-import data.dto.UserType
+import logic.model.UserType
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest

@@ -4,6 +4,7 @@ import data.dataSource.remoteDataSource.RemoteDataSource
 import data.dataSource.remoteDataSource.mongo.handler.MongoDBHandler
 import data.dto.*
 import data.hashing.PasswordEncryptor
+import logic.model.EntityType
 import java.util.*
 
 class RemoteDataSourceImpl(
