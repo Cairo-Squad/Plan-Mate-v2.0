@@ -35,7 +35,7 @@ class AdminManagementView(
                 )
             )
 
-            when (inputHandler.promptForIntChoice("🛠️ Select an option:", 1..4)) {
+            when (inputHandler.promptForIntChoice("🛠️ Select an option:", 1..5)) {
                 1 -> projectManagementView.showProjectMenu()
                 2 -> showUserManagementMenu()
                 3 -> taskManagementView.showTaskMenu()
