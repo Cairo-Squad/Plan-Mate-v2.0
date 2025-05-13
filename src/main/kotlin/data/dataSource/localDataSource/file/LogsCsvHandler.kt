@@ -24,10 +24,10 @@ class LogsCsvHandler(
             entity.id,
             entity.entityId,
             entity.entityTitle,
-            entity.entityType.name,
+            entity.entityType?.name,
             entity.dateTime,
             entity.userId,
-            entity.userAction.parseToString()
+            entity.userAction?.parseToString()
         ).joinToString(",")
     }
 

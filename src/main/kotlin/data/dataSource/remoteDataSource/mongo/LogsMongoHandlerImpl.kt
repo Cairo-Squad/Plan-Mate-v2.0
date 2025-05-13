@@ -27,10 +27,10 @@ class LogsMongoHandlerImpl(
             .append(MongoConstants.ID, getDtoId(entity).toString())
             .append(MongoConstants.LOG_ENTITY_ID, entity.entityId.toString())
             .append(MongoConstants.LOG_ENTITY_TITLE, entity.entityTitle)
-            .append(MongoConstants.LOG_ENTITY_TYPE, entity.entityType.name)
+            .append(MongoConstants.LOG_ENTITY_TYPE, entity.entityType?.name)
             .append(MongoConstants.LOG_DATE_TIME, entity.dateTime.toString())
             .append(MongoConstants.LOG_USER_ID, entity.userId.toString())
-            .append(MongoConstants.LOG_USER_ACTION, serializeUserAction(entity.userAction))
+            .append(MongoConstants.LOG_USER_ACTION, serializeUserAction(entity.userAction!!)) // TODO: Remove this assertion
     }
 
     override fun convertDocumentToDto(document: Document): LogDto {
