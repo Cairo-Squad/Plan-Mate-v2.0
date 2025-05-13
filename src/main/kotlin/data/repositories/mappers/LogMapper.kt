@@ -17,7 +17,7 @@ fun LogDto.toLog(): Log {
 
 fun Log.toLogDto(): LogDto {
     return LogDto(
-        id = this.id!!,
+        id = this.id,
         entityId = this.entityId!!,
         entityTitle = this.entityTitle!!,
         entityType = this.entityType!!,

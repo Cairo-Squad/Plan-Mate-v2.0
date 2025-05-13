@@ -4,7 +4,7 @@ import java.time.LocalDateTime
 import java.util.UUID
 
 data class LogDto(
-    val id: UUID,
+    val id: UUID?,
     val entityId: UUID,
     val entityTitle: String,
     val entityType: EntityType,

@@ -21,7 +21,6 @@ class EditProjectUseCase(
         val projectInfo = projectsRepository.getProjectById(newProject.id!!)
 
         val log = Log(
-            id = UUID.randomUUID(),
             entityId = projectInfo.id!!,
             entityTitle = projectInfo.title?:"",
             entityType = EntityType.PROJECT,

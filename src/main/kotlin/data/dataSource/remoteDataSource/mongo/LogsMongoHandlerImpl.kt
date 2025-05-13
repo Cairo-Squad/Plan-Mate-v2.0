@@ -20,11 +20,11 @@ class LogsMongoHandlerImpl(
 ) : MongoDBHandlerImpl<LogDto>(
     database = database,
     collectionName = collectionName,
-    getDtoId = { it.id }
+    getDtoId = { it.id ?: UUID.randomUUID() }
 ) {
     override fun convertDtoToDocument(entity: LogDto): Document {
         return Document()
-            .append(MongoConstants.ID, entity.id.toString())
+            .append(MongoConstants.ID, getDtoId(entity).toString())
             .append(MongoConstants.LOG_ENTITY_ID, entity.entityId.toString())
             .append(MongoConstants.LOG_ENTITY_TITLE, entity.entityTitle)
             .append(MongoConstants.LOG_ENTITY_TYPE, entity.entityType.name)
