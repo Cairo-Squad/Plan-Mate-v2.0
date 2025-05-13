@@ -16,7 +16,6 @@ class TasksMongoHandlerImpl(
 ) {
 	override fun convertDtoToDocument(entity: TaskDto): Document {
 		val id = getDtoId(entity)
-		entity.id = id
 		return Document()
 			.append(MongoConstants.TASK_ID, id.toString())
 			.append(MongoConstants.TASK_TITLE, entity.title)
