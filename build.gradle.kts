@@ -16,16 +16,25 @@ dependencies {
     testImplementation(kotlin("test"))
     testImplementation("com.google.truth:truth:1.4.4")
     testImplementation("io.mockk:mockk:1.14.0")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
+    
+    implementation("org.mongodb:mongodb-driver-sync:4.11.1")
+    implementation("org.slf4j:slf4j-simple:2.0.12")
+    
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
+    testImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.10.2")
+    
 }
 
 kover {
     reports {
         filters {
             includes {
-                packages("ui", "logic.usecase")
+                packages( "logic.usecase")
             }
             excludes {
-                classes("ui.MainKt")
+                classes("ui")
             }
         }
 

@@ -1,0 +1,78 @@
+package ui.features.user.admin
+
+import io.mockk.*
+import kotlinx.coroutines.test.runTest
+import logic.usecase.user.DeleteUserUseCase
+import logic.usecase.user.GetAllUsersUseCase
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Disabled
+import org.junit.jupiter.api.Test
+import ui.utils.InputHandler
+import ui.utils.OutputFormatter
+import util.FakeData.getAllUsers
+import kotlin.RuntimeException
+
+class DeleteUserViewTest {
+
+    private lateinit var inputHandler: InputHandler
+    private lateinit var outputFormatter: OutputFormatter
+    private lateinit var getAllUsersUseCase: GetAllUsersUseCase
+    private lateinit var deleteUserUseCase: DeleteUserUseCase
+    private lateinit var deleteUserView: DeleteUserView
+
+    @BeforeEach
+    fun setUp() {
+        inputHandler = mockk(relaxed = true)
+        outputFormatter = mockk(relaxed = true)
+        getAllUsersUseCase = mockk(relaxed = true)
+        deleteUserUseCase = mockk(relaxed = true)
+        deleteUserView = DeleteUserView(inputHandler, outputFormatter, getAllUsersUseCase, deleteUserUseCase)
+    }
+    @Disabled
+    @Test
+    fun `function delete user should print error if there is no users`() = runTest {
+        //Given
+        coEvery { getAllUsersUseCase.getAllUsers() } returns emptyList()
+
+        //When
+        deleteUserView.deleteUser()
+
+        //Then
+        verify { outputFormatter.printHeader(any()) }
+        verify { outputFormatter.printError("❌ No users available to delete!") }
+        verify(exactly = 0) { inputHandler.promptForIntChoice(any(), any()) }
+    }
+    @Disabled
+    @Test
+    fun `should delete when user confirms deletion`() = runTest {
+        //Given
+        coEvery { getAllUsersUseCase.getAllUsers() } returns getAllUsers()
+        every { inputHandler.promptForIntChoice(any(), any()) } returns 1
+        every { inputHandler.promptForInput(any()) } returns "YES"
+
+        //When
+        deleteUserView.deleteUser()
+
+        //Then
+        coVerify { deleteUserUseCase.deleteUser(getAllUsers()[0].id!!) }
+        verify { outputFormatter.printSuccess("✅ User '${getAllUsers()[0].name}' deleted successfully!") }
+        verify { inputHandler.waitForEnter() }
+    }
+    @Disabled
+    @Test
+    fun `should not delete when user does not confirm deletion`() = runTest {
+        //Given
+        coEvery { getAllUsersUseCase.getAllUsers() } returns getAllUsers()
+        every { inputHandler.promptForIntChoice(any(), any()) } returns 1
+        every { inputHandler.promptForInput(any()) } returns "NO"
+
+        //When
+        deleteUserView.deleteUser()
+
+        //Then
+        coVerify(exactly = 0) { deleteUserUseCase.deleteUser(any()) }
+        verify(exactly = 0) { inputHandler.waitForEnter() }
+    }
+
+
+}

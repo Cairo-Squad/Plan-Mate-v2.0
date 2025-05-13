@@ -6,7 +6,7 @@ import logic.model.State
 fun State.toStateDto():StateDto{
 	return StateDto(
 		id = this.id,
-		title = this.title
+		title = this.title?:""
 	)
 }
 

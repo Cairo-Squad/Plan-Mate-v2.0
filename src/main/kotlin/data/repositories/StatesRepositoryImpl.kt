@@ -1,9 +1,26 @@
 package data.repositories
 
-import data.dataSource.DataSource
+import data.dataSource.remoteDataSource.RemoteDataSource
+import data.repositories.mappers.toState
+import data.repositories.mappers.toStateDto
+import logic.model.State
 import logic.repositories.StatesRepository
 
 class StatesRepositoryImpl(
-    private val dataSource: DataSource
-) : StatesRepository {
+    private val remoteDataSource: RemoteDataSource
+) : StatesRepository, BaseRepository() {
+
+    override suspend fun createState(state: State): Boolean {
+        return wrap {
+            remoteDataSource.createState(state.toStateDto())
+        }
+    }
+
+    override suspend fun editState(state: State) {
+        return wrap { remoteDataSource.editState(state.toStateDto()) }
+    }
+
+    override suspend fun getAllStates(): List<State> {
+        return wrap { remoteDataSource.getAllStates().map { it.toState() }}
+    }
 }
