@@ -7,10 +7,11 @@ import logic.model.Task
 import logic.usecase.project.EditProjectUseCase
 import logic.usecase.project.GetAllProjectsUseCase
 import logic.usecase.state.CreateStateUseCase
+import logic.usecase.state.GetAllStatesUseCase
 import logic.usecase.task.CreateTaskUseCase
+import logic.usecase.task.GetAllTasksUseCase
 import ui.utils.InputHandler
 import ui.utils.OutputFormatter
-import java.util.*
 
 class CreateTaskView(
     private val createTaskUseCase: CreateTaskUseCase,
@@ -18,7 +19,9 @@ class CreateTaskView(
     private val outputFormatter: OutputFormatter,
     private val editProjectUseCase: EditProjectUseCase,
     private val getAllProjectsUseCase: GetAllProjectsUseCase,
-    private val createStateUseCase: CreateStateUseCase
+    private val createStateUseCase: CreateStateUseCase,
+    private val getAllStatesUseCase: GetAllStatesUseCase,
+	private val getAllTasksUseCase:GetAllTasksUseCase
 ) {
     lateinit var projects: List<Project>
 
@@ -27,6 +30,10 @@ class CreateTaskView(
 
         val title = inputHandler.promptForInput("Enter task title: ")
         val description = inputHandler.promptForInput("Enter task description: ")
+	    
+	    if (title.isEmpty()){
+			println("title cannot be empty")
+		}
 
         try {
             fetchProjects()
@@ -70,20 +77,27 @@ class CreateTaskView(
 
     private suspend fun createTaskState(): State {
         val stateTitle = inputHandler.promptForInput("Enter state title: ")
-        val taskState = createStateUseCase.createState(State(title = stateTitle))
-        return taskState
+        val isTaskState = createStateUseCase.createState(State(title = stateTitle))
+        if (isTaskState){
+            val taskStateCreated = getAllStatesUseCase.getAllStateById().last()
+            return taskStateCreated
+        }
+        return State()
     }
 
     private suspend fun createAndUpdateProject(task: Task, selectedProject: Project) {
         try {
-            val createdTask = createTaskUseCase.createTask(task)
-            val updatedProject = selectedProject.copy(
-                id = selectedProject.id,
-                tasks = selectedProject.tasks?.plus(createdTask)
-            )
-
-            editProjectUseCase.editProject(updatedProject)
-            outputFormatter.printSuccess("Task created successfully!")
+            val isCreatedTask = createTaskUseCase.createTask(task)
+	        val createdTask = getAllTasksUseCase.getAllTasks().last()
+            if (isCreatedTask){
+                val updatedProject = selectedProject.copy(
+                    id = selectedProject.id,
+                    tasks = selectedProject.tasks?.plus(createdTask)
+                )
+                
+                editProjectUseCase.editProject(updatedProject)
+                outputFormatter.printSuccess("Task created successfully!")
+            }
         } catch (ex: Exception) {
             outputFormatter.printError(ex.message ?: "failed to create task!!")
         }
