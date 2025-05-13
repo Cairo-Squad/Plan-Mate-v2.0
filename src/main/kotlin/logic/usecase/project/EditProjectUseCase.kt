@@ -7,11 +7,10 @@ import logic.model.Project
 import logic.repositories.ProjectsRepository
 import logic.usecase.log.AddProjectLogUseCase
 import java.time.LocalDateTime
-import java.util.UUID
 
 class EditProjectUseCase(
     private val projectsRepository: ProjectsRepository,
-    private val addprojectLogUseCase: AddProjectLogUseCase,
+    private val addProjectLogUseCase: AddProjectLogUseCase,
     private val validationProject: ValidationProject
 ) {
     suspend fun editProject(newProject: Project) {
@@ -29,7 +28,7 @@ class EditProjectUseCase(
             userAction = UserAction.EditProject(newProject.id, "Updated project details")
         )
 
-        addprojectLogUseCase.addLog(log)
+        addProjectLogUseCase.addProjectLog(log)
 
     }
 }

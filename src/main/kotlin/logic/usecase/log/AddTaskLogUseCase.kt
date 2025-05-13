@@ -4,7 +4,7 @@ import logic.model.Log
 import logic.repositories.TaskLogsRepository
 
 class AddTaskLogUseCase(
-    private val logsRepository: TaskLogsRepository
+    private val taskLogsRepository: TaskLogsRepository
 ) {
-    suspend fun addLog(log: Log) = logsRepository.addLog(log)
+    suspend fun addTaskLog(log: Log) = taskLogsRepository.addTaskLog(log)
 }

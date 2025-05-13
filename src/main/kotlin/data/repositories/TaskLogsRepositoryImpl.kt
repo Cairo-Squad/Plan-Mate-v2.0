@@ -11,8 +11,8 @@ class TaskLogsRepositoryImpl(
     private val remoteDataSource: RemoteDataSource,
 ) : TaskLogsRepository, BaseRepository() {
 
-    override suspend fun addLog(log: Log) {
-        wrap { remoteDataSource.recordTaskLog(log.toLogDto()) }
+    override suspend fun addTaskLog(log: Log) {
+        wrap { remoteDataSource.addTaskLog(log.toLogDto()) }
     }
 
     override suspend fun getTaskLogs(taskId: UUID): List<Log> {

@@ -24,7 +24,7 @@ class AddTaskLogUseCaseTest {
     }
 
     @Test
-    fun `addLog should call logsRepository addLog with correct log`() = runTest {
+    fun `addTaskLog should call taskLogsRepository addTaskLog with correct log`() = runTest {
         // Given
         val log = Log(
             id = UUID.randomUUID(),
@@ -37,9 +37,9 @@ class AddTaskLogUseCaseTest {
         )
 
         // When
-        useCase.addLog(log)
+        useCase.addTaskLog(log)
 
         // Then
-        coVerify { logsRepository.addLog(log) }
+        coVerify { logsRepository.addTaskLog(log) }
     }
 }

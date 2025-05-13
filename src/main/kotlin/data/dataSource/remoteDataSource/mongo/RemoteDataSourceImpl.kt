@@ -119,11 +119,11 @@ class RemoteDataSourceImpl(
         statesHandler.edit(state)
     }
 
-    override suspend fun recordTaskLog(log: LogDto) {
+    override suspend fun addTaskLog(log: LogDto) {
         taskLogsHandler.write(log)
     }
 
-    override suspend fun recordProjectLog(log: LogDto) {
+    override suspend fun addProjectLog(log: LogDto) {
         projectLogsHandler.write(log)
     }
 

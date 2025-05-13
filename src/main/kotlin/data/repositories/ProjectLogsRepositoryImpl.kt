@@ -11,8 +11,8 @@ class ProjectLogsRepositoryImpl(
     private val remoteDataSource: RemoteDataSource,
 ) : ProjectLogsRepository, BaseRepository() {
 
-    override suspend fun addLog(log: Log) {
-        wrap { remoteDataSource.recordProjectLog(log.toLogDto()) }
+    override suspend fun addProjectLog(log: Log) {
+        wrap { remoteDataSource.addProjectLog(log.toLogDto()) }
     }
 
     override suspend fun getProjectLogs(projectId: UUID): List<Log> {

@@ -14,8 +14,8 @@ val useCasesModule = module {
     single { DeleteProjectUseCase(projectsRepository = get()) }
     single { GetProjectByIdUseCase(projectsRepository = get()) }
     single { GetAllProjectsUseCase(projectsRepository = get()) }
-    single { AddTaskLogUseCase(logsRepository = get()) }
-    single { AddProjectLogUseCase(logsRepository = get()) }
+    single { AddTaskLogUseCase(taskLogsRepository = get()) }
+    single { AddProjectLogUseCase(projectLogsRepository = get()) }
     // endregion
 
     // region Tasks
