@@ -1,7 +1,11 @@
 package ui.features.log
 
-
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import logic.model.Log
+import logic.model.Project
+import logic.model.Task
 import logic.usecase.log.GetTaskLogsUseCase
 import logic.usecase.project.GetAllProjectsUseCase
 import logic.usecase.task.GetAllTasksByProjectIdUseCase
@@ -16,7 +20,23 @@ class TaskLogView(
     private val inputHandler: InputHandler,
     private val outputFormatter: OutputFormatter
 ) {
-    fun viewTaskLogs() = runBlocking{
+    fun viewTaskLogs() = runBlocking {
+        displayHeader()
+
+        val projects = fetchProjects() ?: return@runBlocking
+        val selectedProject = selectProject(projects) ?: return@runBlocking
+
+        val tasks = fetchTasks(selectedProject) ?: return@runBlocking
+        val selectedTask = selectTask(tasks) ?: return@runBlocking
+
+        val logs = fetchLogs(selectedTask) ?: return@runBlocking
+
+        displayLogs(selectedTask, logs)
+
+        inputHandler.waitForEnter()
+    }
+
+    private fun displayHeader() {
         outputFormatter.printHeader(
             """
             ╔════════════════════════════════╗
@@ -24,12 +44,15 @@ class TaskLogView(
             ╚════════════════════════════════╝
             """.trimIndent()
         )
+    }
 
+
+    private suspend fun fetchProjects(): List<Project>? = withContext(Dispatchers.IO) {
         val projects = getAllProjectsUseCase.getAllProjects()
 
         if (projects.isEmpty()) {
             outputFormatter.printError("❌ No projects available for task logs!")
-	        return@runBlocking
+            return@withContext null
         }
 
         outputFormatter.printInfo("📂 Available Projects:")
@@ -37,14 +60,23 @@ class TaskLogView(
             outputFormatter.printInfo("📌 ${index + 1}. ${project.title} | 🆔 ID: ${project.id}")
         }
 
-        val projectIndex = inputHandler.promptForIntChoice("🔹 Select a project to view task logs:", 1..projects.size) - 1
-        val selectedProject = projects[projectIndex]
+        return@withContext projects
+    }
 
-        val tasks = getAllTasksByProjectIdUseCase.getAllTasksByProjectId(selectedProject.id!!)
+
+    private suspend fun selectProject(projects: List<Project>): Project? = withContext(Dispatchers.IO) {
+        val projectIndex =
+            inputHandler.promptForIntChoice("🔹 Select a project to view task logs:", 1..projects.size) - 1
+        return@withContext projects.getOrNull(projectIndex)
+    }
+
+
+    private suspend fun fetchTasks(project: Project): List<Task>? = withContext(Dispatchers.IO) {
+        val tasks = getAllTasksByProjectIdUseCase.getAllTasksByProjectId(project.id!!)
 
         if (tasks.isEmpty()) {
-            outputFormatter.printWarning("⚠️ No tasks found for project '${selectedProject.title}'.")
-	        return@runBlocking
+            outputFormatter.printWarning("⚠️ No tasks found for project '${project.title}'.")
+            return@withContext null
         }
 
         outputFormatter.printInfo("📝 Available Tasks:")
@@ -52,28 +84,40 @@ class TaskLogView(
             outputFormatter.printInfo("✅ ${index + 1}. ${task.title} | 🏷️ Status: ${task.state?.title} | 🆔 ID: ${task.id}")
         }
 
-        val taskIndex = inputHandler.promptForIntChoice("🔹 Select a task to view logs:", 1..tasks.size) - 1
-        val selectedTask = tasks[taskIndex]
+        return@withContext tasks
+    }
 
-        val logs = getTaskLogsUseCase.execute(selectedTask.id?: UUID.randomUUID())
+
+    private suspend fun selectTask(tasks: List<Task>): Task? = withContext(Dispatchers.IO) {
+        val taskIndex = inputHandler.promptForIntChoice("🔹 Select a task to view logs:", 1..tasks.size) - 1
+        return@withContext tasks.getOrNull(taskIndex)
+    }
+
+
+    private suspend fun fetchLogs(task: Task): List<Log>? = withContext(Dispatchers.IO) {
+        val logs = getTaskLogsUseCase.execute(task.id ?: UUID.randomUUID())
 
         if (logs.isEmpty()) {
             outputFormatter.printError("❌ No logs found for this task.")
-	        return@runBlocking
+            return@withContext null
         }
 
-        outputFormatter.printHeader("📜 Task Logs for '${selectedTask.title}':")
+        return@withContext logs
+    }
+
+    private fun displayLogs(task: Task, logs: List<Log>) {
+        outputFormatter.printHeader("📜 Task Logs for '${task.title}':")
         logs.forEach { log ->
-            outputFormatter.printInfo("""
+            outputFormatter.printInfo(
+                """
                 🔹 Log ID: ${log.id}
                 📌 Entity: ${log.entityTitle} (${log.entityType})
                 ✏️ Action: ${log.userAction}
                 👤 User ID: ${log.userId}
                 ⏳ Timestamp: ${log.dateTime}
-            """.trimIndent())
+            """.trimIndent()
+            )
             println("--------------------------------------------------------------------------")
         }
-
-        inputHandler.waitForEnter()
     }
 }
