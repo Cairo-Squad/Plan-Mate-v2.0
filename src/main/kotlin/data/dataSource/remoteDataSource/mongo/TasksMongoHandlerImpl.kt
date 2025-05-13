@@ -15,7 +15,7 @@ class TasksMongoHandlerImpl(
 	getDtoId = { it.id?: UUID.randomUUID() }
 ) {
 	override fun convertDtoToDocument(entity: TaskDto): Document {
-		val id = entity.id ?: UUID.randomUUID()
+		val id = getDtoId(entity)
 		entity.id = id
 		return Document()
 			.append(MongoConstants.TASK_ID, id.toString())
