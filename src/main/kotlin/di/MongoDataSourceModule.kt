@@ -9,16 +9,23 @@ import org.koin.dsl.module
 
 val mongoRemoteDataSourceModule = module {
 
-    // Define handlers for each entity
     single<MongoDBHandler<ProjectDto>>(named("projectsHandler")) {
         ProjectsMongoHandlerImpl(
             database = get()
         )
     }
 
-    single<MongoDBHandler<LogDto>>(named("logsHandler")) {
+    single<MongoDBHandler<LogDto>>(named("taskLogsHandler")) {
         LogsMongoHandlerImpl(
-            database = get()
+            database = get(),
+            collectionName = "taskLogs"
+        )
+    }
+
+    single<MongoDBHandler<LogDto>>(named("projectLogsHandler")) {
+        LogsMongoHandlerImpl(
+            database = get(),
+            collectionName = "projectLogs"
         )
     }
 
@@ -40,15 +47,15 @@ val mongoRemoteDataSourceModule = module {
         )
     }
 
-    // DataSource implementation
     single<RemoteDataSource> {
         RemoteDataSourceImpl(
-            get(named("logsHandler")),
-            get(named("projectsHandler")),
-            get(named("statesHandler")),
-            get(named("tasksHandler")),
-            get(named("usersHandler")),
-            get()
+            taskLogsHandler = get(named("taskLogsHandler")),
+            projectLogsHandler = get(named("projectLogsHandler")),
+            projectsHandler = get(named("projectsHandler")),
+            statesHandler = get(named("statesHandler")),
+            tasksHandler = get(named("tasksHandler")),
+            usersHandler = get(named("usersHandler")),
+            passwordEncryptor = get()
         )
     }
 }

@@ -31,7 +31,8 @@ interface RemoteDataSource {
 	// endregion
 	
 	// region Logs
-	suspend fun recordLog(log: LogDto)
+	suspend fun addTaskLog(log: LogDto)
+	suspend fun addProjectLog(log: LogDto)
 	suspend fun getProjectLogs(projectId: UUID): List<LogDto>
 	suspend fun getTaskLogs(taskId: UUID): List<LogDto>
 	// endregion
