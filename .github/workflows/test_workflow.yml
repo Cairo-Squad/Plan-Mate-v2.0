@@ -83,5 +83,5 @@ jobs:
           message: |
             ✅ **Kover Test Coverage**
             - Coverage: ${{ steps.coverage.outputs.percentage }}%
-            - Minimum required: 100%
+            - Minimum required: 80%
             - Only logic package is checked.
