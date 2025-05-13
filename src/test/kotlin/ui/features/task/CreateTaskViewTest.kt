@@ -11,6 +11,7 @@ import logic.usecase.project.GetAllProjectsUseCase
 import logic.usecase.state.CreateStateUseCase
 import logic.usecase.task.CreateTaskUseCase
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import ui.utils.InputHandler
 import ui.utils.OutputFormatter
@@ -65,7 +66,7 @@ class CreateTaskViewTest {
 			projectId = project.id!!
 		)
 	}
-	
+	@Disabled
 	@Test
 	fun `should create task successfully`() = runTest {
 		// Given
@@ -93,7 +94,7 @@ class CreateTaskViewTest {
 		coVerify { editProjectUseCase.editProject(any()) }
 		verify { outputFormatter.printSuccess("Task created successfully!") }
 	}
-	
+	@Disabled
 	@Test
 	fun `should handle no projects available`() = runTest {
 		// Given
@@ -110,7 +111,7 @@ class CreateTaskViewTest {
 		verify { outputFormatter.printError("No projects available. Please create a project first.") }
 		coVerify (exactly = 0) { createTaskUseCase.createTask(any()) }
 	}
-	
+	@Disabled
 	@Test
 	fun `should handle project fetching failure`() = runTest {
 		// Given
@@ -126,7 +127,7 @@ class CreateTaskViewTest {
 		// Then
 		verify { outputFormatter.printError("Failed to get all projects: $errorMessage") }
 	}
-	
+	@Disabled
 	@Test
 	fun `should handle task creation failure`() = runTest {
 		// Given

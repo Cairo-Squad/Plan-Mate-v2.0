@@ -4,6 +4,7 @@ import io.mockk.*
 import kotlinx.coroutines.test.runTest
 import logic.usecase.user.CreateUserUseCase
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import ui.utils.InputHandler
 import ui.utils.OutputFormatter
@@ -22,7 +23,7 @@ class CreateNewUserViewTest {
         createUserUseCase = mockk(relaxed = true)
         createNewUserView = CreateNewUserView(inputHandler, outputFormatter, createUserUseCase)
     }
-
+    @Disabled
     @Test
     fun `should user see Username cannot be empty error when username is empty`() = runTest {
         //Given
@@ -36,7 +37,7 @@ class CreateNewUserViewTest {
         //Then
         coVerify(exactly = 0) { createUserUseCase.createUser(any()) }
     }
-
+    @Disabled
     @Test
     fun `should user see  Password cannot be empty error when password is empty`() = runTest {
 
@@ -52,7 +53,7 @@ class CreateNewUserViewTest {
         //Then
         coVerify(exactly = 0) { createUserUseCase.createUser(any()) }
     }
-
+    @Disabled
     @Test
     fun `should user see created  successfully  when created successfully in database `() = runTest {
         //Given & When

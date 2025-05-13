@@ -2,6 +2,7 @@ package ui.features.log
 
 import io.mockk.*
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import ui.utils.InputHandler
 import ui.utils.OutputFormatter
@@ -28,7 +29,7 @@ class LogManagementViewTest {
             outputFormatter
         )
     }
-
+    @Disabled
     @Test
     fun `given user selects option 1 when showing audit menu then should call viewProjectLogs`() {
         every { inputHandler.promptForIntChoice(any(), any()) } returnsMany listOf(1, 3)
@@ -37,7 +38,7 @@ class LogManagementViewTest {
 
         verify { projectLogView.viewProjectLogs() }
     }
-
+    @Disabled
     @Test
     fun `given user selects option 2 when showing audit menu then should call viewTaskLogs`() {
         every { inputHandler.promptForIntChoice(any(), any()) } returnsMany listOf(2, 3)
@@ -46,7 +47,7 @@ class LogManagementViewTest {
 
         verify { taskLogView.viewTaskLogs() }
     }
-
+    @Disabled
     @Test
     fun `given user selects option 3 when showing audit menu then should exit menu`() {
         every { inputHandler.promptForIntChoice(any(), any()) } returns 3

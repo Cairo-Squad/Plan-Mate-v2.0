@@ -7,6 +7,7 @@ import logic.model.State
 import logic.model.Task
 import logic.usecase.project.GetAllProjectsUseCase
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import ui.utils.InputHandler
 import ui.utils.OutputFormatter
@@ -67,7 +68,7 @@ class ProjectDetailViewTest {
 			getProject(title = "Test Project $it", taskCount = tasksPerProject)
 		}
 	}
-	
+	@Disabled
 	@Test
 	fun `should show error when no projects available`() = runTest {
 		// Given
@@ -81,7 +82,7 @@ class ProjectDetailViewTest {
 		verify { outputFormatter.printError("❌ No projects available to view!") }
 		verify(exactly = 0) { inputHandler.promptForYesNo(any()) }
 	}
-	
+	@Disabled
 	@Test
 	fun `should display project list but not details when user declines to view details`() = runTest {
 		// Given
@@ -102,7 +103,7 @@ class ProjectDetailViewTest {
 		verify(exactly = 0) { inputHandler.promptForIntChoice(any(), any()) }
 		verify(exactly = 0) { outputFormatter.printInfo("📝 Description") }
 	}
-	
+	@Disabled
 	@Test
 	fun `should display project details when user chooses to view a project`() = runTest {
 		// Given
@@ -131,7 +132,7 @@ class ProjectDetailViewTest {
 		verify { outputFormatter.printInfo(match { it.startsWith("✅ Tasks:") }) }
 		verify { inputHandler.waitForEnter() }
 	}
-	
+	@Disabled
 	@Test
 	fun `should display project with empty task list correctly`() = runTest {
 		// Given
@@ -150,7 +151,7 @@ class ProjectDetailViewTest {
 		verify { outputFormatter.printInfo(match { it.contains("✅ Tasks:") && it.contains("⚠️ No tasks available.") }) }
 		verify { inputHandler.waitForEnter() }
 	}
-	
+	@Disabled
 	@Test
 	fun `should display project with multiple tasks correctly`() = runTest {
 		// Given

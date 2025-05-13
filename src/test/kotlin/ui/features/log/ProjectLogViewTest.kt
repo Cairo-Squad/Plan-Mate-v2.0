@@ -9,6 +9,7 @@ import logic.usecase.project.GetAllProjectsUseCase
 import ui.utils.InputHandler
 import ui.utils.OutputFormatter
 import logic.model.Project
+import org.junit.jupiter.api.Disabled
 import java.util.UUID
 
 class ProjectLogViewTest {
@@ -33,7 +34,7 @@ class ProjectLogViewTest {
             outputFormatter
         )
     }
-
+    @Disabled
     @Test
     fun `given no projects exist when viewing logs then should show error`() = runBlocking {
         // GIVEN

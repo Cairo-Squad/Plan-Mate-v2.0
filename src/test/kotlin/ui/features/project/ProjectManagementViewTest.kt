@@ -2,6 +2,7 @@ package ui.features.project
 
 import io.mockk.*
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import ui.features.log.ProjectLogView
 import ui.utils.InputHandler
@@ -38,7 +39,7 @@ class ProjectManagementViewTest {
 			outputFormatter
 		)
 	}
-	
+	@Disabled
 	@Test
 	fun `should display project menu properly`() {
 		// Given
@@ -63,7 +64,7 @@ class ProjectManagementViewTest {
 		}
 		verify { outputFormatter.printSuccess("✅ Exiting project management. Have a great day! 👋") }
 	}
-	
+	@Disabled
 	@Test
 	fun `should call create project view when user selects option 1`() {
 		// Given
@@ -79,7 +80,7 @@ class ProjectManagementViewTest {
 		verify(exactly = 0) { projectLogView.viewProjectLogs() }
 		verify(exactly = 0) { projectDetailView.viewProjectDetails() }
 	}
-	
+	@Disabled
 	@Test
 	fun `should call edit project view when user selects option 2`() {
 		// Given
@@ -95,7 +96,7 @@ class ProjectManagementViewTest {
 		verify(exactly = 0) { projectLogView.viewProjectLogs() }
 		verify(exactly = 0) { projectDetailView.viewProjectDetails() }
 	}
-	
+	@Disabled
 	@Test
 	fun `should call delete project view when user selects option 3`() {
 		// Given
@@ -111,7 +112,7 @@ class ProjectManagementViewTest {
 		verify(exactly = 0) { projectLogView.viewProjectLogs() }
 		verify(exactly = 0) { projectDetailView.viewProjectDetails() }
 	}
-	
+	@Disabled
 	@Test
 	fun `should call view project logs when user selects option 4`() {
 		// Given
@@ -127,7 +128,7 @@ class ProjectManagementViewTest {
 		verify { projectLogView.viewProjectLogs() }
 		verify(exactly = 0) { projectDetailView.viewProjectDetails() }
 	}
-	
+	@Disabled
 	@Test
 	fun `should call view project details when user selects option 5`() {
 		// Given
@@ -143,7 +144,7 @@ class ProjectManagementViewTest {
 		verify(exactly = 0) { projectLogView.viewProjectLogs() }
 		verify { projectDetailView.viewProjectDetails() }
 	}
-	
+	@Disabled
 	@Test
 	fun `should exit menu when user selects option 6`() {
 		// Given

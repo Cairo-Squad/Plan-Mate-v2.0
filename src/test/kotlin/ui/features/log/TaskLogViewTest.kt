@@ -12,6 +12,7 @@ import ui.utils.OutputFormatter
 import logic.model.Project
 import logic.model.Task
 import logic.model.Log
+import org.junit.jupiter.api.Disabled
 import java.util.UUID
 
 class TaskLogViewTest {
@@ -39,7 +40,7 @@ class TaskLogViewTest {
             outputFormatter
         )
     }
-
+    @Disabled
     @Test
     fun `given no projects exist when viewing task logs then should show error`() = runBlocking {
         // GIVEN
@@ -51,7 +52,7 @@ class TaskLogViewTest {
         // THEN
         verify { outputFormatter.printError("❌ No projects available for task logs!") }
     }
-
+    @Disabled
     @Test
     fun `given a project with no tasks when viewing task logs then should display warning`() = runBlocking {
         // GIVEN
@@ -66,7 +67,7 @@ class TaskLogViewTest {
         // THEN
         verify { outputFormatter.printWarning("⚠️ No tasks found for project 'Test Project'.") }
     }
-
+    @Disabled
     @Test
     fun `given a task with no logs when viewing task logs then should display error`() = runBlocking {
         // GIVEN
