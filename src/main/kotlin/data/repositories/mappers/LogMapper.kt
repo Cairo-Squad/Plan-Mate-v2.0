@@ -17,12 +17,12 @@ fun LogDto.toLog(): Log {
 
 fun Log.toLogDto(): LogDto {
     return LogDto(
-        id = this.id,
-        entityId = this.entityId,
-        entityTitle = this.entityTitle,
-        entityType = this.entityType,
-        dateTime = this.dateTime,
-        userId = this.userId,
-        userAction = this.userAction,
+        id = this.id!!,
+        entityId = this.entityId!!,
+        entityTitle = this.entityTitle!!,
+        entityType = this.entityType!!,
+        dateTime = this.dateTime!!,
+        userId = this.userId!!,
+        userAction = this.userAction!!,
     )
 }
