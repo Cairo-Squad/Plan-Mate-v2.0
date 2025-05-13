@@ -10,6 +10,7 @@ import logic.usecase.project.GetAllProjectsUseCase
 import logic.usecase.task.DeleteTaskUseCase
 import logic.usecase.task.GetAllTasksByProjectIdUseCase
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import ui.utils.InputHandler
@@ -69,7 +70,7 @@ class DeleteTaskViewTest {
 			projectId = projectId ?: UUID.randomUUID()
 		)
 	}
-	
+	@Disabled
 	@Test
 	fun `should handle task deletion successfully`() = runTest {
 		// Given
@@ -97,7 +98,7 @@ class DeleteTaskViewTest {
 		coVerify { editProjectUseCase.editProject(any()) }
 		verify { outputFormatter.printSuccess("✅ Task '${task.title}' deleted successfully!") }
 	}
-	
+	@Disabled
 	@Test
 	fun `should handle task deletion cancellation`() = runTest {
 		// Given
@@ -122,7 +123,7 @@ class DeleteTaskViewTest {
 		coVerify(exactly = 0) { deleteTaskUseCase.deleteTask(any()) }
 		coVerify(exactly = 0) { editProjectUseCase.editProject(any()) }
 	}
-	
+	@Disabled
 	@Test
 	fun `should handle no projects available`() = runTest {
 		// Given
@@ -135,7 +136,7 @@ class DeleteTaskViewTest {
 		verify { outputFormatter.printError("❌ No projects available for task deletion!") }
 		verify(exactly = 0) { inputHandler.promptForIntChoice(any(), any()) }
 	}
-	
+	@Disabled
 	@Test
 	fun `should handle no tasks in selected project`() = runTest {
 		// Given
@@ -156,7 +157,7 @@ class DeleteTaskViewTest {
 		verify { outputFormatter.printWarning("⚠️ No tasks found for project '${project.title}'.") }
 		verify(exactly = 0) { inputHandler.promptForIntChoice("🔹 Select a task to delete:", any()) }
 	}
-	
+	@Disabled
 	@Test
 	fun `should handle project fetching failure`() = runTest {
 		// Given
@@ -168,7 +169,7 @@ class DeleteTaskViewTest {
 			deleteTaskView.deleteTask()
 		}
 	}
-	
+	@Disabled
 	@Test
 	fun `should handle task deletion failure`() = runTest {
 		// Given

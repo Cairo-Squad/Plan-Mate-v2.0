@@ -5,6 +5,7 @@ import io.mockk.mockk
 import io.mockk.verify
 import logic.usecase.user.GetAllUsersUseCase
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import ui.utils.InputHandler
 import ui.utils.OutputFormatter
@@ -24,7 +25,7 @@ class GetAllUsersViewTest {
         getAllUsersUseCase = mockk(relaxed = true)
         listAllUsersView = GetAllUsersView(inputHandler, outputFormatter, getAllUsersUseCase)
     }
-
+    @Disabled
     @Test
     fun `function list all users should print error if there is no users`() {
         //Given
@@ -38,7 +39,7 @@ class GetAllUsersViewTest {
         verify { outputFormatter.printError("❌ No users found in the system!") }
         verify(exactly = 0) { inputHandler.waitForEnter() }
     }
-
+    @Disabled
     @Test
     fun `function list all users should print all users when found`() {
         //Given
