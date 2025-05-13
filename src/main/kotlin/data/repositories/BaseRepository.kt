@@ -2,10 +2,7 @@ package data.repositories
 
 import com.mongodb.MongoException
 import com.mongodb.MongoWriteException
-import logic.exception.AdminException
-import logic.exception.GeneralException
-import logic.exception.NetworkException
-import logic.exception.UserException
+import logic.exception.PlanMateException
 import java.io.IOException
 
 abstract class BaseRepository {
@@ -14,13 +11,11 @@ abstract class BaseRepository {
             function()
         } catch (e: Exception) {
             when (e) {
-                is UserException -> throw UserException()
-                is AdminException -> throw AdminException()
-                is GeneralException -> throw GeneralException()
-                is IllegalArgumentException -> throw NetworkException.InvalidCollectionName()
-                is IOException -> throw NetworkException.IOException()
-                is MongoWriteException -> throw NetworkException.WriteException(e.message)
-                is MongoException -> throw NetworkException.ApiException(e.message)
+                is PlanMateException -> throw e
+                is IllegalArgumentException -> throw PlanMateException.NetworkException.InvalidCollectionName()
+                is IOException -> throw PlanMateException.NetworkException.IOException()
+                is MongoWriteException -> throw PlanMateException.NetworkException.WriteException(e.message)
+                is MongoException -> throw PlanMateException.NetworkException.ApiException(e.message)
                 else -> throw Exception("Unhandled exception")
             }
         }

@@ -44,8 +44,7 @@ abstract class MongoDBHandlerImpl<DTO>(
         return result.wasAcknowledged()
     }
 
-    override fun delete(entity: DTO): Boolean {
-        val entityId = getDtoId(entity)
+    override fun delete(entityId: UUID): Boolean {
         val result = collection.deleteOne(Filters.eq("_id", entityId.toString()))
         return result.wasAcknowledged()
     }
@@ -54,7 +53,6 @@ abstract class MongoDBHandlerImpl<DTO>(
         return collection.find()
             .map { convertDocumentToDto(it) }
             .toList()
-
     }
 
     override fun readByEntityId(id: UUID): DTO {

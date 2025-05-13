@@ -8,7 +8,7 @@ interface RemoteDataSource {
     suspend fun getAllUsers(): List<UserDto>
     suspend fun createUser(user: UserDto): Boolean
     suspend fun editUser(user: UserDto): Boolean
-    suspend fun deleteUser(user: UserDto): Boolean
+    suspend fun deleteUser(userId: UUID): Boolean
     suspend fun loginUser(name: String, password: String): Boolean
     suspend fun getCurrentUser(): UserDto?
 

@@ -16,18 +16,15 @@ class AuthenticationRepositoryImpl(
 
     override suspend fun getAllUsers(): List<User> {
         return wrap {
-                val usersDto = remoteDataSource.getAllUsers()
-                usersDto.map { it.toUser() }
-            }
+            val usersDto = remoteDataSource.getAllUsers()
+            usersDto.map { it.toUser() }
+        }
     }
 
     override suspend fun deleteUser(userId: UUID): Boolean {
         return wrap {
-                val userDto = remoteDataSource.getAllUsers()
-                    .find { it.id == userId } ?: throw NotFoundException()
-                remoteDataSource.deleteUser(userDto)
-                true
-            }
+            remoteDataSource.deleteUser(userId)
+        }
     }
 
     override suspend fun createUser(user: User): Boolean {
