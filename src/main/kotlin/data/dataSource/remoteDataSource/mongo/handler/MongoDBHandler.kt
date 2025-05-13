@@ -4,12 +4,10 @@ import java.util.UUID
 
 interface MongoDBHandler<DTO> {
     fun write(entity: DTO): Boolean
-    fun edit(entity: DTO)
-    fun delete(entity: DTO)
+    fun edit(entity: DTO):Boolean
+    fun delete(entity: DTO):Boolean
     fun readAll(): List<DTO>
     fun readByEntityId(id: UUID): DTO
 
     //overlaoding
-    fun edit(entity: DTO, ayhaga: Boolean = true): Boolean
-    fun delete(entity: DTO, ayhaga: Boolean = true): Boolean
 }

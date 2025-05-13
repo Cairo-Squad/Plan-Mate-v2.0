@@ -88,7 +88,7 @@ class EditUserView(
         try {
             editUserUseCase.editUser(updatedUser)
             outputFormatter.printSuccess("✅ User '${selectedUser.name}' updated successfully!")
-        } catch (e: EntityNotChangedException) {
+        } catch (e: Exception) {
             outputFormatter.printError("🔄 No changes were applied: ${e.message}")
         }
 

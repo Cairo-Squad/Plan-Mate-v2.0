@@ -3,7 +3,6 @@ package logic.usecase.state
 import io.mockk.*
 import kotlinx.coroutines.test.runTest
 import logic.exception.NotFoundException
-import logic.exception.EmptyNameException
 import logic.model.State
 import logic.repositories.StatesRepository
 import org.junit.jupiter.api.BeforeEach

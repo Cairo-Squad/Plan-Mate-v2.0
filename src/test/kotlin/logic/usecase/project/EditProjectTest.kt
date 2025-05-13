@@ -2,7 +2,7 @@ package logic.usecase.project
 
 import io.mockk.*
 import kotlinx.coroutines.test.runTest
-import logic.exception.EmptyNameException
+import logic.exception.NameException
 import logic.exception.UnknownException
 import logic.model.Project
 import logic.model.State
@@ -77,10 +77,10 @@ class EditProjectTest {
     fun `should throw empty name exception when editing project with empty title`() = runTest {
         //Given
         val newProject = getNewProject().copy(title = "   ")
-        every { validationProject.validateEditProject(newProject) } throws EmptyNameException()
+        every { validationProject.validateEditProject(newProject) } throws NameException()
 
         //When & Then
-        assertThrows<EmptyNameException> { editProjectDescription.editProject(newProject) }
+        assertThrows<NameException> { editProjectDescription.editProject(newProject) }
     }
 
     private fun getNewProject() = Project(

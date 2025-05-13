@@ -30,11 +30,11 @@ class RemoteDataSourceImpl(
     }
 
     override suspend fun editUser(user: UserDto): Boolean {
-        return usersHandler.edit(user, true)
+        return usersHandler.edit(user)
     }
 
     override suspend fun deleteUser(user: UserDto): Boolean {
-        return usersHandler.delete(user, true)
+        return usersHandler.delete(user)
     }
 
     override suspend fun loginUser(name: String, password: String): Boolean {
