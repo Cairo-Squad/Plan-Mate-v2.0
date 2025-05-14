@@ -19,7 +19,6 @@ class UsersMongoHandlerImpl(
 		return Document()
 			.append(MongoConstants.USER_ID, entity.id.toString())
 			.append(MongoConstants.USER_NAME, entity.name)
-			.append(MongoConstants.USER_PASSWORD, entity.password)
 			.append(MongoConstants.USER_TYPE, entity.type.name)
 	}
 	
@@ -27,7 +26,6 @@ class UsersMongoHandlerImpl(
 		return UserDto(
 			id = UUID.fromString(document.getString(MongoConstants.USER_ID)),
 			name = document.getString(MongoConstants.USER_NAME),
-			password = document.getString(MongoConstants.USER_PASSWORD),
 			type = UserType.valueOf(document.getString(MongoConstants.USER_TYPE))
 		)
 	}

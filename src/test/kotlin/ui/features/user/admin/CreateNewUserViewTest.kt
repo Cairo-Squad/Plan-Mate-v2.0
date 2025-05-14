@@ -2,7 +2,7 @@ package ui.features.user.admin
 
 import io.mockk.*
 import kotlinx.coroutines.test.runTest
-import logic.usecase.user.CreateUserUseCase
+import logic.usecase.user.SignUpUseCase
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
@@ -13,15 +13,15 @@ class CreateNewUserViewTest {
 
     private lateinit var inputHandler: InputHandler
     private lateinit var outputFormatter: OutputFormatter
-    private lateinit var createUserUseCase: CreateUserUseCase
+    private lateinit var signUpUseCase: SignUpUseCase
     private lateinit var createNewUserView: CreateNewUserView
 
     @BeforeEach
     fun setUp() {
         inputHandler = mockk(relaxed = true)
         outputFormatter = mockk(relaxed = true)
-        createUserUseCase = mockk(relaxed = true)
-        createNewUserView = CreateNewUserView(inputHandler, outputFormatter, createUserUseCase)
+        signUpUseCase = mockk(relaxed = true)
+        createNewUserView = CreateNewUserView(inputHandler, outputFormatter, signUpUseCase)
     }
     @Disabled
     @Test
@@ -35,7 +35,7 @@ class CreateNewUserViewTest {
         verify { inputHandler.waitForEnter() }
 
         //Then
-        coVerify(exactly = 0) { createUserUseCase.createUser(any()) }
+        coVerify(exactly = 0) { signUpUseCase.signUp(any()) }
     }
     @Disabled
     @Test
@@ -51,7 +51,7 @@ class CreateNewUserViewTest {
         verify { inputHandler.waitForEnter() }
 
         //Then
-        coVerify(exactly = 0) { createUserUseCase.createUser(any()) }
+        coVerify(exactly = 0) { signUpUseCase.signUp(any()) }
     }
     @Disabled
     @Test
@@ -59,7 +59,7 @@ class CreateNewUserViewTest {
         //Given & When
         every { inputHandler.promptForInput(any()) } returns "nour"
         every { inputHandler.promptForPassword(any()) } returns "123456"
-        coEvery { createUserUseCase.createUser(any()) } returns true
+        coEvery { signUpUseCase.signUp(any()) } returns true
         createNewUserView.createNewUser()
 
         //Then

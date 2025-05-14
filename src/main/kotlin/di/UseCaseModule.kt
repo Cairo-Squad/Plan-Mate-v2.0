@@ -35,7 +35,7 @@ val useCasesModule = module {
     // endregion
 
     // region Users
-    single { CreateUserUseCase(get()) }
+    single { SignUpUseCase(get(),get()) }
     single { EditUserUseCase(get()) }
     single { LoginUserUseCase(get()) }
     single { DeleteUserUseCase(get()) }

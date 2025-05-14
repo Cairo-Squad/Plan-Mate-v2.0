@@ -6,6 +6,7 @@ import data.hashing.PasswordEncryptor
 import data.repositories.mappers.toUser
 import data.repositories.mappers.toUserDto
 import logic.model.User
+import logic.model.UserType
 import logic.repositories.AuthenticationRepository
 import java.util.*
 
@@ -27,9 +28,9 @@ class AuthenticationRepositoryImpl(
         }
     }
 
-    override suspend fun createUser(user: User): Boolean {
+    override suspend fun signUp(userName:String, userPassword:String, userType: UserType): UUID {
         return wrap {
-            remoteDataSource.createUser(user.toUserDto())
+            remoteDataSource.signUp(userName, userPassword, userType)
         }
     }
 

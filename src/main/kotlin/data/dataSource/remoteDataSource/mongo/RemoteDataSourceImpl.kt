@@ -1,10 +1,11 @@
 package data.dataSource.remoteDataSource.mongo
 
+import data.customException.PlanMateException
 import data.dataSource.remoteDataSource.RemoteDataSource
 import data.dataSource.remoteDataSource.mongo.handler.MongoDBHandler
 import data.dto.*
-import data.hashing.PasswordEncryptor
 import logic.model.EntityType
+import logic.model.UserType
 import java.util.*
 
 class RemoteDataSourceImpl(
@@ -14,7 +15,7 @@ class RemoteDataSourceImpl(
     private val statesHandler: MongoDBHandler<StateDto>,
     private val tasksHandler: MongoDBHandler<TaskDto>,
     private val usersHandler: MongoDBHandler<UserDto>,
-    private val passwordEncryptor: PasswordEncryptor
+    private val signUpHandler: SignUpHandler,
 ) : RemoteDataSource {
     private var currentUser: UserDto? = null
 
@@ -22,12 +23,13 @@ class RemoteDataSourceImpl(
         return usersHandler.readAll()
     }
 
-    override suspend fun createUser(user: UserDto): Boolean {
-        val updatedUser = user.copy(
-            id = UUID.randomUUID(),
-            password = passwordEncryptor.hashPassword(user.password)
+    override suspend fun signUp(userName:String, userPassword:String, userType: UserType): UUID {
+        val signUpRequest = SignUpHandler.SignUpRequest(
+            userName = userName,
+            userPassword = userPassword,
+            userType = userType
         )
-        return usersHandler.write(updatedUser)
+        return signUpHandler.createNewUser(signUpRequest)
     }
 
     override suspend fun editUser(user: UserDto): Boolean {
@@ -39,10 +41,11 @@ class RemoteDataSourceImpl(
     }
 
     override suspend fun loginUser(name: String, password: String): Boolean {
-        val users = usersHandler.readAll()
-        val user = users.find { it.name == name && it.password == password }
-        setCurrentUser(user)
-        return user != null
+//        val users = usersHandler.readAll()
+//        val user = users.find { it.name == name && it.password == password }
+//        setCurrentUser(user)
+//        return user != null
+        throw PlanMateException.NotYetImplementedException()
     }
 
     override suspend fun getCurrentUser(): UserDto? {

@@ -7,14 +7,14 @@ import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import logic.model.User
 import logic.repositories.AuthenticationRepository
-import logic.usecase.user.CreateUserUseCase
+import logic.usecase.user.SignUpUseCase
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import java.util.*
 
-class CreateUserUseCaseTest {
+class signUpUseCaseTest {
     private lateinit var repository: AuthenticationRepository
-    private lateinit var createUserUseCase: CreateUserUseCase
+    private lateinit var signUpUseCase: SignUpUseCase
     private val validUser = User(
         id = UUID.randomUUID(),
         name = "ahmed",
@@ -25,17 +25,17 @@ class CreateUserUseCaseTest {
     @BeforeEach
     fun setup() {
         repository = mockk(relaxed = true)
-        createUserUseCase = CreateUserUseCase(repository)
+        signUpUseCase = SignUpUseCase(repository)
     }
 
     @Test
     fun `should call repository when all inputs are valid`() = runTest {
         // Given
         val user = validUser
-        coEvery { repository.createUser(validUser) } returns true
+        coEvery { repository.signUp(validUser) } returns true
 
         // When
-        val isCreated = createUserUseCase.createUser(validUser)
+        val isCreated = signUpUseCase.signUp(validUser)
 
         // Then
         assertThat(isCreated).isTrue()
@@ -48,12 +48,12 @@ class CreateUserUseCaseTest {
         // Given
         val user = validUser
         val userWithDifferentId = validUser.copy(id = UUID.randomUUID())
-        coEvery { repository.createUser(user) } returns true
-        coEvery { repository.createUser(userWithDifferentId) } returns true
+        coEvery { repository.signUp(user) } returns true
+        coEvery { repository.signUp(userWithDifferentId) } returns true
 
         // When
-        val firstUser = createUserUseCase.createUser(user)
-        val secondUser = createUserUseCase.createUser(userWithDifferentId)
+        val firstUser = signUpUseCase.signUp(user)
+        val secondUser = signUpUseCase.signUp(userWithDifferentId)
 
         // Then
         assertThat(firstUser).isTrue()

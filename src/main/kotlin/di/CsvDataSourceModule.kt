@@ -53,7 +53,6 @@ val localDataSourceModule = module {
             statesCsvHandler = get(named("statesHandler")),
             tasksCsvHandler = get(named("tasksHandler")),
             usersCsvHandler = get(named("userHandler")),
-            passwordEncryptor = get()
         )
     }
 }
