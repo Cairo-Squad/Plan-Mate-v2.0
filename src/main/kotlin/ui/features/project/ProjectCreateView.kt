@@ -16,29 +16,28 @@ class ProjectCreateView(
 	private val inputHandler: InputHandler,
 	private val outputFormatter: OutputFormatter,
 	private val createStateUseCase: CreateStateUseCase,
-    private val getCurrentUserUseCase : GetCurrentUserUseCase,
+	private val getCurrentUserUseCase: GetCurrentUserUseCase,
 	private val getAllStatesUseCase: GetAllStatesUseCase
 ) {
 	fun createProject() = runBlocking {
 		displayHeader()
-
+		
 		val currentUser = validateUserAuthentication() ?: return@runBlocking
-
+		
 		val (title, description) = collectProjectInfo()
 		val projectState = createInitialState()
-
+		
 		val project = buildProject(title, description, currentUser.id!!, projectState)
-
+		
 		try {
-			val isProjectCreated = createProjectUseCase.createProject(project, currentUser)
-			if (isProjectCreated) {
-				outputFormatter.printSuccess("✅ Project '${title}' created successfully! 🎉")
-			}
+			createProjectUseCase.createProject(project, currentUser)
+			outputFormatter.printSuccess("✅ Project '${title}' created successfully! 🎉")
+			
 		} catch (ex: Exception) {
 			outputFormatter.printError("❌ Failed to create project: ${ex.message}")
 		}
 	}
-
+	
 	private fun displayHeader() {
 		outputFormatter.printHeader(
 			"""
@@ -48,32 +47,32 @@ class ProjectCreateView(
             """.trimIndent()
 		)
 	}
-
+	
 	private suspend fun validateUserAuthentication() = getCurrentUserUseCase.getCurrentUser().also {
 		if (it == null) {
 			outputFormatter.printError("❌ No authenticated user found! Please log in first.")
 		}
 	}
-
+	
 	private fun collectProjectInfo(): Pair<String, String> {
 		val title = inputHandler.promptForInput("📂 Enter project title: ")
 		val description = inputHandler.promptForInput("📝 Enter project description: ")
 		return title to description
 	}
-
+	
 	private fun createInitialState(): State = runBlocking {
 		val stateTitle = inputHandler.promptForInput("📊 Enter initial project state: ")
 		val isProjectStateCreated = createStateUseCase.createState(State(title = stateTitle))
-		if (isProjectStateCreated){
+		if (isProjectStateCreated) {
 			val projectState = getAllStatesUseCase.getAllStateById().last()
 			return@runBlocking projectState
 		}
 		return@runBlocking State()
 	}
-
+	
 	private fun buildProject(title: String, description: String, userId: UUID, state: State): Project {
 		return Project(
-			title = title, description = description, createdBy = userId, tasks = emptyList(), state = state
+			title = title, description = description, createdBy = userId, state = state
 		)
 	}
 }
