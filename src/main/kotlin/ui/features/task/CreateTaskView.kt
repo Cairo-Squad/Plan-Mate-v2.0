@@ -88,11 +88,10 @@ class CreateTaskView(
     private suspend fun createAndUpdateProject(task: Task, selectedProject: Project) {
         try {
             val isCreatedTask = createTaskUseCase.createTask(task)
-	        val createdTask = getAllTasksUseCase.getAllTasks().last()
+	        getAllTasksUseCase.getAllTasks().last()
             if (isCreatedTask){
                 val updatedProject = selectedProject.copy(
                     id = selectedProject.id,
-                    tasks = selectedProject.tasks?.plus(createdTask)
                 )
                 
                 editProjectUseCase.editProject(updatedProject)
