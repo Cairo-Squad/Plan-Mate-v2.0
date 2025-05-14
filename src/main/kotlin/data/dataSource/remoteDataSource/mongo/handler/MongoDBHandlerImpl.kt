@@ -36,7 +36,13 @@ abstract class MongoDBHandlerImpl<DTO>(
         val result: InsertOneResult = collection.insertOne(document)
         return result.wasAcknowledged()
     }
-
+    
+    override fun write(entity: DTO, fakeParam: String): DTO {
+        val document = convertDtoToDocument(entity)
+        collection.insertOne(document)
+        return convertDocumentToDto(document)
+    }
+    
     override fun edit(entity: DTO): Boolean {
         val entityId = getDtoId(entity)
         val document = convertDtoToDocument(entity)
@@ -48,6 +54,16 @@ abstract class MongoDBHandlerImpl<DTO>(
         val result = collection.deleteOne(Filters.eq("_id", entityId.toString()))
         return result.wasAcknowledged()
     }
+	
+	override fun edit(entity: DTO, fakeParam: String) {
+		val entityId = getDtoId(entity)
+		val document = convertDtoToDocument(entity)
+		collection.replaceOne(Filters.eq("_id", entityId.toString()), document)
+	}
+	
+	override fun delete(entityId: UUID, fakeParam: String) {
+		collection.deleteOne(Filters.eq("_id", entityId.toString()))
+	}
 
     override fun readAll(): List<DTO> {
         return collection.find()
