@@ -47,7 +47,6 @@ class ProjectEditViewTest {
 			title = title,
 			description = "Test Description",
 			createdBy = UUID.randomUUID(),
-			tasks = emptyList(),
 			state = state
 		)
 	}

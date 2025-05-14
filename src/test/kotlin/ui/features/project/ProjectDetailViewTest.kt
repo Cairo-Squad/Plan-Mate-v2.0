@@ -6,6 +6,7 @@ import logic.model.Project
 import logic.model.State
 import logic.model.Task
 import logic.usecase.project.GetAllProjectsUseCase
+import logic.usecase.task.GetAllTasksByProjectIdUseCase
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
@@ -19,6 +20,7 @@ class ProjectDetailViewTest {
 	private lateinit var inputHandler: InputHandler
 	private lateinit var outputFormatter: OutputFormatter
 	private lateinit var projectDetailView: ProjectDetailView
+	private lateinit var getAllTasksByProjectIdUseCase: GetAllTasksByProjectIdUseCase
 	
 	@BeforeEach
 	fun setup() {
@@ -29,7 +31,8 @@ class ProjectDetailViewTest {
 		projectDetailView = ProjectDetailView(
 			getAllProjectsUseCase,
 			inputHandler,
-			outputFormatter
+			outputFormatter,
+			getAllTasksByProjectIdUseCase
 		)
 	}
 	
@@ -58,7 +61,6 @@ class ProjectDetailViewTest {
 			title = title,
 			description = "Test Description",
 			createdBy = UUID.randomUUID(),
-			tasks = tasks,
 			state = state
 		)
 	}
@@ -172,5 +174,6 @@ class ProjectDetailViewTest {
 			verify { outputFormatter.printInfo(match { it.contains("Task $i") }) }
 		}
 		verify { inputHandler.waitForEnter() }
+		coVerify { getAllTasksByProjectIdUseCase.getAllTasksByProjectId(project.id!!) }
 	}
 }
