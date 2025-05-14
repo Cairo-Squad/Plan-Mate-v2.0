@@ -18,7 +18,7 @@ import ui.utils.OutputFormatter
 
 val uiModule = module {
     single {
-        ProjectEditView(get(), get(), get(), get() ,get())
+        ProjectEditView(get(), get(), get(), get(), get())
     }
 
     single {
@@ -46,7 +46,7 @@ val uiModule = module {
     }
 
     single {
-        ProjectCreateView(get(), get(), get(), get() ,get(), get())
+        ProjectCreateView(get(), get(), get(), get(), get(), get())
     }
 
     single {
@@ -54,7 +54,7 @@ val uiModule = module {
     }
 
     single {
-        AdminManagementView(get(), get(), get(), get(), get(), get(), get(), get(),get())
+        AdminManagementView(get(), get(), get(), get(), get(), get(), get(), get(), get())
     }
 
     single {
@@ -66,36 +66,36 @@ val uiModule = module {
     }
 
     single {
-        CreateTaskView(get(), get(), get() ,get(), get(), get(), get(), get())
+        CreateTaskView(get(), get(), get(), get(), get(), get(), get(), get(), get())
     }
 
     single {
-        DeleteTaskView(get(), get(), get(), get() ,get(), get())
+        DeleteTaskView(get(), get(), get(), get(), get(), get())
     }
 
     single {
-        EditTaskView(get(), get(), get(), get(), get() ,get())
+        EditTaskView(get(), get(), get(), get(), get(), get())
     }
 
     single {
-        TaskManagementView(get(), get(), get(), get(), get(),get(),get())
+        TaskManagementView(get(), get(), get(), get(), get(), get(), get())
     }
 
-    single { UserManagementView(get(), get(),get()) }
+    single { UserManagementView(get(), get(), get()) }
 
     single {
-        LoginManagementView(get(), get(), get(),get(),get())
+        LoginManagementView(get(), get(), get(), get(), get())
     }
 
-    single { CLIMenu(get(), get(), get(),get()) }
-    
-    single { SwimlanesView(get(), get(),get(),get()) }
+    single { CLIMenu(get(), get(), get(), get()) }
 
-    single { CreateNewUserView(get() , get() , get()) }
+    single { SwimlanesView(get(), get(), get(), get()) }
 
-    single{ EditUserView(get() , get() , get() ,get()) }
+    single { CreateNewUserView(get(), get(), get()) }
 
-    single{ DeleteUserView(get() , get() ,get() ,get()) }
+    single { EditUserView(get(), get(), get(), get()) }
+
+    single { DeleteUserView(get(), get(), get(), get()) }
 
     single {
         GetAllUsersView(get(), get(), get())

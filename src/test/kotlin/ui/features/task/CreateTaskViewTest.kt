@@ -10,7 +10,10 @@ import logic.usecase.project.GetAllProjectsUseCase
 import logic.usecase.state.CreateStateUseCase
 import logic.usecase.state.GetAllStatesUseCase
 import logic.usecase.task.CreateTaskUseCase
+import logic.usecase.task.GetAllTasksByProjectIdUseCase
 import logic.usecase.task.GetAllTasksUseCase
+import logic.usecase.task.GetTaskByIdUseCaseTest
+import logic.usecase.task.GetTaskBytIdUseCase
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
@@ -19,7 +22,7 @@ import ui.utils.OutputFormatter
 import java.util.*
 
 class CreateTaskViewTest {
-	
+
 	private lateinit var createTaskUseCase: CreateTaskUseCase
 	private lateinit var inputHandler: InputHandler
 	private lateinit var outputFormatter: OutputFormatter
@@ -29,7 +32,8 @@ class CreateTaskViewTest {
 	private lateinit var createTaskView: CreateTaskView
 	private lateinit var getAllStatesUseCase: GetAllStatesUseCase
 	private lateinit var getAllTasksUseCase: GetAllTasksUseCase
-	
+	private lateinit var getTaskByIdUseCase: GetTaskBytIdUseCase
+
 	@BeforeEach
 	fun setup() {
 		createTaskUseCase = mockk(relaxed = true)
@@ -38,7 +42,8 @@ class CreateTaskViewTest {
 		editProjectUseCase = mockk(relaxed = true)
 		getAllProjectsUseCase = mockk(relaxed = true)
 		createStateUseCase = mockk(relaxed = true)
-		
+		getTaskByIdUseCase = mockk(relaxed = true)
+
 		createTaskView = CreateTaskView(
 			createTaskUseCase,
 			inputHandler,
@@ -47,10 +52,11 @@ class CreateTaskViewTest {
 			getAllProjectsUseCase,
 			createStateUseCase,
 			getAllStatesUseCase,
-			getAllTasksUseCase
+			getAllTasksUseCase,
+            getTaskByIdUseCase
 		)
 	}
-	
+
 	private fun getProject(): Project {
 		val projectId = UUID.randomUUID()
 		val state = State(UUID.randomUUID(), "To Do")
@@ -80,18 +86,18 @@ class CreateTaskViewTest {
 		val state = State(UUID.randomUUID(), "Test State")
 
 		coEvery { getAllProjectsUseCase.getAllProjects() } returns listOf(project)
-		
+
 		every { inputHandler.promptForInput("Enter task title: ") } returns task.title!!
 		every { inputHandler.promptForInput("Enter task description: ") } returns task.description!!
 		every { inputHandler.promptForIntChoice(any(), any()) } returns 1
-		
+
 		coEvery { createStateUseCase.createState(any()) } returns true
-		coEvery { createTaskUseCase.createTask(any()) } returns true
+		coEvery { createTaskUseCase.createTask(any()) } returns task.id!!
 		coEvery { editProjectUseCase.editProject(any()) } just Runs
-		
+
 		// When
 		createTaskView.createTask()
-		
+
 		// Then
 		coVerify { getAllProjectsUseCase.getAllProjects() }
 		coVerify { createStateUseCase.createState(any()) }
@@ -104,13 +110,13 @@ class CreateTaskViewTest {
 	fun `should handle no projects available`() = runTest {
 		// Given
 		coEvery { getAllProjectsUseCase.getAllProjects() } returns emptyList()
-		
+
 		every { inputHandler.promptForInput("Enter task title: ") } returns "Test Task"
 		every { inputHandler.promptForInput("Enter task description: ") } returns "Test Description"
-		
+
 		// When
 		createTaskView.createTask()
-		
+
 		// Then
 		coVerify { getAllProjectsUseCase.getAllProjects() }
 		verify { outputFormatter.printError("No projects available. Please create a project first.") }
@@ -122,13 +128,13 @@ class CreateTaskViewTest {
 		// Given
 		val errorMessage = "Network error"
 		coEvery { getAllProjectsUseCase.getAllProjects() } throws Exception(errorMessage)
-		
+
 		every { inputHandler.promptForInput("Enter task title: ") } returns "Test Task"
 		every { inputHandler.promptForInput("Enter task description: ") } returns "Test Description"
-		
+
 		// When
 		createTaskView.createTask()
-		
+
 		// Then
 		verify { outputFormatter.printError("Failed to get all projects: $errorMessage") }
 	}
@@ -140,19 +146,19 @@ class CreateTaskViewTest {
 		val task = getTask(project)
 		val state = State(UUID.randomUUID(), "Test State")
 		coEvery { getAllProjectsUseCase.getAllProjects() } returns listOf(project)
-		
+
 		every { inputHandler.promptForInput("Enter task title: ") } returns task.title!!
 		every { inputHandler.promptForInput("Enter task description: ") } returns task.description!!
 		every { inputHandler.promptForIntChoice(any(), any()) } returns 1
-		
+
 		coEvery { createStateUseCase.createState(any()) } returns true
-		
+
 		val errorMessage = "Database error"
 		coEvery { createTaskUseCase.createTask(any()) } throws Exception(errorMessage)
-		
+
 		// When
 		createTaskView.createTask()
-		
+
 		// Then
 		coVerify { getAllProjectsUseCase.getAllProjects() }
 		coVerify { createStateUseCase.createState(any()) }
