@@ -50,7 +50,7 @@ val useCasesModule = module {
     single { GetStateByIdUseCase(get()) }
     // endregion
 
-    // region validationProject
+    // region validation
     single { ValidationProject() }
     single { ValidationTask() }
     single { ValidationState() }
