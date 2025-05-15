@@ -52,8 +52,6 @@ class CreateTaskViewTest {
 			getAllProjectsUseCase,
 			createStateUseCase,
 			getAllStatesUseCase,
-			getAllTasksUseCase,
-            getTaskByIdUseCase
 		)
 	}
 
