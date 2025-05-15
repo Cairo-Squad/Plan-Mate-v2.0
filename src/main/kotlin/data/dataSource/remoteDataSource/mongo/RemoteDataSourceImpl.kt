@@ -77,8 +77,8 @@ class RemoteDataSourceImpl(
         return tasksHandler.readAll().filter { it.projectId == projectId }
     }
 
-    override suspend fun createTask(task: TaskDto): Boolean {
-        return tasksHandler.write(task)
+    override suspend fun createTask(task: TaskDto): UUID {
+        return tasksHandler.write(task, "").id!!
     }
     
     override suspend fun getAllTasks(): List<TaskDto> {

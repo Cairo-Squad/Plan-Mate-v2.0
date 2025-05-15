@@ -20,7 +20,7 @@ class TasksRepositoryImpl(
         }
     }
     
-    override suspend fun createTask(task: Task): Boolean {
+    override suspend fun createTask(task: Task): UUID {
         return wrap { remoteDataSource.createTask(task.toTaskDto()) }
     }
     
