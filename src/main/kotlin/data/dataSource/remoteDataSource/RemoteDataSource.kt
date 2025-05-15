@@ -7,7 +7,7 @@ import java.util.*
 interface RemoteDataSource {
     // region Users
     suspend fun getAllUsers(): List<UserDto>
-    suspend fun signUp(userName:String, userPassword:String, userType: UserType): UUID
+    suspend fun signUp(userName:String, userPassword:String, userType: UserType)
     suspend fun editUser(user: UserDto): Boolean
     suspend fun deleteUser(userId: UUID): Boolean
     suspend fun loginUser(name: String, password: String)

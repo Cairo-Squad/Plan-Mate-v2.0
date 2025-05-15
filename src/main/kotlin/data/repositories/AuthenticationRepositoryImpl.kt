@@ -27,7 +27,7 @@ class AuthenticationRepositoryImpl(
         }
     }
 
-    override suspend fun signUp(userName: String, userPassword: String, userType: UserType): UUID {
+    override suspend fun signUp(userName: String, userPassword: String, userType: UserType) {
         return wrap {
             remoteDataSource.signUp(userName, userPassword, userType)
         }

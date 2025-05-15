@@ -5,7 +5,7 @@ import logic.model.UserType
 import java.util.*
 
 interface AuthenticationRepository {
-    suspend fun signUp(userName:String, userPassword:String, userType: UserType): UUID
+    suspend fun signUp(userName:String, userPassword:String, userType: UserType)
     suspend fun getAllUsers(): List<User>
     suspend fun deleteUser(userId: UUID): Boolean
     suspend fun editUser(user: User):Boolean

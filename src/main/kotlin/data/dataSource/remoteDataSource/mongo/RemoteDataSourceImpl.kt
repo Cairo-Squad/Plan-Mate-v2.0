@@ -23,10 +23,9 @@ class RemoteDataSourceImpl(
         return usersHandler.readAll()
     }
 
-    override suspend fun signUp(userName: String, userPassword: String, userType: UserType): UUID {
+    override suspend fun signUp(userName: String, userPassword: String, userType: UserType) {
         val createdUserId = authenticationHandler.signUp(userName, userPassword, userType)
         setCurrentUser(createdUserId)
-        return createdUserId
     }
 
     override suspend fun editUser(user: UserDto): Boolean {
