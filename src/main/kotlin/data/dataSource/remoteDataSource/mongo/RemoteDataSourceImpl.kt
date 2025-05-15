@@ -52,18 +52,17 @@ class RemoteDataSourceImpl(
     private fun setCurrentUser(user: UserDto?) {
         currentUser = user
     }
-
-
-    override suspend fun createProject(project: ProjectDto): Boolean {
-        return projectsHandler.write(project)
+    
+    override suspend fun createProject(project: ProjectDto): UUID {
+        return projectsHandler.write(project, "").id!!
     }
 
     override suspend fun editProject(newProject: ProjectDto) {
-        projectsHandler.edit(newProject)
+        projectsHandler.edit(newProject, "")
     }
 
-    override suspend fun deleteProjectById(project: ProjectDto) {
-        projectsHandler.delete(project.id!!)
+    override suspend fun deleteProjectById(projectId: UUID) {
+        projectsHandler.delete(projectId, "")
     }
 
     override suspend fun getProjectById(projectId: UUID): ProjectDto {

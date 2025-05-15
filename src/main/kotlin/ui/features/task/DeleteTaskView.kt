@@ -101,11 +101,6 @@ class DeleteTaskView(
         if (confirmation.equals("YES", ignoreCase = true)) {
             deleteTaskUseCase.deleteTask(selectedTask)
             
-            val updatedProject = selectedProject.copy(
-                tasks = selectedProject.tasks?.filter { it.id != selectedTask.id }
-            )
-            editProjectUseCase.editProject(updatedProject)
-            
             outputFormatter.printSuccess("✅ Task '${selectedTask.title}' deleted successfully!")
         } else {
             outputFormatter.printInfo("🔄 Action canceled. No task was deleted.")

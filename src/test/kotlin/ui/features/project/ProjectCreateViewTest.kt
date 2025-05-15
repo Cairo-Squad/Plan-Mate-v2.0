@@ -52,7 +52,7 @@ class ProjectCreateViewTest {
 
 	private fun getProject(): Project {
 		val state = State(UUID.randomUUID(), "To Do")
-		return Project(UUID.randomUUID(),"Test Project", "Test Description", getUser().id, emptyList(), state)
+		return Project(UUID.randomUUID(),"Test Project", "Test Description", getUser().id, state)
 	}
 	@Disabled
 	@Test
@@ -66,7 +66,7 @@ class ProjectCreateViewTest {
 		every { inputHandler.promptForInput("📝 Enter project description: ") } returns project.description!!
 		every { inputHandler.promptForInput("📊 Enter initial project state: ") } returns project.state!!.title!!
 		every { inputHandler.promptForYesNo("Do you want to add tasks to this project?") } returns false
-		coEvery { createProjectUseCase.createProject(any(), user) } returns true
+		coEvery { createProjectUseCase.createProject(any(), user) } returns project.id!!
 
 		// When
 		projectCreateView.createProject()

@@ -52,7 +52,6 @@ class EditTaskViewTest {
 			title = title,
 			description = "Test Description",
 			createdBy = UUID.randomUUID(),
-			tasks = mutableListOf(),
 			state = State(UUID.randomUUID(), "To Do")
 		)
 	}
