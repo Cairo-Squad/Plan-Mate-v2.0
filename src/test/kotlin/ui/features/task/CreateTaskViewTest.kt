@@ -59,7 +59,6 @@ class CreateTaskViewTest {
 			title = "Test Project",
 			description = "Test Project Description",
 			createdBy = UUID.randomUUID(),
-			tasks = emptyList(),
 			state = state
 		)
 	}

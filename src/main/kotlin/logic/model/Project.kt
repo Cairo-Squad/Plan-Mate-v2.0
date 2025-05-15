@@ -7,6 +7,5 @@ data class Project(
     val title: String? = null,
     val description: String? = null,
     val createdBy: UUID? = null,
-    val tasks: List<Task>? = null,
     val state: State? = null
 )

@@ -21,7 +21,6 @@ class ProjectsMongoHandlerImpl(
 			.append(MongoConstants.TITLE, entity.title)
 			.append(MongoConstants.DESCRIPTION, entity.description)
 			.append(MongoConstants.CREATED_BY, entity.createdBy.toString())
-			.append(MongoConstants.TASKS, entity.taskIds.map { it.toString() })
 			.append(MongoConstants.STATE_ID, entity.stateId.toString())
 	}
 	
@@ -33,7 +32,6 @@ class ProjectsMongoHandlerImpl(
 			title = document.getString(MongoConstants.TITLE),
 			description = document.getString(MongoConstants.DESCRIPTION),
 			createdBy = UUID.fromString(document.getString(MongoConstants.CREATED_BY)),
-			taskIds = tasksList.map { UUID.fromString(it) },
 			stateId = UUID.fromString(document.getString(MongoConstants.STATE_ID))
 		)
 	}
