@@ -15,21 +15,18 @@ class RemoteDataSourceImpl(
     private val statesHandler: MongoDBHandler<StateDto>,
     private val tasksHandler: MongoDBHandler<TaskDto>,
     private val usersHandler: MongoDBHandler<UserDto>,
-    private val signUpHandler: SignUpHandler,
+    private val authenticationHandler: AuthenticationHandler,
 ) : RemoteDataSource {
-    private var currentUser: UserDto? = null
+    private var currentUserID: UUID? = null
 
     override suspend fun getAllUsers(): List<UserDto> {
         return usersHandler.readAll()
     }
 
-    override suspend fun signUp(userName:String, userPassword:String, userType: UserType): UUID {
-        val signUpRequest = SignUpHandler.SignUpRequest(
-            userName = userName,
-            userPassword = userPassword,
-            userType = userType
-        )
-        return signUpHandler.createNewUser(signUpRequest)
+    override suspend fun signUp(userName: String, userPassword: String, userType: UserType): UUID {
+        val createdUserId = authenticationHandler.signUp(userName, userPassword, userType)
+        setCurrentUser(createdUserId)
+        return createdUserId
     }
 
     override suspend fun editUser(user: UserDto): Boolean {
@@ -40,20 +37,20 @@ class RemoteDataSourceImpl(
         return usersHandler.delete(userId)
     }
 
-    override suspend fun loginUser(name: String, password: String): Boolean {
-//        val users = usersHandler.readAll()
-//        val user = users.find { it.name == name && it.password == password }
-//        setCurrentUser(user)
-//        return user != null
-        throw PlanMateException.NotYetImplementedException()
+    override suspend fun loginUser(name: String, password: String) {
+        val result = authenticationHandler.login(name, password)
+        if (result != null)
+            currentUserID = result
+        else throw PlanMateException.ValidationException.InvalidCredentialsException()
     }
 
     override suspend fun getCurrentUser(): UserDto? {
-        return currentUser
+        if (currentUserID == null) return null
+        return usersHandler.readByEntityId(currentUserID!!)
     }
 
-    private fun setCurrentUser(user: UserDto?) {
-        currentUser = user
+    private fun setCurrentUser(userId: UUID) {
+        currentUserID = userId
     }
 
 
@@ -84,11 +81,11 @@ class RemoteDataSourceImpl(
     override suspend fun createTask(task: TaskDto): Boolean {
         return tasksHandler.write(task)
     }
-    
+
     override suspend fun getAllTasks(): List<TaskDto> {
         return tasksHandler.readAll()
     }
-    
+
     override suspend fun editTask(task: TaskDto) {
         tasksHandler.edit(task)
     }

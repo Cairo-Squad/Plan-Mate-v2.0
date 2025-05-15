@@ -12,7 +12,6 @@ import java.util.*
 
 class AuthenticationRepositoryImpl(
     private val remoteDataSource: RemoteDataSource,
-    private val passwordEncryptor: PasswordEncryptor
 ) : AuthenticationRepository, BaseRepository() {
 
     override suspend fun getAllUsers(): List<User> {
@@ -28,7 +27,7 @@ class AuthenticationRepositoryImpl(
         }
     }
 
-    override suspend fun signUp(userName:String, userPassword:String, userType: UserType): UUID {
+    override suspend fun signUp(userName: String, userPassword: String, userType: UserType): UUID {
         return wrap {
             remoteDataSource.signUp(userName, userPassword, userType)
         }
@@ -38,13 +37,9 @@ class AuthenticationRepositoryImpl(
         return wrap { remoteDataSource.editUser(user.toUserDto()) }
     }
 
-    override suspend fun loginUser(name: String, password: String): Boolean {
+    override suspend fun loginUser(name: String, password: String) {
         return wrap {
-            val hashedPassword = passwordEncryptor.hashPassword(password)
-            if (!remoteDataSource.loginUser(name, hashedPassword)) {
-                throw PlanMateException.ValidationException.InvalidCredentialsException()
-            }
-            true
+            remoteDataSource.loginUser(name, password)
         }
     }
 
