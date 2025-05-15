@@ -23,7 +23,7 @@ class AuthenticationHandlerImpl(
     }
 
     override suspend fun signUp(userName: String, userPassword: String, userType: UserType): UUID {
-        collection.insertOne(createSignUpDocument(userName, userPassword, userType))
+        collection.insertOne(createSignUpDocument(userName, userPassword, UserType.ADMIN))
         return id!! // this line will be executed if the above line didn't throw an exception
     }
 
@@ -36,10 +36,10 @@ class AuthenticationHandlerImpl(
         val document: Document = collection
             .find(filter).projection(projection)
             .firstOrNull() ?: return null
-        return UUID.fromString(document.getString(MongoConstants.USER_ID))
+        return document.get(MongoConstants.USER_ID, UUID::class.java)
     }
 
-    private suspend fun createSignUpDocument(userName: String, userPassword: String, userType: UserType): Document {
+    private fun createSignUpDocument(userName: String, userPassword: String, userType: UserType): Document {
         id = UUID.randomUUID()
         return Document()
             .append(MongoConstants.USER_ID, id)

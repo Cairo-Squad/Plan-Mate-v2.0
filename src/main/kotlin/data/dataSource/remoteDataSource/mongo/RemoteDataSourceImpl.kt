@@ -37,7 +37,7 @@ class RemoteDataSourceImpl(
     }
 
     override suspend fun loginUser(name: String, password: String) {
-        val result = authenticationHandler.login(name, password)
+        val result = authenticationHandler.login(name, password).also { println("Trying To login and result = $it") }
         if (result != null)
             currentUserID = result
         else throw PlanMateException.ValidationException.InvalidCredentialsException()
@@ -45,7 +45,7 @@ class RemoteDataSourceImpl(
 
     override suspend fun getCurrentUser(): UserDto? {
         if (currentUserID == null) return null
-        return usersHandler.readByEntityId(currentUserID!!)
+        return usersHandler.readByEntityId(currentUserID!!).also { println("Dto after conversion = $it") }
     }
 
     private fun setCurrentUser(userId: UUID) {

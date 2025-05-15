@@ -3,8 +3,10 @@ package data.dataSource.remoteDataSource.mongo.handler
 import com.mongodb.client.MongoCollection
 import com.mongodb.client.MongoDatabase
 import com.mongodb.client.model.Filters
+import com.mongodb.client.model.Projections
 import com.mongodb.client.result.InsertOneResult
 import data.customException.PlanMateException
+import data.dataSource.util.MongoConstants
 import org.bson.Document
 import java.util.*
 
@@ -52,12 +54,15 @@ abstract class MongoDBHandlerImpl<DTO>(
     override fun readAll(): List<DTO> {
         return collection.find()
             .map { convertDocumentToDto(it) }
-            .toList()
+            .toList().ifEmpty { throw PlanMateException.NetworkException.DataNotFoundException("No Projects Found") }
     }
 
     override fun readByEntityId(id: UUID): DTO {
-        val document = collection.find(Filters.eq("_id", id.toString())).first()
-            ?: throw PlanMateException.NetworkException.DataNotFoundException()
+        val filter = Filters.eq(MongoConstants.USER_ID,id)
+        val projection = Projections.exclude(MongoConstants.USER_PASSWORD)
+        val document =
+            collection.find(filter).projection(projection).first().also { println("Document = $it") }
+                ?: throw PlanMateException.NetworkException.DataNotFoundException("Couldn't find user in mongoDB")
         return convertDocumentToDto(document)
     }
 }

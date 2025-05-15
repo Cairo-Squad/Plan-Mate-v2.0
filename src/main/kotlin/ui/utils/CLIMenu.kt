@@ -4,19 +4,28 @@ import kotlinx.coroutines.runBlocking
 import logic.usecase.user.GetCurrentUserUseCase
 import ui.features.auth.LoginManagementView
 import ui.features.user.UserManagementView
+import ui.features.user.admin.CreateNewUserView
 
 class CLIMenu(
     private val loginView: LoginManagementView,
+    private val signUpView: CreateNewUserView,
+    private val inputHandler: InputHandler,
     private val userManagementView: UserManagementView,
     private val outputFormatter: OutputFormatter,
-    private val getCurrentUser : GetCurrentUserUseCase
+    private val getCurrentUser: GetCurrentUserUseCase
 ) {
-   fun start() = runBlocking {
+    fun start() = runBlocking {
         displayWelcomeMessage()
         while (getCurrentUser.getCurrentUser() == null) {
-            loginView.showLoginScreen()
+            val userChoice = inputHandler.promptForInput("Enter 1 to signUp, or enter 2 to login : ")
+            if (userChoice.toInt() == 1) {
+                signUpView.createNewUser()
+                userManagementView.showUserMenu()
+            } else if (userChoice.toInt() == 2) {
+                loginView.showLoginScreen()
+                userManagementView.showUserMenu()
+            }
         }
-        userManagementView.showUserMenu()
     }
 
     private fun displayWelcomeMessage() {

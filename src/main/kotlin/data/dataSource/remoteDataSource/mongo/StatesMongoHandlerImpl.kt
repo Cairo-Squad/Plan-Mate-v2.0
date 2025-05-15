@@ -17,14 +17,15 @@ class StatesMongoHandlerImpl(
     override fun convertDtoToDocument(entity: StateDto): Document {
         val id = getDtoId(entity)
         return Document()
-            .append(MongoConstants.ID, id.toString())
+            .append(MongoConstants.ID, id).also { println("State id = $id") }
             .append(MongoConstants.STATE_TITLE, entity.title)
     }
 
 
     override fun convertDocumentToDto(document: Document): StateDto {
+        println("Document to Convert $document")
         return StateDto(
-            id = UUID.fromString(document.getString(MongoConstants.ID)),
+            id = document.get(MongoConstants.ID,UUID::class.java),
             title = document.getString(MongoConstants.STATE_TITLE)
         )
     }

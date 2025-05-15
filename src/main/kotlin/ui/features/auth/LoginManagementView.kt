@@ -37,7 +37,7 @@ class LoginManagementView(
             outputFormatter.printSuccess("🎉 Login successful! 🙌")
             userManagementView.showUserMenu()
         } catch (e: Exception) {
-            outputFormatter.printError("❌ Authentication failed: ${e.message}")
+            outputFormatter.printError("❌ Authentication failed: $e")
         }
     }
 }

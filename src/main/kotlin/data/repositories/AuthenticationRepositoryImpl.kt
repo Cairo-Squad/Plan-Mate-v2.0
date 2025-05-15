@@ -1,8 +1,6 @@
 package data.repositories
 
-import data.customException.PlanMateException
 import data.dataSource.remoteDataSource.RemoteDataSource
-import data.hashing.PasswordEncryptor
 import data.repositories.mappers.toUser
 import data.repositories.mappers.toUserDto
 import logic.model.User
@@ -45,7 +43,7 @@ class AuthenticationRepositoryImpl(
 
     override suspend fun getCurrentUser(): User? {
         return wrap {
-            remoteDataSource.getCurrentUser()?.toUser()
+            remoteDataSource.getCurrentUser()?.toUser().also { println("getCurrentUser returned = $it") }
         }
     }
 }

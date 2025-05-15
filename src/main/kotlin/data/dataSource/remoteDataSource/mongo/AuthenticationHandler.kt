@@ -6,6 +6,5 @@ import java.util.UUID
 
 interface AuthenticationHandler {
     suspend fun login(userName: String, userPassword: String): UUID?
-    suspend fun signUp(userName: String, userPassword: String, userType: UserType):UUID
-
+    suspend fun signUp(userName: String, userPassword: String, userType: UserType): UUID
 }
