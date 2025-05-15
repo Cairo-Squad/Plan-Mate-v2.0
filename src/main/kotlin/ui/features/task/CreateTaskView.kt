@@ -22,9 +22,7 @@ class CreateTaskView(
     private val editProjectUseCase: EditProjectUseCase,
     private val getAllProjectsUseCase: GetAllProjectsUseCase,
     private val createStateUseCase: CreateStateUseCase,
-    private val getAllStatesUseCase: GetAllStatesUseCase,
-    private val getAllTasksUseCase: GetAllTasksUseCase,
-    private val getTaskBytIdUseCase: GetTaskBytIdUseCase
+    private val getAllStatesUseCase: GetAllStatesUseCase
 ) {
     lateinit var projects: List<Project>
 
@@ -90,11 +88,10 @@ class CreateTaskView(
 
     private suspend fun createAndUpdateProject(task: Task, selectedProject: Project) {
         try {
-            val taskId = createTaskUseCase.createTask(task)
-            val createdTask = getTaskBytIdUseCase.getTaskById(taskId)
+
+            createTaskUseCase.createTask(task)
             val updatedProject = selectedProject.copy(
                 id = selectedProject.id,
-                tasks = selectedProject.tasks?.plus(createdTask)
             )
 
             editProjectUseCase.editProject(updatedProject)
