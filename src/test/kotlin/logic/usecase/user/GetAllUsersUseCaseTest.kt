@@ -14,8 +14,8 @@ import kotlin.test.assertEquals
 
 class GetAllUsersUseCaseTest {
 
-    private lateinit var authenticationRepository : AuthenticationRepository
-    private lateinit var getAllUsersUseCase : GetAllUsersUseCase
+    private lateinit var authenticationRepository: AuthenticationRepository
+    private lateinit var getAllUsersUseCase: GetAllUsersUseCase
 
     @BeforeEach
     fun setUp() {

@@ -77,7 +77,7 @@ abstract class MongoDBHandlerImpl<DTO>(
         val filter = Filters.eq(MongoConstants.USER_ID,id)
         val projection = Projections.exclude(MongoConstants.USER_PASSWORD)
         val document =
-            collection.find(filter).projection(projection).first().also { println("Document = $it") }
+            collection.find(filter).projection(projection).first()
                 ?: throw PlanMateException.NetworkException.DataNotFoundException("Couldn't find user in mongoDB")
         return convertDocumentToDto(document)
     }
