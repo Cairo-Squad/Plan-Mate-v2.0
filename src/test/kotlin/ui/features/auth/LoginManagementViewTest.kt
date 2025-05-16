@@ -42,10 +42,10 @@ class LoginManagementViewTest {
     @Test
     fun `should see login successful when username and password are valid`() = runTest {
         // Given
-        val user = User(id = UUID.randomUUID(), name = "nour", password = "123456", type = UserType.MATE)
+        val user = User(id = UUID.randomUUID(), name = "nour", type = UserType.MATE)
         every { inputHandler.promptForInput(any()) } returns "nour"
         every { inputHandler.promptForPassword(any()) } returns "123456"
-        coEvery { loginUserUseCase.login("nour", "123456") } returns true
+        coEvery { loginUserUseCase.login("nour", "123456") } returns Unit
         coEvery { getCurrentUserUseCase.getCurrentUser() } returns user
 
         // When
@@ -111,7 +111,7 @@ class LoginManagementViewTest {
         // Given
         every { inputHandler.promptForInput(any()) } returns "nour"
         every { inputHandler.promptForPassword(any()) } returns "wrongpassword"
-        coEvery { loginUserUseCase.login("nour", "wrongpassword") } returns false
+        coEvery { loginUserUseCase.login("nour", "wrongpassword") } returns Unit
 
         // When
         loginManagementView.showLoginScreen()

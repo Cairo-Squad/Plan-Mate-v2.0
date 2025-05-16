@@ -87,7 +87,7 @@ val uiModule = module {
         LoginManagementView(get(), get(), get(), get(), get())
     }
 
-    single { CLIMenu(get(), get(), get(), get()) }
+    single { CLIMenu(get(), get(), get(), get(),get(),get()) }
 
     single { SwimlanesView(get(), get(), get(), get()) }
 

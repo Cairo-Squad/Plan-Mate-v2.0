@@ -17,17 +17,15 @@ class UsersMongoHandlerImpl(
 ) {
 	override fun convertDtoToDocument(entity: UserDto): Document {
 		return Document()
-			.append(MongoConstants.USER_ID, entity.id.toString())
+			.append(MongoConstants.USER_ID, entity.id)
 			.append(MongoConstants.USER_NAME, entity.name)
-			.append(MongoConstants.USER_PASSWORD, entity.password)
 			.append(MongoConstants.USER_TYPE, entity.type.name)
 	}
 	
 	override fun convertDocumentToDto(document: Document): UserDto {
 		return UserDto(
-			id = UUID.fromString(document.getString(MongoConstants.USER_ID)),
+			id = document.get(MongoConstants.USER_ID,UUID::class.java),
 			name = document.getString(MongoConstants.USER_NAME),
-			password = document.getString(MongoConstants.USER_PASSWORD),
 			type = UserType.valueOf(document.getString(MongoConstants.USER_TYPE))
 		)
 	}

@@ -46,6 +46,11 @@ val mongoRemoteDataSourceModule = module {
             database = get()
         )
     }
+    single<AuthenticationHandler>(named("authenticationHandler")) {
+        AuthenticationHandlerImpl(
+            database = get(),
+        )
+    }
 
     single<RemoteDataSource> {
         RemoteDataSourceImpl(
@@ -55,7 +60,7 @@ val mongoRemoteDataSourceModule = module {
             statesHandler = get(named("statesHandler")),
             tasksHandler = get(named("tasksHandler")),
             usersHandler = get(named("usersHandler")),
-            passwordEncryptor = get()
+            authenticationHandler = get(named("authenticationHandler"))
         )
     }
 }

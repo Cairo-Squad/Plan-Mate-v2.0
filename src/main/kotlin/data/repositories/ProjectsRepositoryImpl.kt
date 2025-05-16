@@ -40,7 +40,10 @@ class ProjectsRepositoryImpl(
 
     override suspend fun getAllProjects(): List<Project> {
         return wrap {
-            remoteDataSource.getAllProjects().map { projectDto ->
+           val allProjects =  remoteDataSource.getAllProjects()
+            if (allProjects.isEmpty()) emptyList<Project>()
+            else
+            allProjects.map { projectDto ->
                 projectDto.toProject(
                     projectState = getState(projectDto.stateId!!),
                 )

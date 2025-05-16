@@ -1,15 +1,16 @@
 package data.dataSource.remoteDataSource
 
 import data.dto.*
+import logic.model.UserType
 import java.util.*
 
 interface RemoteDataSource {
     // region Users
     suspend fun getAllUsers(): List<UserDto>
-    suspend fun createUser(user: UserDto): Boolean
+    suspend fun signUp(userName:String, userPassword:String, userType: UserType)
     suspend fun editUser(user: UserDto): Boolean
     suspend fun deleteUser(userId: UUID): Boolean
-    suspend fun loginUser(name: String, password: String): Boolean
+    suspend fun loginUser(name: String, password: String)
     suspend fun getCurrentUser(): UserDto?
 
 	// endregion

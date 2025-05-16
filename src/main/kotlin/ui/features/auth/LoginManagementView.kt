@@ -8,11 +8,11 @@ import ui.utils.InputHandler
 import ui.utils.OutputFormatter
 
 class LoginManagementView(
-    private val loginUserUseCase : LoginUserUseCase,
-    private val inputHandler : InputHandler,
-    private val outputFormatter : OutputFormatter,
-    private val userManagementView : UserManagementView,
-    private val getCurrentUser : GetCurrentUserUseCase
+    private val loginUserUseCase: LoginUserUseCase,
+    private val inputHandler: InputHandler,
+    private val outputFormatter: OutputFormatter,
+    private val userManagementView: UserManagementView,
+    private val getCurrentUser: GetCurrentUserUseCase
 
 ) {
     fun showLoginScreen() = runBlocking {
@@ -33,16 +33,11 @@ class LoginManagementView(
         }
 
         try {
-            val isLogin = loginUserUseCase.login(username, password)
-            val getCurrentUser = getCurrentUser.getCurrentUser()
-            if (isLogin && getCurrentUser != null) {
-                outputFormatter.printSuccess("🎉 Login successful! Welcome, ${getCurrentUser.name} 🙌")
-                userManagementView.showUserMenu()
-            } else {
-                outputFormatter.printError("❌ Invalid username or password.")
-            }
-        } catch (e : Exception) {
-            outputFormatter.printError("❌ Authentication failed: ${e.message}")
+            loginUserUseCase.login(username, password)
+            outputFormatter.printSuccess("🎉 Login successful! 🙌")
+            userManagementView.showUserMenu()
+        } catch (e: Exception) {
+            outputFormatter.printError("❌ Authentication failed: $e")
         }
     }
 }

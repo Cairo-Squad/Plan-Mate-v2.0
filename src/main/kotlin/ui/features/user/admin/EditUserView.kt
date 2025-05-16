@@ -1,5 +1,6 @@
 package ui.features.user.admin
 
+import data.customException.PlanMateException
 import kotlinx.coroutines.runBlocking
 import logic.model.User
 import logic.usecase.user.EditUserUseCase
@@ -66,16 +67,17 @@ class EditUserView(
             .takeIf { it.isNotBlank() } ?: selectedUser.name
 
         val newPassword = inputHandler.promptForPassword("🔒 Enter new password (leave empty to keep current): ")
-            .takeIf { it.isNotBlank() } ?: selectedUser.password
+            .takeIf { it.isNotBlank() }
+            ?: throw PlanMateException.ValidationException.NameException("Not valid password")
 
-        val updatedUser = selectedUser.copy(name = newName, password = newPassword)
+        throw PlanMateException.NotYetImplementedException()
 
-        return if (validateUserInputs(updatedUser, selectedUser)) updatedUser else null
+//        return if (validateUserInputs(updatedUser, selectedUser)) updatedUser else null
     }
 
     private fun validateUserInputs(newUser: User, oldUser: User): Boolean {
-        return if (newUser.name?.trim() == oldUser.name?.trim() &&
-            newUser.password?.trim() == oldUser.password?.trim()) {
+        return if (newUser.name?.trim() == oldUser.name?.trim()
+        ) {
             outputFormatter.printError("⚠️ No changes detected! User information remains the same.")
             false
         } else {
