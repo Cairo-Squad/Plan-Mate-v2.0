@@ -23,7 +23,7 @@ class AuthenticationHandlerImpl(
     }
 
     override suspend fun signUp(userName: String, userPassword: String, userType: UserType): UUID {
-        collection.insertOne(createSignUpDocument(userName, userPassword, UserType.ADMIN))
+        collection.insertOne(createSignUpDocument(userName, userPassword, UserType.MATE))
         return id!! // this line will be executed if the above line didn't throw an exception
     }
 

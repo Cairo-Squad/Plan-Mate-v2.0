@@ -2,7 +2,6 @@ package logic.usecase.user
 
 import com.google.common.truth.Truth
 import io.mockk.coEvery
-import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import logic.repositories.AuthenticationRepository
@@ -10,7 +9,7 @@ import logic.usecase.FakeData
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import java.util.UUID
+import java.util.*
 
 class DeleteUserUseCaseTest {
     private lateinit var authenticationRepository : AuthenticationRepository

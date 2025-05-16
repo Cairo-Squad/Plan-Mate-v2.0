@@ -47,7 +47,7 @@ class ProjectCreateViewTest {
 	}
 
 	private fun getUser(): User {
-		return User(UUID.randomUUID(), "ahmed", "123456", UserType.ADMIN)
+		return User(UUID.randomUUID(), "ahmed", UserType.ADMIN)
 	}
 
 	private fun getProject(): Project {

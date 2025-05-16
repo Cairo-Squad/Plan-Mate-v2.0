@@ -27,7 +27,7 @@ class EditUserUseCaseTest {
     fun `editUser should return true, when input has changed property or more`() = runTest {
         // Given
         val updateUser =
-            User(id = UUID(1, 1), name = "Mohamed", password = "123456", type = UserType.ADMIN)
+            User(id = UUID(1, 1), name = "Mohamed", type = UserType.ADMIN)
 
         // When
         editUserUseCase.editUser(updateUser)
@@ -40,7 +40,7 @@ class EditUserUseCaseTest {
     fun `editUser should return DtoNotFoundException, when user is not found`() = runTest {
         // Given
         val updatedUser =
-            User(id = UUID(2, 2), name = "Mohamed", password = "123456", type = UserType.ADMIN)
+            User(id = UUID(2, 2), name = "Mohamed", type = UserType.ADMIN)
      
         coEvery { authenticationRepository.editUser(updatedUser) } throws PlanMateException.NetworkException.DataNotFoundException()
 
