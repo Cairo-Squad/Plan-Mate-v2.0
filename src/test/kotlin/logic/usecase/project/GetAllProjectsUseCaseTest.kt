@@ -53,7 +53,6 @@ class GetAllProjectsUseCaseTest {
             title = "Project",
             description = "Description",
             createdBy = UUID.randomUUID(),
-            tasks = emptyList(),
             state = State(id = UUID.randomUUID(), title = "TODO")
         )
         return listOf(

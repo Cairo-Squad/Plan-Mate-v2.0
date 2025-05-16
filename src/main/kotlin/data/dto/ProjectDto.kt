@@ -7,6 +7,5 @@ data class ProjectDto(
     val title: String,
     val description: String,
     val createdBy: UUID,
-    val taskIds: List<UUID>,
     val stateId: UUID?
 )

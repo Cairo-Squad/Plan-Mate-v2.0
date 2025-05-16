@@ -2,15 +2,17 @@ package ui.features.project
 
 import kotlinx.coroutines.runBlocking
 import logic.model.Project
-import logic.model.Task
 import logic.usecase.project.GetAllProjectsUseCase
+import logic.usecase.task.GetAllTasksByProjectIdUseCase
 import ui.utils.InputHandler
 import ui.utils.OutputFormatter
+import java.util.UUID
 
 class ProjectDetailView(
 	private val getAllProjectsUseCase: GetAllProjectsUseCase,
 	private val inputHandler: InputHandler,
-	private val outputFormatter: OutputFormatter
+	private val outputFormatter: OutputFormatter,
+	private val getAllTasksByProjectIdUseCase: GetAllTasksByProjectIdUseCase
 ) {
 	fun viewProjectDetails() = runBlocking {
 		displayHeader()
@@ -60,19 +62,20 @@ class ProjectDetailView(
 		return projects[projectIndex]
 	}
 	
-	private fun displayProjectDetails(project: Project) {
+	private suspend fun displayProjectDetails(project: Project) {
 		outputFormatter.printHeader("📜 Project Information")
 		outputFormatter.printInfo("🆔 Project ID: ${project.id}")
 		outputFormatter.printInfo("📂 Title: ${project.title}")
 		outputFormatter.printInfo("📝 Description: ${project.description}")
 		outputFormatter.printInfo("📊 State: ${project.state?.title}")
-		outputFormatter.printInfo("✅ Tasks: \n${displayTasksOnUiFormatter(project.tasks ?: emptyList())}")
+		outputFormatter.printInfo("✅ Tasks: ${displayTasksOnUiFormatter(project.id!!)}")
 	}
 	
-	private fun displayTasksOnUiFormatter(tasks: List<Task>): String {
-		if (tasks.isEmpty()) return "⚠️ No tasks available."
+	private suspend fun displayTasksOnUiFormatter(projectId: UUID): String {
+		val projectTasks = getAllTasksByProjectIdUseCase.getAllTasksByProjectId(projectId)
+		if (projectTasks.isEmpty()) return "⚠️ No tasks available."
 		
-		return tasks.mapIndexed { index, task ->
+		return projectTasks.mapIndexed { index, task ->
 			"🔹 ${index + 1}. ${task.title} [${task.state?.title}]"
 		}.joinToString("\n")
 	}

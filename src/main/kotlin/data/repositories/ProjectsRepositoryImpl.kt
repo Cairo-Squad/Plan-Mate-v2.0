@@ -17,10 +17,8 @@ class ProjectsRepositoryImpl(
     private val remoteDataSource: RemoteDataSource
 ) : ProjectsRepository, BaseRepository() {
 
-    override suspend fun createProject(project: Project, user: User): Boolean {
-	    return wrap {
-            remoteDataSource.createProject(project.toProjectDto())
-        }
+    override suspend fun createProject(project: Project): UUID {
+	    return wrap { remoteDataSource.createProject(project.toProjectDto()) }
     }
 
     override suspend fun editProject(newProject: Project) {
@@ -28,11 +26,7 @@ class ProjectsRepositoryImpl(
     }
 
     override suspend fun deleteProject(projectId: UUID) {
-        return wrap {
-            val projectsDao = remoteDataSource.getAllProjects()
-                .find { it.id == projectId } ?: throw PlanMateException.NetworkException.IOException()
-            remoteDataSource.deleteProjectById(projectsDao)
-        }
+        return wrap { remoteDataSource.deleteProjectById(projectId) }
     }
 
     override suspend fun getProjectById(projectId: UUID): Project {
@@ -40,7 +34,6 @@ class ProjectsRepositoryImpl(
             val projectDto = remoteDataSource.getProjectById(projectId)
             projectDto.toProject(
                 projectState = getState(projectDto.stateId!!),
-                projectTasks = getTasksForProject(projectId),
             )
         }
     }
@@ -53,7 +46,6 @@ class ProjectsRepositoryImpl(
             allProjects.map { projectDto ->
                 projectDto.toProject(
                     projectState = getState(projectDto.stateId!!),
-                    projectTasks = getTasksForProject(projectDto.id!!)
                 )
             }
         }
@@ -64,13 +56,6 @@ class ProjectsRepositoryImpl(
             remoteDataSource.getAllStates()
                 .first { it.id == stateId }
                 .toState()
-        }
-    }
-
-    private suspend fun getTasksForProject(projectId: UUID): List<Task> {
-        return wrap {
-            remoteDataSource.getTasksByProjectId(projectId)
-                .map { it.toTask(taskState = getState(it.stateId)) }
         }
     }
 }

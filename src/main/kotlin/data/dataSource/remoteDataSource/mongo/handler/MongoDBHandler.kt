@@ -8,4 +8,9 @@ interface MongoDBHandler<DTO> {
     fun delete(entityId: UUID): Boolean
     fun readAll(): List<DTO>
     fun readByEntityId(id: UUID): DTO
+
+    //overloading
+    fun write(entity: DTO, fakeParam:String): DTO
+    fun edit(entity: DTO, fakeParam:String)
+    fun delete(entityId: UUID, fakeParam:String)
 }

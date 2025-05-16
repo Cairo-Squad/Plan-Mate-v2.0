@@ -51,18 +51,17 @@ class RemoteDataSourceImpl(
     private fun setCurrentUser(userId: UUID) {
         currentUserID = userId
     }
-
-
-    override suspend fun createProject(project: ProjectDto): Boolean {
-        return projectsHandler.write(project)
+    
+    override suspend fun createProject(project: ProjectDto): UUID {
+        return projectsHandler.write(project, "").id!!
     }
 
     override suspend fun editProject(newProject: ProjectDto) {
-        projectsHandler.edit(newProject)
+        projectsHandler.edit(newProject, "")
     }
 
-    override suspend fun deleteProjectById(project: ProjectDto) {
-        projectsHandler.delete(project.id!!)
+    override suspend fun deleteProjectById(projectId: UUID) {
+        projectsHandler.delete(projectId, "")
     }
 
     override suspend fun getProjectById(projectId: UUID): ProjectDto {
@@ -77,8 +76,8 @@ class RemoteDataSourceImpl(
         return tasksHandler.readAll().filter { it.projectId == projectId }
     }
 
-    override suspend fun createTask(task: TaskDto): Boolean {
-        return tasksHandler.write(task)
+    override suspend fun createTask(task: TaskDto): UUID {
+        return tasksHandler.write(task, "").id!!
     }
 
     override suspend fun getAllTasks(): List<TaskDto> {

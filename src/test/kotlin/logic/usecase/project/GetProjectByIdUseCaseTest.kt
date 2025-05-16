@@ -22,7 +22,6 @@ class GetProjectByIdUseCaseTest {
         title = "Project",
         description = "Project Description",
         createdBy = UUID.randomUUID(),
-        tasks = emptyList(),
         state = State(id = UUID.randomUUID(), title = "TODO")
     )
 

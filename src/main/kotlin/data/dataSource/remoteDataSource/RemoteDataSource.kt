@@ -18,14 +18,14 @@ interface RemoteDataSource {
 	// region Projects
 	suspend fun getAllProjects(): List<ProjectDto>
 	suspend fun getProjectById(projectId: UUID): ProjectDto
-	suspend fun createProject(project: ProjectDto):Boolean
+	suspend fun createProject(project: ProjectDto):UUID
 	suspend fun editProject(newProject: ProjectDto)
-	suspend fun deleteProjectById(project: ProjectDto)
+	suspend fun deleteProjectById(projectId: UUID)
 	// endregion
 	
 	// region Tasks
 	suspend fun getTasksByProjectId(projectId: UUID): List<TaskDto>
-	suspend fun createTask(task: TaskDto):Boolean
+	suspend fun createTask(task: TaskDto): UUID
 	suspend fun editTask(task: TaskDto)
 	suspend fun deleteTask(task: TaskDto)
 	suspend fun getTaskById(taskID: UUID): TaskDto
