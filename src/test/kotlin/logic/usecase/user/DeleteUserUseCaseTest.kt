@@ -2,10 +2,12 @@ package logic.usecase.user
 
 import com.google.common.truth.Truth
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import logic.repositories.AuthenticationRepository
 import logic.usecase.FakeData
+import logic.usecase.FakeData.mockUsers
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -25,26 +27,26 @@ class DeleteUserUseCaseTest {
     fun `should return true when userid exist`() = runTest {
         // Given
         val mockUsers= FakeData.mockUsers
-        coEvery { authenticationRepository.deleteUser(mockUsers[0].id!!) } returns true
+        coEvery { authenticationRepository.deleteUser(mockUsers[0].id!!) } returns Unit
 
         // When
-        val result = deleteUserUseCase.deleteUser(mockUsers[0].id!!)
+        deleteUserUseCase.deleteUser(mockUsers[0].id!!)
 
         // Then
-        Truth.assertThat(result).isTrue()
+        coVerify(exactly = 1) { authenticationRepository.deleteUser(mockUsers[0].id!!) }
     }
 
     @Test
     fun `should return false when userid not exist`() = runTest {
         // Given
         val notExistUserId = UUID.randomUUID()
-        coEvery { authenticationRepository.deleteUser(notExistUserId) } returns false
+        coEvery { authenticationRepository.deleteUser(notExistUserId) } returns Unit
 
         // When
         val result = deleteUserUseCase.deleteUser(notExistUserId)
 
         // Then
-        Truth.assertThat(result).isFalse()
+        coVerify(exactly = 1) { authenticationRepository.deleteUser(notExistUserId) }
     }
 
     @Test
@@ -56,4 +58,5 @@ class DeleteUserUseCaseTest {
         // When & Then
         assertThrows<Exception> { deleteUserUseCase.deleteUser(mockUsers[0].id!!) }
     }
+
 }

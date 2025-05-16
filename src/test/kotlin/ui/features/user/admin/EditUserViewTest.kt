@@ -70,7 +70,7 @@ class EditUserViewTest {
         every { inputHandler.promptForIntChoice(any(), any()) } returns 1
         every { inputHandler.promptForInput(any()) } returns "NewAlice"
         every { inputHandler.promptForPassword(any()) } returns "NewPassword"
-        coEvery { editUserUseCase.editUser(any()) } returns true
+        coEvery { editUserUseCase.editUser(any()) }
         editUserView.editUser()
 
         //Then

@@ -59,7 +59,6 @@ class CreateTaskViewTest {
             title = "Test Project",
             description = "Test Project Description",
             createdBy = UUID.randomUUID(),
-            tasks = emptyList(),
             state = state
         )
     }
@@ -88,7 +87,7 @@ class CreateTaskViewTest {
         every { inputHandler.promptForIntChoice(any(), any()) } returns 1
 
         coEvery { createStateUseCase.createState(any()) } returns state.id!!
-        coEvery { createTaskUseCase.createTask(any()) } returns true
+        coEvery { createTaskUseCase.createTask(any()) }
         coEvery { editProjectUseCase.editProject(any()) } just Runs
 
         // When
