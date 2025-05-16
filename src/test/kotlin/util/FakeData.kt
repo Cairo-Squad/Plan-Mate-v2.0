@@ -50,12 +50,10 @@ object FakeData {
         return listOf(
             User(
                 UUID.fromString("55555555-1244-1234-1144-55555555"), "Hadeel",
-                password = "8474",
                 UserType.MATE
             ),
             User(
                 UUID.fromString("11111111-2222-3333-2222-11111111"), "Fathy",
-                password = "98665",
                 UserType.ADMIN
             )
         )

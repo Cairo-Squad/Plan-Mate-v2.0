@@ -35,7 +35,7 @@ class CreateNewUserViewTest {
         verify { inputHandler.waitForEnter() }
 
         //Then
-        coVerify(exactly = 0) { signUpUseCase.signUp(any()) }
+        coVerify(exactly = 0) { signUpUseCase.signUp(any(),any(),any()) }
     }
     @Disabled
     @Test
@@ -51,7 +51,7 @@ class CreateNewUserViewTest {
         verify { inputHandler.waitForEnter() }
 
         //Then
-        coVerify(exactly = 0) { signUpUseCase.signUp(any()) }
+        coVerify(exactly = 0) { signUpUseCase.signUp(any(),any(),any()) }
     }
     @Disabled
     @Test
@@ -59,7 +59,7 @@ class CreateNewUserViewTest {
         //Given & When
         every { inputHandler.promptForInput(any()) } returns "nour"
         every { inputHandler.promptForPassword(any()) } returns "123456"
-        coEvery { signUpUseCase.signUp(any()) } returns true
+        coEvery { signUpUseCase.signUp(any(),any(),any()) } returns Unit
         createNewUserView.createNewUser()
 
         //Then

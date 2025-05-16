@@ -46,13 +46,13 @@ class EditUserViewTest {
     @Test
     fun `should show error when no changes detected`() = runTest {
         //Given
-        val user = User(UUID.randomUUID(), "Alice", "password", null)
+        val user = User(UUID.randomUUID(), "Alice", null)
 
         //When
         coEvery { getAllUsersUseCase.getAllUsers() } returns listOf(user)
         every { inputHandler.promptForIntChoice(any(), any()) } returns 1
         every { inputHandler.promptForInput(any()) } returns user.name!!
-        every { inputHandler.promptForPassword(any()) } returns user.password!!
+        every { inputHandler.promptForPassword(any()) } returns "123456"
         editUserView.editUser()
 
         //Then
@@ -63,7 +63,7 @@ class EditUserViewTest {
     @Test
     fun `should update user successfully when valid input is provided`() = runTest {
         //Given
-        val user = User(UUID.randomUUID(), "Alice", "password", null)
+        val user = User(UUID.randomUUID(), "Alice", null)
 
         //When
         coEvery { getAllUsersUseCase.getAllUsers() } returns listOf(user)
@@ -81,7 +81,7 @@ class EditUserViewTest {
     @Test
     fun `should handle failure when editUserUseCase throws exception`() = runTest {
         //Given
-        val user = User(UUID.randomUUID(), "Alice", "password", null)
+        val user = User(UUID.randomUUID(), "Alice", null)
 
         //When
         coEvery { getAllUsersUseCase.getAllUsers() } returns listOf(user)
