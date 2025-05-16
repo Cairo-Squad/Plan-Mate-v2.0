@@ -43,7 +43,7 @@ class AuthenticationRepositoryImpl(
 
     override suspend fun getCurrentUser(): User? {
         return wrap {
-            remoteDataSource.getCurrentUser()?.toUser().also { println("getCurrentUser returned = $it") }
+            remoteDataSource.getCurrentUser()?.toUser()
         }
     }
 }

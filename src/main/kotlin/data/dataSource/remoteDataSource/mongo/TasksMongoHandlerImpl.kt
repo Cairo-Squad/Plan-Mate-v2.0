@@ -31,6 +31,6 @@ class TasksMongoHandlerImpl(
 			description = document.getString(MongoConstants.TASK_DESCRIPTION),
 			stateId = document.get(MongoConstants.TASK_STATE_ID,UUID::class.java),
 			projectId = document.get(MongoConstants.TASK_PROJECT_ID,UUID::class.java)
-		).also { println("Task Dto = $it") }
+		)
 	}
 }

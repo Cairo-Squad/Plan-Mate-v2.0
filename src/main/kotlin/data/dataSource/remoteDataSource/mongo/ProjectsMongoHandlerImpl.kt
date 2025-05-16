@@ -21,22 +21,17 @@ class ProjectsMongoHandlerImpl(
             .append(MongoConstants.TITLE, entity.title)
             .append(MongoConstants.DESCRIPTION, entity.description)
             .append(MongoConstants.CREATED_BY, entity.createdBy)
-            .append(MongoConstants.TASKS, entity.taskIds)
             .append(MongoConstants.STATE_ID, entity.stateId)
     }
 
     override fun convertDocumentToDto(document: Document): ProjectDto {
-        println("Trying to convert this document $document ,, to Project DTO")
-        val tasksList = document.getList(MongoConstants.TASKS, UUID::class.java) ?: emptyList()
-        println("list Of tasks = $tasksList")
 
         return ProjectDto(
             id = document.get(MongoConstants.ID, UUID::class.java),
             title = document.getString(MongoConstants.TITLE),
             description = document.getString(MongoConstants.DESCRIPTION),
             createdBy = document.get(MongoConstants.CREATED_BY,UUID::class.java),
-            taskIds = tasksList.ifEmpty { emptyList() },
             stateId = document.get(MongoConstants.STATE_ID,UUID::class.java)
-        ).also { println("Project dto = $it") }
+        )
     }
 }
