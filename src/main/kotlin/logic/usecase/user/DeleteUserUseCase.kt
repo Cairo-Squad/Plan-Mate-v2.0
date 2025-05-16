@@ -6,7 +6,7 @@ import java.util.*
 class DeleteUserUseCase(
     private val authenticationRepository: AuthenticationRepository
 ) {
-    suspend fun deleteUser(userId: UUID): Boolean {
-        return authenticationRepository.deleteUser(userId)
+    suspend fun deleteUser(userId: UUID) {
+        authenticationRepository.deleteUser(userId)
     }
 }

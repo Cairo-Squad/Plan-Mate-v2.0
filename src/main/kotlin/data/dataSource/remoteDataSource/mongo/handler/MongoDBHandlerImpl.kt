@@ -11,12 +11,12 @@ import org.bson.Document
 import java.util.*
 
 abstract class MongoDBHandlerImpl<DTO>(
-    protected val database: MongoDatabase,
-    protected val collectionName: String,
-    protected val getDtoId: (DTO) -> UUID
+    protected val database : MongoDatabase,
+    protected val collectionName : String,
+    protected val getDtoId : (DTO) -> UUID
 ) : MongoDBHandler<DTO> {
 
-    private val collection: MongoCollection<Document> by lazy {
+    private val collection : MongoCollection<Document> by lazy {
         database.getCollection(collectionName)
     }
 
@@ -26,55 +26,37 @@ abstract class MongoDBHandlerImpl<DTO>(
         }
     }
 
-    abstract fun convertDtoToDocument(entity: DTO): Document
-    abstract fun convertDocumentToDto(document: Document): DTO
+    abstract fun convertDtoToDocument(entity : DTO) : Document
+    abstract fun convertDocumentToDto(document : Document) : DTO
 
-    private fun collectionExists(): Boolean {
+    private fun collectionExists() : Boolean {
         return database.listCollectionNames().contains(collectionName)
     }
 
-    override fun write(entity: DTO): Boolean {
-        val document = convertDtoToDocument(entity)
-        val result: InsertOneResult = collection.insertOne(document)
-        return result.wasAcknowledged()
-    }
-
-    override fun write(entity: DTO, fakeParam: String): DTO {
+    override fun write(entity : DTO) : DTO {
         val document = convertDtoToDocument(entity)
         collection.insertOne(document)
         return convertDocumentToDto(document)
     }
 
-    override fun edit(entity: DTO): Boolean {
-        val entityId = getDtoId(entity)
-        val document = convertDtoToDocument(entity)
-        val result = collection.replaceOne(Filters.eq("_id", entityId.toString()), document)
-        return result.wasAcknowledged()
-    }
-
-    override fun delete(entityId: UUID): Boolean {
-        val result = collection.deleteOne(Filters.eq("_id", entityId.toString()))
-        return result.wasAcknowledged()
-    }
-
-    override fun edit(entity: DTO, fakeParam: String) {
+    override fun edit(entity : DTO) {
         val entityId = getDtoId(entity)
         val document = convertDtoToDocument(entity)
         collection.replaceOne(Filters.eq("_id", entityId.toString()), document)
     }
 
-    override fun delete(entityId: UUID, fakeParam: String) {
+    override fun delete(entityId : UUID) {
         collection.deleteOne(Filters.eq("_id", entityId.toString()))
     }
 
-    override fun readAll(): List<DTO> {
+    override fun readAll() : List<DTO> {
         return collection.find()
             .map { convertDocumentToDto(it) }
-            .toList().ifEmpty { throw PlanMateException.NetworkException.DataNotFoundException("No Projects Found") }
+            .toList()
     }
 
-    override fun readByEntityId(id: UUID): DTO {
-        val filter = Filters.eq(MongoConstants.USER_ID,id)
+    override fun readByEntityId(id : UUID) : DTO {
+        val filter = Filters.eq(MongoConstants.USER_ID, id)
         val projection = Projections.exclude(MongoConstants.USER_PASSWORD)
         val document =
             collection.find(filter).projection(projection).first()

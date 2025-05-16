@@ -6,18 +6,19 @@ import logic.model.State
 import logic.usecase.project.CreateProjectUseCase
 import logic.usecase.state.CreateStateUseCase
 import logic.usecase.state.GetAllStatesUseCase
+import logic.usecase.state.GetStateByIdUseCase
 import logic.usecase.user.GetCurrentUserUseCase
 import ui.utils.InputHandler
 import ui.utils.OutputFormatter
 import java.util.*
 
 class ProjectCreateView(
-    private val createProjectUseCase: CreateProjectUseCase,
-    private val inputHandler: InputHandler,
-    private val outputFormatter: OutputFormatter,
-    private val createStateUseCase: CreateStateUseCase,
-	private val getCurrentUserUseCase: GetCurrentUserUseCase,
-    private val getAllStatesUseCase: GetAllStatesUseCase
+    private val createProjectUseCase : CreateProjectUseCase,
+    private val inputHandler : InputHandler,
+    private val outputFormatter : OutputFormatter,
+    private val createStateUseCase : CreateStateUseCase,
+    private val getCurrentUserUseCase : GetCurrentUserUseCase,
+    private val getStateByIdUseCase : GetStateByIdUseCase
 ) {
     fun createProject() = runBlocking {
         displayHeader()
@@ -30,11 +31,11 @@ class ProjectCreateView(
         val project = buildProject(title, description, currentUser.id!!, projectState)
 
         try {
-             createProjectUseCase.createProject(project, currentUser)
+            createProjectUseCase.createProject(project, currentUser)
 
-                outputFormatter.printSuccess("✅ Project '${title}' created successfully! 🎉")
+            outputFormatter.printSuccess("✅ Project '${title}' created successfully! 🎉")
 
-        } catch (ex: Exception) {
+        } catch (ex : Exception) {
             outputFormatter.printError("❌ Failed to create project: ${ex.message}")
         }
     }
@@ -55,24 +56,20 @@ class ProjectCreateView(
         }
     }
 
-    private fun collectProjectInfo(): Pair<String, String> {
+    private fun collectProjectInfo() : Pair<String, String> {
         val title = inputHandler.promptForInput("📂 Enter project title: ")
         val description = inputHandler.promptForInput("📝 Enter project description: ")
         return title to description
     }
 
-    private fun createInitialState(): State = runBlocking {
+    private fun createInitialState() : State = runBlocking {
         val stateTitle = inputHandler.promptForInput("📊 Enter initial project state: ")
-        val isProjectStateCreated = createStateUseCase.createState(State(title = stateTitle))
-        println("Project state created or not ?= $isProjectStateCreated")
-        if (isProjectStateCreated) {
-            val projectState = getAllStatesUseCase.getAllStateById().last()
-            return@runBlocking projectState
-        }
-        return@runBlocking State()
+        val stateId = createStateUseCase.createState(State(title = stateTitle))
+        val newState = getStateByIdUseCase.getStateById(stateId)
+        return@runBlocking newState
     }
 
-    private fun buildProject(title: String, description: String, userId: UUID, state: State): Project {
+    private fun buildProject(title : String, description : String, userId : UUID, state : State) : Project {
         return Project(
             title = title, description = description, createdBy = userId, state = state
         )

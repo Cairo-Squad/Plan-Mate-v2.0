@@ -28,12 +28,12 @@ class RemoteDataSourceImpl(
         setCurrentUser(createdUserId)
     }
 
-    override suspend fun editUser(user: UserDto): Boolean {
-        return usersHandler.edit(user)
+    override suspend fun editUser(user: UserDto) {
+         usersHandler.edit(user)
     }
 
-    override suspend fun deleteUser(userId: UUID): Boolean {
-        return usersHandler.delete(userId)
+    override suspend fun deleteUser(userId: UUID){
+       usersHandler.delete(userId)
     }
 
     override suspend fun loginUser(name: String, password: String) {
@@ -51,17 +51,17 @@ class RemoteDataSourceImpl(
     private fun setCurrentUser(userId: UUID) {
         currentUserID = userId
     }
-    
+
     override suspend fun createProject(project: ProjectDto): UUID {
-        return projectsHandler.write(project, "").id!!
+        return projectsHandler.write(project).id!!
     }
 
     override suspend fun editProject(newProject: ProjectDto) {
-        projectsHandler.edit(newProject, "")
+        projectsHandler.edit(newProject)
     }
 
     override suspend fun deleteProjectById(projectId: UUID) {
-        projectsHandler.delete(projectId, "")
+        projectsHandler.delete(projectId)
     }
 
     override suspend fun getProjectById(projectId: UUID): ProjectDto {
@@ -72,12 +72,12 @@ class RemoteDataSourceImpl(
         return projectsHandler.readAll()
     }
 
-    override suspend fun getTasksByProjectId(projectId: UUID): List<TaskDto> {
+    override suspend fun getTasksByProjectId(projectId : UUID) : List<TaskDto> {
         return tasksHandler.readAll().filter { it.projectId == projectId }
     }
 
     override suspend fun createTask(task: TaskDto): UUID {
-        return tasksHandler.write(task, "").id!!
+        return tasksHandler.write(task).id!!
     }
 
     override suspend fun getAllTasks(): List<TaskDto> {
@@ -88,44 +88,44 @@ class RemoteDataSourceImpl(
         tasksHandler.edit(task)
     }
 
-    override suspend fun deleteTask(task: TaskDto) {
+    override suspend fun deleteTask(task : TaskDto) {
         tasksHandler.delete(task.id!!)
     }
 
-    override suspend fun getTaskById(taskID: UUID): TaskDto {
+    override suspend fun getTaskById(taskID : UUID) : TaskDto {
         return tasksHandler.readByEntityId(taskID)
     }
 
-    override suspend fun getAllStates(): List<StateDto> {
+    override suspend fun getAllStates() : List<StateDto> {
         return statesHandler.readAll()
     }
 
-    override suspend fun getStateById(stateId: UUID): StateDto {
+    override suspend fun getStateById(stateId : UUID) : StateDto {
         return statesHandler.readByEntityId(stateId)
     }
 
-    override suspend fun createState(state: StateDto): Boolean {
-        return statesHandler.write(state)
+    override suspend fun createState(state : StateDto) : UUID {
+        return statesHandler.write(state).id!!
     }
 
-    override suspend fun editState(state: StateDto) {
+    override suspend fun editState(state : StateDto) {
         statesHandler.edit(state)
     }
 
-    override suspend fun addTaskLog(log: LogDto) {
+    override suspend fun addTaskLog(log : LogDto) {
         taskLogsHandler.write(log)
     }
 
-    override suspend fun addProjectLog(log: LogDto) {
+    override suspend fun addProjectLog(log : LogDto) {
         projectLogsHandler.write(log)
     }
 
-    override suspend fun getTaskLogs(taskId: UUID): List<LogDto> {
+    override suspend fun getTaskLogs(taskId : UUID) : List<LogDto> {
         return taskLogsHandler.readAll()
             .filter { it.entityType == EntityType.TASK && it.entityId == taskId }
     }
 
-    override suspend fun getProjectLogs(projectId: UUID): List<LogDto> {
+    override suspend fun getProjectLogs(projectId : UUID) : List<LogDto> {
         return projectLogsHandler.readAll()
             .filter { it.entityType == EntityType.PROJECT && it.entityId == projectId }
     }

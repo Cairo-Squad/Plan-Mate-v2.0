@@ -8,6 +8,7 @@ import logic.usecase.project.EditProjectUseCase
 import logic.usecase.project.GetAllProjectsUseCase
 import logic.usecase.state.CreateStateUseCase
 import logic.usecase.state.GetAllStatesUseCase
+import logic.usecase.state.GetStateByIdUseCase
 import logic.usecase.task.CreateTaskUseCase
 import logic.usecase.task.GetAllTasksUseCase
 import logic.usecase.task.GetTaskBytIdUseCase
@@ -16,15 +17,16 @@ import ui.utils.OutputFormatter
 import java.util.UUID
 
 class CreateTaskView(
-    private val createTaskUseCase: CreateTaskUseCase,
-    private val inputHandler: InputHandler,
-    private val outputFormatter: OutputFormatter,
-    private val editProjectUseCase: EditProjectUseCase,
-    private val getAllProjectsUseCase: GetAllProjectsUseCase,
-    private val createStateUseCase: CreateStateUseCase,
-    private val getAllStatesUseCase: GetAllStatesUseCase
+    private val createTaskUseCase : CreateTaskUseCase,
+    private val inputHandler : InputHandler,
+    private val outputFormatter : OutputFormatter,
+    private val editProjectUseCase : EditProjectUseCase,
+    private val getAllProjectsUseCase : GetAllProjectsUseCase,
+    private val createStateUseCase : CreateStateUseCase,
+    private val getStateByIdUseCase : GetStateByIdUseCase
+
 ) {
-    lateinit var projects: List<Project>
+    lateinit var projects : List<Project>
 
     fun createTask() = runBlocking {
         outputFormatter.printHeader("Create a New Task")
@@ -55,7 +57,7 @@ class CreateTaskView(
 
             createAndUpdateProject(task, selectedProject)
 
-        } catch (ex: Exception) {
+        } catch (ex : Exception) {
             outputFormatter.printError("Failed to get all projects: ${ex.message}")
         }
     }
@@ -64,7 +66,7 @@ class CreateTaskView(
         projects = getAllProjectsUseCase.getAllProjects()
     }
 
-    private fun selectProject(): Project {
+    private fun selectProject() : Project {
         projects.forEachIndexed { index, project ->
             outputFormatter.printInfo("${index + 1}. ${project.title} (ID: ${project.id})")
         }
@@ -76,28 +78,25 @@ class CreateTaskView(
         return projects[projectIndex]
     }
 
-    private suspend fun createTaskState(): State {
+    private suspend fun createTaskState() : State {
         val stateTitle = inputHandler.promptForInput("Enter state title: ")
-        val isTaskState = createStateUseCase.createState(State(title = stateTitle))
-        if (isTaskState) {
-            val taskStateCreated = getAllStatesUseCase.getAllStateById().last()
-            return taskStateCreated
-        }
-        return State()
+        val stateId = createStateUseCase.createState(State(title = stateTitle))
+        val newState = getStateByIdUseCase.getStateById(stateId)
+        return newState
     }
 
-    private suspend fun createAndUpdateProject(task: Task, selectedProject: Project) {
+    private suspend fun createAndUpdateProject(task : Task, selectedProject : Project) {
         try {
 
             createTaskUseCase.createTask(task)
             val updatedProject = selectedProject.copy(
                 id = selectedProject.id,
-            )
+                )
 
-            editProjectUseCase.editProject(updatedProject)
-            outputFormatter.printSuccess("Task created successfully!")
+                editProjectUseCase.editProject(updatedProject)
+                outputFormatter.printSuccess("Task created successfully!")
 
-        } catch (ex: Exception) {
+        } catch (ex : Exception) {
             outputFormatter.printError(ex.message ?: "failed to create task!!")
         }
     }

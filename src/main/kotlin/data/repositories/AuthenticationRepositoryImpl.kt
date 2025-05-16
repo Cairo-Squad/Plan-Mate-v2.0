@@ -19,7 +19,7 @@ class AuthenticationRepositoryImpl(
         }
     }
 
-    override suspend fun deleteUser(userId: UUID): Boolean {
+    override suspend fun deleteUser(userId: UUID) {
         return wrap {
             remoteDataSource.deleteUser(userId)
         }
@@ -31,7 +31,7 @@ class AuthenticationRepositoryImpl(
         }
     }
 
-    override suspend fun editUser(user: User): Boolean {
+    override suspend fun editUser(user: User){
         return wrap { remoteDataSource.editUser(user.toUserDto()) }
     }
 
