@@ -107,7 +107,7 @@ class RemoteDataSourceImpl(
     }
 
     override suspend fun createState(state : StateDto) : UUID {
-        return statesHandler.write(state, "fakeParam").id!!
+        return statesHandler.write(state, true).id!!
     }
 
     override suspend fun editState(state : StateDto) {

@@ -37,7 +37,7 @@ abstract class MongoDBHandlerImpl<DTO>(
         return result.wasAcknowledged()
     }
 
-    override fun write(entity : DTO, fakeParam : String) : DTO {
+    override fun write(entity : DTO, isFakeParam:Boolean) : DTO {
         val document = convertDtoToDocument(entity)
         collection.insertOne(document)
         return convertDocumentToDto(document)
@@ -55,11 +55,11 @@ abstract class MongoDBHandlerImpl<DTO>(
         return result.wasAcknowledged()
     }
 
-    override fun delete(entityId : UUID, fakeParam : String) {
+    override fun delete(entityId : UUID, isFakeParam:Boolean) {
         collection.deleteOne(Filters.eq("_id", entityId.toString()))
     }
 
-    override fun edit(entity : DTO, fakeParam : String) {
+    override fun edit(entity : DTO,isFakeParam:Boolean) {
         val entityId = getDtoId(entity)
         val document = convertDtoToDocument(entity)
         collection.replaceOne(Filters.eq("_id", entityId.toString()), document)
