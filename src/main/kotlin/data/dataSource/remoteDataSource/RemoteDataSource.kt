@@ -8,8 +8,8 @@ interface RemoteDataSource {
     // region Users
     suspend fun getAllUsers() : List<UserDto>
     suspend fun signUp(userName : String, userPassword : String, userType : UserType)
-    suspend fun editUser(user : UserDto) : Boolean
-    suspend fun deleteUser(userId : UUID) : Boolean
+    suspend fun editUser(user : UserDto)
+    suspend fun deleteUser(userId : UUID)
     suspend fun loginUser(name : String, password : String)
     suspend fun getCurrentUser() : UserDto?
 
