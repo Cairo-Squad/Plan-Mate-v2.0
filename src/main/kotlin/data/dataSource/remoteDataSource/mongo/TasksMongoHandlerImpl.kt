@@ -17,20 +17,20 @@ class TasksMongoHandlerImpl(
 	override fun convertDtoToDocument(entity: TaskDto): Document {
 		val id = getDtoId(entity)
 		return Document()
-			.append(MongoConstants.TASK_ID, id.toString())
+			.append(MongoConstants.TASK_ID, id)
 			.append(MongoConstants.TASK_TITLE, entity.title)
 			.append(MongoConstants.TASK_DESCRIPTION, entity.description)
-			.append(MongoConstants.TASK_STATE_ID, entity.stateId.toString())
-			.append(MongoConstants.TASK_PROJECT_ID, entity.projectId.toString())
+			.append(MongoConstants.TASK_STATE_ID, entity.stateId)
+			.append(MongoConstants.TASK_PROJECT_ID, entity.projectId)
 	}
 	
 	override fun convertDocumentToDto(document: Document): TaskDto {
 		return TaskDto(
-			id = UUID.fromString(document.getString(MongoConstants.TASK_ID)),
+			id = document.get(MongoConstants.TASK_ID,UUID::class.java),
 			title = document.getString(MongoConstants.TASK_TITLE),
 			description = document.getString(MongoConstants.TASK_DESCRIPTION),
-			stateId = UUID.fromString(document.getString(MongoConstants.TASK_STATE_ID)),
-			projectId = UUID.fromString(document.getString(MongoConstants.TASK_PROJECT_ID))
+			stateId = document.get(MongoConstants.TASK_STATE_ID,UUID::class.java),
+			projectId = document.get(MongoConstants.TASK_PROJECT_ID,UUID::class.java)
 		)
 	}
 }

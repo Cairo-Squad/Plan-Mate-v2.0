@@ -25,7 +25,7 @@ class GetCurrentUserUseCaseTest {
     @Test
     fun ` should getCurrentUser return current user when it exists(successful)`() = runTest {
         // Given
-        val user = User(id = UUID(1, 1), name = "nour", password = "123456", type = UserType.ADMIN)
+        val user = User(id = UUID(1, 1), name = "nour", type = UserType.ADMIN)
         coEvery { authenticationRepository.getCurrentUser() } returns user
 
         // When

@@ -1,76 +1,74 @@
 package data.dataSource.remoteDataSource.mongo
 
+import data.customException.PlanMateException
 import data.dataSource.remoteDataSource.RemoteDataSource
 import data.dataSource.remoteDataSource.mongo.handler.MongoDBHandler
 import data.dto.*
-import data.hashing.PasswordEncryptor
 import logic.model.EntityType
+import logic.model.UserType
 import java.util.*
 
 class RemoteDataSourceImpl(
-    private val taskLogsHandler : MongoDBHandler<LogDto>,
-    private val projectLogsHandler : MongoDBHandler<LogDto>,
-    private val projectsHandler : MongoDBHandler<ProjectDto>,
-    private val statesHandler : MongoDBHandler<StateDto>,
-    private val tasksHandler : MongoDBHandler<TaskDto>,
-    private val usersHandler : MongoDBHandler<UserDto>,
-    private val passwordEncryptor : PasswordEncryptor
+    private val taskLogsHandler: MongoDBHandler<LogDto>,
+    private val projectLogsHandler: MongoDBHandler<LogDto>,
+    private val projectsHandler: MongoDBHandler<ProjectDto>,
+    private val statesHandler: MongoDBHandler<StateDto>,
+    private val tasksHandler: MongoDBHandler<TaskDto>,
+    private val usersHandler: MongoDBHandler<UserDto>,
+    private val authenticationHandler: AuthenticationHandler,
 ) : RemoteDataSource {
-    private var currentUser : UserDto? = null
+    private var currentUserID: UUID? = null
 
-    override suspend fun getAllUsers() : List<UserDto> {
+    override suspend fun getAllUsers(): List<UserDto> {
         return usersHandler.readAll()
     }
 
-    override suspend fun createUser(user : UserDto) : Boolean {
-        val updatedUser = user.copy(
-            id = UUID.randomUUID(),
-            password = passwordEncryptor.hashPassword(user.password)
-        )
-        return usersHandler.write(updatedUser)
+    override suspend fun signUp(userName: String, userPassword: String, userType: UserType) {
+        val createdUserId = authenticationHandler.signUp(userName, userPassword, userType)
+        setCurrentUser(createdUserId)
     }
 
-    override suspend fun editUser(user : UserDto) : Boolean {
-        return usersHandler.edit(user)
+    override suspend fun editUser(user: UserDto) {
+         usersHandler.edit(user)
     }
 
-    override suspend fun deleteUser(userId : UUID) : Boolean {
-        return usersHandler.delete(userId)
+    override suspend fun deleteUser(userId: UUID){
+       usersHandler.delete(userId)
     }
 
-    override suspend fun loginUser(name : String, password : String) : Boolean {
-        val users = usersHandler.readAll()
-        val user = users.find { it.name == name && it.password == password }
-        setCurrentUser(user)
-        return user != null
+    override suspend fun loginUser(name: String, password: String) {
+        val result = authenticationHandler.login(name, password)
+        if (result != null)
+            currentUserID = result
+        else throw PlanMateException.ValidationException.InvalidCredentialsException()
     }
 
-    override suspend fun getCurrentUser() : UserDto? {
-        return currentUser
+    override suspend fun getCurrentUser(): UserDto? {
+        if (currentUserID == null) return null
+        return usersHandler.readByEntityId(currentUserID!!)
     }
 
-    private fun setCurrentUser(user : UserDto?) {
-        currentUser = user
+    private fun setCurrentUser(userId: UUID) {
+        currentUserID = userId
     }
 
-
-    override suspend fun createProject(project : ProjectDto) : Boolean {
-        return projectsHandler.write(project)
+    override suspend fun createProject(project: ProjectDto): UUID {
+        return projectsHandler.write(project).id!!
     }
 
-    override suspend fun editProject(newProject : ProjectDto) {
+    override suspend fun editProject(newProject: ProjectDto) {
         projectsHandler.edit(newProject)
     }
 
-    override suspend fun deleteProjectById(project : ProjectDto) {
-        projectsHandler.delete(project.id!!)
+    override suspend fun deleteProjectById(projectId: UUID) {
+        projectsHandler.delete(projectId)
     }
 
-    override suspend fun getProjectById(projectId : UUID) : ProjectDto {
+    override suspend fun getProjectById(projectId: UUID): ProjectDto {
         return projectsHandler.readByEntityId(projectId)
     }
 
-    override suspend fun getAllProjects() : List<ProjectDto> {
+    override suspend fun getAllProjects(): List<ProjectDto> {
         return projectsHandler.readAll()
     }
 
@@ -78,15 +76,15 @@ class RemoteDataSourceImpl(
         return tasksHandler.readAll().filter { it.projectId == projectId }
     }
 
-    override suspend fun createTask(task : TaskDto) : Boolean {
-        return tasksHandler.write(task)
+    override suspend fun createTask(task: TaskDto): UUID {
+        return tasksHandler.write(task).id!!
     }
 
-    override suspend fun getAllTasks() : List<TaskDto> {
+    override suspend fun getAllTasks(): List<TaskDto> {
         return tasksHandler.readAll()
     }
 
-    override suspend fun editTask(task : TaskDto) {
+    override suspend fun editTask(task: TaskDto) {
         tasksHandler.edit(task)
     }
 
@@ -107,7 +105,7 @@ class RemoteDataSourceImpl(
     }
 
     override suspend fun createState(state : StateDto) : UUID {
-        return statesHandler.write(state, true).id!!
+        return statesHandler.write(state).id!!
     }
 
     override suspend fun editState(state : StateDto) {

@@ -31,10 +31,10 @@ class ProjectCreateView(
         val project = buildProject(title, description, currentUser.id!!, projectState)
 
         try {
-            val isProjectCreated = createProjectUseCase.createProject(project, currentUser)
-            if (isProjectCreated) {
-                outputFormatter.printSuccess("✅ Project '${title}' created successfully! 🎉")
-            }
+            createProjectUseCase.createProject(project, currentUser)
+
+            outputFormatter.printSuccess("✅ Project '${title}' created successfully! 🎉")
+
         } catch (ex : Exception) {
             outputFormatter.printError("❌ Failed to create project: ${ex.message}")
         }
@@ -71,7 +71,7 @@ class ProjectCreateView(
 
     private fun buildProject(title : String, description : String, userId : UUID, state : State) : Project {
         return Project(
-            title = title, description = description, createdBy = userId, tasks = emptyList(), state = state
+            title = title, description = description, createdBy = userId, state = state
         )
     }
 }

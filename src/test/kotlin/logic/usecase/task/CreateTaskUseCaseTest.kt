@@ -32,16 +32,14 @@ class CreateTaskUseCaseTest {
 		val taskToCreate = createValidTask()
 		
 		coEvery { validationTask.validateCreateTask(taskToCreate) } returns Unit
-		val createdTask = taskToCreate.copy(id = UUID.randomUUID())
-		coEvery { tasksRepository.createTask(taskToCreate) } returns true
+		coEvery { tasksRepository.createTask(taskToCreate) } returns taskToCreate.id!!
 		
 		// When
-		val result = createTaskUseCase.createTask(taskToCreate)
+		createTaskUseCase.createTask(taskToCreate)
 		
 		// Then
 		coVerify(exactly = 1) { validationTask.validateCreateTask(taskToCreate) }
 		coVerify(exactly = 1) { tasksRepository.createTask(taskToCreate) }
-		assertThat(result).isTrue()
 	}
 	
 	@Test
@@ -65,7 +63,7 @@ class CreateTaskUseCaseTest {
 		// Given
 		val minimalTask = createValidTask().copy(description = "")
 		coEvery { validationTask.validateCreateTask(minimalTask) } returns Unit
-		coEvery { tasksRepository.createTask(minimalTask) } returns true
+		coEvery { tasksRepository.createTask(minimalTask) } returns minimalTask.id!!
 		
 		// When
 		createTaskUseCase.createTask(minimalTask)

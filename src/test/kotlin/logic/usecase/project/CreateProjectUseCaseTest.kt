@@ -37,7 +37,7 @@ class CreateProjectUseCaseTest() {
 
         //Then
         verify(exactly = 1) { validationCreationProjectCreation.validateCreateProject(project, adminUser) }
-        coVerify(exactly = 1) { projectRepository.createProject(project, adminUser) }
+        coVerify(exactly = 1) { projectRepository.createProject(project) }
     }
 
     @Test
@@ -63,7 +63,7 @@ class CreateProjectUseCaseTest() {
 
         //Then
         verify(exactly = 1) { validationCreationProjectCreation.validateCreateProject(project, adminUser) }
-        coVerify(exactly = 1) { projectRepository.createProject(project, adminUser) }
+        coVerify(exactly = 1) { projectRepository.createProject(project) }
     }
 
     @Test

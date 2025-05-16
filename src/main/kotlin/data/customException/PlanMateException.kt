@@ -1,7 +1,8 @@
 package data.customException
 
 sealed class PlanMateException : Exception() {
-    
+
+    data class NotYetImplementedException(val errorMsg: String = "This Feature is not yet implemented" ):PlanMateException()
     sealed class ValidationException : PlanMateException() {
         data class InvalidCredentialsException(val errorMsg: String = "Invalid Credentials") :
             ValidationException()
@@ -26,5 +27,6 @@ sealed class PlanMateException : Exception() {
         data class WriteException(val errorMsg: String? = "Api Write Exception") : NetworkException()
         data class ApiException(val errorMsg: String? = "Api UnKnown Exception") : NetworkException()
     }
+
 }
 

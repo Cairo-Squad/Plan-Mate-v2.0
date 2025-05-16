@@ -8,6 +8,6 @@ interface TasksRepository {
     suspend fun editTask(task: Task)
     suspend fun getAllTasksByProjectId(projectId: UUID): List<Task>
     suspend fun deleteTask(task: Task)
-    suspend fun createTask(task: Task):Boolean
+    suspend fun createTask(task: Task): UUID
     suspend fun getAllTasks():List<Task>
 }

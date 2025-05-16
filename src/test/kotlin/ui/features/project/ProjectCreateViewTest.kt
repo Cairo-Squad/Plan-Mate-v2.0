@@ -116,6 +116,4 @@ class ProjectCreateViewTest {
         verify(exactly = 0) { inputHandler.promptForInput(any()) }
         coVerify(exactly = 0) { createProjectUseCase.createProject(any(), any()) }
     }
-
-
 }

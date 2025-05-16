@@ -16,7 +16,7 @@ abstract class BaseRepository {
                 is IOException -> throw PlanMateException.NetworkException.IOException()
                 is MongoWriteException -> throw PlanMateException.NetworkException.WriteException(e.message)
                 is MongoException -> throw PlanMateException.NetworkException.ApiException(e.message)
-                else -> throw Exception("Unhandled exception")
+                else -> throw Exception("Unhandled exception -> $e")
             }
         }
     }

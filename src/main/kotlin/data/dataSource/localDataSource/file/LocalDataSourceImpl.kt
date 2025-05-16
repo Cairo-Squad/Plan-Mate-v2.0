@@ -1,9 +1,9 @@
 package data.dataSource.localDataSource.file
 
+import data.customException.PlanMateException
 import data.dataSource.localDataSource.LocalDataSource
 import data.dataSource.localDataSource.file.handler.FileHandler
 import data.dto.*
-import data.hashing.PasswordEncryptor
 import logic.model.EntityType
 import java.util.*
 
@@ -13,14 +13,12 @@ class LocalDataSourceImpl(
     private val statesCsvHandler: FileHandler<StateDto>,
     private val tasksCsvHandler: FileHandler<TaskDto>,
     private val usersCsvHandler: FileHandler<UserDto>,
-    private val passwordEncryptor: PasswordEncryptor
 ) : LocalDataSource {
     private var currentUser: UserDto? = null
 
     override fun createUser(user: UserDto): Boolean {
-        val hashedPassword = passwordEncryptor.hashPassword(user.password)
-        val updatedUser = user.copy(id = UUID.randomUUID(), password = hashedPassword)
-        return usersCsvHandler.write(updatedUser)
+//        return usersCsvHandler.write(user)
+        throw PlanMateException.NotYetImplementedException()
     }
 
     override fun getAllUsers(): List<UserDto> {
@@ -41,10 +39,11 @@ class LocalDataSourceImpl(
     }
 
     override fun loginUser(name: String, password: String): Boolean {
-        val users = usersCsvHandler.readAll()
-        val user = users.find { it.name == name && it.password == password }
-        setCurrentUser(user)
-        return user != null
+//        val users = usersCsvHandler.readAll()
+//        val user = users.find { it.name == name && it.password == password }
+//        setCurrentUser(user)
+//        return user != null
+        throw PlanMateException.NotYetImplementedException()
     }
 
     override fun getCurrentUser(): UserDto? {

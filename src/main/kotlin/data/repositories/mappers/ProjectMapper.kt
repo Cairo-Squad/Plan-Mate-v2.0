@@ -6,13 +6,12 @@ import logic.model.State
 import logic.model.Task
 import java.util.*
 
-fun ProjectDto.toProject(projectTasks: List<Task>, projectState: State): Project {
+fun ProjectDto.toProject(projectState: State): Project {
     return Project(
         id = this.id,
         title = this.title,
         description = this.description,
         createdBy = this.createdBy,
-        tasks = projectTasks,
         state = projectState
     )
 }
@@ -23,7 +22,6 @@ fun Project.toProjectDto(): ProjectDto {
 		title = this.title ?: "",
 		description = this.description ?: "",
 		createdBy = this.createdBy!!,
-		taskIds = this.tasks?.map { it.id!! }?: emptyList(),
 		stateId = this.state?.id!!
 	)
 }

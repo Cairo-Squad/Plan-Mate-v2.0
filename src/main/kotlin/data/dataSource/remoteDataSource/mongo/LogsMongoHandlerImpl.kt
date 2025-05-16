@@ -24,23 +24,26 @@ class LogsMongoHandlerImpl(
 ) {
     override fun convertDtoToDocument(entity: LogDto): Document {
         return Document()
-            .append(MongoConstants.ID, getDtoId(entity).toString())
-            .append(MongoConstants.LOG_ENTITY_ID, entity.entityId.toString())
+            .append(MongoConstants.ID, getDtoId(entity))
+            .append(MongoConstants.LOG_ENTITY_ID, entity.entityId)
             .append(MongoConstants.LOG_ENTITY_TITLE, entity.entityTitle)
             .append(MongoConstants.LOG_ENTITY_TYPE, entity.entityType?.name)
             .append(MongoConstants.LOG_DATE_TIME, entity.dateTime.toString())
-            .append(MongoConstants.LOG_USER_ID, entity.userId.toString())
-            .append(MongoConstants.LOG_USER_ACTION, serializeUserAction(entity.userAction!!)) // TODO: Remove this assertion
+            .append(MongoConstants.LOG_USER_ID, entity.userId)
+            .append(
+                MongoConstants.LOG_USER_ACTION,
+                serializeUserAction(entity.userAction!!)
+            )
     }
 
     override fun convertDocumentToDto(document: Document): LogDto {
         return LogDto(
-            id = UUID.fromString(document.getString(MongoConstants.ID)),
-            entityId = UUID.fromString(document.getString(MongoConstants.LOG_ENTITY_ID)),
+            id = document.get(MongoConstants.ID, UUID::class.java),
+            entityId = document.get(MongoConstants.LOG_ENTITY_ID, UUID::class.java),
             entityTitle = document.getString(MongoConstants.LOG_ENTITY_TITLE),
             entityType = EntityType.valueOf(document.getString(MongoConstants.LOG_ENTITY_TYPE)),
             dateTime = LocalDateTime.parse(document.getString(MongoConstants.LOG_DATE_TIME)),
-            userId = UUID.fromString(document.getString(MongoConstants.LOG_USER_ID)),
+            userId = document.get(MongoConstants.LOG_USER_ID, UUID::class.java),
             userAction = deserializeUserAction(document.getString(MongoConstants.LOG_USER_ACTION))
         )
     }

@@ -1,21 +1,20 @@
 package ui.features.user.admin
 
-import logic.model.UserType
 import kotlinx.coroutines.runBlocking
-import logic.model.User
-import logic.usecase.user.CreateUserUseCase
+import logic.model.UserType
+import logic.usecase.user.SignUpUseCase
 import ui.utils.InputHandler
 import ui.utils.OutputFormatter
 
 class CreateNewUserView(
     private val inputHandler: InputHandler,
     private val outputFormatter: OutputFormatter,
-    private val createUserUseCase: CreateUserUseCase
+    private val signUpUseCase: SignUpUseCase
 ) {
     fun createNewUser() = runBlocking {
         showHeader()
-        val user = collectUserInput() ?: return@runBlocking
-        performUserCreation(user)
+        val userNameAndPassword = collectUserInput() ?: return@runBlocking
+        performUserCreation(userNameAndPassword)
     }
 
     private fun showHeader() {
@@ -28,7 +27,7 @@ class CreateNewUserView(
         )
     }
 
-    private fun collectUserInput(): User? {
+    private fun collectUserInput(): Pair<String, String>? {
         val username = inputHandler.promptForInput("📛 Enter username: ")
         if (username.isBlank()) {
             outputFormatter.printError("❌ Username cannot be empty.")
@@ -43,17 +42,13 @@ class CreateNewUserView(
             return null
         }
 
-        return User( name = username, password = password, type = UserType.MATE)
+        return username to password
     }
 
-    private suspend fun performUserCreation(user: User) {
+    private suspend fun performUserCreation(userNameAndPassword: Pair<String, String>) {
         try {
-            val isCreated = createUserUseCase.createUser(user)
-            if (isCreated) {
-                outputFormatter.printSuccess("✅ User '${user.name}' created successfully!")
-            } else {
-                outputFormatter.printError("❌ Failed to create user. Please try again.")
-            }
+            signUpUseCase.signUp(userNameAndPassword.first, userNameAndPassword.second, UserType.MATE)
+            outputFormatter.printSuccess("✅ User '${userNameAndPassword.first}' created successfully!")
         } catch (ex: Exception) {
             outputFormatter.printError("❌ Error during user creation: ${ex.message}")
         }

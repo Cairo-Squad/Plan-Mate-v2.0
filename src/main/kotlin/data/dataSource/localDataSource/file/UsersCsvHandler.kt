@@ -19,7 +19,6 @@ class UsersCsvHandler(
         val rowStringBuilder = StringBuilder()
         rowStringBuilder.append("${entity.id}")
         rowStringBuilder.append(",${entity.name}")
-        rowStringBuilder.append(",${entity.password}")
         rowStringBuilder.append(",${entity.type.name}")
         return rowStringBuilder.toString()
     }
@@ -29,7 +28,6 @@ class UsersCsvHandler(
         return UserDto(
             id = UUID.fromString(userData[CsvIndices.USER_ID]),
             name = userData[CsvIndices.USER_NAME],
-            password = userData[CsvIndices.USER_PASSWORD],
             type = UserType.valueOf(userData[CsvIndices.USER_TYPE])
         )
     }

@@ -13,7 +13,7 @@ val repositoryModule = module {
     single<TaskLogsRepository> { TaskLogsRepositoryImpl(get()) }
     single<ProjectLogsRepository> { ProjectLogsRepositoryImpl(get()) }
 
-    single<AuthenticationRepository> { AuthenticationRepositoryImpl(get(), get()) }
+    single<AuthenticationRepository> { AuthenticationRepositoryImpl(get()) }
 
     single<PasswordEncryptor> { MD5PasswordEncryptor() }
 }

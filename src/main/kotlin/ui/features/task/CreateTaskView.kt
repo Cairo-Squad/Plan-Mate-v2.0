@@ -11,8 +11,10 @@ import logic.usecase.state.GetAllStatesUseCase
 import logic.usecase.state.GetStateByIdUseCase
 import logic.usecase.task.CreateTaskUseCase
 import logic.usecase.task.GetAllTasksUseCase
+import logic.usecase.task.GetTaskBytIdUseCase
 import ui.utils.InputHandler
 import ui.utils.OutputFormatter
+import java.util.UUID
 
 class CreateTaskView(
     private val createTaskUseCase : CreateTaskUseCase,
@@ -21,8 +23,8 @@ class CreateTaskView(
     private val editProjectUseCase : EditProjectUseCase,
     private val getAllProjectsUseCase : GetAllProjectsUseCase,
     private val createStateUseCase : CreateStateUseCase,
-    private val getAllTasksUseCase : GetAllTasksUseCase,
     private val getStateByIdUseCase : GetStateByIdUseCase
+
 ) {
     lateinit var projects : List<Project>
 
@@ -85,17 +87,15 @@ class CreateTaskView(
 
     private suspend fun createAndUpdateProject(task : Task, selectedProject : Project) {
         try {
-            val isCreatedTask = createTaskUseCase.createTask(task)
-            val createdTask = getAllTasksUseCase.getAllTasks().last()
-            if (isCreatedTask) {
-                val updatedProject = selectedProject.copy(
-                    id = selectedProject.id,
-                    tasks = selectedProject.tasks?.plus(createdTask)
+
+            createTaskUseCase.createTask(task)
+            val updatedProject = selectedProject.copy(
+                id = selectedProject.id,
                 )
 
                 editProjectUseCase.editProject(updatedProject)
                 outputFormatter.printSuccess("Task created successfully!")
-            }
+
         } catch (ex : Exception) {
             outputFormatter.printError(ex.message ?: "failed to create task!!")
         }
