@@ -69,12 +69,12 @@ class LogsMongoHandlerImpl(
 
         return when (actionType) {
             UserActionConstants.CREATE_PROJECT -> UserAction.CreateProject(id, description)
-            UserActionConstants.EDIT_PROJECT   -> UserAction.EditProject(id, description)
+            UserActionConstants.EDIT_PROJECT -> UserAction.EditProject(id, description)
             UserActionConstants.DELETE_PROJECT -> UserAction.DeleteProject(id, description)
 
-            UserActionConstants.CREATE_TASK    -> UserAction.CreateTask(id, description)
-            UserActionConstants.EDIT_TASK      -> UserAction.EditTask(id, description)
-            UserActionConstants.DELETE_TASK    -> UserAction.DeleteTask(id, description)
+            UserActionConstants.CREATE_TASK -> UserAction.CreateTask(id, description)
+            UserActionConstants.EDIT_TASK -> UserAction.EditTask(id, description)
+            UserActionConstants.DELETE_TASK -> UserAction.DeleteTask(id, description)
 
             else -> throw PlanMateException.NetworkException.ParsingException("Unknown action type: $actionType")
         }
