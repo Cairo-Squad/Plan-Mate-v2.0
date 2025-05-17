@@ -1,14 +1,12 @@
 package logic.usecase.project
 
-import io.mockk.coVerify
-import io.mockk.every
-import io.mockk.mockk
-import io.mockk.verify
 import kotlinx.coroutines.test.runTest
 import data.customException.PlanMateException
+import io.mockk.*
 import logic.repositories.ProjectsRepository
 import logic.usecase.FakeData.adminUser
 import logic.usecase.FakeData.mateUser
+import logic.usecase.log.AddProjectLogUseCase
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -17,19 +15,22 @@ import util.FakeData
 class CreateProjectUseCaseTest() {
     private lateinit var projectRepository: ProjectsRepository
     private lateinit var createProject: CreateProjectUseCase
+    private lateinit var addProjectLogUseCase: AddProjectLogUseCase
     private lateinit var validationCreationProjectCreation: ValidationProject
 
     @BeforeEach
     fun setUp() {
         validationCreationProjectCreation = mockk()
         projectRepository = mockk(relaxed = true)
-        createProject = CreateProjectUseCase(projectRepository, validationCreationProjectCreation)
+        addProjectLogUseCase = mockk()
+        createProject = CreateProjectUseCase(projectRepository, addProjectLogUseCase, validationCreationProjectCreation)
     }
 
     @Test
     fun `should successfully create a project when user type is admin`() = runTest {
         //Given
         val project = FakeData.validProject
+        coEvery { addProjectLogUseCase.addProjectLog(any()) } returns Unit
         every { validationCreationProjectCreation.validateCreateProject(project, adminUser) } returns Unit
 
         //When
@@ -37,6 +38,7 @@ class CreateProjectUseCaseTest() {
 
         //Then
         verify(exactly = 1) { validationCreationProjectCreation.validateCreateProject(project, adminUser) }
+        coVerify(exactly = 1) { addProjectLogUseCase.addProjectLog(any()) }
         coVerify(exactly = 1) { projectRepository.createProject(project) }
     }
 
@@ -47,6 +49,7 @@ class CreateProjectUseCaseTest() {
         every { validationCreationProjectCreation.validateCreateProject(project, mateUser) } throws PlanMateException.ValidationException.InvalidUserTypeException()
         
         // When & Then
+        coVerify(exactly = 0) { addProjectLogUseCase.addProjectLog(any()) }
         assertThrows<PlanMateException.ValidationException.InvalidUserTypeException> {
             createProject.createProject(project, mateUser)
         }
@@ -56,6 +59,7 @@ class CreateProjectUseCaseTest() {
     fun `should create a project successfully when description is empty`() = runTest {
         //Given
         val project = FakeData.projectWithNoDescription
+        coEvery { addProjectLogUseCase.addProjectLog(any()) } returns Unit
         every { validationCreationProjectCreation.validateCreateProject(project, adminUser) } returns Unit
         
         //When
@@ -63,6 +67,7 @@ class CreateProjectUseCaseTest() {
 
         //Then
         verify(exactly = 1) { validationCreationProjectCreation.validateCreateProject(project, adminUser) }
+        coVerify(exactly = 1) { addProjectLogUseCase.addProjectLog(any()) }
         coVerify(exactly = 1) { projectRepository.createProject(project) }
     }
 
@@ -73,6 +78,7 @@ class CreateProjectUseCaseTest() {
         every { validationCreationProjectCreation.validateCreateProject(project, adminUser) } throws PlanMateException.ValidationException.TitleException()
 
         //When & Then
+        coVerify(exactly = 0) { addProjectLogUseCase.addProjectLog(any()) }
         assertThrows<PlanMateException.ValidationException.TitleException> {
             createProject.createProject(project, adminUser)
         }

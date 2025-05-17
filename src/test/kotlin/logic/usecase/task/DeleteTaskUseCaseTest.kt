@@ -5,6 +5,7 @@ import kotlinx.coroutines.test.runTest
 import logic.model.State
 import logic.model.Task
 import logic.repositories.TasksRepository
+import logic.usecase.log.AddTaskLogUseCase
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.assertThrows
 import java.util.UUID
@@ -12,12 +13,14 @@ import kotlin.test.Test
 
 class DeleteTaskUseCaseTest {
     private lateinit var tasksRepository: TasksRepository
+    private lateinit var addTaskLogUseCase: AddTaskLogUseCase
     private lateinit var deleteTaskUseCase: DeleteTaskUseCase
 
     @BeforeEach
     fun setup() {
         tasksRepository = mockk(relaxed = true)
-        deleteTaskUseCase = DeleteTaskUseCase(tasksRepository)
+        addTaskLogUseCase = mockk()
+        deleteTaskUseCase = DeleteTaskUseCase(tasksRepository, addTaskLogUseCase)
     }
 
     @Test
@@ -26,6 +29,7 @@ class DeleteTaskUseCaseTest {
         coEvery { tasksRepository.deleteTask(any()) } throws Exception()
 
         // When & Then
+        coVerify(exactly = 0) { addTaskLogUseCase.addTaskLog(any()) }
         assertThrows<Exception> {
             deleteTaskUseCase.deleteTask(getTask())
         }
@@ -34,9 +38,11 @@ class DeleteTaskUseCaseTest {
     @Test
     fun `should call deleteTask on the tasks repository`() = runTest {
         // When
+        coEvery { addTaskLogUseCase.addTaskLog(any()) } returns Unit
         deleteTaskUseCase.deleteTask(getTask())
 
         // Then
+        coVerify(exactly = 1) { addTaskLogUseCase.addTaskLog(any()) }
         coVerify { tasksRepository.deleteTask(any()) }
     }
 

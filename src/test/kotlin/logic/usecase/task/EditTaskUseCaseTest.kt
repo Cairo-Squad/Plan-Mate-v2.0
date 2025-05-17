@@ -8,6 +8,7 @@ import data.customException.PlanMateException
 import logic.model.State
 import logic.model.Task
 import logic.repositories.TasksRepository
+import logic.usecase.log.AddTaskLogUseCase
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.assertThrows
 import java.util.*
@@ -15,12 +16,14 @@ import kotlin.test.Test
 
 class EditTaskUseCaseTest {
 	private lateinit var tasksRepository: TasksRepository
+	private lateinit var addTaskLogUseCase: AddTaskLogUseCase
 	private lateinit var editTaskUseCase: EditTaskUseCase
 
 	@BeforeEach
 	fun setup() {
 		tasksRepository = mockk(relaxed = true)
-		editTaskUseCase = EditTaskUseCase(tasksRepository)
+		addTaskLogUseCase = mockk()
+		editTaskUseCase = EditTaskUseCase(tasksRepository, addTaskLogUseCase)
 	}
 
 	@Test
@@ -28,11 +31,13 @@ class EditTaskUseCaseTest {
 		// Given
 		val originalTask = createValidTask()
 		val updatedTask = originalTask.copy(title = "Updated Title")
+		coEvery { addTaskLogUseCase.addTaskLog(any()) } returns Unit
 
 		// When
 		editTaskUseCase.editTask(newTask = updatedTask)
 
 		// Then
+		coVerify(exactly = 1) { addTaskLogUseCase.addTaskLog(any()) }
 		coVerify(exactly = 1) { tasksRepository.editTask(updatedTask) }
 	}
 
@@ -41,11 +46,13 @@ class EditTaskUseCaseTest {
 		// Given
 		val originalTask = createValidTask()
 		val slightlyModifiedTask = originalTask.copy(description = "Slightly modified description")
+		coEvery { addTaskLogUseCase.addTaskLog(any()) } returns Unit
 
 		// When
 		editTaskUseCase.editTask(newTask = slightlyModifiedTask)
 
 		// Then
+		coVerify(exactly = 1) { addTaskLogUseCase.addTaskLog(any()) }
 		coVerify(exactly = 1) { tasksRepository.editTask(slightlyModifiedTask) }
 	}
 
@@ -57,6 +64,7 @@ class EditTaskUseCaseTest {
 		coEvery { tasksRepository.editTask(any()) } throws PlanMateException.NetworkException.DataNotFoundException()
 
 		// When & Then
+		coVerify(exactly = 0) { addTaskLogUseCase.addTaskLog(any()) }
 		assertThrows<PlanMateException.NetworkException.DataNotFoundException> {
 			editTaskUseCase.editTask(newTask = taskToEdit)
 		}
@@ -70,11 +78,13 @@ class EditTaskUseCaseTest {
 			description = "",
 			title = "Updated Empty Fields Task"
 		)
+		coEvery { addTaskLogUseCase.addTaskLog(any()) } returns Unit
 
 		// When
 		editTaskUseCase.editTask(newTask = taskWithEmptyFields)
 
 		// Then
+		coVerify(exactly = 1) { addTaskLogUseCase.addTaskLog(any()) }
 		coVerify(exactly = 1) { tasksRepository.editTask(taskWithEmptyFields) }
 	}
 
