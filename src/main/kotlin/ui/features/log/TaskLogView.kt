@@ -95,7 +95,7 @@ class TaskLogView(
 
 
     private suspend fun fetchLogs(task: Task): List<Log>? = withContext(Dispatchers.IO) {
-        val logs = getTaskLogsUseCase.execute(task.id ?: UUID.randomUUID())
+        val logs = getTaskLogsUseCase.getTaskLogs(task.id ?: UUID.randomUUID())
 
         if (logs.isEmpty()) {
             outputFormatter.printError("❌ No logs found for this task.")

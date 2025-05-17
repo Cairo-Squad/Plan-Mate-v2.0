@@ -43,7 +43,7 @@ class GetTaskLogsUseCaseTest {
         coEvery { logsRepository.getTaskLogs(taskId) } returns expectedLogs
 
         // When
-        val actualLogs = useCase.execute(taskId)
+        val actualLogs = useCase.getTaskLogs(taskId)
 
         // Then
         assertEquals(expectedLogs, actualLogs)
