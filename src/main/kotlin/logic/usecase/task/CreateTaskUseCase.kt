@@ -6,12 +6,14 @@ import logic.model.Task
 import logic.model.UserAction
 import logic.repositories.TasksRepository
 import logic.usecase.log.AddTaskLogUseCase
+import logic.usecase.user.GetCurrentUserUseCase
 import java.time.LocalDateTime
 import java.util.UUID
 
 class CreateTaskUseCase(
     private val tasksRepository: TasksRepository,
     private val addTaskLogUseCase: AddTaskLogUseCase,
+    private val getCurrentUserUseCase: GetCurrentUserUseCase,
     private val validationTask: ValidationTask
 ) {
     suspend fun createTask(task: Task): UUID {
@@ -23,6 +25,7 @@ class CreateTaskUseCase(
             entityId = taskId,
             entityTitle = task.title ?: "",
             entityType = EntityType.TASK,
+            userId = getCurrentUserUseCase.getCurrentUser()?.id,
             dateTime = LocalDateTime.now(),
             userAction = UserAction.CreateTask(taskId, "Created task")
         )

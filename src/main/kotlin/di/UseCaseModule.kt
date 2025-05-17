@@ -25,9 +25,9 @@ val useCasesModule = module {
     // endregion
 
     // region Tasks
-    single { CreateTaskUseCase(tasksRepository = get(), addTaskLogUseCase = get(), validationTask = get()) }
-    single { EditTaskUseCase(tasksRepository = get(), addTaskLogUseCase = get()) }
-    single { DeleteTaskUseCase(tasksRepository = get(), addTaskLogUseCase = get()) }
+    single { CreateTaskUseCase(tasksRepository = get(), addTaskLogUseCase = get(), getCurrentUserUseCase = get(), validationTask = get()) }
+    single { EditTaskUseCase(tasksRepository = get(), addTaskLogUseCase = get(), getCurrentUserUseCase = get()) }
+    single { DeleteTaskUseCase(tasksRepository = get(), getCurrentUserUseCase = get(), addTaskLogUseCase = get()) }
     single { GetTaskBytIdUseCase(get()) }
     single { GetAllTasksByProjectIdUseCase(get()) }
     single { GetAllTasksUseCase(get()) }

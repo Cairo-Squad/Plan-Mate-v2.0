@@ -6,11 +6,13 @@ import logic.model.Task
 import logic.model.UserAction
 import logic.repositories.TasksRepository
 import logic.usecase.log.AddTaskLogUseCase
+import logic.usecase.user.GetCurrentUserUseCase
 import java.time.LocalDateTime
 
 class DeleteTaskUseCase(
     private val tasksRepository: TasksRepository,
     private val addTaskLogUseCase: AddTaskLogUseCase,
+    private val getCurrentUserUseCase: GetCurrentUserUseCase,
 
     ) {
     suspend fun deleteTask(task: Task) {
@@ -20,6 +22,7 @@ class DeleteTaskUseCase(
             entityId = task.id!!,
             entityTitle = task.title ?: "",
             entityType = EntityType.TASK,
+            userId = getCurrentUserUseCase.getCurrentUser()?.id,
             dateTime = LocalDateTime.now(),
             userAction = UserAction.DeleteTask(task.id, "Deleted task")
         )

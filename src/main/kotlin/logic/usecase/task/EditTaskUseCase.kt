@@ -6,19 +6,23 @@ import logic.model.Task
 import logic.model.UserAction
 import logic.repositories.TasksRepository
 import logic.usecase.log.AddTaskLogUseCase
+import logic.usecase.user.GetCurrentUserUseCase
 import java.time.LocalDateTime
 
 class EditTaskUseCase(
     private val tasksRepository: TasksRepository,
     private val addTaskLogUseCase: AddTaskLogUseCase,
-) {
+    private val getCurrentUserUseCase: GetCurrentUserUseCase,
+    ) {
     suspend fun editTask(newTask: Task) {
         tasksRepository.editTask(task = newTask)
 
+        println("id" + getCurrentUserUseCase.getCurrentUser()?.id)
         val log = Log(
             entityId = newTask.id!!,
             entityTitle = newTask.title ?: "",
             entityType = EntityType.TASK,
+            userId = getCurrentUserUseCase.getCurrentUser()?.id,
             dateTime = LocalDateTime.now(),
             userAction = UserAction.EditTask(newTask.id, "Edited task")
         )
