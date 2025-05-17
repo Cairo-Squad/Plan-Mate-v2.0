@@ -21,7 +21,7 @@ class EditProjectUseCase(
 
         val log = Log(
             entityId = projectInfo.id!!,
-            entityTitle = projectInfo.title?:"",
+            entityTitle = projectInfo.title ?: "",
             entityType = EntityType.PROJECT,
             dateTime = LocalDateTime.now(),
             userId = newProject.createdBy!!,
@@ -29,6 +29,5 @@ class EditProjectUseCase(
         )
 
         addProjectLogUseCase.addProjectLog(log)
-
     }
 }

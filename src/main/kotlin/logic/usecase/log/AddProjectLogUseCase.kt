@@ -6,5 +6,5 @@ import logic.repositories.ProjectLogsRepository
 class AddProjectLogUseCase (
     private val projectLogsRepository: ProjectLogsRepository
 ) {
-    suspend fun addProjectLog(log: Log) = projectLogsRepository.addProjectLog(log)
+    suspend fun addProjectLog(log: Log) : Unit = projectLogsRepository.addProjectLog(log)
 }

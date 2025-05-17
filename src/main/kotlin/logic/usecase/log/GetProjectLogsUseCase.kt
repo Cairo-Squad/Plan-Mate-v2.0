@@ -7,7 +7,5 @@ import java.util.*
 class GetProjectLogsUseCase(
     private val projectLogsRepository: ProjectLogsRepository
 ) {
-    suspend fun getProjectLogs(projectId: UUID): List<Log> {
-        return projectLogsRepository.getProjectLogs(projectId)
-    }
+    suspend fun getProjectLogs(projectId: UUID): List<Log> = projectLogsRepository.getProjectLogs(projectId)
 }
