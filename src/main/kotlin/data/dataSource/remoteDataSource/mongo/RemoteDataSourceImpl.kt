@@ -122,11 +122,11 @@ class RemoteDataSourceImpl(
 
     override suspend fun getTaskLogs(taskId : UUID) : List<LogDto> {
         return taskLogsHandler.readAll()
-            .filter { it.entityType == EntityType.TASK && it.entityId == taskId }
+            .filter { it.entityId == taskId }
     }
 
     override suspend fun getProjectLogs(projectId : UUID) : List<LogDto> {
         return projectLogsHandler.readAll()
-            .filter { it.entityType == EntityType.PROJECT && it.entityId == projectId }
+            .filter { it.entityId == projectId }
     }
 }
