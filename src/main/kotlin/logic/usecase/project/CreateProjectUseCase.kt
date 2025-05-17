@@ -17,12 +17,12 @@ class CreateProjectUseCase(
         val projectId = projectRepository.createProject(project)
 
         val log = Log(
-            entityId = project.id!!,
+            entityId = projectId,
             entityTitle = project.title ?: "",
             entityType = EntityType.PROJECT,
             dateTime = LocalDateTime.now(),
             userId = project.createdBy!!,
-            userAction = UserAction.CreateProject(project.id, "Created project")
+            userAction = UserAction.CreateProject(projectId, "Created project")
         )
 
         addProjectLogUseCase.addProjectLog(log)

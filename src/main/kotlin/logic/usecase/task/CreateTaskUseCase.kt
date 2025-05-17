@@ -20,11 +20,11 @@ class CreateTaskUseCase(
         val taskId = tasksRepository.createTask(task)
 
         val log = Log(
-            entityId = task.id!!,
+            entityId = taskId,
             entityTitle = task.title ?: "",
             entityType = EntityType.TASK,
             dateTime = LocalDateTime.now(),
-            userAction = UserAction.CreateTask(task.id, "Created task")
+            userAction = UserAction.CreateTask(taskId, "Created task")
         )
 
         addTaskLogUseCase.addTaskLog(log)
