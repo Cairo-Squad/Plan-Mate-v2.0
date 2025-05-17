@@ -17,7 +17,6 @@ class EditTaskUseCase(
     suspend fun editTask(newTask: Task) {
         tasksRepository.editTask(task = newTask)
 
-        println("id" + getCurrentUserUseCase.getCurrentUser()?.id)
         val log = Log(
             entityId = newTask.id!!,
             entityTitle = newTask.title ?: "",
