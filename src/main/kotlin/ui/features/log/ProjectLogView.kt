@@ -60,7 +60,7 @@ class ProjectLogView(
         return projects.getOrNull(projectIndex)
     }
 
-    suspend private fun fetchLogs(project: Project): List<Log>? {
+    private suspend fun fetchLogs(project: Project): List<Log>? {
         val logs = getProjectLogsUseCase.getProjectLogs(project.id!!)
 
         if (logs.isEmpty()) {
