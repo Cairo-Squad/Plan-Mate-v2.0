@@ -11,7 +11,6 @@ import ui.utils.InputHandler
 import ui.utils.OutputFormatter
 import logic.model.Project
 import logic.model.Task
-import logic.model.Log
 import org.junit.jupiter.api.Disabled
 import java.util.UUID
 
@@ -78,7 +77,7 @@ class TaskLogViewTest {
         every { inputHandler.promptForIntChoice(any(), any()) } returns 1
         coEvery { getAllTasksByProjectIdUseCase.getAllTasksByProjectId(mockProject.id!!) } returns listOf(mockTask)
         every { inputHandler.promptForIntChoice(any(), any()) } returns 1
-        coEvery { getTaskLogsUseCase.execute(mockTask.id!!) } returns emptyList()
+        coEvery { getTaskLogsUseCase.getTaskLogs(mockTask.id!!) } returns emptyList()
 
         // WHEN
         taskLogView.viewTaskLogs()

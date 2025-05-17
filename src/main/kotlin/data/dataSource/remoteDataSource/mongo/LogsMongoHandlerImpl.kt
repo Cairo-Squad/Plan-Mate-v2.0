@@ -1,18 +1,16 @@
 package data.dataSource.remoteDataSource.mongo
 
 import com.mongodb.client.MongoDatabase
+import data.customException.PlanMateException
 import data.dataSource.remoteDataSource.mongo.handler.MongoDBHandlerImpl
 import data.dataSource.util.MongoConstants
 import data.dataSource.util.UserActionConstants
 import logic.model.EntityType
 import data.dto.LogDto
-import logic.model.UserAction
+import logic.model.ActionType
 import org.bson.Document
-import java.io.IOException
 import java.time.LocalDateTime
 import java.util.*
-import kotlin.text.split
-import kotlin.text.startsWith
 
 class LogsMongoHandlerImpl(
     database: MongoDatabase,
@@ -48,34 +46,28 @@ class LogsMongoHandlerImpl(
         )
     }
 
-    private fun serializeUserAction(userAction: UserAction): String {
+    private fun serializeUserAction(userAction: ActionType): String {
         return when (userAction) {
-            is UserAction.EditProject -> "${UserActionConstants.EDIT_PROJECT}||${userAction.projectId}||${userAction.changes}"
-            is UserAction.EditTask -> "${UserActionConstants.EDIT_TASK}||${userAction.taskId}||${userAction.changes}"
-            else -> "Unknown action type: $this"
+            ActionType.CREATE_PROJECT -> UserActionConstants.CREATE_PROJECT
+            ActionType.EDIT_PROJECT -> UserActionConstants.EDIT_PROJECT
+            ActionType.DELETE_PROJECT -> UserActionConstants.DELETE_PROJECT
+            ActionType.CREATE_TASK -> UserActionConstants.CREATE_TASK
+            ActionType.EDIT_TASK -> UserActionConstants.EDIT_TASK
+            ActionType.DELETE_TASK -> UserActionConstants.DELETE_TASK
         }
     }
 
-    private fun deserializeUserAction(actionString: String): UserAction {
-        val actionParts = actionString.split("||")
+    private fun deserializeUserAction(userAction: String): ActionType {
+        return when (userAction) {
+            UserActionConstants.CREATE_PROJECT -> ActionType.CREATE_PROJECT
+            UserActionConstants.EDIT_PROJECT -> ActionType.EDIT_PROJECT
+            UserActionConstants.DELETE_PROJECT -> ActionType.DELETE_PROJECT
 
-        return when {
+            UserActionConstants.CREATE_TASK -> ActionType.CREATE_TASK
+            UserActionConstants.EDIT_TASK -> ActionType.EDIT_TASK
+            UserActionConstants.DELETE_TASK -> ActionType.DELETE_TASK
 
-            actionString.startsWith(UserActionConstants.EDIT_PROJECT) -> {
-                if (actionParts.size < 3) {
-                    throw IOException()
-                }
-                UserAction.EditProject(UUID.fromString(actionParts[1]), actionParts[2])
-            }
-
-            actionString.startsWith(UserActionConstants.EDIT_TASK) -> {
-                if (actionParts.size < 3) {
-                    throw IOException()
-                }
-                UserAction.EditTask(UUID.fromString(actionParts[1]), actionParts[2])
-            }
-
-            else -> throw IOException()
+            else -> throw PlanMateException.NetworkException.ParsingException("Unknown action type: $userAction")
         }
     }
 

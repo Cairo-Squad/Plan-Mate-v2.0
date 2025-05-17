@@ -9,9 +9,15 @@ import org.koin.dsl.module
 
 val useCasesModule = module {
     // region Projects
-    single { CreateProjectUseCase(projectRepository = get(), get()) }
+    single { CreateProjectUseCase(projectRepository = get(), addProjectLogUseCase = get(), validationProject = get()) }
     single { EditProjectUseCase(get(), get(), get()) }
-    single { DeleteProjectUseCase(projectsRepository = get()) }
+    single {
+        DeleteProjectUseCase(
+            projectsRepository = get(),
+            addProjectLogUseCase = get(),
+            getProjectByIdUseCase = get()
+        )
+    }
     single { GetProjectByIdUseCase(projectsRepository = get()) }
     single { GetAllProjectsUseCase(projectsRepository = get()) }
     single { AddTaskLogUseCase(taskLogsRepository = get()) }
@@ -19,9 +25,9 @@ val useCasesModule = module {
     // endregion
 
     // region Tasks
-    single { CreateTaskUseCase(get(), get()) }
-    single { EditTaskUseCase(get()) }
-    single { DeleteTaskUseCase(get()) }
+    single { CreateTaskUseCase(tasksRepository = get(), addTaskLogUseCase = get(), getCurrentUserUseCase = get(), validationTask = get()) }
+    single { EditTaskUseCase(tasksRepository = get(), addTaskLogUseCase = get(), getCurrentUserUseCase = get()) }
+    single { DeleteTaskUseCase(tasksRepository = get(), getCurrentUserUseCase = get(), addTaskLogUseCase = get()) }
     single { GetTaskBytIdUseCase(get()) }
     single { GetAllTasksByProjectIdUseCase(get()) }
     single { GetAllTasksUseCase(get()) }
@@ -35,7 +41,7 @@ val useCasesModule = module {
     // endregion
 
     // region Users
-    single { SignUpUseCase(get(),get()) }
+    single { SignUpUseCase(get(), get()) }
     single { EditUserUseCase(get()) }
     single { LoginUserUseCase(get(), get()) }
     single { DeleteUserUseCase(get()) }

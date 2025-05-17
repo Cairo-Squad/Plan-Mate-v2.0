@@ -60,7 +60,7 @@ class ProjectLogView(
         return projects.getOrNull(projectIndex)
     }
 
-    suspend private fun fetchLogs(project: Project): List<Log>? {
+    private suspend fun fetchLogs(project: Project): List<Log>? {
         val logs = getProjectLogsUseCase.getProjectLogs(project.id!!)
 
         if (logs.isEmpty()) {
@@ -78,6 +78,7 @@ class ProjectLogView(
                 """
                 🔹 Log ID: ${log.id}
                 📌 Entity: ${log.entityTitle} (${log.entityType})
+                🔖 Entity ID: ${log.entityId} 
                 ✏️ Action: ${log.userAction}
                 👤 User ID: ${log.userId}
                 ⏳ Timestamp: ${log.dateTime}

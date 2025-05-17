@@ -26,6 +26,7 @@ sealed class PlanMateException : Exception() {
         data class InvalidCollectionName(val errorMsg: String = "Invalid collection name") : NetworkException()
         data class WriteException(val errorMsg: String? = "Api Write Exception") : NetworkException()
         data class ApiException(val errorMsg: String? = "Api UnKnown Exception") : NetworkException()
+        data class ParsingException(val errorMsg: String?) : NetworkException()
     }
 
 }

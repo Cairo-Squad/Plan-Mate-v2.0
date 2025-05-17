@@ -1,9 +1,6 @@
 package logic.usecase.project
 
-import logic.model.EntityType
-import logic.model.UserAction
-import logic.model.Log
-import logic.model.Project
+import logic.model.*
 import logic.repositories.ProjectsRepository
 import logic.usecase.log.AddProjectLogUseCase
 import java.time.LocalDateTime
@@ -21,14 +18,13 @@ class EditProjectUseCase(
 
         val log = Log(
             entityId = projectInfo.id!!,
-            entityTitle = projectInfo.title?:"",
+            entityTitle = projectInfo.title ?: "",
             entityType = EntityType.PROJECT,
             dateTime = LocalDateTime.now(),
             userId = newProject.createdBy!!,
-            userAction = UserAction.EditProject(newProject.id, "Updated project details")
+            userAction = ActionType.EDIT_PROJECT
         )
 
         addProjectLogUseCase.addProjectLog(log)
-
     }
 }

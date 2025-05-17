@@ -1,7 +1,7 @@
 package data.dto
 
+import logic.model.ActionType
 import logic.model.EntityType
-import logic.model.UserAction
 import java.time.LocalDateTime
 import java.util.UUID
 
@@ -12,5 +12,5 @@ data class LogDto(
     val entityType: EntityType? = null,
     val dateTime: LocalDateTime? = null,
     val userId: UUID? = null,
-    val userAction: UserAction? = null
+    val userAction: ActionType? = null
 )

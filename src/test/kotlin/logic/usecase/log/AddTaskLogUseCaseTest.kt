@@ -1,10 +1,10 @@
 package logic.usecase.log
 
 import logic.model.EntityType
-import logic.model.UserAction
 import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
+import logic.model.ActionType
 import logic.model.Log
 import logic.repositories.TaskLogsRepository
 import org.junit.jupiter.api.BeforeEach
@@ -33,7 +33,7 @@ class AddTaskLogUseCaseTest {
             entityType = EntityType.TASK,
             dateTime = LocalDateTime.now(),
             userId = UUID.randomUUID(),
-            userAction = UserAction.EditTask(UUID.randomUUID(), "Updated status")
+            userAction = ActionType.CREATE_TASK
         )
 
         // When

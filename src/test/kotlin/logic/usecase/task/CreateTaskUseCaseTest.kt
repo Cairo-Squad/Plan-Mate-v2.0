@@ -8,6 +8,9 @@ import kotlinx.coroutines.test.runTest
 import logic.model.State
 import logic.model.Task
 import logic.repositories.TasksRepository
+import logic.usecase.FakeData
+import logic.usecase.log.AddTaskLogUseCase
+import logic.usecase.user.GetCurrentUserUseCase
 import org.junit.jupiter.api.BeforeEach
 import java.util.*
 import kotlin.test.Test
@@ -16,21 +19,27 @@ import kotlin.test.assertFailsWith
 
 class CreateTaskUseCaseTest {
 	private lateinit var tasksRepository: TasksRepository
+	private lateinit var addTaskLogUseCase: AddTaskLogUseCase
+	private lateinit var getCurrentUserUseCase: GetCurrentUserUseCase
 	private lateinit var validationTask: ValidationTask
 	private lateinit var createTaskUseCase: CreateTaskUseCase
 	
 	@BeforeEach
 	fun setup() {
 		tasksRepository = mockk()
+		addTaskLogUseCase = mockk()
+		getCurrentUserUseCase = mockk()
 		validationTask = mockk()
-		createTaskUseCase = CreateTaskUseCase(tasksRepository, validationTask)
+		createTaskUseCase = CreateTaskUseCase(tasksRepository, addTaskLogUseCase, getCurrentUserUseCase, validationTask)
 	}
 	
 	@Test
 	fun `should create task successfully when validation passes`() = runTest {
 		// Given
 		val taskToCreate = createValidTask()
-		
+
+		coEvery { addTaskLogUseCase.addTaskLog(any()) } returns Unit
+		coEvery { getCurrentUserUseCase.getCurrentUser() } returns FakeData.mockUsers[0]
 		coEvery { validationTask.validateCreateTask(taskToCreate) } returns Unit
 		coEvery { tasksRepository.createTask(taskToCreate) } returns taskToCreate.id!!
 		
@@ -39,6 +48,8 @@ class CreateTaskUseCaseTest {
 		
 		// Then
 		coVerify(exactly = 1) { validationTask.validateCreateTask(taskToCreate) }
+		coVerify(exactly = 1) { getCurrentUserUseCase.getCurrentUser() }
+		coVerify(exactly = 1) { addTaskLogUseCase.addTaskLog(any()) }
 		coVerify(exactly = 1) { tasksRepository.createTask(taskToCreate) }
 	}
 	
@@ -54,6 +65,8 @@ class CreateTaskUseCaseTest {
 			createTaskUseCase.createTask(taskToCreate)
 		}
 		coVerify(exactly = 1) { validationTask.validateCreateTask(taskToCreate) }
+		coVerify(exactly = 0) { getCurrentUserUseCase.getCurrentUser() }
+		coVerify(exactly = 0) { addTaskLogUseCase.addTaskLog(any()) }
 		coVerify(exactly = 0) { tasksRepository.createTask(any()) }
 		assertEquals("Invalid task", exception.message)
 	}
@@ -62,6 +75,8 @@ class CreateTaskUseCaseTest {
 	fun `should handle task with minimal valid fields`() = runTest {
 		// Given
 		val minimalTask = createValidTask().copy(description = "")
+		coEvery { getCurrentUserUseCase.getCurrentUser() } returns FakeData.mockUsers[0]
+		coEvery { addTaskLogUseCase.addTaskLog(any()) } returns Unit
 		coEvery { validationTask.validateCreateTask(minimalTask) } returns Unit
 		coEvery { tasksRepository.createTask(minimalTask) } returns minimalTask.id!!
 		
@@ -70,6 +85,8 @@ class CreateTaskUseCaseTest {
 		
 		// Then
 		coVerify(exactly = 1) { validationTask.validateCreateTask(minimalTask) }
+		coVerify(exactly = 1) { getCurrentUserUseCase.getCurrentUser() }
+		coVerify(exactly = 1) { addTaskLogUseCase.addTaskLog(any()) }
 		coVerify(exactly = 1) { tasksRepository.createTask(minimalTask) }
 	}
 	
