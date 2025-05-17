@@ -112,6 +112,7 @@ class TaskLogView(
                 """
                 🔹 Log ID: ${log.id}
                 📌 Entity: ${log.entityTitle} (${log.entityType})
+                🔖 Entity ID: ${log.entityId} 
                 ✏️ Action: ${log.userAction}
                 👤 User ID: ${log.userId}
                 ⏳ Timestamp: ${log.dateTime}

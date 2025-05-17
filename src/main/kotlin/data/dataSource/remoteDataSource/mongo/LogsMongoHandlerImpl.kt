@@ -7,13 +7,10 @@ import data.dataSource.util.MongoConstants
 import data.dataSource.util.UserActionConstants
 import logic.model.EntityType
 import data.dto.LogDto
-import logic.model.UserAction
+import logic.model.ActionType
 import org.bson.Document
-import java.io.IOException
 import java.time.LocalDateTime
 import java.util.*
-import kotlin.text.split
-import kotlin.text.startsWith
 
 class LogsMongoHandlerImpl(
     database: MongoDatabase,
@@ -49,34 +46,28 @@ class LogsMongoHandlerImpl(
         )
     }
 
-    private fun serializeUserAction(userAction: UserAction): String {
+    private fun serializeUserAction(userAction: ActionType): String {
         return when (userAction) {
-            is UserAction.CreateProject -> "${UserActionConstants.CREATE_PROJECT}||${userAction.projectId}||${userAction.changes}"
-            is UserAction.EditProject -> "${UserActionConstants.EDIT_PROJECT}||${userAction.projectId}||${userAction.changes}"
-            is UserAction.DeleteProject -> "${UserActionConstants.DELETE_PROJECT}||${userAction.projectId}||${userAction.changes}"
-            is UserAction.CreateTask -> "${UserActionConstants.CREATE_TASK}||${userAction.taskId}||${userAction.changes}"
-            is UserAction.EditTask -> "${UserActionConstants.EDIT_TASK}||${userAction.taskId}||${userAction.changes}"
-            is UserAction.DeleteTask -> "${UserActionConstants.DELETE_TASK}||${userAction.taskId}||${userAction.changes}"
+            ActionType.CREATE_PROJECT -> UserActionConstants.CREATE_PROJECT
+            ActionType.EDIT_PROJECT -> UserActionConstants.EDIT_PROJECT
+            ActionType.DELETE_PROJECT -> UserActionConstants.DELETE_PROJECT
+            ActionType.CREATE_TASK -> UserActionConstants.CREATE_TASK
+            ActionType.EDIT_TASK -> UserActionConstants.EDIT_TASK
+            ActionType.DELETE_TASK -> UserActionConstants.DELETE_TASK
         }
     }
 
-    private fun deserializeUserAction(actionString: String): UserAction {
-        val actionParts = actionString.split("||")
+    private fun deserializeUserAction(userAction: String): ActionType {
+        return when (userAction) {
+            UserActionConstants.CREATE_PROJECT -> ActionType.CREATE_PROJECT
+            UserActionConstants.EDIT_PROJECT -> ActionType.EDIT_PROJECT
+            UserActionConstants.DELETE_PROJECT -> ActionType.DELETE_PROJECT
 
-        val actionType = actionParts[0]
-        val id = UUID.fromString(actionParts[1])
-        val description = actionParts[2]
+            UserActionConstants.CREATE_TASK -> ActionType.CREATE_TASK
+            UserActionConstants.EDIT_TASK -> ActionType.EDIT_TASK
+            UserActionConstants.DELETE_TASK -> ActionType.DELETE_TASK
 
-        return when (actionType) {
-            UserActionConstants.CREATE_PROJECT -> UserAction.CreateProject(id, description)
-            UserActionConstants.EDIT_PROJECT -> UserAction.EditProject(id, description)
-            UserActionConstants.DELETE_PROJECT -> UserAction.DeleteProject(id, description)
-
-            UserActionConstants.CREATE_TASK -> UserAction.CreateTask(id, description)
-            UserActionConstants.EDIT_TASK -> UserAction.EditTask(id, description)
-            UserActionConstants.DELETE_TASK -> UserAction.DeleteTask(id, description)
-
-            else -> throw PlanMateException.NetworkException.ParsingException("Unknown action type: $actionType")
+            else -> throw PlanMateException.NetworkException.ParsingException("Unknown action type: $userAction")
         }
     }
 

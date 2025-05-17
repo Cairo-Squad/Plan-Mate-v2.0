@@ -1,11 +1,11 @@
 package logic.usecase.log
 
 import logic.model.EntityType
-import logic.model.UserAction
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
+import logic.model.ActionType
 import logic.model.Log
 import logic.repositories.TaskLogsRepository
 import org.junit.jupiter.api.Assertions.*
@@ -37,7 +37,7 @@ class GetTaskLogsUseCaseTest {
                 entityType = EntityType.TASK,
                 dateTime = LocalDateTime.now(),
                 userId = UUID.randomUUID(),
-                userAction = UserAction.EditTask(UUID.randomUUID(), "Changed description")
+                userAction = ActionType.EDIT_TASK
             )
         )
         coEvery { logsRepository.getTaskLogs(taskId) } returns expectedLogs

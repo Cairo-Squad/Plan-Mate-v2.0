@@ -1,11 +1,11 @@
 package logic.usecase.log
 
 import logic.model.EntityType
-import logic.model.UserAction
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
+import logic.model.ActionType
 import logic.model.Log
 import logic.repositories.ProjectLogsRepository
 import org.junit.jupiter.api.Assertions.*
@@ -37,7 +37,7 @@ class GetProjectLogsUseCaseTest {
                 entityType = EntityType.PROJECT,
                 dateTime = LocalDateTime.now(),
                 userId = UUID.randomUUID(),
-                userAction = UserAction.EditProject(UUID.randomUUID(), "Updated name")
+                userAction = ActionType.EDIT_PROJECT
             )
         )
         coEvery { logsRepository.getProjectLogs(projectId) } returns expectedLogs

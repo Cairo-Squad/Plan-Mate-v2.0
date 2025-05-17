@@ -1,9 +1,6 @@
 package logic.usecase.task
 
-import logic.model.EntityType
-import logic.model.Log
-import logic.model.Task
-import logic.model.UserAction
+import logic.model.*
 import logic.repositories.TasksRepository
 import logic.usecase.log.AddTaskLogUseCase
 import logic.usecase.user.GetCurrentUserUseCase
@@ -23,7 +20,7 @@ class EditTaskUseCase(
             entityType = EntityType.TASK,
             userId = getCurrentUserUseCase.getCurrentUser()?.id,
             dateTime = LocalDateTime.now(),
-            userAction = UserAction.EditTask(newTask.id, "Edited task")
+            userAction = ActionType.EDIT_TASK
         )
 
         addTaskLogUseCase.addTaskLog(log)

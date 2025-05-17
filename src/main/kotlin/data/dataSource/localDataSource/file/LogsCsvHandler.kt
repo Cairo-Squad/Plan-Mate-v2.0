@@ -1,12 +1,12 @@
 package data.dataSource.localDataSource.file
 
+import data.customException.PlanMateException
 import data.dataSource.localDataSource.file.handler.CsvFileHandler
 import data.dataSource.util.CsvIndices
 import data.dataSource.util.UserActionConstants
 import logic.model.EntityType
 import data.dto.LogDto
-import logic.model.UserAction
-import java.io.IOException
+import logic.model.ActionType
 import java.time.LocalDateTime
 import java.util.*
 
@@ -44,34 +44,29 @@ class LogsCsvHandler(
         )
     }
 
-    private fun UserAction.parseToString(): String {
+    private fun ActionType.parseToString(): String {
         return when (this) {
-            is UserAction.EditProject -> "${UserActionConstants.EDIT_PROJECT}||$projectId||$changes"
-            is UserAction.EditTask -> "${UserActionConstants.EDIT_TASK}||$taskId||$changes"
-            else -> "Unknown action type: $this"
+            ActionType.CREATE_PROJECT -> UserActionConstants.CREATE_PROJECT
+            ActionType.EDIT_PROJECT -> UserActionConstants.EDIT_PROJECT
+            ActionType.DELETE_PROJECT -> UserActionConstants.DELETE_PROJECT
+            ActionType.CREATE_TASK -> UserActionConstants.CREATE_TASK
+            ActionType.EDIT_TASK -> UserActionConstants.EDIT_TASK
+            ActionType.DELETE_TASK -> UserActionConstants.DELETE_TASK
         }
     }
 
 
-    private fun String.parseUserAction(): UserAction {
-        val actionParts = this.split("||")
-        return when {
-            this.startsWith(UserActionConstants.EDIT_PROJECT) -> {
-                if (actionParts.size < 3) {
-                    throw IOException()
-                }
-                UserAction.EditProject(UUID.fromString(actionParts[1]), actionParts[2])
-            }
+    private fun String.parseUserAction(): ActionType {
+        return when (this) {
+            UserActionConstants.CREATE_PROJECT -> ActionType.CREATE_PROJECT
+            UserActionConstants.EDIT_PROJECT -> ActionType.EDIT_PROJECT
+            UserActionConstants.DELETE_PROJECT -> ActionType.DELETE_PROJECT
 
-            this.startsWith(UserActionConstants.EDIT_TASK) -> {
-                if (actionParts.size < 3) {
-                    throw IOException()
-                }
-                UserAction.EditTask(UUID.fromString(actionParts[1]), actionParts[2])
+            UserActionConstants.CREATE_TASK -> ActionType.CREATE_TASK
+            UserActionConstants.EDIT_TASK -> ActionType.EDIT_TASK
+            UserActionConstants.DELETE_TASK -> ActionType.DELETE_TASK
 
-            }
-
-            else -> throw IOException()
+            else -> throw PlanMateException.NetworkException.ParsingException("Unknown action type: $this")
         }
     }
 }

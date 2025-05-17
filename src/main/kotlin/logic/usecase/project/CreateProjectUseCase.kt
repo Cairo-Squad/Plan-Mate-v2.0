@@ -22,7 +22,7 @@ class CreateProjectUseCase(
             entityType = EntityType.PROJECT,
             dateTime = LocalDateTime.now(),
             userId = project.createdBy!!,
-            userAction = UserAction.CreateProject(projectId, "Created project")
+            userAction = ActionType.CREATE_PROJECT
         )
 
         addProjectLogUseCase.addProjectLog(log)

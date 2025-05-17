@@ -10,5 +10,5 @@ data class Log(
     val entityType: EntityType? = null,
     val dateTime: LocalDateTime? = null,
     val userId: UUID? = null,
-    val userAction: UserAction? = null
+    val userAction: ActionType? = null
 )

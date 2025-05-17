@@ -1,9 +1,6 @@
 package logic.usecase.task
 
-import logic.model.EntityType
-import logic.model.Log
-import logic.model.Task
-import logic.model.UserAction
+import logic.model.*
 import logic.repositories.TasksRepository
 import logic.usecase.log.AddTaskLogUseCase
 import logic.usecase.user.GetCurrentUserUseCase
@@ -24,7 +21,7 @@ class DeleteTaskUseCase(
             entityType = EntityType.TASK,
             userId = getCurrentUserUseCase.getCurrentUser()?.id,
             dateTime = LocalDateTime.now(),
-            userAction = UserAction.DeleteTask(task.id, "Deleted task")
+            userAction = ActionType.DELETE_TASK
         )
 
         addTaskLogUseCase.addTaskLog(log)

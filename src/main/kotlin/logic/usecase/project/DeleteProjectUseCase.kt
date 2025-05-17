@@ -1,8 +1,8 @@
 package logic.usecase.project
 
+import logic.model.ActionType
 import logic.model.EntityType
 import logic.model.Log
-import logic.model.UserAction
 import logic.repositories.ProjectsRepository
 import logic.usecase.log.AddProjectLogUseCase
 import java.time.LocalDateTime
@@ -24,7 +24,7 @@ class DeleteProjectUseCase(
             entityType = EntityType.PROJECT,
             dateTime = LocalDateTime.now(),
             userId = deletedProject.createdBy!!,
-            userAction = UserAction.DeleteProject(deletedProject.id, "Deleted project")
+            userAction = ActionType.EDIT_PROJECT
         )
 
         addProjectLogUseCase.addProjectLog(log)
