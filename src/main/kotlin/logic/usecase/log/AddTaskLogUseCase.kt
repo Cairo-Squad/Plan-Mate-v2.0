@@ -6,5 +6,5 @@ import logic.repositories.TaskLogsRepository
 class AddTaskLogUseCase(
     private val taskLogsRepository: TaskLogsRepository
 ) {
-    suspend fun addTaskLog(log: Log) : Unit = taskLogsRepository.addTaskLog(log)
+    suspend fun addTaskLog(log: Log) = taskLogsRepository.addTaskLog(log)
 }
