@@ -18,12 +18,18 @@ class CLIMenu(
         displayWelcomeMessage()
         while (getCurrentUser.getCurrentUser() == null) {
             val userChoice = inputHandler.promptForInput("Enter 1 to signUp, or enter 2 to login : ")
-            if (userChoice.toInt() == 1) {
-                signUpView.createNewUser()
-                userManagementView.showUserMenu()
-            } else if (userChoice.toInt() == 2) {
-                loginView.showLoginScreen()
-                userManagementView.showUserMenu()
+            when (userChoice) {
+                "1" -> {
+                    signUpView.createNewUser()
+                    userManagementView.showUserMenu()
+                }
+                "2" -> {
+                    loginView.showLoginScreen()
+                    userManagementView.showUserMenu()
+                }
+                else -> {
+                    outputFormatter.printError("Wrong Input")
+                }
             }
         }
     }
